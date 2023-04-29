@@ -1,16 +1,11 @@
-import { useEffect } from 'react';
 import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
-import { State } from '@/global/interface';
-import { AppDispatch, RootState } from '@/store';
+import { useDispatch } from 'react-redux';
+import withAuth from '@/utils/hocs';
+import { AppDispatch } from '@/store';
 import { testCall } from '@/store/reducers/test.reducer';
 
-export default function Home() {
-  const testData = useSelector((state: RootState) => (state.test as State).state);
+function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    console.log(testData);
-  }, [testData]);
   return (
     <>
       <button onClick={() => {
@@ -36,3 +31,5 @@ export default function Home() {
     </>
   )
 }
+
+export default withAuth(Home);

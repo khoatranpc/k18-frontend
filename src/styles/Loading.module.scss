@@ -21,6 +21,14 @@
         -webkit-animation: spinner 1s linear infinite;
         animation: spinner 1s linear infinite;
     }
+
+    &.center_screen {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 @-webkit-keyframes spinner {

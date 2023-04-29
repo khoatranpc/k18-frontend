@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import { Input, Button } from 'antd';
-import { State } from '@/global/interface';
+import { Obj, State } from '@/global/interface';
 import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch, RootState } from '@/store';
-import { clearToken, queryToken } from '@/store/reducers/auth-get-user.reducer';
+import { clearToken, queryToken } from '@/store/reducers/auth-get-token.reducer';
 import styles from '@/styles/auth/Login.module.scss';
 
 const validationSchema = yup.object({
@@ -18,6 +19,7 @@ const validationSchema = yup.object({
 const Login = () => {
     const message = useHookMessage();
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     const crrToken = useSelector((state: RootState) => (state.token as State).state);
     const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: {
@@ -39,6 +41,8 @@ const Login = () => {
         if (!crrToken.isLoading) {
             if (crrToken.response) {
                 if (crrToken.response.status) {
+                    localStorage.setItem('access_token', (`Bearer ${(crrToken.response as Obj)!.data.token as string} `));
+                    router.push('/');
                 } else {
                     message.open({
                         content: crrToken.response.message as string,
