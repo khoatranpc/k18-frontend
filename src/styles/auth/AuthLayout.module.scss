@@ -1,0 +1,49 @@
+.auth_layout {
+    min-height: 100%;
+    display: flex;
+
+    .bar_icon {
+        flex: 1;
+        position: relative;
+        min-height: 100vh;
+        height: 100%;
+
+        .wall {
+            min-height: 100vh;
+            height: 100%;
+            width: 20.8%;
+            background-color: var(--base);
+            position: absolute;
+        }
+
+        .human {
+            width: 33vw;
+            min-height: 100vh;
+            height: 100%;
+            position: absolute;
+            left: 0;
+        }
+
+        .list_ac {
+            position: fixed;
+            left: 14vw;
+            bottom: 0;
+
+            ul {
+                list-style: none;
+                display: flex;
+                gap: 3.6rem;
+                margin-bottom: 4vh;
+            }
+        }
+    }
+
+    .content_auth {
+        flex: 1;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-y: scroll;
+    }
+}

@@ -1,0 +1,78 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+    --base: #BB0409;
+    --black: #333138;
+    --white: #FFFFFF;
+    --orange: #F49E4C;
+    --light-base: #CF575A;
+    --light-white: #D9D9D9;
+
+}
+
+html {
+    font-size: 10px;
+    font-family: 'SF Pro Display', sans-serif;
+    height: fit-content;
+    color: var(--black);
+}
+
+* {
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+        height: 0.2rem;
+        width: 0.2rem;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--base);
+        width: 0;
+        border-radius: 1rem;
+    }
+}
+
+
+.container_default {
+    min-height: 100vh;
+    margin: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+.field_required {
+    color: var(--orange);
+}
+
+.ant-radio-checked .ant-radio-inner {
+    border-color: var(--base) !important;
+    background-color: var(--base) !important;
+}
+
+.error {
+    text-align: left !important;
+    color: var(--orange);
+}
+
+.btn_base {
+    margin-top: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--base);
+    color: var(--white);
+    width: 100%;
+    height: 4.4rem;
+    font-weight: 600;
+    font-size: 1.4rem;
+
+    &:hover {
+        color: var(--white) !important;
+    }
+}

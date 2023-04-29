@@ -1,0 +1,2 @@
+export const TEST_CALL_API = 'TEST_CALL_API';
+export const GET_TOKEN_LOGIN = 'GET_TOKEN_LOGIN';
