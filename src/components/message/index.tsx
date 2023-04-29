@@ -18,7 +18,7 @@ const Message = () => {
                 close();
             })
         }
-    }, [messageReducer]);
+    }, [messageReducer, messageApi, close]);
     return (
         contextHolder
     )

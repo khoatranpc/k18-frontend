@@ -26,7 +26,7 @@ const ResetPassword = () => {
 
     useEffect(() => {
         console.log(router);
-    }, [])
+    }, [router])
 
     return (
         <div className={styles.container_reset_password}>

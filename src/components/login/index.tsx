@@ -48,7 +48,7 @@ const Login = () => {
                 }
             }
         }
-    }, [crrToken])
+    }, [crrToken, dispatch, message])
 
     return (
         <div className={styles.container_login}>
