@@ -20,14 +20,15 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
         useEffect(() => {
             const access_token = localStorage.getItem('access_token');
             if (router) {
-                if (access_token) {
+                if (crrToken.response && crrToken.response.status && !access_token) {
+                    localStorage.setItem('access_token', (crrToken.response.data as Obj)?.token as string);
+                } else if (access_token) {
                     //verify in here
                     if (firstQuery.current) {
                         dispatch(queryGetCrrUserInfo());
                         firstQuery.current = false;
                     }
-                }
-                else if ((!access_token || (!crrToken.response || (crrToken.response && !crrToken.response.status)))) {
+                } else if ((!access_token || (!crrToken.response || (crrToken.response && !crrToken.response.status)))) {
                     router.push('/auth/login');
                     localStorage.removeItem('access_token');
                     setIsNull(false);
@@ -38,7 +39,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
             }
         }, [crrToken, setIsNull, dispatch, router, crrUser]);
         if (isNull) return null;
-        return router && crrUser.response && crrUser.response.status ? <WrappedComponent {...rest as P} /> : <Loading isCenterScreen/>;
+        return router && crrUser.response && crrUser.response.status ? <WrappedComponent {...rest as P} /> : <Loading isCenterScreen />;
     };
 
     return Auth;

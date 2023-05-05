@@ -76,3 +76,8 @@ a {
         color: var(--white) !important;
     }
 }
+
+:where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+    background-color: var(--base) !important;
+    border: 1px solid var(--base);
+}

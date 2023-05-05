@@ -4,10 +4,11 @@ import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { Obj } from '@/global/interface';
 import store from '@/store';
+import Message from '@/components/message';
 import DefaultLayout from '@/layouts/default';
 // import styles from '@/styles/Theme.module.scss';
 import '@/styles/globals.scss';
-import Message from '@/components/message';
+import '@/styles/auth/FormCollect.scss';
 
 const EmptyLayout = ({ children }: { children: React.ReactElement }) => {
   return children
