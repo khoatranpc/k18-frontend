@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useFormik } from 'formik';
 import Link from 'next/link';
 import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
@@ -7,14 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CheckboxOptionType, CheckboxValueType } from 'antd/es/checkbox/Group';
 import { Input, DatePicker, Radio, Button, Checkbox } from 'antd';
 import { Obj, State } from '@/global/interface';
+import { ROLE_TEACHER } from '@/global/enum';
+import { useHookMessage } from '@/utils/hooks/message';
 import { getCourses } from '@/store/reducers/course.reducer';
 import { AppDispatch, RootState } from '@/store';
-import Loading from '../loading';
+import { queryRegisterPreTeacher } from '@/store/reducers/registerPreTeacher.reducer';
 import AuthLayout from '@/layouts/auth';
+import Loading from '../loading';
 import iconArrowLeft from '@/assets/svgs/icon-arrow-left.svg';
 import styles from '@/styles/auth/FormRegister.module.scss';
-import { useFormik } from 'formik';
-import { queryRegisterPreTeacher } from '@/store/reducers/registerPreTeacher.reducer';
 
 const crrCourseRegister: {
     idCourse: string,
@@ -72,7 +74,8 @@ const FormRegister = () => {
     const [step, setStep] = useState<number>(1);
     const dispatch = useDispatch<AppDispatch>();
     const listCourse = useSelector((state: RootState) => (state.courses as State).state);
-    const registerPreTeacher = useSelector((state: RootState) => (state.registerPreTeacher as State).state)
+    const registerPreTeacher = useSelector((state: RootState) => (state.registerPreTeacher as State).state);
+    const handleMessage = useHookMessage();
     const handleStep = (type: 'INCRE' | 'DECRE') => {
         if (type === 'INCRE') {
             setStep((prev: number) => {
@@ -132,6 +135,14 @@ const FormRegister = () => {
             dispatch(getCourses());
         }
     }, [step, listCourse, dispatch]);
+    useEffect(() => {
+        if (registerPreTeacher.response && !registerPreTeacher.isLoading) {
+            handleMessage.open({
+                content: (registerPreTeacher.response as Obj)?.message as string,
+                type: ((registerPreTeacher.response as Obj)?.status as boolean) ? "success" : "error"
+            }, 3000);
+        }
+    }, [registerPreTeacher]);
     return (
         <div className={`${styles.form_collection_personal_infor} form_collection`}>
             <div className={styles.zone_arrow}>
@@ -140,7 +151,7 @@ const FormRegister = () => {
                     src={iconArrowLeft}
                     className={styles.arrow}
                     onClick={() => {
-                        handleStep('DECRE')
+                        handleStep('DECRE');
                     }}
                 />}
             </div>
@@ -203,7 +214,7 @@ const FormRegister = () => {
                                 </Form.Label>
                                 <DatePicker className={styles.input} value={values.dob as any} name="dob" onChange={(e) => {
                                     setFieldValue('dob', e);
-                                }} onBlur={handleBlur} placeholder='yy/mm/dd' />
+                                }} onBlur={handleBlur} placeholder='yy-mm-dd' />
                                 {errors.dob && touched.dob && <p className="error">{errors.dob}</p>}
                             </Form.Group>
                             <Form.Group>
@@ -232,7 +243,7 @@ const FormRegister = () => {
                                     </Form.Label>
                                     <DatePicker className={styles.input} value={values.licenseDate as any} name="licenseDate" onChange={(e) => {
                                         setFieldValue('licenseDate', e);
-                                    }} onBlur={handleBlur} placeholder='yy/mm/dd' />
+                                    }} onBlur={handleBlur} placeholder='yy-mm-dd' />
                                     {errors.licenseDate && touched.licenseDate && <p className="error">{errors.licenseDate}</p>}
                                 </Form.Group>
                                 <Form.Group className={styles.mb_24}>
@@ -281,7 +292,7 @@ const FormRegister = () => {
                                         <Form.Label className={styles.fs_12}>
                                             <span>Bắt đầu làm việc <span className="field_required">*</span></span>
                                         </Form.Label>
-                                        <DatePicker className={styles.input} name="dateStartWork" placeholder='yy/mm/dd' value={values.dateStartWork as any} onChange={(e) => {
+                                        <DatePicker className={styles.input} name="dateStartWork" placeholder='yy-mm-dd' value={values.dateStartWork as any} onChange={(e) => {
                                             setFieldValue('dateStartWork', e);
                                         }} onBlur={handleBlur} />
                                         {errors.dateStartWork && touched.dateStartWork && <p className="error">{errors.dateStartWork}</p>}
@@ -345,31 +356,32 @@ const FormRegister = () => {
                                                         <span>Vị trí <span className="field_required">*</span></span>
                                                     </Form.Label>
                                                     <Checkbox.Group options={[
-                                                        { label: 'Giảng viên', value: 'ST' },
-                                                        { label: 'Mentor', value: 'MT' },
-                                                        { label: 'Supporter', value: 'SP' },
+                                                        { label: 'Giảng viên', value: ROLE_TEACHER.ST },
+                                                        { label: 'Mentor', value: ROLE_TEACHER.MT },
+                                                        { label: 'Supporter', value: ROLE_TEACHER.SP },
                                                     ]}
                                                         onChange={(e) => {
                                                             handleRegisterRole(e, setFieldValue);
                                                         }}
+                                                        defaultValue={values.role || []}
                                                     />
                                                     {errors.role && <p className="error">{errors.role}</p>}
                                                 </Form.Group>
                                                 {
                                                     listCourse.response && Array.isArray(listCourse.response.data) && (listCourse.response.data as Array<Obj>).length !== 0 ?
-                                                        (listCourse.response.data as Array<Obj>).map((item: Obj) => {
+                                                        (listCourse.response.data as Array<Obj>).map((item: Obj, index: number) => {
                                                             const options: CheckboxOptionType[] = [];
                                                             (item.courseLevel as Array<Obj>).forEach((element: Obj) => {
                                                                 options.push({
                                                                     label: `${element.levelName as string}(${element.levelCode as string})`,
                                                                     value: element._id as string
-                                                                })
+                                                                });
                                                             });
                                                             return <Form.Group className={`${styles.mb_24} mw_440`} key={item._id as string}>
                                                                 <Form.Label className={styles.fs_12}>
                                                                     <span>{item.courseName as string}</span>
                                                                 </Form.Label>
-                                                                <Checkbox.Group options={options} onChange={(e) => {
+                                                                <Checkbox.Group options={options} defaultValue={(values.coursesRegister[index] as unknown as Obj)?.levelHandle as Array<string> || []} onChange={(e) => {
                                                                     onChange(e, item._id as string, setFieldValue);
                                                                 }} />
                                                             </Form.Group>
@@ -386,7 +398,7 @@ const FormRegister = () => {
                 </div>
                 <Button
                     loading={registerPreTeacher.isLoading}
-                    htmlType={`${step === 5 ? 'submit' : 'button'}`}
+                    htmlType={`${(step === 5 && isValid) ? 'submit' : 'button'}`}
                     className={`${styles.btn_next} ${step === 2 ? styles.btn_step2 : ''}`}
                     onClick={() => {
                         handleStep('INCRE')
