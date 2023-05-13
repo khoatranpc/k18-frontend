@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
@@ -12,7 +13,7 @@ import { ROLE_TEACHER } from '@/global/enum';
 import { useHookMessage } from '@/utils/hooks/message';
 import { getCourses } from '@/store/reducers/course.reducer';
 import { AppDispatch, RootState } from '@/store';
-import { queryRegisterPreTeacher } from '@/store/reducers/registerPreTeacher.reducer';
+import { clean, queryRegisterPreTeacher } from '@/store/reducers/registerPreTeacher.reducer';
 import AuthLayout from '@/layouts/auth';
 import Loading from '../loading';
 import iconArrowLeft from '@/assets/svgs/icon-arrow-left.svg';
@@ -73,6 +74,7 @@ const validationSchema = yup.object({
 const FormRegister = () => {
     const [step, setStep] = useState<number>(1);
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     const listCourse = useSelector((state: RootState) => (state.courses as State).state);
     const registerPreTeacher = useSelector((state: RootState) => (state.registerPreTeacher as State).state);
     const handleMessage = useHookMessage();
@@ -141,6 +143,14 @@ const FormRegister = () => {
                 content: (registerPreTeacher.response as Obj)?.message as string,
                 type: ((registerPreTeacher.response as Obj)?.status as boolean) ? "success" : "error"
             }, 3000);
+            if((registerPreTeacher.response as Obj)?.status){
+                router.push('/auth/login');
+            }
+            dispatch(clean());
+            
+        }
+        return()=>{
+            handleMessage.close();
         }
     }, [registerPreTeacher]);
     return (
