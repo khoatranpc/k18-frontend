@@ -1,5 +1,5 @@
-import { AsyncThunk, PayloadAction, createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Action, Obj } from "@/global/interface";
+import { AsyncThunk, PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Action, State } from "@/global/interface";
 import { METHOD } from "@/global/enum";
 import { initState } from "@/global/init-data";
 import actionRequest from "./restApi";
@@ -9,7 +9,7 @@ interface Reducer {
 }
 
 const createRequest = (type: string, api: string, method: METHOD) => {
-    return createAsyncThunk(type, async (action?: Action) => {
+    return createAsyncThunk(type, async (action: Action | any) => {
         const rs = await actionRequest(api, method, action);
         return rs.data;
     })

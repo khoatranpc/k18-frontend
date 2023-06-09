@@ -4,7 +4,7 @@ import { METHOD } from "@/global/enum";
 import { State } from "@/global/interface";
 import { createAction } from "@reduxjs/toolkit";
 
-export const queryGetCrrUserInfo = createRequest(VERIFY_TOKEN_FOR_GET_INFO, '/api/v1/auth/personal-info', METHOD.GET);
+export const queryGetCrrUserInfo: any = createRequest(VERIFY_TOKEN_FOR_GET_INFO, '/api/v1/auth/personal-info', METHOD.GET);
 const getCrrUserInfo = createSliceReducer('crrUserInfo', queryGetCrrUserInfo, {
     logout: (state: State) => {
         state.state.response = null;

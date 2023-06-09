@@ -18,10 +18,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return <Provider store={store}>
     {/* <div className={styles.theme}> */}
     <Message />
-    <Head>
-      <title>MindX</title>
-      <link rel="icon" type="image/x-icon" href="/static/logo.png" />
-    </Head>
     <DefaultLayout>
       <Layout>
         <Component {...pageProps} />

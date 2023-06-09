@@ -10,17 +10,14 @@ function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const logout = useLogout();
   const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
+  console.log(crrUser);
   return (
     <>
       <button onClick={() => {
         dispatch(testCall({
           payload: {
             query: {
-              params: ['64450834998fa1ae31227795'],
-              query: {
-                priceMin: 100,
-                priceMax: 300
-              }
+              params: ['645f607b064bb32e8dab977c'],
             }
           }
         }));
