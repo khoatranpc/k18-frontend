@@ -1,7 +1,6 @@
 import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '@/global/interface';
-import withAuth from '@/utils/hocs';
 import useLogout from '@/utils/hooks/logout';
 import { AppDispatch, RootState } from '@/store';
 import { testCall } from '@/store/reducers/test.reducer';
@@ -30,4 +29,4 @@ function Home() {
   )
 }
 
-export default withAuth(Home);
+export default Home;

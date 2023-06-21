@@ -3,38 +3,35 @@
     display: flex;
 
     .bar_icon {
+        position: relative;
         flex: 1;
         position: relative;
         min-height: 100vh;
         height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--cool-grey);
 
-        .wall {
-            min-height: 100vh;
-            height: 100%;
-            width: 20.8%;
-            background-color: var(--base);
+        .absolute {
             position: absolute;
         }
 
-        .human {
-            width: 33vw;
-            min-height: 100vh;
-            height: 100%;
-            position: absolute;
-            left: 0;
+        .top_0 {
+            top: 0;
         }
 
-        .list_ac {
-            position: fixed;
-            left: 14vw;
+        .icon {
+            z-index: 1;
+        }
+
+        .bt_0 {
             bottom: 0;
+        }
 
-            ul {
-                list-style: none;
-                display: flex;
-                gap: 3.6rem;
-                margin-bottom: 4vh;
-            }
+        .zIndex {
+            z-index: 0;
+            width: 100%;
         }
     }
 

@@ -1,5 +1,5 @@
 import { createRequest, createSliceReducer } from "@/utils/redux-toolkit";
-import { Obj, State } from "@/global/interface";
+import { Action, Obj, State } from "@/global/interface";
 import { METHOD } from "@/global/enum";
 import { GET_TOKEN_LOGIN } from "./actions";
 import { createAction } from "@reduxjs/toolkit";
@@ -10,7 +10,7 @@ const getToken = createSliceReducer('token', queryToken, {
     clear: (state: State) => {
         state.state.response = null;
     },
-    update: (state: State, action) => {
+    update: (state: State, action: Action) => {
         state.state.response = {
             ...state.state.response,
             ...action?.payload

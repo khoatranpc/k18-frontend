@@ -7,16 +7,15 @@
     .main {
         height: fit-content;
 
-        h5,
-        p {
-            text-align: center;
+        h5 {
             font-size: 1.5rem;
         }
 
         h5 {
-            font-size: 2.3rem;
+            text-align: left;
+            font-size: 5rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 5rem;
         }
 
         form {
@@ -44,13 +43,25 @@
         }
 
         .input {
+            background-color: var(--bg-input);
             width: 44rem;
             height: 4.4rem;
             font-size: 1.4rem;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 0;
+        }
+
+        input {
+            background-color: var(--bg-input) !important;
+        }
+
+        .iconPrefix {
+            width: 3.5rem;
         }
 
         .clr_base {
+            text-align: right;
+            padding-top: 0.5rem;
+
             span {
                 color: var(--base);
             }

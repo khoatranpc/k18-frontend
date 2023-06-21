@@ -10,7 +10,10 @@ import { Obj, State } from '@/global/interface';
 import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch, RootState } from '@/store';
 import { clearToken, queryToken } from '@/store/reducers/auth-get-token.reducer';
+import iconUserPrefix from '@/assets/svgs/icon-user-prefix.svg';
+import iconPasswordPrefix from '@/assets/svgs/icon-password-prefix.svg';
 import styles from '@/styles/auth/Login.module.scss';
+import Image from 'next/image';
 
 const validationSchema = yup.object({
     email: yup.string().email('Sai định dạng email!').required('Bạn chưa nhập email!'),
@@ -57,25 +60,18 @@ const Login = () => {
     return (
         <div className={styles.container_login}>
             <div className={styles.main}>
-                <h5>Chào mừng đến với MindX LMS</h5>
-                <p>Quản lý công việc, teamwork và nhiều hơn nữa</p>
+                <h5>Đăng nhập</h5>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className={styles.fs_12}>
-                            <span>Email</span>
-                        </Form.Label>
-                        <Input type="email" name="email" placeholder="Email" size="large" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="email" prefix={<Image src={iconUserPrefix} alt='' className={styles.iconPrefix} />} name="email" placeholder="Email" size="large" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.email && touched.email && <p className="error">{errors.email}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className={styles.fs_12}>
-                            <span>Mật khẩu</span>
-                            <Link href={'/auth/forgot-password'} className={styles.clr_base}>
-                                <span className={styles.fw_600}>Quên mật khẩu?</span>
-                            </Link>
-                        </Form.Label>
-                        <Input.Password name="password" placeholder="Password" size="large" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        <Input.Password name="password" prefix={<Image src={iconPasswordPrefix} alt='' className={styles.iconPrefix} />} placeholder="Password" size="large" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.password && touched.password && <p className="error">{errors.password}</p>}
+                        <Link href={'/auth/forgot-password'} className={styles.clr_base}>
+                            <span className={styles.fw_600}>Quên mật khẩu?</span>
+                        </Link>
                     </Form.Group>
                     <Button
                         className={styles.btn_login}
@@ -84,12 +80,6 @@ const Login = () => {
                     >
                         Đăng nhập
                     </Button>
-                    <div className={styles.form}>
-                        <span className={styles.txt}>Chưa có tài khoản?</span>
-                        <Link href={'/auth/form-register'} className={styles.clr_base}>
-                            <span className={styles.fw_600}>Đăng ký tài khoản</span>
-                        </Link>
-                    </div>
                 </Form>
             </div>
         </div >

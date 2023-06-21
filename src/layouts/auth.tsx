@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from '@/styles/auth/AuthLayout.module.scss';
-import HumanCharacter from '@/assets/svgs/human-character.svg';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { State } from '@/global/interface';
 import Loading from '@/components/loading';
+import mindx from '@/assets/imgs/mindx.png';
+import dotArea from '@/assets/svgs/dot-area.svg';
+import waveLineArea from '@/assets/svgs/wave-line-area.svg';
+import styles from '@/styles/auth/AuthLayout.module.scss';
 
 interface Props {
     children?: React.ReactElement;
@@ -27,17 +29,9 @@ const AuthLayout = (props: Props) => {
         <div className={styles.auth_layout}>
             {loading ? <Loading isCenterScreen /> : <>
                 <div className={styles.bar_icon}>
-                    <div className={styles.wall}>
-                    </div>
-                    <Image src={HumanCharacter} alt='' className={styles.human} />
-                    <div className={styles.list_ac}>
-                        <ul>
-                            <li>© 2023 MindX Technology School</li>
-                            <li>Privacy Policy</li>
-                            <li>Term</li>
-                            <li>Help</li>
-                        </ul>
-                    </div>
+                    <Image src={dotArea} alt='' className={`${styles.absolute} ${styles.top_0} ${styles.zIndex}`} />
+                    <Image src={mindx} alt='' className={styles.icon} />
+                    <Image src={waveLineArea} alt='' className={`${styles.absolute} ${styles.bt_0} ${styles.zIndex}`} />
                 </div>
                 <div className={styles.content_auth}>
                     {props.children}
@@ -49,3 +43,4 @@ const AuthLayout = (props: Props) => {
 }
 
 export default AuthLayout;
+AuthLayout.isAuth = true;
