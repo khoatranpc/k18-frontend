@@ -10,7 +10,7 @@ const getToken = createSliceReducer('token', queryToken, {
     clear: (state: State) => {
         state.state.response = null;
     },
-    update: (state: State, action: Action) => {
+    update: (state: State, action?: Action) => {
         state.state.response = {
             ...state.state.response,
             ...action?.payload
