@@ -8,6 +8,7 @@ import { tabForRole } from './tab';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/ContainerPage.module.scss';
 import RoleProtect from '@/components/RoleProtect';
+import PageHeader from '@/components/PageHeader';
 
 interface Props {
     children: React.ReactElement;
@@ -24,7 +25,7 @@ const ContainerPage = (props: Props) => {
                     <Image src={logo} alt='' className={styles.imgLogo} />
                 </div>
                 {
-                    mappingTab.map((item) => {
+                    mappingTab?.map((item) => {
                         return <div className={styles.tab} key={item.key}>
                             {item.icon}
                             <span>{item.title}</span>
@@ -33,9 +34,7 @@ const ContainerPage = (props: Props) => {
                 }
             </div >
             <div className={styles.mainColumn}>
-                <div className={`${styles.pageHeader} ${styles.bgWhite}`}>
-
-                </div>
+                <PageHeader />
                 <div className={`${styles.mainChild} ${styles.bgWhite}`}>
                     <RoleProtect roleProtect={crrRole}>
                         {props.children}
