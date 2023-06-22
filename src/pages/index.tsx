@@ -1,26 +1,12 @@
 import { Button } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '@/global/interface';
+import { ROLE_USER } from '@/global/enum';
 import useLogout from '@/utils/hooks/logout';
-import { AppDispatch, RootState } from '@/store';
-import { testCall } from '@/store/reducers/test.reducer';
+import ContainerPage from '@/layouts/containerPage/containerPage';
 
 function Home() {
-  const dispatch = useDispatch<AppDispatch>();
   const logout = useLogout();
-  const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
-  console.log(crrUser);
   return (
     <>
-      <button onClick={() => {
-        dispatch(testCall({
-          payload: {
-            query: {
-              params: ['645f607b064bb32e8dab977c'],
-            }
-          }
-        }));
-      }}>Click</button>
       <Button onClick={() => {
         logout();
       }}>Đăng xuất</Button>
@@ -30,3 +16,5 @@ function Home() {
 }
 
 export default Home;
+Home.Layout = ContainerPage;
+Home.Role = ROLE_USER.TE

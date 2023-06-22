@@ -9,3 +9,7 @@ export enum ROLE_TEACHER {
     MT = 'MT',
     ST = 'ST'
 }
+export enum ROLE_USER {
+    TE = 'TE',
+    TC = 'TEACHER'
+}

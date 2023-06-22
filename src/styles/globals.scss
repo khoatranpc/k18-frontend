@@ -2,19 +2,23 @@
 
 :root {
     --base: #BB0409;
-    --black: #333138;
+    --black: #222222;
     --white: #FFFFFF;
     --orange: #F49E4C;
     --light-base: #CF575A;
     --light-white: #D9D9D9;
     --cool-grey: #FBFCFD;
     --bg-input: #F5F7F9;
+    --pink-red: #F8DCDC;
 }
 
 html {
     font-size: 10px;
     font-family: 'SF Pro Display', sans-serif;
     height: fit-content;
+}
+
+body {
     color: var(--black);
 }
 
@@ -41,6 +45,7 @@ html {
 .container_default {
     min-height: 100vh;
     margin: auto;
+    background-color: var(--bg-input);
 }
 
 a {

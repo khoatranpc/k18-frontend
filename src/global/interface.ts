@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface Action {
     type?: string;
     isLoading?: boolean;
@@ -23,4 +25,11 @@ export interface Query {
         fields?: Array<string>;
     };
     params?: Array<string>;
+}
+export interface TabRoute {
+    route: string;
+    title: React.ReactElement | string;
+    text: string;
+    icon?: React.ReactElement;
+    key: string;
 }
