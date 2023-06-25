@@ -1,4 +1,5 @@
 import React from "react";
+import { KEY_ICON } from "./enum";
 
 export interface Action {
     type?: string;
@@ -30,6 +31,7 @@ export interface TabRoute {
     route: string;
     title: React.ReactElement | string;
     text: string;
-    icon?: React.ReactElement;
     key: string;
+    keyIcon?: KEY_ICON;
+    showIcon?: boolean;
 }

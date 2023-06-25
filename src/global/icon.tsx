@@ -1,0 +1,44 @@
+import React from "react";
+import Image from "next/image";
+import { KEY_ICON } from "./enum";
+import iconOverView from '@/assets/svgs/icon-overview.svg';
+import iconGroupUser from '@/assets/svgs/icon-groupuser.svg';
+import iconTeacher from '@/assets/svgs/icon-teacher.svg';
+import iconCourse from '@/assets/svgs/icon-course.svg';
+import iconFolder from '@/assets/svgs/icon-folder.svg';
+import iconCalendar from '@/assets/svgs/icon-calendar.svg';
+import iconMessage from '@/assets/svgs/icon-message.svg';
+import iconSetting from '@/assets/svgs/icon-setting.svg';
+import iconInfo from '@/assets/svgs/icon-info.svg';
+import iconHatStudent from '@/assets/svgs/icon-hatStudent.svg';
+import iconSearch from '@/assets/svgs/icon-search.svg';
+import iconMail from '@/assets/svgs/icon-mail.svg';
+import iconPlus from '@/assets/svgs/icon-plus.svg';
+import iconExport from '@/assets/svgs/icon-export.svg';
+import iconPlusRed from '@/assets/svgs/icon-plusRed.svg';
+import iconDotVertical from '@/assets/svgs/icon-dotVertical.svg';
+import iconDotHorizotal from '@/assets/svgs/icon-dot3Horizontal.svg';
+
+const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
+    OV: <Image alt="" src={iconOverView} />,
+    RCM: <Image alt="" src={iconGroupUser} />,
+    TC: <Image alt="" src={iconTeacher} />,
+    HTS: <Image alt="" src={iconHatStudent} />,
+    CR: <Image alt="" src={iconCourse} />,
+    FD: <Image alt="" src={iconFolder} />,
+    MS: <Image alt="" src={iconMessage} />,
+    CL: <Image alt="" src={iconCalendar} />,
+    ST: <Image alt="" src={iconSetting} />,
+    IF: <Image alt="" src={iconInfo} />,
+    SRCH: <Image alt="" src={iconSearch} />,
+    ML: <Image alt="" src={iconMail} />,
+    PL: <Image alt="" src={iconPlus} />,
+    EP: <Image alt="" src={iconExport} />,
+    PLCR: <Image alt="" src={iconPlusRed} />,
+    DOT3VT: <Image alt="" src={iconDotVertical} />,
+    DOT3HT: <Image alt="" src={iconDotHorizotal} />,
+
+}
+export {
+    MapIconKey
+}

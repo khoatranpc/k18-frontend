@@ -1,16 +1,13 @@
-import React from 'react'
 import { ROLE_USER } from '@/global/enum';
-import useGetCrrUser from '@/utils/hocs/getUser';
 import ContainerPage from '@/layouts/containerPage/containerPage';
+import React from 'react'
 
 const Home = () => {
-    const crrUser = useGetCrrUser();
-    console.log(crrUser);
     return (
-        <div>Home for te</div>
+        <div>Home for teacher</div>
     )
 }
 
 export default Home;
 Home.Layout = ContainerPage;
-Home.Role = ROLE_USER.TE;
+Home.Role = ROLE_USER.TC;

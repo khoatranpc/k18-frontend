@@ -4,6 +4,7 @@ import queryGetTokenUser from './auth-get-token.reducer';
 import getCrrUserInfo from './user-info.reducer';
 import courses from './course.reducer';
 import registerPreTeacher from './registerPreTeacher.reducer';
+import getDataRoute from './global-reducer/route';
 
 const rootReducer = {
     test: test,
@@ -11,6 +12,7 @@ const rootReducer = {
     token: queryGetTokenUser,
     crrUserInfo: getCrrUserInfo,
     courses: courses,
-    registerPreTeacher
+    registerPreTeacher,
+    getDataRoute
 };
 export default rootReducer;

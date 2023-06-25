@@ -1,11 +1,14 @@
 .containerPage {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 
     .navTab {
         width: 20%;
         padding: 4rem 2.4rem;
         font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
 
         .tab {
             padding: 1.2rem 1.6rem;
@@ -14,8 +17,37 @@
             align-items: center;
             gap: 1rem;
             cursor: pointer;
+            transition: 0.2s;
 
             &:hover {
+                background-color: var(--pink-red);
+                color: var(--color-red);
+            }
+        }
+
+        .panel {
+            span {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+
+        .tab,
+        .panel {
+            img {
+                width: 2rem;
+            }
+        }
+
+        .active {
+            color: var(--color-red);
+
+            .tab {
                 background-color: var(--pink-red);
             }
         }
@@ -39,8 +71,27 @@
 
     .pageHeader {
         margin-bottom: 1.5rem;
-        height: 8rem;
         border-radius: 0.8rem;
+        padding: 1.6rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .input,
+        input {
+            background-color: var(--bg-input1);
+            border: none;
+        }
+
+        h2 {
+            font-size: 3.2rem;
+            margin: 0;
+        }
+
+        .featFnc {
+            display: flex;
+            gap: 0.8rem;
+        }
     }
 
     .logo {

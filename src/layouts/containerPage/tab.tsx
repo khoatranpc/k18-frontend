@@ -1,81 +1,101 @@
-import Image from "next/image";
-import { ROLE_USER } from "@/global/enum";
+import { KEY_ICON, ROLE_USER } from "@/global/enum";
 import { TabRoute } from "@/global/interface";
+import { MapIconKey } from "@/global/icon";
+import Collapse, { ItemPanels } from "@/components/Collapse";
+import styles from '@/styles/tabs/Tab.module.scss';
 
-import iconOverView from '@/assets/svgs/icon-overview.svg';
-import iconGroupUser from '@/assets/svgs/icon-groupuser.svg';
-import iconTeacher from '@/assets/svgs/icon-teacher.svg';
-import iconCourse from '@/assets/svgs/icon-course.svg';
-import iconFolder from '@/assets/svgs/icon-folder.svg';
-import iconCalendar from '@/assets/svgs/icon-calendar.svg';
-import iconMessage from '@/assets/svgs/icon-message.svg';
-import iconSetting from '@/assets/svgs/icon-setting.svg';
-import iconInfo from '@/assets/svgs/icon-info.svg';
+const panelsTeacher: ItemPanels[] = [
+    {
+        header: <div className={styles.tabPanel}>{MapIconKey[KEY_ICON.TC]} Giáo viên</div>,
+        key: 'TEACHER',
+        content: <div className="content-panel">
+            <div className="item">Danh sách giáo viên</div>
+            <div className="item">Xếp hạng</div>
+            <div className="item">Lương</div>
+        </div>
+    }
+]
 
 const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     TE: [
         {
             title: 'Tổng quan',
-            route: '/',
+            route: '/te/over-view',
             text: 'Tổng quan',
-            icon: <Image alt="" src={iconOverView} />,
-            key: 'OVER_VIEW'
+            key: 'OVER_VIEW',
+            keyIcon: KEY_ICON.OV,
+            showIcon: true
         },
         {
             title: 'Tuyển dụng',
             route: '/',
             text: 'Tuyển dụng',
             key: 'RECRUITMENT',
-            icon: <Image alt="" src={iconGroupUser} />
+            keyIcon: KEY_ICON.RCM,
+            showIcon: true
         },
         {
-            title: 'Giáo viên',
+            title: <Collapse panels={panelsTeacher} className="collapse_tab" />,
             route: '/',
             text: 'Giáo viên',
-            key: 'TEACHERS',
-            icon: <Image alt="" src={iconTeacher} />
+            key: 'TEACHERS_PN',
+            keyIcon: KEY_ICON.TC,
+        },
+        {
+            title: 'Lớp học',
+            route: '/te/manager/class',
+            text: 'Lớp học',
+            key: 'CLASSES',
+            keyIcon: KEY_ICON.HTS,
+            showIcon: true
         },
         {
             title: 'Khoá học',
             route: '/',
             text: 'Khoá học',
-            icon: <Image alt="" src={iconCourse} />,
-            key: 'COURSES'
+            key: 'COURSES',
+            keyIcon: KEY_ICON.CR,
+            showIcon: true
         },
         {
             title: 'Lưu trữ',
             route: '/',
             text: 'Lưu trữ',
-            icon: <Image alt="" src={iconFolder} />,
-            key: 'SAVE'
+            key: 'SAVE',
+            keyIcon: KEY_ICON.FD,
+            showIcon: true
         },
         {
             title: 'Feed back',
             route: '/',
             text: 'Feed back',
-            icon: <Image alt="" src={iconMessage} />,
-            key: 'FEED_BACK'
+            key: 'FEED_BACK',
+            keyIcon: KEY_ICON.MS,
+            showIcon: true
         },
         {
             title: 'Lịch',
             route: '/',
             text: 'Lịch',
-            icon: <Image alt="" src={iconCalendar} />,
-            key: 'TIME_SCHEDULE'
+            key: 'TIME_SCHEDULE',
+            keyIcon: KEY_ICON.CL,
+            showIcon: true
         },
         {
             title: 'Cài đặt',
             route: '/',
             text: 'Cài đặt',
-            icon: <Image alt="" src={iconSetting} />,
-            key: 'SETTING'
+            key: 'SETTING',
+            keyIcon: KEY_ICON.ST,
+            showIcon: true
         },
         {
             title: 'Trợ giúp',
             route: '/',
             text: 'Trợ giúp',
-            icon: <Image alt="" src={iconInfo} />,
-            key: 'HELP'
+            key: 'HELP',
+            keyIcon: KEY_ICON.IF,
+            showIcon: true
         }
     ],
     TEACHER: []

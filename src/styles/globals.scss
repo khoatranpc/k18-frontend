@@ -2,14 +2,26 @@
 
 :root {
     --base: #BB0409;
+    --color-red: #C00000;
     --black: #222222;
     --white: #FFFFFF;
-    --orange: #F49E4C;
+    --orange: #F59638;
     --light-base: #CF575A;
     --light-white: #D9D9D9;
     --cool-grey: #FBFCFD;
     --bg-input: #F5F7F9;
+    --bg-input1: #E9ECEF;
     --pink-red: #F8DCDC;
+    --grey-holder: #7E8B99;
+    --pink: #EC9E9E;
+    --placeholder: #9EA8B3;
+    --grey: #A6A6A6;
+    --white-bg: #F0F0F0;
+    --coding: #DA4646;
+    --uiux: #917EF1;
+    --pmba: #F6A351;
+    --blockchain: #3DA497;
+    --data: #6792F4;
 }
 
 html {
@@ -43,6 +55,8 @@ body {
 
 
 .container_default {
+    min-width: 100vw;
+    width: fit-content;
     min-height: 100vh;
     margin: auto;
     background-color: var(--bg-input);
@@ -50,6 +64,7 @@ body {
 
 a {
     text-decoration: none;
+    color: var(--black);
 }
 
 .field_required {
@@ -86,4 +101,283 @@ a {
 :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
     background-color: var(--base) !important;
     border: 1px solid var(--base);
+}
+
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled):after {
+    border: none;
+}
+
+.customize-collapse {
+
+    div.ant-collapse-header {
+        padding: 0 !important;
+
+    }
+
+    .ant-collapse {
+        background-color: transparent;
+    }
+
+    * {
+        border: 0 !important;
+    }
+
+    &.collapse_tab {
+        width: 100%;
+
+        div.ant-collapse-header {
+            padding: 1.2rem 1.6rem !important;
+            border-radius: 0.8rem !important;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--pink-red);
+                color: var(--color-red);
+            }
+        }
+
+        .ant-collapse-content-box {
+            padding: 0 !important;
+        }
+
+        .content-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .item {
+                padding: 1.2rem 1.6rem;
+                border-radius: 0.8rem;
+                gap: 1rem;
+                cursor: pointer;
+                padding-left: 4.6rem;
+
+                &:first-child {
+                    margin-top: 0.5rem;
+                }
+
+                &:hover {
+                    background-color: var(--pink-red);
+                    color: var(--color-red);
+                }
+            }
+        }
+    }
+}
+
+.pageHeader {
+    span.ant-avatar {
+        // padding: 0.5rem;
+        border: none;
+        background-color: var(--bg-input1);
+    }
+
+    div.badge {
+        padding: 0;
+    }
+
+    .ant-avatar-string {
+        top: -0.1rem;
+    }
+}
+
+.tabs-costumize {
+    .ant-tabs-nav-list {
+        color: var(--grey-holder);
+    }
+
+    .ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
+        background-color: var(--color-red);
+    }
+
+    div.ant-tabs-tab {
+        padding: 1.6rem 0.8rem;
+        margin: 0 !important;
+        padding-bottom: 0.8rem;
+
+        &:hover {
+            color: var(--color-red) !important;
+        }
+    }
+
+    div.ant-tabs-tab-btn {
+        padding: 0 0.8rem;
+    }
+
+    .ant-tabs-tab-active div.ant-tabs-tab-btn {
+        color: var(--color-red) !important;
+    }
+
+    .ant-tabs-nav-wrap {
+        padding: 0 1.6rem;
+        padding-top: 1.6rem;
+    }
+
+    .ant-tabs-tab-btn:focus:not(:focus-visible) {
+        color: var(--color-red) !important;
+    }
+}
+
+.toolbar-costumize {
+    padding: 0 1.6rem;
+    display: flex;
+    align-items: center;
+
+    .ant-dropdown-menu {
+        .ant-tag {
+            display: flex;
+            width: fit-content;
+            align-items: center;
+            padding: 0.5rem;
+            background-color: transparent;
+            color: var(--pink);
+            border-color: var(--pink);
+            border-radius: 0.8rem;
+
+            svg {
+                fill: var(--pink);
+
+                &:hover {
+                    fill: var(--color-red);
+                }
+            }
+        }
+    }
+
+    .filter-list {
+
+        display: flex;
+    }
+
+    .ant-dropdown-trigger {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--placeholder) !important;
+    }
+
+    .ant-tag {
+        display: flex;
+        width: fit-content;
+        align-items: center;
+        padding: 0.5rem;
+        background-color: transparent;
+        color: var(--pink);
+        border-color: var(--pink);
+        border-radius: 0.8rem;
+
+        svg {
+            fill: var(--pink);
+
+            &:hover {
+                fill: var(--color-red);
+            }
+        }
+    }
+
+    button.btn-toolbar {
+        padding: 0 0.8rem;
+        border-radius: 0.8rem;
+        height: 2.6rem;
+        margin: 0;
+        border-color: var(--color-red);
+
+        &.mr-8 {
+            margin-right: 0.8rem;
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--color-red);
+        }
+    }
+
+
+    .right-fnc {
+        display: flex;
+        margin-left: auto;
+
+        .search {
+            img {
+                margin-right: 1.6rem;
+            }
+        }
+    }
+}
+
+.tag-costumize {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: transparent;
+    color: var(--pink);
+    border-color: var(--pink);
+    border-radius: 0.8rem;
+    height: 2.6rem;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        img {
+            transform: rotate(45deg);
+            cursor: pointer;
+        }
+    }
+}
+
+.clGrey {
+    color: var(--grey);
+}
+
+.popup-filter {
+    label.ant-checkbox-wrapper {
+        gap: 0.8rem;
+        width: fit-content;
+        margin: 0;
+
+
+    }
+
+    .ant-checkbox {
+        transform: translate(0, 0);
+        align-self: center;
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    span:has(.default) {
+        background-color: var(--light-base);
+    }
+
+    span:has(span.tagCheckbox) {
+        display: block;
+        padding: 0.8rem 1.6rem;
+        border-radius: 0.8rem;
+        color: var(--white);
+    }
+
+    span:has(.CODE) {
+        background-color: var(--coding);
+    }
+
+    span:has(.UIUX) {
+        background-color: var(--uiux);
+    }
+
+    span:has(.DATA) {
+        background-color: var(--uiux);
+    }
+
+    span:has(.PMBA) {
+        background-color: var(--pmba);
+    }
+
+    span:has(.BLOCKCHAIN) {
+        background-color: var(--blockchain);
+    }
 }
