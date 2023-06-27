@@ -376,6 +376,10 @@ const ManagerClass = () => {
                 enableRowSelection
                 disableDefaultPagination
                 enablePaginationAjax
+                getCrrDataPagination={(crrPage, crrRowOnPage) => {
+                    console.log(crrPage);
+                    console.log(crrRowOnPage);
+                }}
             />
         </ManagerClassContext.Provider>
     )

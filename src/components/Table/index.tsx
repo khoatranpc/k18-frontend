@@ -16,12 +16,13 @@ interface Props {
     customizeSelectionsDropDown?: boolean | INTERNAL_SELECTION_ITEM[] | undefined;
     hideSelectAll?: boolean;
     enableRowSelection?: boolean;
-    handleSelectRow?: (listRowSelected: React.Key[]) => void;
     disableDefaultPagination?: boolean;
     showSizePage?: boolean;
     loading?: boolean;
     classNamePagination?: string;
     enablePaginationAjax?: boolean;
+    handleSelectRow?: (listRowSelected: React.Key[]) => void;
+    getCrrDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
 }
 
 const Table = (props: Props) => {
@@ -58,7 +59,12 @@ const Table = (props: Props) => {
                 }}
                 pagination={props.disableDefaultPagination ? !props.disableDefaultPagination : {}}
             />
-            {props.enablePaginationAjax && <Pagination className={props.classNamePagination} />}
+            {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination
+                className={props.classNamePagination}
+                getCrrDataPagination={(crrPage, rowOnPage) => {
+                    props.getCrrDataPagination?.(crrPage, rowOnPage);
+                }}
+            />}
         </div>
     )
 }

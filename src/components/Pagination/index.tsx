@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON, TypeCount } from '@/global/enum';
 import styles from '@/styles/Pagination.module.scss';
@@ -7,6 +7,7 @@ interface Props {
     rowOnPage?: number;
     crrPage?: number;
     className?: string;
+    getCrrDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
 }
 const Pagination = (props: Props) => {
     const [crrDataPagination, setCrrDataPagination] = useState({
@@ -32,6 +33,9 @@ const Pagination = (props: Props) => {
             });
         }
     }
+    useEffect(() => {
+        props.getCrrDataPagination?.(crrDataPagination.crrPage, crrDataPagination.rowOnPage);
+    }, [crrDataPagination, props.getCrrDataPagination]);
     return (
         <div className={`${styles.paginationAjax} ${props.className || ''}`}>
             <div className={styles.rowOnPage}>
