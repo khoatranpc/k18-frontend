@@ -1,5 +1,6 @@
 import React from "react";
 import { KEY_ICON } from "./enum";
+import { TableColumnsType } from "antd";
 
 export interface Action {
     type?: string;
@@ -34,4 +35,10 @@ export interface TabRoute {
     key: string;
     keyIcon?: KEY_ICON;
     showIcon?: boolean;
+}
+export interface Columns extends TableColumnsType<Record<string, unknown>> {
+
+}
+export interface RowData extends Record<string, unknown> {
+    key: string;
 }

@@ -31,10 +31,19 @@ export enum KEY_ICON {
     PLCR = 'PLCR',
     DOT3VT = 'DOT3VT',
     DOT3HT = 'DOT3HT',
+    SORT = 'SORT',
+    CHEVRONU = 'CHEVRONU',
+    CHEVROND = 'CHEVROND',
+    CHEVRONR = 'CHEVRONR',
+    CHEVRONL = 'CHEVRONL',
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',
     DROP = 'DROP',
     PREOPEN = 'PREOPEN',
     FINISH = 'FINISH'
+}
+export enum TypeCount {
+    INCR = 'INCR',
+    DECR = 'DECR'
 }

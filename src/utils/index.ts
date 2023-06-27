@@ -14,7 +14,17 @@ const listMonth = () => {
     }
     return list;
 }
+const sortByString = (forthStr: string, behindStr: string) => {
+    if (forthStr > behindStr) {
+        return 1
+    }
+    if (forthStr < behindStr) {
+        return -1
+    }
+    return 0;
+}
 export {
     uuid,
-    listMonth
+    listMonth,
+    sortByString
 }

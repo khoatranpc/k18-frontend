@@ -1,0 +1,38 @@
+.tableCustomizeAnt {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    background-color: var(--bg-input);
+
+    thead {
+        tr {
+            th {
+                background-color: var(--row-head) !important;
+                padding: 0.8rem !important;
+                font-weight: 500 !important;
+                color: var(--text-head) !important;
+
+                .sortHeader {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.8rem;
+                }
+            }
+        }
+    }
+
+    tbody {
+        td {
+            padding: 0.8rem 1rem !important;
+        }
+    }
+
+    .loadingInTable {
+        margin: 0 !important;
+
+        img {
+            position: absolute;
+            transform: translate(-0.5rem, 0.5rem);
+        }
+    }
+}

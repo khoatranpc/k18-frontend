@@ -25,7 +25,7 @@ const ToolBar = (props: Props) => {
         return (storeManagerClass.listFieldFilter.findIndex((element) => element.key === item.key) < 0)
     }).map((item) => {
         return {
-            label: <Tag key={item.key} className='tag-costumize'>
+            label: <Tag key={item.key} className='tag-customize'>
                 <span>{item.title}</span>
             </Tag>,
             key: item.key,
@@ -64,7 +64,7 @@ const ToolBar = (props: Props) => {
         index: ''
     });
     return (
-        <div className={`${styles.toolbar} toolbar-costumize`}>
+        <div className={`${styles.toolbar} toolbar-customize`}>
             <div className="filter-list">
                 {
                     storeManagerClass.listFieldFilter.map((item: { key: string; title: string }) => {
@@ -82,7 +82,7 @@ const ToolBar = (props: Props) => {
                                         open: false
                                     })
                                 }} listFilter={FieldOption[item.key]} limit={2} />} key={item.key}>
-                                <Tag role='button' className="tag-costumize">
+                                <Tag role='button' className="tag-customize">
                                     <span className={`${item.key === fieldFilter.OPEN_SCHEDULE || item.key === fieldFilter.TIME_SCHEDULE ? 'default' : ''}`}>
                                         {item.title}
                                         <span onClick={() => {

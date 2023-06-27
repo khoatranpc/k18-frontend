@@ -23,7 +23,7 @@ const Tabs = (props: Props) => {
         activeKey={props.activeKey as string}
         items={mapContent}
         onChange={props.onClickTab}
-        className={`${props.className} ${styles.tabsCostumize} tabs-costumize`}
+        className={`${props.className} ${styles.tabsCustomize} tabs-customize`}
     />
 };
 

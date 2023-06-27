@@ -18,6 +18,11 @@ import iconExport from '@/assets/svgs/icon-export.svg';
 import iconPlusRed from '@/assets/svgs/icon-plusRed.svg';
 import iconDotVertical from '@/assets/svgs/icon-dotVertical.svg';
 import iconDotHorizotal from '@/assets/svgs/icon-dot3Horizontal.svg';
+import iconSort from '@/assets/svgs/icon-sort.svg';
+import iconChevronUp from '@/assets/svgs/icon-chevronUp.svg';
+import iconChevronDown from '@/assets/svgs/icon-chevronDown.svg';
+import iconChevronRight from '@/assets/svgs/icon-chevronRight.svg';
+import iconChevronLeft from '@/assets/svgs/icon-chevronLeft.svg';
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -37,7 +42,11 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     PLCR: <Image alt="" src={iconPlusRed} />,
     DOT3VT: <Image alt="" src={iconDotVertical} />,
     DOT3HT: <Image alt="" src={iconDotHorizotal} />,
-
+    SORT: <Image alt="" src={iconSort} />,
+    CHEVRONU: <Image alt="" src={iconChevronUp} />,
+    CHEVROND: <Image alt="" src={iconChevronDown} />,
+    CHEVRONR: <Image alt="" src={iconChevronRight} />,
+    CHEVRONL: <Image alt="" src={iconChevronLeft} />,
 }
 export {
     MapIconKey
