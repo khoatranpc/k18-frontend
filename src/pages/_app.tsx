@@ -20,11 +20,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <Message />
     <DefaultLayout>
       {
-        !Layout.isAuth ? <Auth>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </Auth> : <Layout>
+        // !Layout.isAuth ? <Auth>
+        //   <Layout>
+        //     <Component {...pageProps} />
+        //   </Layout>
+        // </Auth> :
+         <Layout>
           <Component {...pageProps} />
         </Layout>
       }

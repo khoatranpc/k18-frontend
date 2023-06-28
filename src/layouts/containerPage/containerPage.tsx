@@ -23,7 +23,7 @@ interface Props {
 const ContainerPage = (props: Props) => {
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
     const crrRole = (crrUser.response as Obj)?.data.roleAccount as ROLE_USER;
-    const mappingTab = tabForRole[crrRole];
+    const mappingTab = tabForRole['TE'];
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const routeStore = useGetDataRoute();
