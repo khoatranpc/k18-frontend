@@ -6,7 +6,7 @@ import { createSliceReducer } from "@/utils/redux-toolkit";
 
 export interface StateRoute {
     route: string;
-    title: string;
+    title: React.ReactNode;
     breadCrumb?: Array<{
         title: string;
         route: string;

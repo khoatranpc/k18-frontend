@@ -10,7 +10,7 @@ const PageHeader = () => {
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
             <div className={styles.titleHeader}>
-                <h2>{stateRouter?.title as string}</h2>
+                <h2>{stateRouter?.title as React.ReactNode}</h2>
             </div>
             <div className={styles.featFnc}>
                 <Input className={styles.input} placeholder='Search' size='large' prefix={MapIconKey[KEY_ICON.SRCH]} />

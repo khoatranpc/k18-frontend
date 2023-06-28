@@ -1,6 +1,7 @@
 import { KEY_ICON, ROLE_USER } from "@/global/enum";
 import { TabRoute } from "@/global/interface";
 import { MapIconKey } from "@/global/icon";
+import CombineRoute from "@/global/route";
 import Collapse, { ItemPanels } from "@/components/Collapse";
 import styles from '@/styles/tabs/Tab.module.scss';
 
@@ -20,7 +21,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     TE: [
         {
             title: 'Tổng quan',
-            route: '/te/over-view',
+            route: CombineRoute['TE']['OVERVIEW'],
             text: 'Tổng quan',
             key: 'OVER_VIEW',
             keyIcon: KEY_ICON.OV,
@@ -29,7 +30,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Tuyển dụng',
-            route: '/',
+            route: CombineRoute['TE']['RECRUITMENT'],
             text: 'Tuyển dụng',
             key: 'RECRUITMENT',
             keyIcon: KEY_ICON.RCM,
@@ -46,7 +47,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Lớp học',
-            route: '/te/manager/class',
+            route: CombineRoute['TE']['MANAGER']['CLASS'],
             text: 'Lớp học',
             key: 'CLASSES',
             keyIcon: KEY_ICON.HTS,
@@ -55,7 +56,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Khoá học',
-            route: '/',
+            route: CombineRoute['TE']['MANAGER']['COURSE'],
             text: 'Khoá học',
             key: 'COURSES',
             keyIcon: KEY_ICON.CR,
@@ -64,7 +65,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Lưu trữ',
-            route: '/',
+            route: CombineRoute['TE']['MANAGER']['SAVE'],
             text: 'Lưu trữ',
             key: 'SAVE',
             keyIcon: KEY_ICON.FD,
@@ -73,7 +74,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Feed back',
-            route: '/',
+            route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
             text: 'Feed back',
             key: 'FEED_BACK',
             keyIcon: KEY_ICON.MS,
@@ -82,7 +83,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Lịch',
-            route: '/',
+            route: CombineRoute['TE']['TIME_SCHEDULE'],
             text: 'Lịch',
             key: 'TIME_SCHEDULE',
             keyIcon: KEY_ICON.CL,
@@ -91,7 +92,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Cài đặt',
-            route: '/',
+            route: CombineRoute['TE']['SETTING'],
             text: 'Cài đặt',
             key: 'SETTING',
             keyIcon: KEY_ICON.ST,
@@ -100,7 +101,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Trợ giúp',
-            route: '/',
+            route: CombineRoute['TE']['HELP'],
             text: 'Trợ giúp',
             key: 'HELP',
             keyIcon: KEY_ICON.IF,
@@ -109,11 +110,10 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         },
         {
             title: 'Chi tiết lớp học',
-            route: '/te/manager/class/detail/[classId]',
+            route: CombineRoute['TE']['MANAGER']['CLASS'],
             text: 'Chi tiết lớp học',
             key: 'DETAIL_CLASS',
-            keyIcon: KEY_ICON.IF,
-            indexRoute: '',
+            indexRoute: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
             disable: true
         }
     ],

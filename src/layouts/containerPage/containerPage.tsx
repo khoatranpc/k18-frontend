@@ -5,15 +5,16 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { KEY_ICON, ROLE_USER } from '@/global/enum';
 import { Obj, State } from '@/global/interface';
+import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
+import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { AppDispatch, RootState } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import PageHeader from '@/components/PageHeader';
 import { tabForRole } from './tab';
 import logo from '@/assets/imgs/mindx.png';
-import styles from '@/styles/ContainerPage.module.scss';
-import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import Empty from '@/components/Empty';
+import styles from '@/styles/ContainerPage.module.scss';
 
 interface Props {
     children: React.ReactElement;
@@ -37,8 +38,8 @@ const ContainerPage = (props: Props) => {
     });
     useEffect(() => {
         if (refRoute.current.payload.route !== router.route) {
-            const findTabRoute = mappingTab.find((item) => {
-                return item.route === router.route;
+            const findTabRoute = mappingTab?.find((item) => {
+                return item.indexRoute === router.route;
             });
             if (findTabRoute) {
                 refRoute.current.payload = {
@@ -49,7 +50,7 @@ const ContainerPage = (props: Props) => {
                 }
             } else {
                 refRoute.current.payload = {
-                    route: '/empty',
+                    route: CombineRoute['EMPTY'],
                     title: 'Lỗi',
                     breadCrumb: [],
                 };

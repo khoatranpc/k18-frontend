@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TableColumnsType, TabsProps } from 'antd';
-import { RowData } from '@/global/interface';
+import { Obj, RowData } from '@/global/interface';
 import { fieldFilter, getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { STATUS_CLASS } from '@/global/enum';
 import Tabs from '../Tabs';
@@ -9,6 +9,8 @@ import Table from '../Table';
 import ManagerClassContext, { FieldFilter } from './context';
 import { sortByString, uuid } from '@/utils';
 import styles from '@/styles/class/Class.module.scss';
+import { useRouter } from 'next/router';
+import CombineRoute from '@/global/route';
 
 const items: TabsProps['items'] = [
     {
@@ -66,6 +68,7 @@ const ManagerClass = () => {
         crrKeyTab: items[0].key,
         listFieldFilter: [],
     });
+    const router = useRouter();
     const columns: TableColumnsType<Record<string, unknown>> = [
         {
             key: 'codeClass',
@@ -354,6 +357,10 @@ const ManagerClass = () => {
             }]
         },
     ];
+    const handleClickRow = (record: Obj) => {
+        console.log(record);
+        router.push('/te/manager/class/detail/123');
+    }
     return (
         <ManagerClassContext.Provider value={{
             crrKeyTab: storeManagerClass!.crrKeyTab,
@@ -380,9 +387,7 @@ const ManagerClass = () => {
                     console.log(crrPage);
                     console.log(crrRowOnPage);
                 }}
-                hanldeClickRow={(record) => {
-                    console.log(record);
-                }}
+                hanldeClickRow={handleClickRow}
             />
         </ManagerClassContext.Provider>
     )
