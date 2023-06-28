@@ -32,7 +32,6 @@ const ContainerPage = (props: Props) => {
         payload: {
             route: mappingTab?.[0]?.route,
             title: mappingTab?.[0]?.title as React.ReactElement,
-            breadCrumb: [],
             icon: mappingTab?.[0]?.keyIcon,
             component: mappingTab?.[0]?.component
         }
@@ -46,7 +45,6 @@ const ContainerPage = (props: Props) => {
                 refRoute.current.payload = {
                     route: findTabRoute.indexRoute,
                     title: findTabRoute.title as React.ReactElement,
-                    breadCrumb: findTabRoute.noReplaceTitle ? [] : routeStore?.breadCrumb,
                     icon: findTabRoute.keyIcon,
                     replaceTitle: findTabRoute.noReplaceTitle ?
                         findTabRoute.title as React.ReactElement : routeStore?.replaceTitle as React.ReactElement,
@@ -58,7 +56,6 @@ const ContainerPage = (props: Props) => {
                 refRoute.current.payload = {
                     route: CombineRoute['EMPTY'],
                     title: 'Lỗi' as unknown as React.ReactElement,
-                    breadCrumb: [],
                     replaceTitle: 'Lỗi' as unknown as React.ReactElement,
                     hasBackPage: false,
                     moreData: undefined,
@@ -80,6 +77,11 @@ const ContainerPage = (props: Props) => {
                             key={item.key}
                             href={item.route}
                             className={`${router.route === item.route ? styles.active : ''}`}
+                            onClick={(e) => {
+                                if (item.notRouting) {
+                                    e.preventDefault();
+                                }
+                            }}
                         >
                             <div className={`${!item.key.includes('PN') ? styles.tab : styles.panel}`} key={item.key}>
                                 {item.showIcon && MapIconKey[item.keyIcon as KEY_ICON]}
@@ -89,7 +91,7 @@ const ContainerPage = (props: Props) => {
                 }
             </div >
             <div className={styles.mainColumn}>
-                <PageHeader tabForRole={mappingTab} />
+                <PageHeader />
                 <div className={`${styles.mainChild} ${styles.bgWhite}`}>
                     {routeStore?.route === '/empty' ? <Empty /> : props.children}
                 </div>

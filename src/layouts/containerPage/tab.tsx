@@ -46,7 +46,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             keyIcon: KEY_ICON.TC,
             indexRoute: '',
             noReplaceTitle: true,
-            component: ComponentPage.TEACHERS
+            component: ComponentPage.TEACHERS,
+            notRouting: true
         },
         {
             title: 'Lớp học',

@@ -1,29 +1,36 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Avatar, Badge, Input } from 'antd';
-import { TabRoute } from '@/global/interface';
 import useGetStateRouter from '@/utils/hocs/stateRouter';
 import { MapIconKey } from '@/global/icon';
-import { KEY_ICON } from '@/global/enum';
+import { ComponentPage, KEY_ICON } from '@/global/enum';
+import CombineRoute from '@/global/route';
 import styles from '@/styles/ContainerPage.module.scss';
 
-interface Props {
-    tabForRole: TabRoute[];
-}
-const PageHeader = (props: Props) => {
+const PageHeader = () => {
     const stateRouter = useGetStateRouter();
     const router = useRouter();
-    console.log(stateRouter);
     const handlePrevPage = () => {
-        router.back();
+        switch (stateRouter.component) {
+            case ComponentPage.DETAILCLASS:
+                router.push(CombineRoute['TE']['MANAGER']['CLASS']);
+                break;
+            default:
+                router.back();
+                break;
+        }
     }
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
-            <div className={styles.titleHeader}>
-                <h2>{stateRouter?.hasBackPage && <span className={styles.backPage} onClick={() => {
-                    handlePrevPage();
-                }}>{MapIconKey[KEY_ICON.ARROWL]}</span>}{stateRouter?.replaceTitle || stateRouter?.title}</h2>
-            </div>
+            {
+                <div className={styles.titleHeader}>
+                    <h2>{stateRouter?.hasBackPage && <span className={styles.backPage} onClick={() => {
+                        handlePrevPage();
+                    }}>{MapIconKey[KEY_ICON.ARROWL]}</span>}
+                        {stateRouter?.replaceTitle || stateRouter?.title}
+                    </h2>
+                </div>
+            }
             <div className={styles.featFnc}>
                 <Input className={styles.input} placeholder='Search' size='large' prefix={MapIconKey[KEY_ICON.SRCH]} />
                 <div className="badge">
@@ -34,7 +41,7 @@ const PageHeader = (props: Props) => {
                     </Badge>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

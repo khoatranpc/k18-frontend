@@ -24,6 +24,8 @@ import iconChevronDown from '@/assets/svgs/icon-chevronDown.svg';
 import iconChevronRight from '@/assets/svgs/icon-chevronRight.svg';
 import iconChevronLeft from '@/assets/svgs/icon-chevronLeft.svg';
 import iconArrowLeft from '@/assets/svgs/icon-arrowLeft.svg';
+import iconHatStudentLight from '@/assets/svgs/icon-hatStudent-light.svg';
+import iconChevronRightLight from '@/assets/svgs/icon-chevronRight-light.svg';
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -48,7 +50,9 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     CHEVROND: <Image alt="" src={iconChevronDown} />,
     CHEVRONR: <Image alt="" src={iconChevronRight} />,
     CHEVRONL: <Image alt="" src={iconChevronLeft} />,
+    CHEVRONRL: <Image alt="" src={iconChevronRightLight} />,
     ARROWL: <Image alt="" src={iconArrowLeft} />,
+    HTSL: <Image alt="" src={iconHatStudentLight} />,
 }
 export {
     MapIconKey

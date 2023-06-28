@@ -39,6 +39,7 @@ export interface TabRoute {
     replaceTitle?: React.ReactElement | string;
     noReplaceTitle?: boolean;
     component: ComponentPage;
+    notRouting?: boolean;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

@@ -6,13 +6,9 @@ import { createSliceReducer } from "@/utils/redux-toolkit";
 
 export interface StateRoute {
     route: string;
-    title: React.ReactElement;
-    breadCrumb?: Array<{
-        title: string;
-        route: string;
-    }>;
+    title: React.ReactElement | string;
     icon?: KEY_ICON;
-    replaceTitle?: React.ReactElement;
+    replaceTitle?: React.ReactElement | string;
     hasBackPage?: boolean;
     moreData?: Record<string, unknown> | undefined;
     component: ComponentPage | undefined;

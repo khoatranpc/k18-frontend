@@ -1,0 +1,31 @@
+.titleHeader {
+    display: flex;
+    align-items: center;
+
+    .codeClass {
+        font-size: 3.2rem;
+    }
+
+    .statusClass {
+        color: var(--black);
+        font-weight: normal;
+        padding: 0.8rem 1.6rem;
+        margin-left: 1.2rem;
+        border-radius: 0.8rem;
+    }
+
+    .dateStart {
+        font-size: 1.6rem;
+    }
+
+    .breadCrumb {
+        margin-left: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+
+        a:hover {
+            color: var(--base);
+        }
+    }
+}

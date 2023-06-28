@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { TableColumnsType, TabsProps } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import { Obj, RowData } from '@/global/interface';
 import { fieldFilter, getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { ComponentPage, STATUS_CLASS } from '@/global/enum';
+import CombineRoute from '@/global/route';
+import { sortByString, uuid } from '@/utils';
 import { AppDispatch } from '@/store';
+import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
+import ManagerClassContext, { FieldFilter } from './context';
 import Tabs from '../Tabs';
 import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
 import Table from '../Table';
-import ManagerClassContext, { FieldFilter } from './context';
-import { sortByString, uuid } from '@/utils';
+import TitleHeader from './TitleHeader';
 import styles from '@/styles/class/Class.module.scss';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
-import CombineRoute from '@/global/route';
 
 const items: TabsProps['items'] = [
     {
@@ -366,22 +367,9 @@ const ManagerClass = () => {
             payload: {
                 route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
                 title: record?.codeClass,
-                replaceTitle: record?.codeClass as React.ReactElement,
+                replaceTitle: <TitleHeader codeClass='PNL-CIJS84' dateStart='30/2/2022' statusClass={STATUS_CLASS.RUNNING} />,
                 hasBackPage: true,
-                breadCrumb: [
-                    {
-                        route: CombineRoute['TE']['MANAGER']['CLASS'],
-                        title: 'Lớp học'
-                    },
-                    {
-                        route: `${CombineRoute['TE']['MANAGER']['CLASS']}/kgoa123`,
-                        title: 'kgoa123'
-                    }
-                ],
-                moreData: {
-                    ...record,
-                    h1: <h1>hihi</h1>
-                },
+                moreData: record,
                 component: ComponentPage.DETAILCLASS
             }
         }
@@ -411,8 +399,8 @@ const ManagerClass = () => {
                 disableDefaultPagination
                 enablePaginationAjax
                 getCrrDataPagination={(crrPage, crrRowOnPage) => {
-                    console.log(crrPage);
-                    console.log(crrRowOnPage);
+                    // console.log(crrPage);
+                    // console.log(crrRowOnPage);
                 }}
                 hanldeClickRow={handleClickRow}
             />
