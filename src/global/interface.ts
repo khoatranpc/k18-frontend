@@ -35,6 +35,8 @@ export interface TabRoute {
     key: string;
     keyIcon?: KEY_ICON;
     showIcon?: boolean;
+    indexRoute: string;
+    disable?: boolean;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

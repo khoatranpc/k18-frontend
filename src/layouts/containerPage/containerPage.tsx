@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -35,10 +35,7 @@ const ContainerPage = (props: Props) => {
             icon: mappingTab?.[0]?.keyIcon
         }
     });
-    const existRoute = mappingTab.find((item) => {
-        return item.route === router.route;
-    });
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (refRoute.current.payload.route !== router.route) {
             const findTabRoute = mappingTab.find((item) => {
                 return item.route === router.route;
@@ -57,8 +54,8 @@ const ContainerPage = (props: Props) => {
                     breadCrumb: [],
                 };
             }
-            dispatch(initDataRoute(refRoute.current));
         }
+        dispatch(initDataRoute(refRoute.current));
     }, [router.route]);
     return (
         <div className={styles.containerPage}>
@@ -68,7 +65,7 @@ const ContainerPage = (props: Props) => {
                 </div>
                 {
                     mappingTab?.map((item) => {
-                        return <Link
+                        return !item.disable && <Link
                             key={item.key}
                             href={item.route}
                             className={`${router.route === item.route ? styles.active : ''}`}
