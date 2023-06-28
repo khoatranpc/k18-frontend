@@ -1,16 +1,28 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Avatar, Badge, Input } from 'antd';
+import { TabRoute } from '@/global/interface';
 import useGetStateRouter from '@/utils/hocs/stateRouter';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import styles from '@/styles/ContainerPage.module.scss';
 
-const PageHeader = () => {
+interface Props {
+    tabForRole: TabRoute[];
+}
+const PageHeader = (props: Props) => {
     const stateRouter = useGetStateRouter();
+    const router = useRouter();
+
+    const handlePrevPage = () => {
+        router.back();
+    }
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
             <div className={styles.titleHeader}>
-                <h2>{stateRouter?.title as React.ReactNode}</h2>
+                <h2>{stateRouter?.hasBackPage && <span className={styles.backPage} onClick={() => {
+                    handlePrevPage();
+                }}>{MapIconKey[KEY_ICON.ARROWL]}</span>}{stateRouter?.replaceTitle || stateRouter?.title}</h2>
             </div>
             <div className={styles.featFnc}>
                 <Input className={styles.input} placeholder='Search' size='large' prefix={MapIconKey[KEY_ICON.SRCH]} />

@@ -1,3 +1,4 @@
+import { StateRoute } from "@/store/reducers/global-reducer/route";
 import { STATUS_CLASS } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {

@@ -37,6 +37,8 @@ export interface TabRoute {
     showIcon?: boolean;
     indexRoute: string;
     disable?: boolean;
+    replaceTitle?: string;
+    noReplaceTitle?: boolean;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

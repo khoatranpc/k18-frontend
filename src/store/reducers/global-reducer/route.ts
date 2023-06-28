@@ -1,17 +1,19 @@
 import React from "react";
 import { createAction } from "@reduxjs/toolkit";
-import { State } from "@/global/interface";
+import { Obj, State } from "@/global/interface";
 import { KEY_ICON } from "@/global/enum";
 import { createSliceReducer } from "@/utils/redux-toolkit";
 
 export interface StateRoute {
     route: string;
-    title: React.ReactNode;
+    title: string;
     breadCrumb?: Array<{
         title: string;
         route: string;
     }>;
     icon?: KEY_ICON;
+    replaceTitle?: string;
+    hasBackPage?: boolean;
 }
 export interface PayloadRoute {
     payload: StateRoute;
@@ -21,7 +23,10 @@ const getDataRoute = createSliceReducer('dataRoute', undefined, {
         state.state = {
             ...state.state,
             response: {
-                ...(action ? action.payload : {})
+                prevRouteState: {
+                    ...(state.state.response as Obj)?.payload as StateRoute
+                },
+                ...(action ? action.payload : {}),
             }
         }
     }

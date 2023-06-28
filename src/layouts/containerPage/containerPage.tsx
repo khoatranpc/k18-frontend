@@ -43,16 +43,20 @@ const ContainerPage = (props: Props) => {
             });
             if (findTabRoute) {
                 refRoute.current.payload = {
-                    route: findTabRoute.route,
+                    route: findTabRoute.indexRoute,
                     title: findTabRoute.text,
                     breadCrumb: [],
-                    icon: findTabRoute.keyIcon
+                    icon: findTabRoute.keyIcon,
+                    replaceTitle: findTabRoute.noReplaceTitle ? findTabRoute.text : routeStore.replaceTitle,
+                    hasBackPage: findTabRoute.noReplaceTitle ? false : true
                 }
             } else {
                 refRoute.current.payload = {
                     route: CombineRoute['EMPTY'],
                     title: 'Lỗi',
                     breadCrumb: [],
+                    replaceTitle: 'Lỗi',
+                    hasBackPage: false
                 };
             }
         }
@@ -70,16 +74,6 @@ const ContainerPage = (props: Props) => {
                             key={item.key}
                             href={item.route}
                             className={`${router.route === item.route ? styles.active : ''}`}
-                            onClick={() => {
-                                refRoute.current = {
-                                    payload: {
-                                        ...refRoute.current.payload,
-                                        route: item.route,
-                                        title: item.text,
-                                        icon: item.keyIcon
-                                    }
-                                }
-                            }}
                         >
                             <div className={`${!item.key.includes('PN') ? styles.tab : styles.panel}`} key={item.key}>
                                 {item.showIcon && MapIconKey[item.keyIcon as KEY_ICON]}
@@ -89,7 +83,7 @@ const ContainerPage = (props: Props) => {
                 }
             </div >
             <div className={styles.mainColumn}>
-                <PageHeader />
+                <PageHeader tabForRole={mappingTab} />
                 <div className={`${styles.mainChild} ${styles.bgWhite}`}>
                     {routeStore?.route === '/empty' ? <Empty /> : props.children}
                 </div>

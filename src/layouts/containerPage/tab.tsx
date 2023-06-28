@@ -26,7 +26,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'OVER_VIEW',
             keyIcon: KEY_ICON.OV,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: CombineRoute['TE']['OVERVIEW'],
+            noReplaceTitle: true
         },
         {
             title: 'Tuyển dụng',
@@ -35,7 +36,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'RECRUITMENT',
             keyIcon: KEY_ICON.RCM,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: CombineRoute['TE']['RECRUITMENT'],
+            noReplaceTitle: true
         },
         {
             title: <Collapse panels={panelsTeacher} className="collapse_tab" />,
@@ -43,7 +45,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             text: 'Giáo viên',
             key: 'TEACHERS_PN',
             keyIcon: KEY_ICON.TC,
-            indexRoute: ''
+            indexRoute: '',
+            noReplaceTitle: true
         },
         {
             title: 'Lớp học',
@@ -52,7 +55,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'CLASSES',
             keyIcon: KEY_ICON.HTS,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: CombineRoute['TE']['MANAGER']['CLASS'],
+            noReplaceTitle: true
         },
         {
             title: 'Khoá học',
@@ -61,7 +65,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'COURSES',
             keyIcon: KEY_ICON.CR,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: '',
+            noReplaceTitle: true
         },
         {
             title: 'Lưu trữ',
@@ -70,7 +75,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'SAVE',
             keyIcon: KEY_ICON.FD,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: '',
+            noReplaceTitle: true
         },
         {
             title: 'Feed back',
@@ -79,16 +85,18 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'FEED_BACK',
             keyIcon: KEY_ICON.MS,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: '',
+            noReplaceTitle: true
         },
         {
             title: 'Lịch',
-            route: CombineRoute['TE']['TIME_SCHEDULE'],
+            route: CombineRoute['TE']['CALENDAR'],
             text: 'Lịch',
-            key: 'TIME_SCHEDULE',
+            key: 'CALENDAR',
             keyIcon: KEY_ICON.CL,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: '',
+            noReplaceTitle: true
         },
         {
             title: 'Cài đặt',
@@ -97,7 +105,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'SETTING',
             keyIcon: KEY_ICON.ST,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: CombineRoute['TE']['SETTING'],
+            noReplaceTitle: true
         },
         {
             title: 'Trợ giúp',
@@ -106,15 +115,17 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'HELP',
             keyIcon: KEY_ICON.IF,
             showIcon: true,
-            indexRoute: ''
+            indexRoute: CombineRoute['TE']['HELP'],
+            noReplaceTitle: true
         },
         {
             title: 'Chi tiết lớp học',
-            route: CombineRoute['TE']['MANAGER']['CLASS'],
+            route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
             text: 'Chi tiết lớp học',
             key: 'DETAIL_CLASS',
             indexRoute: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
-            disable: true
+            disable: true,
+            keyIcon: KEY_ICON.HTS,
         }
     ],
     TEACHER: []

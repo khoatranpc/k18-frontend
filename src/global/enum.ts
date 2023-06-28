@@ -36,6 +36,7 @@ export enum KEY_ICON {
     CHEVROND = 'CHEVROND',
     CHEVRONR = 'CHEVRONR',
     CHEVRONL = 'CHEVRONL',
+    ARROWL = 'ARROWL'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',

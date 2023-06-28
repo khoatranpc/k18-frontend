@@ -10,7 +10,7 @@ const CombineRoute = {
             SAVE: '/te/manager/save',
             FEEDBACK: '/te/manager/feedback',
         },
-        TIME_SCHEDULE: '/te/times-chedule',
+        CALENDAR: '/te/calendar',
         SETTING: '/te/setting',
         HELP: '/te/help',
     }
