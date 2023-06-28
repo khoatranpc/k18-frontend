@@ -13,7 +13,7 @@ interface Props {
 const PageHeader = (props: Props) => {
     const stateRouter = useGetStateRouter();
     const router = useRouter();
-
+    console.log(stateRouter);
     const handlePrevPage = () => {
         router.back();
     }

@@ -1,19 +1,21 @@
 import React from "react";
 import { createAction } from "@reduxjs/toolkit";
 import { Obj, State } from "@/global/interface";
-import { KEY_ICON } from "@/global/enum";
+import { ComponentPage, KEY_ICON } from "@/global/enum";
 import { createSliceReducer } from "@/utils/redux-toolkit";
 
 export interface StateRoute {
     route: string;
-    title: string;
+    title: React.ReactElement;
     breadCrumb?: Array<{
         title: string;
         route: string;
     }>;
     icon?: KEY_ICON;
-    replaceTitle?: string;
+    replaceTitle?: React.ReactElement;
     hasBackPage?: boolean;
+    moreData?: Record<string, unknown> | undefined;
+    component: ComponentPage | undefined;
 }
 export interface PayloadRoute {
     payload: StateRoute;

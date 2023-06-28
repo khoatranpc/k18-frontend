@@ -1,4 +1,4 @@
-import { KEY_ICON, ROLE_USER } from "@/global/enum";
+import { ComponentPage, KEY_ICON, ROLE_USER } from "@/global/enum";
 import { TabRoute } from "@/global/interface";
 import { MapIconKey } from "@/global/icon";
 import CombineRoute from "@/global/route";
@@ -22,110 +22,110 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
         {
             title: 'Tổng quan',
             route: CombineRoute['TE']['OVERVIEW'],
-            text: 'Tổng quan',
             key: 'OVER_VIEW',
             keyIcon: KEY_ICON.OV,
             showIcon: true,
             indexRoute: CombineRoute['TE']['OVERVIEW'],
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.OVERVIEW
         },
         {
             title: 'Tuyển dụng',
             route: CombineRoute['TE']['RECRUITMENT'],
-            text: 'Tuyển dụng',
             key: 'RECRUITMENT',
             keyIcon: KEY_ICON.RCM,
             showIcon: true,
             indexRoute: CombineRoute['TE']['RECRUITMENT'],
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.RECRUITMENT
         },
         {
             title: <Collapse panels={panelsTeacher} className="collapse_tab" />,
             route: '/',
-            text: 'Giáo viên',
             key: 'TEACHERS_PN',
             keyIcon: KEY_ICON.TC,
             indexRoute: '',
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.TEACHERS
         },
         {
             title: 'Lớp học',
             route: CombineRoute['TE']['MANAGER']['CLASS'],
-            text: 'Lớp học',
             key: 'CLASSES',
             keyIcon: KEY_ICON.HTS,
             showIcon: true,
             indexRoute: CombineRoute['TE']['MANAGER']['CLASS'],
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.MANAGER_CLASS
         },
         {
             title: 'Khoá học',
             route: CombineRoute['TE']['MANAGER']['COURSE'],
-            text: 'Khoá học',
             key: 'COURSES',
             keyIcon: KEY_ICON.CR,
             showIcon: true,
             indexRoute: '',
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.MANAGER_COURSE
         },
         {
             title: 'Lưu trữ',
             route: CombineRoute['TE']['MANAGER']['SAVE'],
-            text: 'Lưu trữ',
             key: 'SAVE',
             keyIcon: KEY_ICON.FD,
             showIcon: true,
             indexRoute: '',
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.SAVE
         },
         {
             title: 'Feed back',
             route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
-            text: 'Feed back',
             key: 'FEED_BACK',
             keyIcon: KEY_ICON.MS,
             showIcon: true,
             indexRoute: '',
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.MANAGER_FEEDBACK
         },
         {
             title: 'Lịch',
             route: CombineRoute['TE']['CALENDAR'],
-            text: 'Lịch',
             key: 'CALENDAR',
             keyIcon: KEY_ICON.CL,
             showIcon: true,
             indexRoute: '',
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.CALENDAR
         },
         {
             title: 'Cài đặt',
             route: CombineRoute['TE']['SETTING'],
-            text: 'Cài đặt',
             key: 'SETTING',
             keyIcon: KEY_ICON.ST,
             showIcon: true,
             indexRoute: CombineRoute['TE']['SETTING'],
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.SETTING
         },
         {
             title: 'Trợ giúp',
             route: CombineRoute['TE']['HELP'],
-            text: 'Trợ giúp',
             key: 'HELP',
             keyIcon: KEY_ICON.IF,
             showIcon: true,
             indexRoute: CombineRoute['TE']['HELP'],
-            noReplaceTitle: true
+            noReplaceTitle: true,
+            component: ComponentPage.HELP
         },
         {
             title: 'Chi tiết lớp học',
             route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
-            text: 'Chi tiết lớp học',
             key: 'DETAIL_CLASS',
             indexRoute: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
             disable: true,
             keyIcon: KEY_ICON.HTS,
+            component: ComponentPage.DETAILCLASS
         }
     ],
     TEACHER: []

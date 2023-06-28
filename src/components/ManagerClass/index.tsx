@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TableColumnsType, TabsProps } from 'antd';
 import { Obj, RowData } from '@/global/interface';
 import { fieldFilter, getColorFromStatusClass, mapStatusToString } from '@/global/init';
-import { STATUS_CLASS } from '@/global/enum';
+import { ComponentPage, STATUS_CLASS } from '@/global/enum';
 import { AppDispatch } from '@/store';
 import Tabs from '../Tabs';
 import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
@@ -365,9 +365,24 @@ const ManagerClass = () => {
         const routePayload: PayloadRoute = {
             payload: {
                 route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
-                title: record?.codeClass as string,
-                replaceTitle: record?.codeClass as string,
-                hasBackPage: true
+                title: record?.codeClass,
+                replaceTitle: record?.codeClass as React.ReactElement,
+                hasBackPage: true,
+                breadCrumb: [
+                    {
+                        route: CombineRoute['TE']['MANAGER']['CLASS'],
+                        title: 'Lớp học'
+                    },
+                    {
+                        route: `${CombineRoute['TE']['MANAGER']['CLASS']}/kgoa123`,
+                        title: 'kgoa123'
+                    }
+                ],
+                moreData: {
+                    ...record,
+                    h1: <h1>hihi</h1>
+                },
+                component: ComponentPage.DETAILCLASS
             }
         }
         dispatch(initDataRoute(routePayload));

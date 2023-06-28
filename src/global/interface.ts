@@ -1,5 +1,5 @@
 import React from "react";
-import { KEY_ICON } from "./enum";
+import { ComponentPage, KEY_ICON } from "./enum";
 import { TableColumnsType } from "antd";
 
 export interface Action {
@@ -31,14 +31,14 @@ export interface Query {
 export interface TabRoute {
     route: string;
     title: React.ReactElement | string;
-    text: string;
     key: string;
     keyIcon?: KEY_ICON;
     showIcon?: boolean;
     indexRoute: string;
     disable?: boolean;
-    replaceTitle?: string;
+    replaceTitle?: React.ReactElement | string;
     noReplaceTitle?: boolean;
+    component: ComponentPage;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

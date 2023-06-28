@@ -48,3 +48,17 @@ export enum TypeCount {
     INCR = 'INCR',
     DECR = 'DECR'
 }
+export enum ComponentPage {
+    OVERVIEW = 'OVERVIEW',
+    CLASS = 'CLASS',
+    DETAILCLASS = 'DETAILCLASS',
+    RECRUITMENT = 'RECRUITMENT',
+    TEACHERS = 'TEACHERS',
+    MANAGER_CLASS = 'MANAGER_CLASS',
+    MANAGER_COURSE = 'MANAGER_COURSE',
+    SAVE = 'SAVE',
+    MANAGER_FEEDBACK = 'MANAGER_FEEDBACK',
+    CALENDAR = 'CALENDAR',
+    SETTING = 'SETTING',
+    HELP = 'HELP',
+}

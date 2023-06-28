@@ -31,9 +31,10 @@ const ContainerPage = (props: Props) => {
     const refRoute = useRef<PayloadRoute>({
         payload: {
             route: mappingTab?.[0]?.route,
-            title: mappingTab?.[0]?.text,
+            title: mappingTab?.[0]?.title as React.ReactElement,
             breadCrumb: [],
-            icon: mappingTab?.[0]?.keyIcon
+            icon: mappingTab?.[0]?.keyIcon,
+            component: mappingTab?.[0]?.component
         }
     });
     useEffect(() => {
@@ -44,19 +45,24 @@ const ContainerPage = (props: Props) => {
             if (findTabRoute) {
                 refRoute.current.payload = {
                     route: findTabRoute.indexRoute,
-                    title: findTabRoute.text,
-                    breadCrumb: [],
+                    title: findTabRoute.title as React.ReactElement,
+                    breadCrumb: findTabRoute.noReplaceTitle ? [] : routeStore?.breadCrumb,
                     icon: findTabRoute.keyIcon,
-                    replaceTitle: findTabRoute.noReplaceTitle ? findTabRoute.text : routeStore.replaceTitle,
-                    hasBackPage: findTabRoute.noReplaceTitle ? false : true
+                    replaceTitle: findTabRoute.noReplaceTitle ?
+                        findTabRoute.title as React.ReactElement : routeStore?.replaceTitle as React.ReactElement,
+                    hasBackPage: findTabRoute.noReplaceTitle ? false : true,
+                    moreData: findTabRoute.noReplaceTitle ? undefined : routeStore?.moreData,
+                    component: findTabRoute.component
                 }
             } else {
                 refRoute.current.payload = {
                     route: CombineRoute['EMPTY'],
-                    title: 'Lỗi',
+                    title: 'Lỗi' as unknown as React.ReactElement,
                     breadCrumb: [],
-                    replaceTitle: 'Lỗi',
-                    hasBackPage: false
+                    replaceTitle: 'Lỗi' as unknown as React.ReactElement,
+                    hasBackPage: false,
+                    moreData: undefined,
+                    component: undefined
                 };
             }
         }
