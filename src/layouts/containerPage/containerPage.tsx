@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,6 +12,8 @@ import PageHeader from '@/components/PageHeader';
 import { tabForRole } from './tab';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/ContainerPage.module.scss';
+import useGetDataRoute from '@/utils/hooks/getDataRoute';
+import Empty from '@/components/Empty';
 
 interface Props {
     children: React.ReactElement;
@@ -23,6 +25,8 @@ const ContainerPage = (props: Props) => {
     const mappingTab = tabForRole[crrRole];
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
+    const routeStore = useGetDataRoute();
+
     const refRoute = useRef<PayloadRoute>({
         payload: {
             route: mappingTab?.[0]?.route,
@@ -31,7 +35,10 @@ const ContainerPage = (props: Props) => {
             icon: mappingTab?.[0]?.keyIcon
         }
     });
-    useEffect(() => {
+    const existRoute = mappingTab.find((item) => {
+        return item.route === router.route;
+    });
+    useLayoutEffect(() => {
         if (refRoute.current.payload.route !== router.route) {
             const findTabRoute = mappingTab.find((item) => {
                 return item.route === router.route;
@@ -45,13 +52,13 @@ const ContainerPage = (props: Props) => {
                 }
             } else {
                 refRoute.current.payload = {
-                    route: '/404',
+                    route: '/empty',
                     title: 'Lỗi',
                     breadCrumb: [],
-                }
+                };
             }
+            dispatch(initDataRoute(refRoute.current));
         }
-        dispatch(initDataRoute(refRoute.current));
     }, [router.route]);
     return (
         <div className={styles.containerPage}>
@@ -86,7 +93,7 @@ const ContainerPage = (props: Props) => {
             <div className={styles.mainColumn}>
                 <PageHeader />
                 <div className={`${styles.mainChild} ${styles.bgWhite}`}>
-                    {props.children}
+                    {routeStore?.route === '/empty' ? <Empty /> : props.children}
                 </div>
             </div>
         </div >
