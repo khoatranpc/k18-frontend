@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Table as TableComponent } from 'antd';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { INTERNAL_SELECTION_ITEM } from 'antd/es/table/hooks/useSelection';
-import { Columns, RowData } from '@/global/interface';
+import { Columns, Obj, RowData } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import Loading from '../loading';
@@ -23,6 +23,7 @@ interface Props {
     enablePaginationAjax?: boolean;
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
     getCrrDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
+    hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
 }
 
 const Table = (props: Props) => {
@@ -56,6 +57,13 @@ const Table = (props: Props) => {
                 loading={{
                     spinning: (!props.rowData || props.loading ? true : false),
                     indicator: <Loading className={styles.loadingInTable} />
+                }}
+                onRow={(record, index) => {
+                    return {
+                        onClick: (e) => {
+                            props.hanldeClickRow?.(record, index, e);
+                        }
+                    }
                 }}
                 pagination={props.disableDefaultPagination ? !props.disableDefaultPagination : {}}
             />

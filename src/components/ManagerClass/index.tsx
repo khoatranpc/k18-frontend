@@ -380,6 +380,9 @@ const ManagerClass = () => {
                     console.log(crrPage);
                     console.log(crrRowOnPage);
                 }}
+                hanldeClickRow={(record) => {
+                    console.log(record);
+                }}
             />
         </ManagerClassContext.Provider>
     )
