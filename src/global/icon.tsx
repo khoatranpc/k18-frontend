@@ -26,6 +26,10 @@ import iconChevronLeft from '@/assets/svgs/icon-chevronLeft.svg';
 import iconArrowLeft from '@/assets/svgs/icon-arrowLeft.svg';
 import iconHatStudentLight from '@/assets/svgs/icon-hatStudent-light.svg';
 import iconChevronRightLight from '@/assets/svgs/icon-chevronRight-light.svg';
+import iconPlusBold from '@/assets/svgs/icon-plusBold.svg';
+import iconFacebook from '@/assets/svgs/icon-facebook.svg';
+import iconZoom from '@/assets/svgs/icon-zoom.svg';
+import iconDrive from '@/assets/svgs/icon-drive.svg';
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -53,6 +57,10 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     CHEVRONRL: <Image alt="" src={iconChevronRightLight} />,
     ARROWL: <Image alt="" src={iconArrowLeft} />,
     HTSL: <Image alt="" src={iconHatStudentLight} />,
+    PLB: <Image alt="" src={iconPlusBold} />,
+    FBK: <Image alt="" src={iconFacebook} />,
+    ZOOM: <Image alt="" src={iconZoom} />,
+    DRIVE: <Image alt="" src={iconDrive} />,
 }
 export {
     MapIconKey

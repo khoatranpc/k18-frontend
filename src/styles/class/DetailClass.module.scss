@@ -1,3 +1,158 @@
-.detailClassContainer{
-    
+.detailClassContainer {
+    padding: 1.6rem;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .listTab {
+        font-weight: 500;
+    }
+
+    .containerMain {
+        display: block;
+        flex: 1;
+
+        .flex1 {
+            flex: 1;
+        }
+
+        .overViewDetailClass {
+            display: flex;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        .colLeft {
+            flex: 2.5;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+
+            .row {
+                flex: 0.25;
+                display: flex;
+                gap: 0.8rem;
+                min-height: 10rem;
+
+                .title {
+                    padding-top: 1.6rem;
+                    flex: 1;
+                    font-size: 1.6rem;
+                    color: var(--blue);
+                    font-weight: 500;
+                }
+
+                .content {
+                    flex: 6;
+                    padding: 1.6rem;
+                    border-radius: 0.8rem;
+                    border: 1px solid var(--cool-grey);
+
+                    .parent {
+                        max-height: 100%;
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                        grid-template-rows: repeat(2, 1fr);
+                        grid-column-gap: 0px;
+                        grid-row-gap: 1rem;
+
+                    }
+
+                    .itemContent {
+                        overflow-y: scroll;
+                        padding-left: 1rem;
+                    }
+
+                    p {
+                        margin: 0;
+                    }
+
+                    .text {
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+
+        .colRight {
+            flex: 1;
+        }
+
+        .colNotifi {
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            border: 1px solid var(--cool-grey);
+            display: flex;
+            flex-direction: column;
+
+            .titleNotif {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 0;
+
+                span {
+                    font-size: 2.4rem;
+                    color: var(--blue);
+                }
+
+                .iconPlus {
+                    img {
+                        width: 1.4rem;
+                        height: 1.4rem;
+                    }
+                }
+            }
+
+            .contentNotifi {
+                overflow-y: scroll;
+                display: flex;
+                flex-direction: column;
+                max-height: 75%;
+            }
+
+            .combineLink {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                gap: 0.8rem;
+                flex: 1;
+                padding-bottom: 0.8rem;
+
+                .link {
+                    border: 1px solid var(--grey);
+                    border-radius: 0.8rem;
+                    height: 4.8rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    font-weight: 500;
+                }
+            }
+
+            .blockNotifi {
+                padding: 1.6rem 0.8rem;
+                border-top: 1px solid var(--grey);
+
+                .titleBlock {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 0.8rem;
+
+                    .title {
+                        font-size: 1.8rem;
+                        font-weight: 500;
+                    }
+
+                    .dateUpdate {
+                        font-size: 1.4rem;
+                        color: var(--grey);
+                    }
+                }
+            }
+        }
+    }
 }

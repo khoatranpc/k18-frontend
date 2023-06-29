@@ -39,7 +39,10 @@ export enum KEY_ICON {
     CHEVRONL = 'CHEVRONL',
     ARROWL = 'ARROWL',
     HTSL = 'HTSL',
-
+    PLB = 'PLB',
+    FBK = 'FBK',
+    ZOOM = 'ZOOM',
+    DRIVE = 'DRIVE',
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',

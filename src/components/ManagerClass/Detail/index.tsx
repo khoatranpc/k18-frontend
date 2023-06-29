@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { TabsProps } from 'antd';
@@ -7,44 +7,68 @@ import { uuid } from '@/utils';
 import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import Tabs from '@/components/Tabs';
+import OverView from './OverView';
+import Attendace from './Attendace';
+import FeedBack from './FeedBack';
+import ManagerGroup from './ManagerGroup';
+import Student from './Student';
+import Syllabus from './Syllabus';
+import TextBook from './TextBook';
 import styles from '@/styles/class/DetailClass.module.scss';
 
+enum TabDetailClass {
+    OVERVIEW = 'OVERVIEW',
+    STUDENT = 'STUDENT',
+    MANAGER_GROUP = 'MANAGER_GROUP',
+    ATTENDACE = 'ATTENDACE',
+    TEXTBOOK = 'TEXTBOOK',
+    SYLLABUS = 'SYLLABUS',
+    FEEDBACK = 'FEEDBACK',
+}
 const listTab: TabsProps['items'] = [
     {
-        key: 'over-view',
+        key: TabDetailClass.OVERVIEW,
         label: 'Tổng quan'
     },
     {
-        key: 'student',
+        key: TabDetailClass.STUDENT,
         label: 'Học viên'
     },
     {
-        key: 'manager-group',
+        key: TabDetailClass.MANAGER_GROUP,
         label: 'Quản lý nhóm'
     },
     {
-        key: 'attendance',
+        key: TabDetailClass.ATTENDACE,
         label: 'Điểm danh'
     },
     {
-        key: 'textbook',
+        key: TabDetailClass.TEXTBOOK,
         label: 'Học liệu'
     },
     {
-        key: 'syllabus',
+        key: TabDetailClass.SYLLABUS,
         label: 'Chương trình học'
     },
     {
-        key: 'feedback',
+        key: TabDetailClass.FEEDBACK,
         label: 'Feedback'
     },
 ];
-
+const getComponent: Record<TabDetailClass, React.ReactElement> = {
+    OVERVIEW: <OverView />,
+    ATTENDACE: <Attendace />,
+    FEEDBACK: <FeedBack />,
+    MANAGER_GROUP: <ManagerGroup />,
+    STUDENT: <Student />,
+    SYLLABUS: <Syllabus />,
+    TEXTBOOK: <TextBook />,
+}
 const Detail = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const stateRoute = useGetDataRoute();
-
+    const [currentContent, setCurrentContet] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);
     // missing logic call api detail class
     useEffect(() => {
         if (!stateRoute.replaceTitle) {
@@ -72,8 +96,17 @@ const Detail = () => {
     }, []);
     return (
         <div className={styles.detailClassContainer}>
-            <Tabs listItemTab={listTab} notAllowContent />
-
+            <Tabs
+                className={styles.listTab}
+                listItemTab={listTab}
+                notAllowContent
+                onClickTab={(key) => {
+                    setCurrentContet(key as TabDetailClass);
+                }}
+            />
+            <div className={styles.containerMain}>
+                {getComponent[currentContent]}
+            </div>
         </div>
     )
 }
