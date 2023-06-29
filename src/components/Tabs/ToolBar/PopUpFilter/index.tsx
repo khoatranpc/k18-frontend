@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, Input } from 'antd';
-import { KEY_ICON } from '@/global/enum';
+import { KEY_ICON, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import styles from '@/styles/tabs/Popup.module.scss';
+import { getColorFromStatusClass } from '@/global/init';
 
 export interface FieldPopUpFilter {
     key: string,

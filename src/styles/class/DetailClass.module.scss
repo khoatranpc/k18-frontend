@@ -1,12 +1,33 @@
 .detailClassContainer {
+    position: relative;
     padding: 1.6rem;
     padding-top: 0;
     display: flex;
     flex-direction: column;
     height: 100%;
 
+    .fncBtn {
+        position: absolute;
+        right: 1.6rem;
+        top: 3.2rem;
+        display: flex;
+        gap: 0.8rem;
+        background-color: var(--white);
+
+        .btn {
+            padding: 2.3rem 1.2rem;
+            color: var(--base);
+            border-color: var(--base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+    }
+
     .listTab {
         font-weight: 500;
+        margin-bottom: 3.2rem;
     }
 
     .containerMain {
@@ -21,6 +42,7 @@
             display: flex;
             height: 100%;
             gap: 0.8rem;
+            position: relative;
         }
 
         .colLeft {
@@ -98,6 +120,8 @@
                 }
 
                 .iconPlus {
+                    cursor: pointer;
+
                     img {
                         width: 1.4rem;
                         height: 1.4rem;
@@ -129,6 +153,11 @@
                     justify-content: center;
                     cursor: pointer;
                     font-weight: 500;
+                    gap: 0.8rem;
+
+                    &:hover {
+                        color: var(--base);
+                    }
                 }
             }
 

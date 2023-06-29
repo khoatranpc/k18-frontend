@@ -26,6 +26,10 @@
     --text-head: #404040;
     --blue: #3062D4;
     --cool-grey: #DEE3E7;
+    --running: #00FF00;
+    --drop: #CF575A;
+    --finish: #B4A7D6;
+    --preopen: #FF9902;
 }
 
 html {
@@ -185,7 +189,14 @@ a {
     }
 }
 
+:where(.css-dev-only-do-not-override-zjzpde).ant-tabs-top>.ant-tabs-nav::before {
+    border-bottom-width: 2px !important;
+}
+
 .tabs-customize {
+    width: fit-content;
+
+
     .ant-tabs-nav-list {
         color: var(--grey-holder);
     }
@@ -349,6 +360,21 @@ a {
         width: fit-content;
         margin: 0;
 
+        span:has(span.RUNNING) {
+            background-color: var(--running);
+        }
+
+        span:has(span.DROP) {
+            background-color: var(--drop);
+        }
+
+        span:has(span.FINISH) {
+            background-color: var(--finish);
+        }
+
+        span:has(span.PREOPEN) {
+            background-color: var(--preopen);
+        }
 
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Avatar, Badge, Input } from 'antd';
-import useGetStateRouter from '@/utils/hocs/stateRouter';
+import useGetStateRouter from '@/utils/hooks/stateRouter';
 import { MapIconKey } from '@/global/icon';
 import { ComponentPage, KEY_ICON } from '@/global/enum';
 import CombineRoute from '@/global/route';

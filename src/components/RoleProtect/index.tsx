@@ -1,7 +1,7 @@
 import React from 'react';
 import { Obj } from '@/global/interface';
 import { ROLE_USER } from '@/global/enum';
-import useGetCrrUser from '@/utils/hocs/getUser';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import Empty from '../Empty';
 
 interface Props {

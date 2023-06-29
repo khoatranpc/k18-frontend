@@ -1,9 +1,9 @@
 import React from 'react';
-import { hardDataOverView } from './data';
-import styles from '@/styles/class/DetailClass.module.scss';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import BlockNotifi from './BlockNotifi';
+import { hardDataOverView } from './data';
+import styles from '@/styles/class/DetailClass.module.scss';
 
 export interface ItemOverView {
     title: string;
@@ -12,7 +12,6 @@ export interface ItemOverView {
         value: Array<number | string | React.ReactNode>;
     }>;
 }
-const cell6 = new Array(6);
 const OverView = () => {
     return (
         <div className={`${styles.overViewDetailClass} ${styles.flex1} overViewDetaiClass`}>

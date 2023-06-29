@@ -23,8 +23,13 @@ const sortByString = (forthStr: string, behindStr: string) => {
     }
     return 0;
 }
+const logout = () => {
+    localStorage.removeItem('access_token');
+    window.location.assign('/auth/login');
+}
 export {
     uuid,
     listMonth,
-    sortByString
+    sortByString,
+    logout
 }

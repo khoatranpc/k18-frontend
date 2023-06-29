@@ -2,6 +2,12 @@
     display: flex;
     min-height: 100vh;
 
+    .listTabLink {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
     .navTab {
         width: 20%;
         padding: 4rem 2.4rem;
@@ -119,5 +125,37 @@
 
     .titleHeader {
         display: flex;
+    }
+
+    .badge {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        padding-top: 2.4rem;
+        border-top: 1px solid var(--grey);
+
+        .user {
+            margin-left: 0.8rem;
+
+            .role {
+                font-size: 1rem;
+                text-align: center;
+                color: var(--white);
+                display: block;
+                border-radius: 0.8rem;
+                width: 5rem;
+                height: 1.6rem;
+                background-color: var(--base);
+            }
+        }
+
+        .moreAction {
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        p {
+            margin: 0;
+        }
     }
 }

@@ -102,7 +102,6 @@ const ManagerClass = () => {
             key: 'style',
             dataIndex: 'style',
             title: 'Hình thức',
-            className: 'hasSort',
         },
         {
             key: 'teacher',

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { TabsProps } from 'antd';
+import { Button, TabsProps } from 'antd';
 import { STATUS_CLASS } from '@/global/enum';
 import { uuid } from '@/utils';
 import useGetDataRoute from '@/utils/hooks/getDataRoute';
@@ -104,6 +104,13 @@ const Detail = () => {
                     setCurrentContet(key as TabDetailClass);
                 }}
             />
+            {
+                currentContent === TabDetailClass.OVERVIEW ? (<div className={styles.fncBtn}>
+                    <Button className={styles.btn}>Chỉnh sửa</Button>
+                    <Button className={styles.btn}>Export</Button>
+                </div>) : (null)
+            }
+
             <div className={styles.containerMain}>
                 {getComponent[currentContent]}
             </div>

@@ -67,4 +67,5 @@ export enum ComponentPage {
     CALENDAR = 'CALENDAR',
     SETTING = 'SETTING',
     HELP = 'HELP',
+    WELCOME = 'WELCOME'
 }
