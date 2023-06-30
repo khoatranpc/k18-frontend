@@ -23,7 +23,7 @@ interface Props {
     enablePaginationAjax?: boolean;
     maxPage?: number;
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
-    onChangeDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
+    onChangeDataPagination?: (data: { currentPage: number, currentTotalRowOnPage: number }) => void;
     hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
 }
 
@@ -70,9 +70,7 @@ const Table = (props: Props) => {
             />
             {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination
                 className={props.classNamePagination}
-                onChangeDataPagination={(crrPage, rowOnPage) => {
-                    props.onChangeDataPagination?.(crrPage, rowOnPage);
-                }}
+                onChangePagination={props.onChangeDataPagination}
                 maxPage={props.enablePaginationAjax ? props.maxPage as number : 100}
             />}
         </div>

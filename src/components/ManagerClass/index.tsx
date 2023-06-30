@@ -6,7 +6,7 @@ import { Action, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { ClassForm, ComponentPage, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
-import { formatDatetoString, sortByString, uuid } from '@/utils';
+import { formatDatetoString, sortByString } from '@/utils';
 import { useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
@@ -17,7 +17,6 @@ import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
 import Table from '../Table';
 import TitleHeader from './TitleHeader';
 import styles from '@/styles/class/Class.module.scss';
-import { PayloadAction } from '@reduxjs/toolkit';
 
 const items: TabsProps['items'] = [
     {
@@ -447,9 +446,10 @@ const ManagerClass = () => {
                 enableRowSelection
                 disableDefaultPagination
                 enablePaginationAjax
-                onChangeDataPagination={(crrPage, crrRowOnPage) => {
-                    handleQueryListClass(crrPage, crrRowOnPage);
-                }}
+                onChangeDataPagination={(dataPagination: { currentPage: number; currentTotalRowOnPage: number; }) => {
+                    handleQueryListClass(dataPagination.currentPage, dataPagination.currentTotalRowOnPage);
+                }
+                }
                 hanldeClickRow={handleClickRow}
                 maxPage={(listClass.response?.data as Obj)?.totalPage as number || 1}
             />
