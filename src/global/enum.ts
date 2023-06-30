@@ -69,3 +69,9 @@ export enum ComponentPage {
     HELP = 'HELP',
     WELCOME = 'WELCOME'
 }
+
+export enum ClassForm {
+    HYBRID = 'HYBRID',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE',
+}

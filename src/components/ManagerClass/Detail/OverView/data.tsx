@@ -1,6 +1,7 @@
 import { getColorFromStatusClass, mapStatusToString } from "@/global/init";
 import { ItemOverView } from ".";
 import { STATUS_CLASS } from "@/global/enum";
+import { uuid } from "@/utils";
 
 const hardDataOverView: ItemOverView[] = [
     {
@@ -41,7 +42,7 @@ const hardDataOverView: ItemOverView[] = [
             },
             {
                 title: 'Trạng thái',
-                value: [<span className="display-block status" style={{ backgroundColor: getColorFromStatusClass[STATUS_CLASS.RUNNING] }}>{mapStatusToString[STATUS_CLASS.RUNNING]}</span>]
+                value: [<span className="display-block status" key={uuid()} style={{ backgroundColor: getColorFromStatusClass[STATUS_CLASS.RUNNING] }}>{mapStatusToString[STATUS_CLASS.RUNNING]}</span>]
             },
             {
                 title: 'Lịch học',

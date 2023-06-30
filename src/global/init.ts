@@ -1,5 +1,5 @@
 import { StateRoute } from "@/store/reducers/global-reducer/route";
-import { STATUS_CLASS } from "./enum";
+import { ClassForm, STATUS_CLASS } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -28,9 +28,15 @@ const getColorFromStatusClass: Record<STATUS_CLASS, string> = {
     FINISH: '#B4A7D6',
     PREOPEN: '#FF9902'
 }
+const getClassForm: Record<ClassForm, string> = {
+    HYBRID: 'Hybrid',
+    OFFLINE: 'Offline',
+    ONLINE: 'Online'
+}
 export {
     statusClass,
     fieldFilter,
     mapStatusToString,
-    getColorFromStatusClass
+    getColorFromStatusClass,
+    getClassForm
 }

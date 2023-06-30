@@ -7,7 +7,8 @@ interface Props {
     rowOnPage?: number;
     crrPage?: number;
     className?: string;
-    getCrrDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
+    maxPage: number;
+    onChangeDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
 }
 const Pagination = (props: Props) => {
     const [crrDataPagination, setCrrDataPagination] = useState({
@@ -23,19 +24,24 @@ const Pagination = (props: Props) => {
                 ...crrDataPagination,
             });
         }
+        props.onChangeDataPagination?.(crrDataPagination.crrPage, crrDataPagination.rowOnPage);
     }
     const handlePage = (type: TypeCount) => {
         const prevPage = crrDataPagination.crrPage;
-        crrDataPagination.crrPage = (type === TypeCount.INCR ? crrDataPagination.crrPage + 1 : (crrDataPagination.crrPage > 1 ? crrDataPagination.crrPage - 1 : (crrDataPagination.crrPage)));
+        crrDataPagination.crrPage = (type === TypeCount.INCR ?
+            (crrDataPagination.crrPage < props.maxPage ?
+                (crrDataPagination.crrPage + 1) :
+                crrDataPagination.crrPage) :
+            (crrDataPagination.crrPage > 1 ?
+                crrDataPagination.crrPage - 1 :
+                (crrDataPagination.crrPage)));
         if (prevPage !== crrDataPagination.crrPage) {
             setCrrDataPagination({
                 ...crrDataPagination,
             });
         }
+        props.onChangeDataPagination?.(crrDataPagination.crrPage, crrDataPagination.rowOnPage);
     }
-    useEffect(() => {
-        props.getCrrDataPagination?.(crrDataPagination.crrPage, crrDataPagination.rowOnPage);
-    }, [crrDataPagination, props.getCrrDataPagination]);
     return (
         <div className={`${styles.paginationAjax} ${props.className || ''}`}>
             <div className={styles.rowOnPage}>

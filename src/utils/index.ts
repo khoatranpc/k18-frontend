@@ -1,4 +1,5 @@
 import { v4 as uid } from 'uuid';
+import { format } from 'date-fns';
 
 const uuid = () => {
     return uid() as string;
@@ -27,9 +28,13 @@ const logout = () => {
     localStorage.removeItem('access_token');
     window.location.assign('/auth/login');
 }
+const formatDatetoString = (date: Date | string | number, formatString?: string) => {
+    return format(new Date(date), formatString || 'MM/dd/yyyy');
+}
 export {
     uuid,
     listMonth,
     sortByString,
-    logout
+    logout,
+    formatDatetoString
 }

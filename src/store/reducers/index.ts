@@ -5,6 +5,7 @@ import getCrrUserInfo from './user-info.reducer';
 import courses from './course.reducer';
 import registerPreTeacher from './registerPreTeacher.reducer';
 import getDataRoute from './global-reducer/route';
+import listClass from './class/listClass.reducer';
 
 const rootReducer = {
     test: test,
@@ -13,6 +14,7 @@ const rootReducer = {
     crrUserInfo: getCrrUserInfo,
     courses: courses,
     registerPreTeacher,
-    getDataRoute
+    getDataRoute,
+    listClass
 };
 export default rootReducer;

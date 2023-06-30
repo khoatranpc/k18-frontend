@@ -21,8 +21,9 @@ interface Props {
     loading?: boolean;
     classNamePagination?: string;
     enablePaginationAjax?: boolean;
+    maxPage?: number;
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
-    getCrrDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
+    onChangeDataPagination?: (currentPage: number, currentRowOnPage: number) => void;
     hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
 }
 
@@ -69,9 +70,10 @@ const Table = (props: Props) => {
             />
             {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination
                 className={props.classNamePagination}
-                getCrrDataPagination={(crrPage, rowOnPage) => {
-                    props.getCrrDataPagination?.(crrPage, rowOnPage);
+                onChangeDataPagination={(crrPage, rowOnPage) => {
+                    props.onChangeDataPagination?.(crrPage, rowOnPage);
                 }}
+                maxPage={props.enablePaginationAjax ? props.maxPage as number : 100}
             />}
         </div>
     )
