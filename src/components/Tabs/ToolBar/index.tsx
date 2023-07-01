@@ -17,6 +17,12 @@ export interface ItemFilterField {
 
 interface Props {
     listFilter: ItemFilterField[];
+    createButton?: boolean;
+    createButtonClassName?: boolean;
+    exportCSVButton?: boolean;
+    exportCSVButtonClassName?: boolean;
+    onClickCreateButton?: () => void;
+    onClickExportCSVButton?: () => void;
 }
 const ToolBar = (props: Props) => {
     const storeManagerClass = useContext(ManagerClassContext);
@@ -105,12 +111,25 @@ const ToolBar = (props: Props) => {
                     {MapIconKey[KEY_ICON.SRCH]}
                     {MapIconKey[KEY_ICON.DOT3VT]}
                 </div>
-                <Button className="btn-toolbar mr-8">
+                {props.createButton && <Button
+                    className={`btn-toolbar mr-8 ${props.createButtonClassName}`}
+                    onClick={() => {
+                        props.onClickCreateButton?.();
+                    }}
+                >
                     <span>{MapIconKey[KEY_ICON.PLCR]} Tạo mới</span>
-                </Button>
-                <Button className="btn-toolbar">
-                    <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
-                </Button>
+                </Button>}
+                {
+                    props.exportCSVButton && <Button
+                        className={`btn-toolbar ${props.exportCSVButtonClassName}`}
+                        onClick={() => {
+                            props.onClickExportCSVButton?.()
+                        }}
+                    >
+                        <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
+                    </Button>
+                }
+
             </div>
         </div>
     )

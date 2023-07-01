@@ -69,6 +69,8 @@
     .mainChild {
         flex: 1;
         border-radius: 0.8rem;
+        display: flex;
+        flex-direction: column;
     }
 
     .bgWhite {

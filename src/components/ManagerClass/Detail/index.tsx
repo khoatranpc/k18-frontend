@@ -15,6 +15,7 @@ import Student from './Student';
 import Syllabus from './Syllabus';
 import TextBook from './TextBook';
 import styles from '@/styles/class/DetailClass.module.scss';
+import PriorityTeacher from './PriorityTeacher';
 
 enum TabDetailClass {
     OVERVIEW = 'OVERVIEW',
@@ -24,6 +25,7 @@ enum TabDetailClass {
     TEXTBOOK = 'TEXTBOOK',
     SYLLABUS = 'SYLLABUS',
     FEEDBACK = 'FEEDBACK',
+    PRIORITY_TEACHER = 'PRIORITY_TEACHER'
 }
 const listTab: TabsProps['items'] = [
     {
@@ -54,6 +56,10 @@ const listTab: TabsProps['items'] = [
         key: TabDetailClass.FEEDBACK,
         label: 'Feedback'
     },
+    {
+        key: TabDetailClass.PRIORITY_TEACHER,
+        label: 'Dự kiến SX GV'
+    },
 ];
 const getComponent: Record<TabDetailClass, React.ReactElement> = {
     OVERVIEW: <OverView />,
@@ -63,8 +69,12 @@ const getComponent: Record<TabDetailClass, React.ReactElement> = {
     STUDENT: <Student />,
     SYLLABUS: <Syllabus />,
     TEXTBOOK: <TextBook />,
+    PRIORITY_TEACHER: <PriorityTeacher />
 }
-const Detail = () => {
+interface Props {
+    classId?: string;
+}
+const Detail = (props: Props) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const stateRoute = useGetDataRoute();

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TableColumnsType, TabsProps } from 'antd';
+import { TabsProps } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { Action, Obj, RowData } from '@/global/interface';
+import { Action, Columns, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, mapStatusToString } from '@/global/init';
-import { ClassForm, ComponentPage, STATUS_CLASS } from '@/global/enum';
+import { ClassForm, ComponentPage, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
 import { useGetListClass } from '@/utils/hooks';
@@ -16,6 +16,7 @@ import Tabs from '../Tabs';
 import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
 import Table from '../Table';
 import TitleHeader from './TitleHeader';
+import ModalCustomize from '../ModalCustomize';
 import styles from '@/styles/class/Class.module.scss';
 
 const items: TabsProps['items'] = [
@@ -78,11 +79,19 @@ const ManagerClass = () => {
     const listClass = useGetListClass();
     const firstQuery = useRef<boolean>(true);
     const mapDataListClass: RowData[] = ((listClass.response?.data as Obj)?.classes as Array<Obj>)?.map((item) => {
+        let crrST = '';
+        (item.recordBookTeacher as Array<Obj>)!.find((rc) => {
+            const findST = (rc.teacherRegister as Array<Obj>)?.find((rcTc) => {
+                return (rcTc?.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.ST || rcTc?.accept
+            });
+            crrST = findST?.idTeacher?.fullName || '';
+            return findST;
+        })
         return {
             key: item._id as string,
             codeClass: item.codeClass,
             subject: item.courseId.courseName,
-            teacher: '',
+            teacher: crrST,
             dateStart: item.dayRange.start,
             status: item.status,
             timeSchedule: item.timeSchedule,
@@ -91,7 +100,7 @@ const ManagerClass = () => {
     }) || [];
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState<boolean>(true);
-    const columns: TableColumnsType<Record<string, unknown>> = [
+    const columns: Columns = [
         {
             key: 'codeClass',
             dataIndex: 'codeClass',
@@ -162,242 +171,19 @@ const ManagerClass = () => {
             },
         },
     ];
-    // const rowData: RowData[] = [
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }],
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    //     {
-    //         key: uuid(),
-    //         codeClass: 'PNL-UID08',
-    //         subject: 'Code',
-    //         teacher: 'Nguyễn Văn Cường',
-    //         style: 'Hybrid',
-    //         dateStart: '20/02/2022',
-    //         status: STATUS_CLASS.RUNNING,
-    //         timeSchedule: [{
-    //             weekday: 'T2',
-    //             time: '19h15-22h15'
-    //         }]
-    //     },
-    // ];
     const handleClickRow = (record: Obj) => {
         const routePayload: PayloadRoute = {
             payload: {
                 route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
                 title: record?.codeClass,
-                replaceTitle: <TitleHeader codeClass='PNL-CIJS84' dateStart='30/2/2022' statusClass={STATUS_CLASS.RUNNING} />,
+                replaceTitle: <TitleHeader codeClass={record.codeClass as string} dateStart={formatDatetoString(new Date(record.dateStart as Date), 'dd/MM/yyyy')} statusClass={record.status as STATUS_CLASS} />,
                 hasBackPage: true,
                 moreData: record,
                 component: ComponentPage.DETAILCLASS
             }
         }
         dispatch(initDataRoute(routePayload));
-        router.push('/te/manager/class/detail/123');
+        router.push(`/te/manager/class/detail/${record.key}`);
     }
     const handleQueryListClass = (currentPage: number, recordOnPage: number) => {
         const payload: Action = {
@@ -412,6 +198,7 @@ const ManagerClass = () => {
         };
         dispatch(queryGetListClass(payload));
     }
+    const [openModal, setOpenModal] = useState<boolean>(false);
     useEffect(() => {
         if (!listClass.response && firstQuery.current) {
             handleQueryListClass(1, 10)
@@ -437,9 +224,17 @@ const ManagerClass = () => {
                         crrKeyTab: key
                     })
                 }} />
-                <ToolBar listFilter={listFilter} />
+                <ToolBar
+                    listFilter={listFilter}
+                    createButton
+                    exportCSVButton
+                    onClickCreateButton={() => {
+                        setOpenModal(true);
+                    }}
+                />
             </div>
             <Table
+                className={styles.tableMangerClass}
                 columns={columns}
                 rowData={mapDataListClass}
                 loading={loading}
@@ -453,6 +248,19 @@ const ManagerClass = () => {
                 hanldeClickRow={handleClickRow}
                 maxPage={(listClass.response?.data as Obj)?.totalPage as number || 1}
             />
+            {
+                openModal && <ModalCustomize
+                    show={openModal}
+                    modalHeader={'hihih'}
+                    onHide={() => {
+                        setOpenModal(false);
+                    }}
+                // disableCloseButtonHeader
+                >
+                    hello
+                </ModalCustomize>
+            }
+
         </ManagerClassContext.Provider>
     )
 }
