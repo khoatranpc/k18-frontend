@@ -1,5 +1,5 @@
 import { AsyncThunk, PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Action, State } from "@/global/interface";
+import { Action } from "@/global/interface";
 import { METHOD } from "@/global/enum";
 import { initState } from "@/global/init-data";
 import actionRequest from "./restApi";
@@ -31,8 +31,9 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
                     state.state = {
                         isLoading: false,
                         response: {
-                            ...action.payload
-                        }
+                            ...action.payload,
+                        },
+                        success: action.payload.status
                     }
                 })
                 builder.addCase(asyncThunk.rejected, (state: any, _) => {
@@ -41,8 +42,9 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
                         response: {
                             data: null,
                             message: 'Có lỗi xảy ra!',
-                            success: false
+                            status: false
                         },
+                        success: false
                     }
                 })
             },

@@ -30,6 +30,7 @@ import iconPlusBold from '@/assets/svgs/icon-plusBold.svg';
 import iconFacebook from '@/assets/svgs/icon-facebook.svg';
 import iconZoom from '@/assets/svgs/icon-zoom.svg';
 import iconDrive from '@/assets/svgs/icon-drive.svg';
+import iconReload from '@/assets/svgs/icon-reload.svg';
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -61,6 +62,7 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     FBK: <Image alt="" src={iconFacebook} />,
     ZOOM: <Image alt="" src={iconZoom} />,
     DRIVE: <Image alt="" src={iconDrive} />,
+    RELOAD: <Image alt="" src={iconReload} />,
 }
 export {
     MapIconKey

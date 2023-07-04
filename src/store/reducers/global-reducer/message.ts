@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { Obj, State } from "@/global/interface";
+import { State } from "@/global/interface";
 import { createSliceReducer } from "@/utils/redux-toolkit";
 import React from "react";
 
@@ -12,7 +12,7 @@ const message = createSliceReducer('message', undefined, {
     }
 });
 interface OpenMessage {
-    type: 'success' | 'error' | 'warning',
+    type: 'success' | 'error' | 'warning' | 'loading',
     content: React.ReactNode | string
 }
 export const openMessage = createAction<OpenMessage, string>(`${message.name}/openMessage`);

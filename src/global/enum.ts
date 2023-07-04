@@ -43,6 +43,7 @@ export enum KEY_ICON {
     FBK = 'FBK',
     ZOOM = 'ZOOM',
     DRIVE = 'DRIVE',
+    RELOAD = 'RELOAD'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',

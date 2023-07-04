@@ -21,8 +21,10 @@ interface Props {
     createButtonClassName?: boolean;
     exportCSVButton?: boolean;
     exportCSVButtonClassName?: boolean;
+    iconReload?: boolean;
     onClickCreateButton?: () => void;
     onClickExportCSVButton?: () => void;
+    onClickReload?: () => void;
 }
 const ToolBar = (props: Props) => {
     const storeManagerClass = useContext(ManagerClassContext);
@@ -129,7 +131,17 @@ const ToolBar = (props: Props) => {
                         <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
                     </Button>
                 }
-
+                {
+                    props.iconReload &&
+                    <Button
+                        className={`btn-toolbar ${styles.btnReload}`}
+                        onClick={() => {
+                            props.onClickReload?.();
+                        }}
+                    >
+                        <span className={styles.reload}>{MapIconKey[KEY_ICON.RELOAD]}</span>
+                    </Button>
+                }
             </div>
         </div>
     )

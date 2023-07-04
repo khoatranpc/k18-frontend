@@ -8,6 +8,7 @@ import getDataRoute from './global-reducer/route';
 import listClass from './class/listClass.reducer';
 import listCourse from './course/listCourse.reducer';
 import timeSchedule from './timeSchedule.reducer';
+import createClass from './class/createClass.reducer';
 
 const rootReducer = {
     test: test,
@@ -19,6 +20,7 @@ const rootReducer = {
     getDataRoute,
     listClass,
     timeSchedule,
-    listCourse
+    listCourse,
+    createClass,
 };
 export default rootReducer;

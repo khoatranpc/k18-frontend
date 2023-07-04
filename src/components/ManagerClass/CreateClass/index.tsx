@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Button, Input, MenuProps } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from 'antd';
 import viVN from 'antd/es/date-picker/locale/vi_VN';
 const { RangePicker } = DatePicker;
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useGetTimeSchedule } from '@/utils/hooks';
-import { AppDispatch } from '@/store';
+import { useHookMessage } from '@/utils/hooks/message';
+import { AppDispatch, RootState } from '@/store';
 import { queryGetListTimeSchedule } from '@/store/reducers/timeSchedule.reducer';
+import { clearCreateClass, queryCreateClass } from '@/store/reducers/class/createClass.reducer';
 import Dropdown from '@/components/Dropdown';
-import { Obj } from '@/global/interface';
+import { Action, Obj, State } from '@/global/interface';
 import SelectCourse from '@/components/SelectCourse';
 import styles from '@/styles/class/CreateClass.module.scss';
 
@@ -24,6 +26,8 @@ const validationSchema = yup.object({
     courseLevelId: yup.string().required('Bạn chưa có cấp độ của khoá học!'),
     dayStart: yup.string().required('Bạn chưa chọn ngày khai giảng!'),
     dayEnd: yup.string().required('Bạn chưa chọn ngày kết thúc!'),
+    timeOnce: yup.object().required('Bạn chưa chọn ngày học!'),
+    timeTwice: yup.object().required('Bạn chưa chọn ngày học!'),
 });
 const CreateClass = (props: Props) => {
     const listTimeSchedule = useGetTimeSchedule();
@@ -33,6 +37,9 @@ const CreateClass = (props: Props) => {
             label: <span>{item.weekday as string}: {item.start as string}-{item.end as string}</span>,
         }
     }) || [];
+    const dispatch = useDispatch<AppDispatch>();
+    const message = useHookMessage();
+    const createClass = useSelector((state: RootState) => (state.createClass as State).state);
     const { values, errors, touched, setFieldValue, handleSubmit, handleChange, handleBlur, setTouched, setErrors } = useFormik({
         initialValues: {
             codeClass: '',
@@ -40,20 +47,59 @@ const CreateClass = (props: Props) => {
             courseLevelId: '',
             dayStart: '',
             dayEnd: '',
-            timeOnce: {},
-            timeTwice: {},
+            timeOnce: '',
+            timeTwice: '',
         },
         validationSchema,
         onSubmit(values) {
-            console.log(values);
+            const mapDataforRequest: Action = {
+                payload: {
+                    query: {
+                        body: {
+                            courseId: values.courseId,
+                            courseLevelId: values.courseLevelId,
+                            codeClass: values.codeClass,
+                            dayRange: {
+                                start: values.dayStart,
+                                end: values.dayEnd
+                            },
+                            timeSchedule: [
+                                values.timeOnce,
+                                values.timeTwice
+                            ]
+                        }
+                    }
+                }
+            };
+            // console.log(mapDataforRequest);
+            dispatch(queryCreateClass(mapDataforRequest));
         }
     });
-    const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         if (!listTimeSchedule) {
             dispatch(queryGetListTimeSchedule());
         }
     }, [listTimeSchedule, dispatch, queryGetListTimeSchedule]);
+    useEffect(() => {
+        if (createClass && !createClass.isLoading && createClass.response) {
+            if (createClass.success) {
+                message.open({
+                    content: 'Tạo lớp thành công!',
+                    type: 'success'
+                }, 2000);
+            }
+            else {
+                message.open({
+                    content: createClass.response.message as string,
+                    type: 'error'
+                }, 2000);
+            }
+            dispatch(clearCreateClass());
+            setTimeout(() => {
+                message.close()
+            }, 2000);
+        }
+    }, [createClass]);
     return (
         <div className={styles.containerCreateClass}>
             <Form onSubmit={handleSubmit}>
@@ -116,10 +162,10 @@ const CreateClass = (props: Props) => {
                 </Form.Group>
                 <Form.Group className={styles.mb_24}>
                     <Form.Label>Lịch học:</Form.Label>
-                    {!(values.timeOnce as Obj)?._id && !(values.timeTwice as Obj)?._id && < p className="error">Đừng quên chọn lịch học trong tuần nhé!</p>}
+                    {(!(values.timeOnce as unknown as Obj)?._id || !(values.timeTwice as unknown as Obj)?._id) && < p className="error">Đừng quên chọn lịch học trong tuần nhé!</p>}
                     <div className={styles.day}>
                         <div className="day1">
-                            <label>Ngày 1: <span className={styles.dayTime}>{(values.timeOnce as Obj)?.label}</span></label>
+                            <label>Ngày 1: <span className={styles.dayTime}>{(values.timeOnce as unknown as Obj)?.label}</span></label>
                             <Dropdown
                                 className={styles.weekday}
                                 trigger='click'
@@ -131,12 +177,16 @@ const CreateClass = (props: Props) => {
                                     setFieldValue('timeOnce', {
                                         _id: e.key,
                                         label: `${findItem!.weekday}: ${findItem!.start}-${findItem!.end}`
-                                    })
+                                    });
+                                    delete errors.timeOnce;
+                                    setErrors({
+                                        ...errors,
+                                    });
                                 }}
                             />
                         </div>
                         <div className="day2">
-                            <label>Ngày 2: <span className={styles.dayTime}>{(values.timeTwice as Obj)?.label}</span></label>
+                            <label>Ngày 2: <span className={styles.dayTime}>{(values.timeTwice as unknown as Obj)?.label}</span></label>
                             <Dropdown
                                 className={styles.weekday}
                                 trigger='click'
@@ -148,12 +198,16 @@ const CreateClass = (props: Props) => {
                                     setFieldValue('timeTwice', {
                                         _id: e.key,
                                         label: `${findItem!.weekday}: ${findItem!.start}-${findItem!.end}`
-                                    })
+                                    });
+                                    delete errors.timeTwice;
+                                    setErrors({
+                                        ...errors,
+                                    });
                                 }}
                             />
                         </div>
                     </div>
-                    <Button htmlType='submit'>Tạo lớp</Button>
+                    <Button loading={createClass.isLoading} htmlType='submit' className={styles.btnCreateClass}>Tạo lớp</Button>
                 </Form.Group>
             </Form>
         </div >
