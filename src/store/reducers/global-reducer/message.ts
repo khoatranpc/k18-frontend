@@ -12,7 +12,7 @@ const message = createSliceReducer('message', undefined, {
     }
 });
 interface OpenMessage {
-    type: 'success' | 'error' | 'warning' | 'loading',
+    type: 'success' | 'error' | 'warning',
     content: React.ReactNode | string
 }
 export const openMessage = createAction<OpenMessage, string>(`${message.name}/openMessage`);
