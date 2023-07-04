@@ -6,11 +6,11 @@ const useHookMessage = () => {
     const objectMessage = {
         open: (payload: {
             content: string;
-            type: 'success' | 'error' | 'warining' | 'info' | 'loading'
+            type: 'success' | 'error' | 'warning'
         }, msPendingClose?: number) => {
             dispatch(openMessage({
                 content: payload.content,
-                type: payload.type
+                type: payload.type as 'success' | 'error' | 'warning'
             }))
             setTimeout(() => {
                 dispatch(clearMessage());
