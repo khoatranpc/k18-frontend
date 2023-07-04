@@ -75,3 +75,12 @@ export enum ClassForm {
     ONLINE = 'ONLINE',
     OFFLINE = 'OFFLINE',
 }
+export enum Weekday {
+    T2 = 'T2',
+    T3 = 'T3',
+    T4 = 'T4',
+    T5 = 'T5',
+    T6 = 'T6',
+    T7 = 'T7',
+    CNB = 'CN',
+}

@@ -18,6 +18,7 @@ import Table from '../Table';
 import TitleHeader from './TitleHeader';
 import ModalCustomize from '../ModalCustomize';
 import styles from '@/styles/class/Class.module.scss';
+import CreateClass from './CreateClass';
 
 const items: TabsProps['items'] = [
     {
@@ -251,13 +252,13 @@ const ManagerClass = () => {
             {
                 openModal && <ModalCustomize
                     show={openModal}
-                    modalHeader={'hihih'}
+                    modalHeader={<h2>Tạo lớp</h2>}
                     onHide={() => {
                         setOpenModal(false);
                     }}
-                // disableCloseButtonHeader
+                    size='lg'
                 >
-                    hello
+                    <CreateClass />
                 </ModalCustomize>
             }
 

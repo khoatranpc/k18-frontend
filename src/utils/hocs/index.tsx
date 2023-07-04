@@ -4,6 +4,7 @@ import { Obj, State } from '@/global/interface';
 import store, { RootState } from '@/store';
 import Loading from '@/components/loading';
 import { queryGetCrrUserInfo } from '@/store/reducers/user-info.reducer';
+import { openMessage } from '@/store/reducers/global-reducer/message';
 
 interface Props {
     children: React.ReactElement;
@@ -36,7 +37,15 @@ const Auth = (props: Props) => {
                 localStorage.removeItem('access_token');
             }
         }
-
+        if (router && crrUser.response && !crrUser.response.status && crrUser.response.message === 'token expired!') {
+            router.push('/auth/login');
+            localStorage.removeItem('access_token');
+            dispatch(openMessage({
+                type: 'error',
+                content: 'Hết hạn đăng nhập! Vui lòng đăng nhập lại.'
+            }))
+        }
+        // missing logic expired token
         if (crrUser.response && crrUser.response.status) {
             setIsLoading(false);
         }

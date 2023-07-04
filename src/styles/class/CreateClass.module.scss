@@ -1,0 +1,22 @@
+.rangePickerDropdown {
+    color: rebeccapurple;
+}
+
+.containerCreateClass {
+
+    p,
+    label {
+        margin: 0;
+    }
+}
+
+.day {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-left: 1.6rem;
+}
+
+.dayTime {
+    text-decoration: underline;
+}

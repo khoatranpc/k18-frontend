@@ -6,6 +6,8 @@ import courses from './course.reducer';
 import registerPreTeacher from './registerPreTeacher.reducer';
 import getDataRoute from './global-reducer/route';
 import listClass from './class/listClass.reducer';
+import listCourse from './course/listCourse.reducer';
+import timeSchedule from './timeSchedule.reducer';
 
 const rootReducer = {
     test: test,
@@ -15,6 +17,8 @@ const rootReducer = {
     courses: courses,
     registerPreTeacher,
     getDataRoute,
-    listClass
+    listClass,
+    timeSchedule,
+    listCourse
 };
 export default rootReducer;

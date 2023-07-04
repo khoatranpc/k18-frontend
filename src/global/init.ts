@@ -1,5 +1,4 @@
-import { StateRoute } from "@/store/reducers/global-reducer/route";
-import { ClassForm, STATUS_CLASS } from "./enum";
+import { ClassForm, STATUS_CLASS, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -33,10 +32,20 @@ const getClassForm: Record<ClassForm, string> = {
     OFFLINE: 'Offline',
     ONLINE: 'Online'
 }
+const getOrderWeekday: Record<Weekday, number> = {
+    T2: 1,
+    T3: 2,
+    T4: 3,
+    T5: 4,
+    T6: 5,
+    T7: 6,
+    CN: 7,
+}
 export {
     statusClass,
     fieldFilter,
     mapStatusToString,
     getColorFromStatusClass,
-    getClassForm
+    getClassForm,
+    getOrderWeekday
 }
