@@ -16,6 +16,7 @@ import Syllabus from './Syllabus';
 import TextBook from './TextBook';
 import styles from '@/styles/class/DetailClass.module.scss';
 import PriorityTeacher from './PriorityTeacher';
+import BookTeacher from './BookTeacher';
 
 enum TabDetailClass {
     OVERVIEW = 'OVERVIEW',
@@ -25,7 +26,8 @@ enum TabDetailClass {
     TEXTBOOK = 'TEXTBOOK',
     SYLLABUS = 'SYLLABUS',
     FEEDBACK = 'FEEDBACK',
-    PRIORITY_TEACHER = 'PRIORITY_TEACHER'
+    PRIORITY_TEACHER = 'PRIORITY_TEACHER',
+    BOOK_TEACHER = 'BOOK_TEACHER'
 }
 const listTab: TabsProps['items'] = [
     {
@@ -57,7 +59,7 @@ const listTab: TabsProps['items'] = [
         label: 'Feedback'
     },
     {
-        key: TabDetailClass.PRIORITY_TEACHER,
+        key: TabDetailClass.BOOK_TEACHER,
         label: 'Dự kiến SX GV'
     },
 ];
@@ -69,7 +71,8 @@ const getComponent: Record<TabDetailClass, React.ReactElement> = {
     STUDENT: <Student />,
     SYLLABUS: <Syllabus />,
     TEXTBOOK: <TextBook />,
-    PRIORITY_TEACHER: <PriorityTeacher />
+    PRIORITY_TEACHER: <PriorityTeacher />,
+    BOOK_TEACHER: <BookTeacher />
 }
 interface Props {
     classId?: string;

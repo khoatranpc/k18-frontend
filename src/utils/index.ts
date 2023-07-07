@@ -1,5 +1,6 @@
 import { v4 as uid } from 'uuid';
 import { format } from 'date-fns';
+import { Obj, RowData } from '@/global/interface';
 
 const uuid = () => {
     return uid() as string;
@@ -31,10 +32,40 @@ const logout = () => {
 const formatDatetoString = (date: Date | string | number, formatString?: string) => {
     return format(new Date(date), formatString || 'MM/dd/yyyy');
 }
+
+const generateRowDataForMergeRowSingleField = (data: Obj, fieldForMerge: string): RowData[] => {
+    const mapping: RowData[] = [];
+    data.forEach((element: Obj) => {
+        const arr = (element[fieldForMerge] as Array<Obj>);
+        if (arr.length !== 0) {
+            arr!.forEach((item, crrIndex) => {
+                const catchedRecord = {
+                    ...element,
+                    key: uuid(),
+                    [fieldForMerge]: {
+                        ...item
+                    },
+                    rowSpan: (element[fieldForMerge] as Array<Obj>).length !== 0 ? (crrIndex === 0 ? (element[fieldForMerge] as Array<Obj>).length : 0) : 1,
+                    recordId: element._id as string
+                };
+                mapping.push(catchedRecord);
+            });
+        } else {
+            const record = {
+                ...element,
+                key: uuid(),
+                recordId: element._id as string
+            }
+            mapping.push(record);
+        }
+    });
+    return mapping;
+}
 export {
     uuid,
     listMonth,
     sortByString,
     logout,
-    formatDatetoString
+    formatDatetoString,
+    generateRowDataForMergeRowSingleField
 }

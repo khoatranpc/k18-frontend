@@ -22,6 +22,7 @@ interface Props {
     classNamePagination?: string;
     enablePaginationAjax?: boolean;
     maxPage?: number;
+    bordered?: boolean;
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
     onChangeDataPagination?: (data: { currentPage: number, currentTotalRowOnPage: number }) => void;
     hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
@@ -52,6 +53,7 @@ const Table = (props: Props) => {
     return (
         <div className={`tableCustomize ${styles.tableCustomizeAnt} ${props.className ? props.className : ''}`}>
             <TableComponent
+                bordered={props.bordered}
                 dataSource={props.rowData}
                 columns={mapColumns}
                 rowSelection={props.enableRowSelection ? rowSelection : undefined}

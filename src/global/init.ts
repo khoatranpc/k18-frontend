@@ -1,4 +1,4 @@
-import { ClassForm, STATUS_CLASS, Weekday } from "./enum";
+import { ClassForm, ROLE_TEACHER, STATUS_CLASS, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -41,11 +41,17 @@ const getOrderWeekday: Record<Weekday, number> = {
     T7: 6,
     CN: 7,
 }
+const mapRoleToString: Record<ROLE_TEACHER, string> = {
+    MT: 'Mentor',
+    SP: 'Suppoter',
+    ST: 'Super Teacher'
+}
 export {
     statusClass,
     fieldFilter,
     mapStatusToString,
     getColorFromStatusClass,
     getClassForm,
-    getOrderWeekday
+    getOrderWeekday,
+    mapRoleToString
 }
