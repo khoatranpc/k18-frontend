@@ -10,6 +10,8 @@ import listCourse from './course/listCourse.reducer';
 import timeSchedule from './timeSchedule.reducer';
 import createClass from './class/createClass.reducer';
 import bookTeacher from './class/bookTeacher.reducer';
+import addRequestBookTeacher from './class/addRequestBookTeacher.reducer';
+import detailClass from './class/detailClass.reducer';
 import locations from './location/localtion.reducer';
 
 const rootReducer = {
@@ -25,6 +27,8 @@ const rootReducer = {
     listCourse,
     createClass,
     locations,
-    bookTeacher
+    bookTeacher,
+    addRequestBookTeacher,
+    detailClass
 };
 export default rootReducer;

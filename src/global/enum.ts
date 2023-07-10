@@ -43,7 +43,8 @@ export enum KEY_ICON {
     FBK = 'FBK',
     ZOOM = 'ZOOM',
     DRIVE = 'DRIVE',
-    RELOAD = 'RELOAD'
+    RELOAD = 'RELOAD',
+    LOCATION = 'LOCATION'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',
@@ -68,7 +69,8 @@ export enum ComponentPage {
     CALENDAR = 'CALENDAR',
     SETTING = 'SETTING',
     HELP = 'HELP',
-    WELCOME = 'WELCOME'
+    WELCOME = 'WELCOME',
+    LOCATION = 'LOCATION'
 }
 
 export enum ClassForm {

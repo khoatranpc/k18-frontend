@@ -80,6 +80,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.SAVE
         },
         {
+            title: 'Cơ sở',
+            route: CombineRoute['TE']['LOCATION'],
+            key: 'LOCATION',
+            keyIcon: KEY_ICON.LOCATION,
+            showIcon: true,
+            indexRoute: CombineRoute['TE']['LOCATION'],
+            noReplaceTitle: true,
+            component: ComponentPage.LOCATION
+        },
+        {
             title: 'Feed back',
             route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
             key: 'FEED_BACK',

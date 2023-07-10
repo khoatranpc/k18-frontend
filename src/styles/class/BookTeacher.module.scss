@@ -1,1 +1,55 @@
-.bookTeacher {}
+.bookTeacher {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    .fnc {
+        display: flex;
+
+        .btnCreateRequest {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-left: auto;
+            border-color: var(--base);
+            color: var(--base);
+        }
+    }
+
+    .tdGroup {
+        span {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+
+            .eye {
+                display: none;
+            }
+        }
+    }
+
+    tr:hover {
+        .eye {
+            display: block;
+        }
+    }
+}
+
+.popOver {
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    div {
+        margin: 0;
+        cursor: pointer;
+        padding: 0.8rem;
+        border-radius: 0.8rem;
+    }
+
+    div:hover {
+        background-color: var(--white-bg);
+    }
+}

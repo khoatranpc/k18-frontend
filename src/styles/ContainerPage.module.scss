@@ -29,6 +29,10 @@
                 background-color: var(--pink-red);
                 color: var(--color-red);
             }
+
+            img {
+                max-height: 2rem;
+            }
         }
 
         .panel {

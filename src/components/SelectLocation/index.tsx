@@ -27,7 +27,7 @@ const SelectLocation = (props: Props) => {
         return {
             key: item._id as string,
             label: item.locationDetail as string,
-            onclick() {
+            onClick() {
                 props.onSelectLocation?.(item._id as string, item.locationDetail as string);
             }
         }
@@ -35,7 +35,7 @@ const SelectLocation = (props: Props) => {
     useEffect(() => {
         if (!locations) {
             queryLocations();
-        } console.log(locations);
+        }
     }, [locations])
     return (
         <div className={styles.selectLocation}>

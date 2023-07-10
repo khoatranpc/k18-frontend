@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Button, Input, MenuProps } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -79,7 +79,7 @@ const CreateClass = (props: Props) => {
         if (!listTimeSchedule) {
             dispatch(queryGetListTimeSchedule());
         }
-    }, [listTimeSchedule, dispatch, queryGetListTimeSchedule]);
+    }, [listTimeSchedule, dispatch]);
     useEffect(() => {
         if (createClass && !createClass.isLoading && createClass.response) {
             if (createClass.success) {
@@ -99,7 +99,7 @@ const CreateClass = (props: Props) => {
                 message.close()
             }, 2000);
         }
-    }, [createClass]);
+    }, [createClass, dispatch]);
     return (
         <div className={styles.containerCreateClass}>
             <Form onSubmit={handleSubmit}>

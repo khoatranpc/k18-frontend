@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { Button, TabsProps } from 'antd';
-import { STATUS_CLASS } from '@/global/enum';
-import { uuid } from '@/utils';
+import { Obj } from '@/global/interface';
+import CombineRoute from '@/global/route';
+import { ComponentPage, STATUS_CLASS } from '@/global/enum';
+import { formatDatetoString } from '@/utils';
 import useGetDataRoute from '@/utils/hooks/getDataRoute';
+import { useDetailClass } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import Tabs from '@/components/Tabs';
 import OverView from './OverView';
@@ -14,9 +17,9 @@ import ManagerGroup from './ManagerGroup';
 import Student from './Student';
 import Syllabus from './Syllabus';
 import TextBook from './TextBook';
-import styles from '@/styles/class/DetailClass.module.scss';
-import PriorityTeacher from './PriorityTeacher';
 import BookTeacher from './BookTeacher';
+import TitleHeader from '../TitleHeader';
+import styles from '@/styles/class/DetailClass.module.scss';
 
 enum TabDetailClass {
     OVERVIEW = 'OVERVIEW',
@@ -26,7 +29,6 @@ enum TabDetailClass {
     TEXTBOOK = 'TEXTBOOK',
     SYLLABUS = 'SYLLABUS',
     FEEDBACK = 'FEEDBACK',
-    PRIORITY_TEACHER = 'PRIORITY_TEACHER',
     BOOK_TEACHER = 'BOOK_TEACHER'
 }
 const listTab: TabsProps['items'] = [
@@ -63,17 +65,7 @@ const listTab: TabsProps['items'] = [
         label: 'Dự kiến SX GV'
     },
 ];
-const getComponent: Record<TabDetailClass, React.ReactElement> = {
-    OVERVIEW: <OverView />,
-    ATTENDACE: <Attendace />,
-    FEEDBACK: <FeedBack />,
-    MANAGER_GROUP: <ManagerGroup />,
-    STUDENT: <Student />,
-    SYLLABUS: <Syllabus />,
-    TEXTBOOK: <TextBook />,
-    PRIORITY_TEACHER: <PriorityTeacher />,
-    BOOK_TEACHER: <BookTeacher />
-}
+
 interface Props {
     classId?: string;
 }
@@ -81,32 +73,42 @@ const Detail = (props: Props) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const stateRoute = useGetDataRoute();
-    const [currentContent, setCurrentContet] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);
+    const { data, query } = useDetailClass('GET');
+    const [currentContent, setCurrentContent] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);
+    const firstSetInitRoute = useRef<boolean>(true);
+    const getComponent: Record<TabDetailClass, React.ReactElement> = {
+        OVERVIEW: <OverView />,
+        ATTENDACE: <Attendace />,
+        FEEDBACK: <FeedBack />,
+        MANAGER_GROUP: <ManagerGroup />,
+        STUDENT: <Student />,
+        SYLLABUS: <Syllabus />,
+        TEXTBOOK: <TextBook />,
+        BOOK_TEACHER: <BookTeacher classId={router.query.classId as string} />
+    }
     // missing logic call api detail class
     useEffect(() => {
-        if (!stateRoute.replaceTitle) {
+        if (!stateRoute?.replaceTitle && !data.response) {
+            query?.(router.query.classId as string);
+        }
+    }, []);
+    useEffect(() => {
+        if (data.response && data.success && firstSetInitRoute.current && !stateRoute?.replaceTitle) {
+            firstSetInitRoute.current = false;
+            const crrData = (data.response.data as Obj);
             const payloadRoute: PayloadRoute = {
                 payload: {
-                    ...stateRoute,
-                    moreData: {
-                        key: uuid(),
-                        codeClass: 'PNL-UID08',
-                        subject: 'Code',
-                        teacher: 'Nguyễn Văn Cường',
-                        style: 'Hybrid',
-                        dateStart: '20/02/2022',
-                        status: STATUS_CLASS.RUNNING,
-                        timeSchedule: [{
-                            weekday: 'T2',
-                            time: '19h15-22h15'
-                        }]
-                    },
-                    replaceTitle: 'PNL-CIJS84',
+                    route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
+                    title: crrData?.codeClass as string,
+                    replaceTitle: <TitleHeader codeClass={crrData?.codeClass as string} dateStart={formatDatetoString(new Date(crrData?.dayRange?.start as Date), 'dd/MM/yyyy')} statusClass={crrData?.status as STATUS_CLASS} />,
+                    hasBackPage: true,
+                    moreData: crrData,
+                    component: ComponentPage.DETAILCLASS
                 }
             };
             dispatch(initDataRoute(payloadRoute));
         }
-    }, []);
+    }, [data, dispatch, initDataRoute, stateRoute]);
     return (
         <div className={styles.detailClassContainer}>
             <Tabs
@@ -114,7 +116,7 @@ const Detail = (props: Props) => {
                 listItemTab={listTab}
                 notAllowContent
                 onClickTab={(key) => {
-                    setCurrentContet(key as TabDetailClass);
+                    setCurrentContent(key as TabDetailClass);
                 }}
             />
             {

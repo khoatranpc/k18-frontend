@@ -16,8 +16,11 @@ const useHookMessage = () => {
                 dispatch(clearMessage());
             }, msPendingClose || 2500)
         },
-        close: () => {
-            dispatch(clearMessage());
+        close: (msPendingClose?: number, callBack?: () => void) => {
+            setTimeout(() => {
+                dispatch(clearMessage());
+                callBack?.();
+            }, msPendingClose || 2500)
         }
     }
     return objectMessage;

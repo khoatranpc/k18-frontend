@@ -1,21 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Action, Columns, Obj, RowData } from '@/global/interface';
+import { Button, Popover, Popconfirm } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { Columns, Obj, RowData, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
-import { ROLE_TEACHER } from '@/global/enum';
+import { KEY_ICON, ROLE_TEACHER } from '@/global/enum';
+import { MapIconKey } from '@/global/icon';
 import { generateRowDataForMergeRowSingleField, uuid } from '@/utils';
 import { useQueryBookTeacher } from '@/utils/hooks';
+import { RootState } from '@/store';
 import Table from '@/components/Table';
+import ModalCustomize from '@/components/ModalCustomize';
+import AddRequestGroup from './AddRequestGroup';
 import styles from '@/styles/class/BookTeacher.module.scss';
 
-const BookTeacher = () => {
-    const { dataGet, queryGet } = useQueryBookTeacher('GET');
+interface Props {
+    classId: string;
+}
+const BookTeacher = (props: Props) => {
+    const { query } = useQueryBookTeacher('GET');
     const router = useRouter();
     const columns: Columns = [
         {
             key: 'GROUP_NUMBER',
             dataIndex: 'groupNumber',
+            className: `${styles.tdGroup}`,
             title: 'Nhóm',
+            render(value, record) {
+                return <Popover
+                    trigger={['hover']}
+                    placement='top'
+                    content={<div className={styles.popOver}>
+                        <div>Chi tiết</div>
+                        <Popconfirm
+                            title="Xoá nhóm"
+                            okText="Xác nhận"
+                            cancelText="Huỷ"
+                            placement="top"
+                            onConfirm={() => {
+                                console.log('delete', record._id as string);
+                            }}
+                        >
+                            <div>
+                                Xoá
+                            </div>
+                        </Popconfirm>
+                    </div>}
+                >
+                    <span>{value}</span>
+                    <EyeOutlined className={styles.eye} />
+                </Popover>;
+            },
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,
@@ -48,7 +84,9 @@ const BookTeacher = () => {
             dataIndex: 'teacherRegister',
             title: 'Vị trí',
             render(value) {
-                return <div>{mapRoleToString[value?.role as ROLE_TEACHER] || 'Thiếu'}</div>
+                return <div>
+                    {mapRoleToString[value?.roleRegister as ROLE_TEACHER] || 'Thiếu'}
+                </div>
             },
         },
         {
@@ -61,27 +99,51 @@ const BookTeacher = () => {
             },
         },
     ]
-
-    const rowData: RowData[] = ((dataGet?.response as Obj)?.data as Array<Obj>)?.map((item) => {
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const dataRd = useSelector((state: RootState) => (state.bookTeacher as State).state);
+    const rowData: RowData[] = ((dataRd?.response as Obj)?.data as Array<Obj>)?.map((item) => {
         return {
             key: uuid(),
             ...item
         }
     }) || [];
     useEffect(() => {
-        queryGet(router.query.classId as string);
+        query!(router.query.classId as string);
     }, []);
     return (
         <div className={styles.bookTeacher}>
+            <div className={styles.fnc}>
+                <Button
+                    className={styles.btnCreateRequest}
+                    onClick={() => {
+                        setOpenModal(true);
+                    }}>
+                    {MapIconKey[KEY_ICON.PLCR]}
+                    <span>Thêm nhóm</span>
+                </Button>
+            </div>
+            <ModalCustomize
+                modalHeader={'Thêm nhóm'}
+                show={openModal}
+                onHide={() => {
+                    setOpenModal(false);
+                }}
+            >
+                <AddRequestGroup
+                    groupNumber={((dataRd?.response as Obj)?.data as Array<Obj>)?.length + 1}
+                    classId={router.query.classId as string}
+                    closeModal={() => {
+                        setOpenModal(false);
+                    }}
+                />
+            </ModalCustomize>
             <Table
+                loading={dataRd.isLoading}
                 className="hasMergeCell"
                 bordered
                 columns={columns}
                 rowData={generateRowDataForMergeRowSingleField(rowData, 'teacherRegister')}
                 disableDefaultPagination
-                hanldeClickRow={(record) => {
-                    console.log(record);
-                }}
             />
         </div>
     )

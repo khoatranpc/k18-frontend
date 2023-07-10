@@ -47,3 +47,7 @@ export interface Columns extends TableColumnsType<Record<string, unknown>> {
 export interface RowData extends Record<string, unknown> {
     key: string;
 }
+export interface BaseInterfaceHookReducer {
+    data: Obj | Action;
+    query?: (params: string | Array<string> | Obj) => void;
+}

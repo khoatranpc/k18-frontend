@@ -26,7 +26,7 @@ const Auth = (props: Props) => {
         } else {
             localStorage.removeItem('access_token');
         }
-    }, []);
+    }, [dispatch]);
     useEffect(() => {
         const access_token = localStorage.getItem('access_token');
         if (router) {
