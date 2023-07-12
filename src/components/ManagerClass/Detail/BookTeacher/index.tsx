@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Popover, Popconfirm } from 'antd';
-import { EyeOutlined } from '@ant-design/icons';
+import { Button, Popover, Popconfirm, Switch } from 'antd';
+import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Columns, Obj, RowData, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
@@ -12,6 +12,7 @@ import { useQueryBookTeacher } from '@/utils/hooks';
 import { RootState } from '@/store';
 import Table from '@/components/Table';
 import ModalCustomize from '@/components/ModalCustomize';
+import AddTeacher from './AddTeacher';
 import AddRequestGroup from './AddRequestGroup';
 import styles from '@/styles/class/BookTeacher.module.scss';
 
@@ -32,7 +33,16 @@ const BookTeacher = (props: Props) => {
                     trigger={['hover']}
                     placement='top'
                     content={<div className={styles.popOver}>
-                        <div>Chi tiết</div>
+                        <div
+                            onClick={() => {
+                                setModalAddTeacher({
+                                    show: true,
+                                    requestId: record._id as string
+                                });
+                            }}
+                        >
+                            Thêm GV
+                        </div>
                         <Popconfirm
                             title="Xoá nhóm"
                             okText="Xác nhận"
@@ -43,7 +53,7 @@ const BookTeacher = (props: Props) => {
                             }}
                         >
                             <div>
-                                Xoá
+                                Xoá nhóm
                             </div>
                         </Popconfirm>
                     </div>}
@@ -92,13 +102,27 @@ const BookTeacher = (props: Props) => {
         {
             key: 'STATUS',
             dataIndex: 'teacherRegister',
-            title: 'Trạng thái',
-            className: 'text-center',
+            title: 'Trạng thái duyệt',
+            className: `text-center ${styles.tdSwitch}`,
             render(value) {
-                return <div>{value.accept ? 'Duyệt' : 'Chưa duyệt'}</div>
+                return <div>
+                    <Switch
+                        className={styles.switch}
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        checked={value.accept as boolean}
+                    />
+                </div>
             },
         },
     ]
+    const [modalAddTeacher, setModalAddTeacher] = useState<{
+        show: boolean;
+        requestId: string;
+    }>({
+        show: false,
+        requestId: ''
+    });
     const [openModal, setOpenModal] = useState<boolean>(false);
     const dataRd = useSelector((state: RootState) => (state.bookTeacher as State).state);
     const rowData: RowData[] = ((dataRd?.response as Obj)?.data as Array<Obj>)?.map((item) => {
@@ -134,6 +158,27 @@ const BookTeacher = (props: Props) => {
                     classId={router.query.classId as string}
                     closeModal={() => {
                         setOpenModal(false);
+                    }}
+                />
+            </ModalCustomize>
+            <ModalCustomize
+                modalHeader="Thêm GV"
+                show={modalAddTeacher.show}
+                onHide={() => {
+                    setModalAddTeacher({
+                        show: false,
+                        requestId: ''
+                    });
+                }}
+            >
+                <AddTeacher
+                    requestId={modalAddTeacher.requestId}
+                    onSuccess={() => {
+                        query!(router.query.classId as string);
+                        setModalAddTeacher({
+                            show: false,
+                            requestId: ''
+                        });
                     }}
                 />
             </ModalCustomize>

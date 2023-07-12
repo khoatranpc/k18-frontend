@@ -29,11 +29,25 @@
         }
     }
 
+    tr {
+        td.tdSwitch {
+            span {
+                font-size: 0.3rem !important;
+            }
+        }
+    }
+
     tr:hover {
         .eye {
             display: block;
         }
     }
+
+
+}
+
+.btnAddTeacher {
+    float: right;
 }
 
 .popOver {

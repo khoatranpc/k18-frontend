@@ -193,6 +193,11 @@ a {
     border-bottom-width: 2px !important;
 }
 
+// :where(.css-dev-only-do-not-override-zjzpde).ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item-group-title {
+//     color: var(--black);
+//     cursor: pointer;
+// }
+
 .tabs-customize {
     width: fit-content;
 
@@ -569,4 +574,9 @@ div.ant-select-tree-list-holder div.ant-select-tree-treenode.ant-select-tree-tre
 
 div.ant-message {
     z-index: 1056;
+}
+
+:where(.css-dev-only-do-not-override-zjzpde).ant-switch.ant-switch-checked,
+:where(.css-dev-only-do-not-override-zjzpde).ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+    background-color: var(--base);
 }

@@ -10,11 +10,12 @@ export interface ClickItem {
 interface Props {
     trigger: 'click' | 'hover' | 'contextMenu';
     listSelect: MenuProps['items'];
-    title: string;
     className?: string;
     disabled?: boolean;
-    onClickItem?: (e: ClickItem, keyIndex?: string) => void;
     keyIndex?: string;
+    title?: React.ReactNode | string;
+    open?: boolean;
+    onClickItem?: (e: ClickItem, keyIndex?: string) => void;
 }
 const Dropdown = (props: Props) => {
     const mapListSelect: any = props.listSelect!.map((item) => {
@@ -29,10 +30,15 @@ const Dropdown = (props: Props) => {
         <div className={props.className}>
             <DropdownComponent
                 menu={{ items: mapListSelect }}
+                open={props.open}
                 trigger={[props.trigger]}
                 className="dropdownCustomize"
             >
-                <Button>{props.title}</Button>
+                {typeof props.title === 'string' ?
+                    (<Button>{props.title}</Button>) :
+                    (props.title)
+                }
+
             </DropdownComponent>
         </div>
     )

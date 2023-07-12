@@ -12,7 +12,9 @@ import createClass from './class/createClass.reducer';
 import bookTeacher from './class/bookTeacher.reducer';
 import addRequestBookTeacher from './class/addRequestBookTeacher.reducer';
 import detailClass from './class/detailClass.reducer';
+import handleTeacherInRecordBT from './class/handleTeacherInRecordBT.reducer';
 import locations from './location/localtion.reducer';
+import searchTeacher from './searchTeacher.reducer';
 
 const rootReducer = {
     test: test,
@@ -29,6 +31,8 @@ const rootReducer = {
     locations,
     bookTeacher,
     addRequestBookTeacher,
-    detailClass
+    detailClass,
+    searchTeacher,
+    handleTeacherInRecordBT
 };
 export default rootReducer;

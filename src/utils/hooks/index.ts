@@ -6,6 +6,7 @@ import { queryGetLocations } from "@/store/reducers/location/localtion.reducer";
 import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reducers/class/bookTeacher.reducer";
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
 import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
+import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -52,7 +53,10 @@ const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
                 const payload: Action = {
                     payload: {
                         query: {
-                            params: [params as string]
+                            params: [params as string],
+                            query: {
+                                fields: ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept']
+                            }
                         }
                     }
                 }
@@ -111,11 +115,27 @@ const useDetailClass = (action: 'GET' | 'ADD' | 'UPDATE' | 'CLEAR'): BaseInterfa
         data: detailClass
     }
 }
+const useHandleTeacherInRCBT = () => {
+    const dataHanlde = useSelector((state: RootState) => (state.handleTeacherInRecordBT as State).state);
+    const dispatch = useDispatch();
+    const query = (payload: Action) => {
+        dispatch(queryHandleTeacherInRecordBT(payload));
+    }
+    const clear = () => {
+        dispatch(clearStateHanldeTeacherInRecordBT());
+    }
+    return {
+        dataHanlde,
+        query,
+        clear
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
     useGetListCourse,
     useGetLocations,
     useQueryBookTeacher,
-    useDetailClass
+    useDetailClass,
+    useHandleTeacherInRCBT
 }

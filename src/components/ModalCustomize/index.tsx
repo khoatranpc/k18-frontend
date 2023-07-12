@@ -10,6 +10,7 @@ interface Props {
     modalHeader?: React.ReactElement | string;
     modalFooter?: React.ReactElement | string;
     dialogClassName?: string;
+    centered?: boolean;
     size?: 'sm' | 'lg' | 'xl';
     onHide?: () => void;
 }
@@ -23,6 +24,7 @@ const ModalCustomize = (props: Props) => {
                 onHide={props.onHide}
                 backdrop="static"
                 keyboard={false}
+                centered={props.centered}
             >
                 {
                     props.modalHeader && <Modal.Header closeButton={!props.disableCloseButtonHeader}>
