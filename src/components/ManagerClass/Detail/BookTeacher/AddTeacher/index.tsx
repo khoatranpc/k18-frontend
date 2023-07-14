@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { querySearchTeacherByEmail } from '@/store/reducers/searchTeacher.reducer';
-import { Button, Input, MenuProps } from 'antd';
+import { Button, Input, MenuProps, Popconfirm } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Obj, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
@@ -15,6 +15,12 @@ import styles from '@/styles/class/BookTeacher.module.scss';
 interface Props {
     requestId: string;
     onSuccess: () => void;
+    // for update teacher
+    isUpdate?: boolean;
+    teacherId?: string;
+    teacherRole?: ROLE_TEACHER | string;
+    status?: boolean;
+    nameTeacher?: string;
 }
 const AddTeacher = (props: Props) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,8 +35,8 @@ const AddTeacher = (props: Props) => {
         id: string;
         label: string
     }>({
-        id: '',
-        label: ''
+        id: props.teacherId || '',
+        label: props.nameTeacher || ''
     });
     const handleSearchTeacher = (value: string) => {
         const payload: Action = {
@@ -44,25 +50,29 @@ const AddTeacher = (props: Props) => {
         }
         dispatch(querySearchTeacherByEmail(payload));
     }
-    const { dataHanlde, query, clear } = useHandleTeacherInRCBT();
+    const { dataHanlde, query, clear, removeTeacher, update } = useHandleTeacherInRCBT();
     const message = useHookMessage();
-    const [crrRole, setCrrRole] = useState<ROLE_TEACHER | string>('');
+    const [crrRole, setCrrRole] = useState<ROLE_TEACHER | string>(props.teacherRole || '');
     const role: Array<string> = [ROLE_TEACHER.ST, ROLE_TEACHER.MT, ROLE_TEACHER.SP];
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        const payload: Action = {
-            payload: {
-                query: {
+        if (!props.isUpdate) {
+            const payload: Action = {
+                payload: {
                     query: {
-                        options: 'ADD',
-                        role: crrRole,
-                        idTeacher: teacher.id
-                    },
-                    params: [props.requestId]
+                        query: {
+                            options: 'ADD',
+                            role: crrRole,
+                            idTeacher: teacher.id
+                        },
+                        params: [props.requestId]
+                    }
                 }
-            }
-        };
-        query(payload);
+            };
+            query(payload);
+        } else {
+            update(teacher.id, crrRole as ROLE_TEACHER, props.requestId);
+        }
     }
     useEffect(() => {
         if (dataHanlde.response) {
@@ -73,11 +83,10 @@ const AddTeacher = (props: Props) => {
                 content: dataHanlde.response.message as string,
                 type: dataHanlde.success ? 'success' : 'error'
             }, 2000);
-            message.close(2000, () => {
-                clear();
-            });
+            clear();
+            message.close(2000);
         }
-    }, [dataHanlde])
+    }, [dataHanlde]);
     return (
         <div className={styles.addTeacher}>
             <Form onSubmit={handleSubmit}>
@@ -111,7 +120,19 @@ const AddTeacher = (props: Props) => {
                         setCrrRole(e.key)
                     }}
                 />
-                <Button htmlType="submit" className={styles.btnAddTeacher}>Thêm</Button>
+                <div className={styles.fnc}>
+                    {props.isUpdate &&
+                        <Popconfirm
+                            title={`Xoá GV: ${props.nameTeacher}`}
+                            onConfirm={() => {
+                                removeTeacher(props.teacherId as string, props.requestId);
+                            }}
+                        >
+                            <Button className={styles.btnRemoveTeacher}>Xoá</Button>
+                        </Popconfirm>
+                    }
+                    <Button htmlType="submit" className={styles.btnAddTeacher}>{props.isUpdate ? 'Cập nhật' : 'Thêm'}</Button>
+                </div>
             </Form>
         </div>
     )

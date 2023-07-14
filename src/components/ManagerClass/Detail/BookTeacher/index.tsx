@@ -19,9 +19,36 @@ import styles from '@/styles/class/BookTeacher.module.scss';
 interface Props {
     classId: string;
 }
+const initModalUpdateTeacher = {
+    show: false,
+    requestId: '',
+    teacherId: '',
+    role: '',
+    statusAccept: false,
+    nameTeacher: ''
+}
 const BookTeacher = (props: Props) => {
     const { query } = useQueryBookTeacher('GET');
     const router = useRouter();
+    const [modalUpdateTeacher, setModalUpdateTeacher] = useState<{
+        show: boolean;
+        requestId: string;
+        teacherId: string;
+        role: ROLE_TEACHER | string;
+        statusAccept: boolean;
+        nameTeacher: string;
+    }>(initModalUpdateTeacher);
+    const handleClickTeacherCell = (data: Obj) => {
+        const teacherRegister = ((data.teacherRegister as Obj));
+        setModalUpdateTeacher({
+            requestId: data.recordId as string,
+            teacherId: teacherRegister?.idTeacher?._id as string || '',
+            role: teacherRegister?.roleRegister as ROLE_TEACHER,
+            show: true,
+            statusAccept: teacherRegister?.accept,
+            nameTeacher: teacherRegister?.idTeacher?.fullName as string
+        })
+    }
     const columns: Columns = [
         {
             key: 'GROUP_NUMBER',
@@ -84,10 +111,20 @@ const BookTeacher = (props: Props) => {
         {
             key: 'TEACHER_REGISTER',
             dataIndex: 'teacherRegister',
+            className: `${styles.cellTeacherRegister}`,
             title: 'Giáo viên đăng ký',
             render(value) {
                 return <div>{value?.idTeacher?.fullName || 'Thiếu'}</div>
             },
+            onCell(data) {
+                return {
+                    onClick() {
+                        if ((data.teacherRegister as Array<Obj>).length !== 0) {
+                            handleClickTeacherCell(data);
+                        }
+                    }
+                }
+            }
         },
         {
             key: 'ROLE',
@@ -162,24 +199,37 @@ const BookTeacher = (props: Props) => {
                 />
             </ModalCustomize>
             <ModalCustomize
-                modalHeader="Thêm GV"
-                show={modalAddTeacher.show}
+                modalHeader={modalAddTeacher.show ? 'Thêm GV' : 'Cập nhật'}
+                show={modalAddTeacher.show || modalUpdateTeacher.show}
                 onHide={() => {
-                    setModalAddTeacher({
-                        show: false,
-                        requestId: ''
-                    });
-                }}
-            >
-                <AddTeacher
-                    requestId={modalAddTeacher.requestId}
-                    onSuccess={() => {
-                        query!(router.query.classId as string);
+                    if (modalAddTeacher.show) {
                         setModalAddTeacher({
                             show: false,
                             requestId: ''
                         });
+                    } else {
+                        setModalUpdateTeacher(initModalUpdateTeacher);
+                    }
+                }}
+            >
+                <AddTeacher
+                    isUpdate={modalUpdateTeacher.show}
+                    nameTeacher={modalUpdateTeacher.nameTeacher}
+                    requestId={modalAddTeacher.requestId || modalUpdateTeacher.requestId}
+                    teacherId={modalUpdateTeacher.teacherId}
+                    teacherRole={modalUpdateTeacher.role}
+                    onSuccess={() => {
+                        query!(router.query.classId as string);
+                        if (modalAddTeacher.show) {
+                            setModalAddTeacher({
+                                show: false,
+                                requestId: ''
+                            });
+                        } else {
+                            setModalUpdateTeacher(initModalUpdateTeacher);
+                        }
                     }}
+
                 />
             </ModalCustomize>
             <Table

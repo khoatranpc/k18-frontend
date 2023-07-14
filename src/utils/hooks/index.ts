@@ -7,6 +7,7 @@ import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reduc
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
 import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
+import { ROLE_TEACHER } from "@/global/enum";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -124,10 +125,41 @@ const useHandleTeacherInRCBT = () => {
     const clear = () => {
         dispatch(clearStateHanldeTeacherInRecordBT());
     }
+    const removeTeacher = (teacherId: string, requestId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        options: 'REMOVE',
+                        idTeacher: teacherId
+                    },
+                    params: [requestId]
+                }
+            }
+        }
+        dispatch(queryHandleTeacherInRecordBT(payload));
+    }
+    const update = (teacherId: string, role: ROLE_TEACHER, requestId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        options: 'UPDATE',
+                        idTeacher: teacherId,
+                        role
+                    },
+                    params: [requestId]
+                }
+            }
+        }
+        dispatch(queryHandleTeacherInRecordBT(payload));
+    }
     return {
         dataHanlde,
         query,
-        clear
+        clear,
+        removeTeacher,
+        update
     }
 }
 export {

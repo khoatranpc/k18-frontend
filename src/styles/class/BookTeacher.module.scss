@@ -35,6 +35,10 @@
                 font-size: 0.3rem !important;
             }
         }
+
+        td.cellTeacherRegister:hover {
+            color: var(--base);
+        }
     }
 
     tr:hover {
@@ -46,8 +50,19 @@
 
 }
 
+.fnc {
+    margin-top: 0.8rem;
+}
+
 .btnAddTeacher {
     float: right;
+}
+
+.btnRemoveTeacher {
+    &:hover {
+        color: var(--base) !important;
+        border-color: var(--base) !important;
+    }
 }
 
 .popOver {
