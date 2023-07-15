@@ -117,7 +117,7 @@ const useDetailClass = (action: 'GET' | 'ADD' | 'UPDATE' | 'CLEAR'): BaseInterfa
     }
 }
 const useHandleTeacherInRCBT = () => {
-    const dataHanlde = useSelector((state: RootState) => (state.handleTeacherInRecordBT as State).state);
+    const dataHandle = useSelector((state: RootState) => (state.handleTeacherInRecordBT as State).state);
     const dispatch = useDispatch();
     const query = (payload: Action) => {
         dispatch(queryHandleTeacherInRecordBT(payload));
@@ -139,14 +139,16 @@ const useHandleTeacherInRCBT = () => {
         }
         dispatch(queryHandleTeacherInRecordBT(payload));
     }
-    const update = (teacherId: string, role: ROLE_TEACHER, requestId: string) => {
+    const update = (teacherId: string, updateTeacherId: string, role: ROLE_TEACHER, accept: boolean, requestId: string) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
                         options: 'UPDATE',
                         idTeacher: teacherId,
-                        role
+                        role,
+                        updateTeacherId,
+                        accept
                     },
                     params: [requestId]
                 }
@@ -155,7 +157,7 @@ const useHandleTeacherInRCBT = () => {
         dispatch(queryHandleTeacherInRecordBT(payload));
     }
     return {
-        dataHanlde,
+        dataHandle,
         query,
         clear,
         removeTeacher,

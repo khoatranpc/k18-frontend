@@ -8,7 +8,7 @@ import { mapRoleToString } from '@/global/init';
 import { KEY_ICON, ROLE_TEACHER } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { generateRowDataForMergeRowSingleField, uuid } from '@/utils';
-import { useQueryBookTeacher } from '@/utils/hooks';
+import { useHandleTeacherInRCBT, useQueryBookTeacher } from '@/utils/hooks';
 import { RootState } from '@/store';
 import Table from '@/components/Table';
 import ModalCustomize from '@/components/ModalCustomize';
@@ -29,7 +29,13 @@ const initModalUpdateTeacher = {
 }
 const BookTeacher = (props: Props) => {
     const { query } = useQueryBookTeacher('GET');
+    const { dataHandle, clear, update } = useHandleTeacherInRCBT();
     const router = useRouter();
+    const handleToggleAcceptStatus = (data: Obj, record?: Obj) => {
+        const dataRegiter = data.teacherRegister as Obj;
+        const teacher = dataRegiter?.idTeacher as Obj;
+        update(teacher?._id as string, teacher?._id as string, teacher?.roleRegister as ROLE_TEACHER, !(dataRegiter.accept as boolean), data.recordId as string);
+    }
     const [modalUpdateTeacher, setModalUpdateTeacher] = useState<{
         show: boolean;
         requestId: string;
@@ -141,9 +147,12 @@ const BookTeacher = (props: Props) => {
             dataIndex: 'teacherRegister',
             title: 'Trạng thái duyệt',
             className: `text-center ${styles.tdSwitch}`,
-            render(value) {
+            render(value, record) {
                 return <div>
                     <Switch
+                        onChange={() => {
+                            handleToggleAcceptStatus(record, record);
+                        }}
                         className={styles.switch}
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
@@ -169,8 +178,19 @@ const BookTeacher = (props: Props) => {
         }
     }) || [];
     useEffect(() => {
-        query!(router.query.classId as string);
+        if (!dataRd.response) {
+            query!(router.query.classId as string);
+        }
+        if ((dataRd && dataRd.success && !(((dataRd.response!.data as Array<Obj>)[0].classId as string) === router.query.classId as string))) {
+            query!(router.query.classId as string);
+        }
     }, []);
+    useEffect(() => {
+        if (dataHandle.success && dataHandle.response) {
+            query!(router.query.classId as string);
+            clear()
+        }
+    }, [dataHandle]);
     return (
         <div className={styles.bookTeacher}>
             <div className={styles.fnc}>

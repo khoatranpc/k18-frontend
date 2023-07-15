@@ -2,7 +2,7 @@ import axios from "axios";
 import { Obj } from "@/global/interface";
 
 const httpClient = axios.create({
-    baseURL: 'https://k18-backend.vercel.app',
+    baseURL: 'http://localhost:8000',
 });
 httpClient.interceptors.request.use(function (config) {
     (config.headers as Obj).Authorization = localStorage.getItem('access_token') as string;

@@ -50,7 +50,14 @@ const AddTeacher = (props: Props) => {
         }
         dispatch(querySearchTeacherByEmail(payload));
     }
-    const { dataHanlde, query, clear, removeTeacher, update } = useHandleTeacherInRCBT();
+    const [updateTeacher, setUpdateTeacher] = useState<{
+        id: string;
+        label: string
+    }>({
+        id: props.teacherId || '',
+        label: props.nameTeacher || ''
+    });
+    const { dataHandle, query, clear, removeTeacher, update } = useHandleTeacherInRCBT();
     const message = useHookMessage();
     const [crrRole, setCrrRole] = useState<ROLE_TEACHER | string>(props.teacherRole || '');
     const role: Array<string> = [ROLE_TEACHER.ST, ROLE_TEACHER.MT, ROLE_TEACHER.SP];
@@ -71,40 +78,47 @@ const AddTeacher = (props: Props) => {
             };
             query(payload);
         } else {
-            update(teacher.id, crrRole as ROLE_TEACHER, props.requestId);
+            update(teacher.id, updateTeacher.id, crrRole as ROLE_TEACHER, true, props.requestId);
         }
     }
     useEffect(() => {
-        if (dataHanlde.response) {
-            if (dataHanlde.success) {
+        if (dataHandle.response) {
+            if (dataHandle.success) {
                 props.onSuccess();
             }
             message.open({
-                content: dataHanlde.response.message as string,
-                type: dataHanlde.success ? 'success' : 'error'
+                content: dataHandle.response.message as string,
+                type: dataHandle.success ? 'success' : 'error'
             }, 2000);
             clear();
             message.close(2000);
         }
-    }, [dataHanlde]);
+    }, [dataHandle]);
     return (
         <div className={styles.addTeacher}>
             <Form onSubmit={handleSubmit}>
-                <label>Giáo viên: {teacher.label}</label>
+                <label>Giáo viên: {!props.isUpdate ? teacher.label : updateTeacher.label}</label>
                 <Dropdown
                     title={<Input placeholder="Nhập email giáo viên" onChange={(e) => {
                         handleSearchTeacher(e.target.value);
                     }} />}
                     onClickItem={(e) => {
-                        setTeacher({
-                            id: e.key,
-                            label: (listTeacher.response?.data as Array<Obj>)?.find((item) => item._id === e.key)?.fullName as string
-                        });
+                        if (!props.isUpdate) {
+                            setTeacher({
+                                id: e.key,
+                                label: (listTeacher.response?.data as Array<Obj>)?.find((item) => item._id === e.key)?.fullName as string
+                            });
+                        } else {
+                            setUpdateTeacher({
+                                id: e.key,
+                                label: (listTeacher.response?.data as Array<Obj>)?.find((item) => item._id === e.key)?.fullName as string
+                            });
+                        }
                     }}
                     trigger={'click'}
                     listSelect={mapListSelect}
                 />
-                {!teacher.id && <p className="error">Đừng quên chọn GV nhé!</p>}
+                {((!props.isUpdate && !teacher.id) || (props.isUpdate && !updateTeacher.id)) && <p className="error">Đừng quên chọn GV nhé!</p>}
                 <label>Vị trí: {mapRoleToString[crrRole as ROLE_TEACHER]}</label>
                 {!crrRole && <p className="error">Hãy chọn vị trí cho GV!</p>}
                 <Dropdown
@@ -128,10 +142,22 @@ const AddTeacher = (props: Props) => {
                                 removeTeacher(props.teacherId as string, props.requestId);
                             }}
                         >
-                            <Button className={styles.btnRemoveTeacher}>Xoá</Button>
+                            <Button
+                                disabled={dataHandle.isLoading && props.isUpdate}
+                                className={styles.btnRemoveTeacher}
+                                loading={dataHandle.isLoading && !props.isUpdate}
+                            >
+                                Xoá
+                            </Button>
                         </Popconfirm>
                     }
-                    <Button htmlType="submit" className={styles.btnAddTeacher}>{props.isUpdate ? 'Cập nhật' : 'Thêm'}</Button>
+                    <Button
+                        loading={dataHandle.isLoading}
+                        htmlType="submit"
+                        className={styles.btnAddTeacher}
+                    >
+                        {props.isUpdate ? 'Cập nhật' : 'Thêm'}
+                    </Button>
                 </div>
             </Form>
         </div>

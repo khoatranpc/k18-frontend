@@ -235,8 +235,8 @@ const ManagerClass = () => {
                         setOpenModal(true);
                     }}
                     iconReload
-                    onClickReload={()=>{
-                        handleQueryListClass((listClass?.response?.data as Obj)?.currentPage as number,(listClass?.response?.data as Obj)?.recordOnPage as number)
+                    onClickReload={() => {
+                        handleQueryListClass((listClass?.response?.data as Obj)?.currentPage as number, (listClass?.response?.data as Obj)?.recordOnPage as number)
                     }}
                 />
             </div>
@@ -244,7 +244,7 @@ const ManagerClass = () => {
                 className={styles.tableMangerClass}
                 columns={columns}
                 rowData={mapDataListClass}
-                loading={loading}
+                loading={loading || listClass.isLoading}
                 enableRowSelection
                 disableDefaultPagination
                 enablePaginationAjax
