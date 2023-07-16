@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import Tabs from '../Tabs';
 import { TabsProps } from 'antd';
+import { Columns, RowData } from '@/global/interface';
 import ToolBar from '../Tabs/ToolBar';
 import ModalCustomize from '../ModalCustomize';
 import Table from '../Table';
 import CreateLocation from './CreateLocation';
-
 import styles from '@/styles/class/Class.module.scss';
-import { Columns, RowData } from '@/global/interface';
+
 
 
 
@@ -111,10 +111,8 @@ const Location = () => {
                 rowData={dataSource}
                 enableRowSelection
                 disableDefaultPagination
-        
             />
-
-                  {
+            {
                 openModal && <ModalCustomize
                     show={openModal}
                     modalHeader={<h2>Thêm cơ sở</h2>}
