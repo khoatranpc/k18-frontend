@@ -1,14 +1,18 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { Popover } from 'antd';
+import dayjs from 'dayjs';
+import { Popover, DatePicker } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Obj } from '@/global/interface';
+import { Action, Obj, Query } from '@/global/interface';
 import { KEY_ICON, ROLE_TEACHER, STATUS_CLASS, Weekday } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
-import { getColorFromStatusClass, getOrderWeekday, mapStatusToString } from '@/global/init';
-import { formatDatetoString, uuid } from '@/utils';
-import { useDetailClass, useQueryBookTeacher } from '@/utils/hooks';
+import { getColorFromStatusClass, getOrderWeekday, mapStatusToString, statusClass } from '@/global/init';
+import { formatDatetoString, getWeekday, uuid } from '@/utils';
+import { useClassSession, useDetailClass, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import BlockNotifi from './BlockNotifi';
+import PickTimeSchedule from '@/components/PickTimeSchedule';
+import { configDataClassSession } from './dataConfig';
+import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/class/DetailClass.module.scss';
 
 export interface ItemOverView {
@@ -17,23 +21,32 @@ export interface ItemOverView {
         title: string;
         value: Array<number | string | React.ReactNode>;
     }>;
+    key?: string;
 }
 
 const OverView = () => {
     const router = useRouter();
     const bookTeacherRQ = useQueryBookTeacher('GET');
     const detailClass = useDetailClass('GET');
+    const classSession = useClassSession();
+    const updatedClassBasicInfor = useUpdateClassBasicInfor();
+
+    const handleUpdateClassInfo = (query: Query) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    ...query,
+                    params: [router.query.classId as string]
+                }
+            }
+        }
+        updatedClassBasicInfor.handleUpdate(payload);
+    }
+    const getDataClassSession = useMemo(() => {
+        return configDataClassSession(classSession.classSession.response as Record<string, unknown>)
+    }, [classSession.classSession]);
     useEffect(() => {
         if (!(bookTeacherRQ.data as Obj).response) {
-            bookTeacherRQ.query!(router.query.classId as string);
-        }
-    }, []);
-    // logic call api not equal current data in reducer with router
-    useLayoutEffect(() => {
-        const crrStoreDetailClass = detailClass.data.response?.data._id as string;
-        const crrClassId = router.query.classId as string;
-        if (crrStoreDetailClass !== crrClassId) {
-            detailClass.query!(crrClassId);
             bookTeacherRQ.query!(router.query.classId as string);
         }
     }, []);
@@ -60,15 +73,17 @@ const OverView = () => {
                 groupNumber: item.groupNumber,
             });
             if (!crrST) {
-                const teacherMtSp = getTeacherRegister.find((req) => {
-                    return req.accept === true && ((req.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.SP || (req.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.MT)
-                })
-                if (teacherMtSp) {
-                    listMT.push({
-                        ...teacherMtSp,
+                const teacherMtSp = getTeacherRegister.filter((req) => {
+                    return (req.accept === true && (req.roleRegister as ROLE_TEACHER) !== ROLE_TEACHER.ST)
+                }).map((record) => {
+                    return {
+                        ...record,
                         location: item.locationId._id,
                         groupNumber: item.groupNumber
-                    });
+                    }
+                })
+                if (teacherMtSp) {
+                    listMT.push(...teacherMtSp);
                 }
             }
             return crrST;
@@ -131,7 +146,29 @@ const OverView = () => {
             data: [
                 {
                     title: 'Ngày khai giảng',
-                    value: [formatDatetoString((((detailClass.data.response as Obj)?.data as Obj)?.dayRange?.start as string) || new Date(), 'dd/MM/yyyy')]
+                    value: [
+                        <DatePicker
+                            value={dayjs(new Date(detailClass.data.response?.data.dayRange.start as Date))}
+                            placeholder="Chọn ngày"
+                            format={'DD-MM-YYYY'}
+                            onChange={(value) => {
+                                if (value && detailClass.data.response?.data.status === STATUS_CLASS.PREOPEN) {
+                                    const getValue = (value as unknown as Obj)?.$d as Date;
+                                    const mapDayStart = new Date(getValue);
+                                    const mapDayEnd = new Date(getValue);
+                                    mapDayEnd.setDate(mapDayEnd.getDate() + 53);
+                                    handleUpdateClassInfo({
+                                        body: {
+                                            dayRange: {
+                                                start: mapDayStart,
+                                                end: mapDayEnd
+                                            }
+                                        }
+                                    });
+                                }
+                            }}
+                        />
+                    ]
                 },
                 {
                     title: 'Cơ sở',
@@ -150,6 +187,7 @@ const OverView = () => {
                                         {tcInLocation.map((record, idx) => {
                                             return <span key={idx}>
                                                 {record.roleRegister}-{record.fullName}
+                                                {tcInLocation.length > 1 && <br />}
                                             </span>
                                         })
                                         }
@@ -157,6 +195,7 @@ const OverView = () => {
                                             stInLocation.map((record, idx) => {
                                                 return <span key={idx}>
                                                     {ROLE_TEACHER.ST}-{record.fullName}
+                                                    {stInLocation.length > 1 && <br />}
                                                 </span>
                                             })
                                         }
@@ -175,14 +214,61 @@ const OverView = () => {
                 },
                 {
                     title: 'Trạng thái',
-                    value: [<span className="display-block status" key={uuid()} style={{ backgroundColor: getColorFromStatusClass[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN] }}>{mapStatusToString[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN]}</span>]
+                    value: [
+                        <Dropdown
+                            activeKey={dataDetailClass?.data?.status as STATUS_CLASS}
+                            activeClass={styles.activeStatus}
+                            className={styles.handleStatus}
+                            trigger='click'
+                            title={<span className="display-block status" key={uuid()} style={{ backgroundColor: getColorFromStatusClass[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN] }}>{mapStatusToString[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN]}</span>}
+                            listSelect={
+                                [
+                                    {
+                                        key: STATUS_CLASS.RUNNING,
+                                        label: mapStatusToString[STATUS_CLASS.RUNNING],
+                                    },
+                                    {
+                                        key: STATUS_CLASS.PREOPEN,
+                                        label: mapStatusToString[STATUS_CLASS.PREOPEN]
+                                    },
+                                    {
+                                        key: STATUS_CLASS.FINISH,
+                                        label: mapStatusToString[STATUS_CLASS.FINISH]
+                                    },
+                                    {
+                                        key: STATUS_CLASS.DROP,
+                                        label: mapStatusToString[STATUS_CLASS.DROP]
+                                    },
+                                ]
+                            }
+                            onClickItem={(e) => {
+                                if (e.key as STATUS_CLASS !== dataDetailClass?.data?.status as STATUS_CLASS) {
+                                    const query: Query = {
+                                        body: {
+                                            status: e.key
+                                        }
+                                    }
+                                    handleUpdateClassInfo(query);
+                                }
+                            }}
+                        />
+                    ]
                 },
                 {
-                    title: 'Lịch học',
+                    title: 'Giờ học',
                     value: [...(dataDetailClass?.data.timeSchedule as Array<Obj>) || []]?.sort((a, b) => {
                         return getOrderWeekday[a.weekday as Weekday] - getOrderWeekday[b.weekday as Weekday] || 0;
-                    }).map((item) => {
-                        return `${item.weekday}: ${String(item.start).replace(/\s/g, '').slice(0, String(item.start).length - 3)}-${String(item.end).replace(/\s/g, '').slice(0, String(item.end).length - 3)}`
+                    }).map((item, idx) => {
+                        return <PickTimeSchedule
+                            value={idx === 0 ? getWeekday(new Date(dataDetailClass?.data.dayRange.start as Date).getDay() || -1) as string : ''}
+                            hasFilterByValue={idx === 0}
+                            onClickItem={(e) => {
+                                console.log(e);
+                            }}
+                            key={idx}
+                            className={styles.pickTimeSchedule}
+                            title={`${item.weekday}: ${String(item.start).replace(/\s/g, '').slice(0, String(item.start).length - 3)}-${String(item.end).replace(/\s/g, '').slice(0, String(item.end).length - 3)}`}
+                        />
                     })
                 },
                 {
@@ -195,9 +281,10 @@ const OverView = () => {
                 },
                 {
                     title: 'Hình thức học',
-                    value: ['Hybrid']
+                    value: [`${detailClass.data.response?.data.classForm as string}`]
                 }
-            ]
+            ],
+            key: 'adm'
         };
         const dataOverView = [
             dataPersonnel,
@@ -225,11 +312,42 @@ const OverView = () => {
             },
             {
                 title: 'Lịch học',
-                data: []
+                data: getDataClassSession.map((item, idx) => {
+                    return {
+                        title: `Buổi ${idx + 1}: ${getWeekday((new Date(item.date as Date)).getDay())} - ${formatDatetoString(item.date as Date, 'dd/MM')}`,
+                        value: []
+                    }
+                })
             }
         ];
         return dataOverView;
-    }, [bookTeacherRQ, detailClass]);
+    }, [bookTeacherRQ, detailClass, getDataClassSession]);
+    // logic call api not equal current data in reducer with router
+    useLayoutEffect(() => {
+        const crrStoreDetailClass = detailClass.data.response?.data._id as string;
+        const crrClassId = router.query.classId as string;
+        if (crrStoreDetailClass !== crrClassId) {
+            detailClass.query!(crrClassId);
+            bookTeacherRQ.query!(router.query.classId as string);
+        }
+    }, []);
+
+    useEffect(() => {
+        const crrStoreDetailClass = detailClass.data.response?.data._id as string;
+        const crrClassId = router.query.classId as string;
+
+        if (!classSession.classSession.response || (crrStoreDetailClass !== crrClassId)) {
+            classSession.queryGetClassSession(router.query.classId as string);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (updatedClassBasicInfor.updated.response) {
+            updatedClassBasicInfor.clear();
+            detailClass.query!(router.query.classId as string);
+        }
+    }, [updatedClassBasicInfor]);
+
     return (
         <div className={`${styles.overViewDetailClass} ${styles.flex1} overViewDetaiClass`}>
             <div className={`${styles.colLeft} col`}>
@@ -239,15 +357,19 @@ const OverView = () => {
                         <div className={styles.content}>
                             <div className={`${styles.parent} gridCol`}>
                                 {item.data.map((data, idx) => {
-                                    return <div className={`${styles.itemContent} ${index === 2 ? ((idx + 1 === item.data.length) ? `div5` : '') : `div${idx + 1}`}`} key={idx}>
-                                        <p>{data.title}</p>
+                                    return <div
+                                        className={`${styles.itemContent} ${index === 2 ? ((idx + 1 === item.data.length) ? `div5` : '') : `div${idx + 1}`}`}
+                                        key={idx}
+                                    >
+                                        <p>
+                                            {data.title}
+                                        </p>
                                         {data.value.map((value, crrIdxValue) => {
                                             return <span key={crrIdxValue} className={styles.text}>{value}<br /></span>
                                         })}
                                     </div>
                                 })}
                             </div>
-
                         </div>
                     </div>
                 })}

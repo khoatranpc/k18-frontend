@@ -62,7 +62,7 @@ const listTab: TabsProps['items'] = [
     },
     {
         key: TabDetailClass.BOOK_TEACHER,
-        label: 'Dự kiến SX GV'
+        label: 'Sắp xếp GV'
     },
 ];
 

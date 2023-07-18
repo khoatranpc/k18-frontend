@@ -84,6 +84,10 @@
                     .itemContent {
                         overflow-y: scroll;
                         padding-left: 1rem;
+
+                        br {
+                            display: none;
+                        }
                     }
 
                     p {
@@ -184,4 +188,33 @@
             }
         }
     }
+
+    .iconEdit {
+        position: relative;
+
+        img {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    .handleStatus {
+        cursor: pointer;
+    }
+
+    .pickTimeSchedule {
+        button:hover {
+            color: var(--base);
+            border-color: var(--base);
+        }
+
+        &:first-child {
+            margin-bottom: 0.8rem;
+        }
+    }
+}
+
+.activeStatus {
+    color: var(--base) !important;
+    background-color: #0000000a;
 }

@@ -13,7 +13,8 @@ const CombineRoute = {
         CALENDAR: '/te/calendar',
         SETTING: '/te/setting',
         HELP: '/te/help',
-        LOCATION: '/te/location'
+        LOCATION: '/te/location',
+        TIMESCHEDULE: '/te/timeschedule',
     }
 };
 export default CombineRoute;

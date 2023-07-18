@@ -16,6 +16,7 @@ import Dropdown from '@/components/Dropdown';
 import { Action, Obj, State } from '@/global/interface';
 import SelectCourse from '@/components/SelectCourse';
 import styles from '@/styles/class/CreateClass.module.scss';
+import PickTimeSchedule from '@/components/PickTimeSchedule';
 
 interface Props {
     onReceive?: (status: boolean) => void;
@@ -31,12 +32,6 @@ const validationSchema = yup.object({
 });
 const CreateClass = (props: Props) => {
     const listTimeSchedule = useGetTimeSchedule();
-    const listSelect: MenuProps['items'] = (listTimeSchedule?.data as Array<Obj>)?.map((item) => {
-        return {
-            key: item._id as string,
-            label: <span>{item.weekday as string}: {item.start as string}-{item.end as string}</span>,
-        }
-    }) || [];
     const dispatch = useDispatch<AppDispatch>();
     const message = useHookMessage();
     const createClass = useSelector((state: RootState) => (state.createClass as State).state);
@@ -166,12 +161,8 @@ const CreateClass = (props: Props) => {
                     <div className={styles.day}>
                         <div className="day1">
                             <label>Ngày 1: <span className={styles.dayTime}>{(values.timeOnce as unknown as Obj)?.label}</span></label>
-                            <Dropdown
+                            <PickTimeSchedule
                                 className={styles.weekday}
-                                trigger='click'
-                                listSelect={listSelect}
-                                title='Chọn lịch'
-                                keyIndex='weekdayOnce'
                                 onClickItem={(e) => {
                                     const findItem = (listTimeSchedule?.data as Array<Obj>)?.find((item) => item._id === e.key);
                                     setFieldValue('timeOnce', {
@@ -187,12 +178,8 @@ const CreateClass = (props: Props) => {
                         </div>
                         <div className="day2">
                             <label>Ngày 2: <span className={styles.dayTime}>{(values.timeTwice as unknown as Obj)?.label}</span></label>
-                            <Dropdown
+                            <PickTimeSchedule
                                 className={styles.weekday}
-                                trigger='click'
-                                listSelect={listSelect}
-                                keyIndex='weekdayTwice'
-                                title='Chọn lịch'
                                 onClickItem={(e) => {
                                     const findItem = (listTimeSchedule?.data as Array<Obj>)?.find((item) => item._id === e.key);
                                     setFieldValue('timeTwice', {

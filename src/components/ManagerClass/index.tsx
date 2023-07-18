@@ -7,12 +7,11 @@ import { fieldFilter, getClassForm, getColorFromStatusClass, mapStatusToString }
 import { ClassForm, ComponentPage, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
-import { useGetListClass } from '@/utils/hooks';
+import { useDetailClass, useGetListClass } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
-import { clearCreateClass } from '@/store/reducers/class/createClass.reducer';
 import ManagerClassContext, { FieldFilter } from './context';
 import Tabs from '../Tabs';
 import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
@@ -78,7 +77,6 @@ const ManagerClass = () => {
         crrKeyTab: items[0].key,
         listFieldFilter: [],
     });
-    const message = useHookMessage();
     const router = useRouter();
     const listClass = useGetListClass();
     const firstQuery = useRef<boolean>(true);

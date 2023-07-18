@@ -8,6 +8,8 @@ import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/cl
 import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
 import { ROLE_TEACHER } from "@/global/enum";
+import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
+import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -164,6 +166,46 @@ const useHandleTeacherInRCBT = () => {
         update
     }
 }
+
+const useClassSession = () => {
+    const classSession = useSelector((state: RootState) => (state.classSession as State).state);
+    const dispatch = useDispatch();
+
+    const queryGetClassSession = (classId: string, fields?: Array<string>) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    params: [classId],
+                    query: {
+                        fields
+                    }
+                }
+            }
+        }
+        dispatch(queryClassSession(payload));
+    }
+    return {
+        classSession,
+        queryGetClassSession
+    }
+};
+
+const useUpdateClassBasicInfor = () => {
+    const updated = useSelector((state: RootState) => (state.updateClassBasicInfor as State).state);
+    const dispatch = useDispatch();
+
+    const handleUpdate = (payload: Action) => {
+        dispatch(queryUpdateClassBasicInfor(payload));
+    }
+    const clear = () => {
+        dispatch(clearUpdatedDataClassBasicInfor());
+    }
+    return {
+        updated,
+        handleUpdate,
+        clear
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -171,5 +213,7 @@ export {
     useGetLocations,
     useQueryBookTeacher,
     useDetailClass,
-    useHandleTeacherInRCBT
+    useHandleTeacherInRCBT,
+    useClassSession,
+    useUpdateClassBasicInfor
 }

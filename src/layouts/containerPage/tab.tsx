@@ -90,6 +90,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.LOCATION
         },
         {
+            title: 'Khung giờ học',
+            route: CombineRoute['TE']['TIMESCHEDULE'],
+            key: 'TIMESCHEDULE',
+            keyIcon: KEY_ICON.CLOCK,
+            showIcon: true,
+            indexRoute: CombineRoute['TE']['TIMESCHEDULE'],
+            noReplaceTitle: true,
+            component: ComponentPage.TIMESCHEDULE
+        },
+        {
             title: 'Feed back',
             route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
             key: 'FEED_BACK',

@@ -1,6 +1,7 @@
 import { v4 as uid } from 'uuid';
 import { format } from 'date-fns';
 import { Obj, RowData } from '@/global/interface';
+import { Weekday } from '@/global/enum';
 
 const uuid = () => {
     return uid() as string;
@@ -61,11 +62,32 @@ const generateRowDataForMergeRowSingleField = (data: Obj, fieldForMerge: string)
     });
     return mapping;
 }
+const getWeekday = (day: number) => {
+    switch (day) {
+        case 1:
+            return Weekday.T2;
+        case 2:
+            return Weekday.T3;
+        case 3:
+            return Weekday.T4;
+        case 4:
+            return Weekday.T5;
+        case 5:
+            return Weekday.T6;
+        case 6:
+            return Weekday.T7;
+        case 7:
+            return Weekday.CNB;
+        default:
+            return -1
+    }
+}
 export {
     uuid,
     listMonth,
     sortByString,
     logout,
     formatDatetoString,
-    generateRowDataForMergeRowSingleField
+    generateRowDataForMergeRowSingleField,
+    getWeekday
 }
