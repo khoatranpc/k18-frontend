@@ -46,7 +46,8 @@ export enum KEY_ICON {
     RELOAD = 'RELOAD',
     LOCATION = 'LOCATION',
     EDIT = 'EDIT',
-    CLOCK = 'CLOCK'
+    CLOCK = 'CLOCK',
+    TICK = 'TICK'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',

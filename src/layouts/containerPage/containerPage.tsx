@@ -97,7 +97,7 @@ const ContainerPage = (props: Props) => {
                             return !item.disable && <Link
                                 key={item.key}
                                 href={item.route}
-                                className={`${router.route === item.route ? styles.active : ''}`}
+                                className={`${router.route === item.route || router.route.includes(item.route) ? styles.active : ''}`}
                                 onClick={(e) => {
                                     if (item.notRouting) {
                                         e.preventDefault();

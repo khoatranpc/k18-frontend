@@ -28,4 +28,29 @@
             color: var(--base);
         }
     }
+
+    .btnFnc {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .icon {
+        margin-left: 0.4rem;
+        cursor: pointer;
+
+        img {
+            width: 1.6rem;
+            height: 1.6rem;
+        }
+    }
+
+    .close {
+        margin-left: 0.5rem;
+        cursor: pointer;
+
+        img {
+            transform: rotate(45deg);
+        }
+    }
 }

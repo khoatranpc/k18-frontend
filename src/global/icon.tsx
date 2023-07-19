@@ -34,6 +34,7 @@ import iconReload from '@/assets/svgs/icon-reload.svg';
 import iconLocation from '@/assets/svgs/icon-location.svg';
 import iconEdit from '@/assets/svgs/icon-edit.svg';
 import iconClock from '@/assets/svgs/icon-clock.svg';
+import iconTick from '@/assets/svgs/icon-tick.svg';
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -69,6 +70,7 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     LOCATION: <Image alt="" src={iconLocation} />,
     EDIT: <Image alt="" src={iconEdit} />,
     CLOCK: < Image alt="" src={iconClock} />,
+    TICK: < Image alt="" src={iconTick} />,
 }
 export {
     MapIconKey

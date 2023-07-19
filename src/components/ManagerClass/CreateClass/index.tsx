@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Button, Input, MenuProps } from 'antd';
+import { Button, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from 'antd';
 import viVN from 'antd/es/date-picker/locale/vi_VN';
@@ -12,7 +12,6 @@ import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch, RootState } from '@/store';
 import { queryGetListTimeSchedule } from '@/store/reducers/timeSchedule.reducer';
 import { clearCreateClass, queryCreateClass } from '@/store/reducers/class/createClass.reducer';
-import Dropdown from '@/components/Dropdown';
 import { Action, Obj, State } from '@/global/interface';
 import SelectCourse from '@/components/SelectCourse';
 import styles from '@/styles/class/CreateClass.module.scss';

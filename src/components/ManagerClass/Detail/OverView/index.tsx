@@ -6,13 +6,14 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Action, Obj, Query } from '@/global/interface';
 import { KEY_ICON, ROLE_TEACHER, STATUS_CLASS, Weekday } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
-import { getColorFromStatusClass, getOrderWeekday, mapStatusToString, statusClass } from '@/global/init';
+import { getColorFromStatusClass, getOrderWeekday, mapStatusToString } from '@/global/init';
 import { formatDatetoString, getWeekday, uuid } from '@/utils';
 import { useClassSession, useDetailClass, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import BlockNotifi from './BlockNotifi';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import { configDataClassSession } from './dataConfig';
 import Dropdown from '@/components/Dropdown';
+import SelectCourse from '@/components/SelectCourse';
 import styles from '@/styles/class/DetailClass.module.scss';
 
 export interface ItemOverView {
@@ -138,7 +139,7 @@ const OverView = () => {
                     title: 'CXO',
                     value: ['Thanh Bách', 'Châu Pha']
                 }
-            ]
+            ],
         };
         // hành chính
         const dataADM = {
@@ -148,6 +149,7 @@ const OverView = () => {
                     title: 'Ngày khai giảng',
                     value: [
                         <DatePicker
+                            key={uuid()}
                             value={dayjs(new Date(detailClass.data.response?.data.dayRange.start as Date))}
                             placeholder="Chọn ngày"
                             format={'DD-MM-YYYY'}
@@ -216,6 +218,7 @@ const OverView = () => {
                     title: 'Trạng thái',
                     value: [
                         <Dropdown
+                            key={uuid()}
                             activeKey={dataDetailClass?.data?.status as STATUS_CLASS}
                             activeClass={styles.activeStatus}
                             className={styles.handleStatus}
@@ -273,7 +276,26 @@ const OverView = () => {
                 },
                 {
                     title: 'Khoá',
-                    value: [`${dataDetailClass?.data.courseId.courseName}-${dataDetailClass?.data.courseLevelId.levelCode}`]
+                    value: [
+                        <SelectCourse
+                            key={uuid()}
+                            shortLabelItem
+                            courseId={dataDetailClass?.data.courseId._id as string}
+                            courseLevelId={dataDetailClass?.data.courseLevelId._id as string}
+                            label={`${dataDetailClass?.data.courseId.courseName}-${dataDetailClass?.data.courseLevelId.levelCode}`}
+                            onChange={(data) => {
+                                if (data.courseId && data.levelId) {
+                                    handleUpdateClassInfo({
+                                        body: {
+                                            courseId: data.courseId,
+                                            courseLevelId: data.levelId
+                                        }
+                                    })
+                                }
+                            }}
+                            defaultValue={`${dataDetailClass?.data.courseId.courseName}-${dataDetailClass?.data.courseLevelId.levelCode}`}
+                        />
+                    ]
                 },
                 {
                     title: 'Địa điểm',
@@ -361,11 +383,11 @@ const OverView = () => {
                                         className={`${styles.itemContent} ${index === 2 ? ((idx + 1 === item.data.length) ? `div5` : '') : `div${idx + 1}`}`}
                                         key={idx}
                                     >
-                                        <p>
+                                        <p className="hover color-base">
                                             {data.title}
                                         </p>
                                         {data.value.map((value, crrIdxValue) => {
-                                            return <span key={crrIdxValue} className={styles.text}>{value}<br /></span>
+                                            return <span key={crrIdxValue} className={styles.text}>{value} {item.key !== 'adm' && <br />}</span>
                                         })}
                                     </div>
                                 })}
@@ -397,7 +419,7 @@ const OverView = () => {
                     <div className={styles.link}>{MapIconKey[KEY_ICON.DRIVE]} Link Record lớp</div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

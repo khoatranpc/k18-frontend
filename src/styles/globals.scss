@@ -580,3 +580,8 @@ div.ant-message {
 :where(.css-dev-only-do-not-override-zjzpde).ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
     background-color: var(--base);
 }
+
+.hover.color-base:hover {
+    cursor: pointer;
+    color: var(--base);
+}

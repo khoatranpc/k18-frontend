@@ -21,7 +21,7 @@ import BookTeacher from './BookTeacher';
 import TitleHeader from '../TitleHeader';
 import styles from '@/styles/class/DetailClass.module.scss';
 
-enum TabDetailClass {
+export enum TabDetailClass {
     OVERVIEW = 'OVERVIEW',
     STUDENT = 'STUDENT',
     MANAGER_GROUP = 'MANAGER_GROUP',
@@ -31,7 +31,7 @@ enum TabDetailClass {
     FEEDBACK = 'FEEDBACK',
     BOOK_TEACHER = 'BOOK_TEACHER'
 }
-const listTab: TabsProps['items'] = [
+export const listTab: TabsProps['items'] = [
     {
         key: TabDetailClass.OVERVIEW,
         label: 'Tổng quan'
@@ -75,7 +75,6 @@ const Detail = (props: Props) => {
     const stateRoute = useGetDataRoute();
     const { data, query } = useDetailClass('GET');
     const [currentContent, setCurrentContent] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);
-    const firstSetInitRoute = useRef<boolean>(true);
     const getComponent: Record<TabDetailClass, React.ReactElement> = {
         OVERVIEW: <OverView />,
         ATTENDACE: <Attendace />,
@@ -86,29 +85,45 @@ const Detail = (props: Props) => {
         TEXTBOOK: <TextBook />,
         BOOK_TEACHER: <BookTeacher classId={router.query.classId as string} />
     }
-    // missing logic call api detail class
     useEffect(() => {
         if (!stateRoute?.replaceTitle && !data.response) {
             query?.(router.query.classId as string);
         }
     }, []);
     useEffect(() => {
-        if (data.response && data.success && firstSetInitRoute.current && !stateRoute?.replaceTitle) {
-            firstSetInitRoute.current = false;
-            const crrData = (data.response.data as Obj);
-            const payloadRoute: PayloadRoute = {
-                payload: {
-                    route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
-                    title: crrData?.codeClass as string,
-                    replaceTitle: <TitleHeader codeClass={crrData?.codeClass as string} dateStart={formatDatetoString(new Date(crrData?.dayRange?.start as Date), 'dd/MM/yyyy')} statusClass={crrData?.status as STATUS_CLASS} />,
-                    hasBackPage: true,
-                    moreData: crrData,
-                    component: ComponentPage.DETAILCLASS
+        switch (currentContent) {
+            case TabDetailClass.STUDENT:
+                const routePayload: PayloadRoute = {
+                    payload: {
+                        route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
+                        title: 'Học viên',
+                        replaceTitle: <TitleHeader title={'Học viên'} tabDetail={TabDetailClass.STUDENT} />,
+                        hasBackPage: true,
+                        component: ComponentPage.DETAILCLASS
+                    }
                 }
-            };
-            dispatch(initDataRoute(payloadRoute));
+                dispatch(initDataRoute(routePayload));
+                break;
+            case TabDetailClass.OVERVIEW:
+                if (data.success) {
+                    const crrData = (data.response?.data as Obj);
+                    const payloadRoute: PayloadRoute = {
+                        payload: {
+                            route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
+                            title: crrData?.codeClass as string,
+                            replaceTitle: <TitleHeader tabDetail={TabDetailClass.OVERVIEW} editTitle title={crrData?.codeClass as string} dateStart={formatDatetoString(new Date(crrData?.dayRange?.start as Date), 'dd/MM/yyyy')} statusClass={crrData?.status as STATUS_CLASS} />,
+                            hasBackPage: true,
+                            moreData: crrData,
+                            component: ComponentPage.DETAILCLASS
+                        }
+                    };
+                    dispatch(initDataRoute(payloadRoute));
+                }
+                break;
+            default:
+                break;
         }
-    }, [data, dispatch, initDataRoute, stateRoute]);
+    }, [currentContent, data])
     return (
         <div className={styles.detailClassContainer}>
             <Tabs

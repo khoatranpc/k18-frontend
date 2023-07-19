@@ -20,6 +20,7 @@ import TitleHeader from './TitleHeader';
 import ModalCustomize from '../ModalCustomize';
 import styles from '@/styles/class/Class.module.scss';
 import CreateClass from './CreateClass';
+import { TabDetailClass } from './Detail';
 
 const items: TabsProps['items'] = [
     {
@@ -178,7 +179,7 @@ const ManagerClass = () => {
             payload: {
                 route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
                 title: record?.codeClass,
-                replaceTitle: <TitleHeader codeClass={record.codeClass as string} dateStart={formatDatetoString(new Date(record.dateStart as Date), 'dd/MM/yyyy')} statusClass={record.status as STATUS_CLASS} />,
+                replaceTitle: <TitleHeader tabDetail={TabDetailClass.OVERVIEW} editTitle title={record.codeClass as string} dateStart={formatDatetoString(new Date(record.dateStart as Date), 'dd/MM/yyyy')} statusClass={record.status as STATUS_CLASS} />,
                 hasBackPage: true,
                 moreData: record,
                 component: ComponentPage.DETAILCLASS

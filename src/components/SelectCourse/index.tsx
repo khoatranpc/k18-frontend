@@ -4,6 +4,11 @@ import { Obj } from '@/global/interface';
 import { useGetListCourse } from '@/utils/hooks';
 
 interface Props {
+    courseId?: string;
+    courseLevelId?: string;
+    label?: string;
+    shortLabelItem?: boolean;
+    defaultValue?: string;
     onChange?: (dataSelect: {
         levelId: string,
         courseId: string;
@@ -19,9 +24,9 @@ const SelectCourse = (props: Props) => {
         _courseId: string,
         label: string
     }>({
-        _idSelect: '',
-        _courseId: '',
-        label: 'Tên khoá - Level'
+        _idSelect: props.courseLevelId || '',
+        _courseId: props.courseId || '',
+        label: props.label || 'Tên khoá - Level'
     });
     const { listCourse, queryListCourse } = useGetListCourse();
     const mapTreeData = (listCourse?.data as Array<Obj>)?.map((item) => {
@@ -31,7 +36,7 @@ const SelectCourse = (props: Props) => {
             children: (item.courseLevel as Array<Obj>)?.map((level) => {
                 return {
                     value: level._id as string,
-                    title: <span>{level.levelCode as string} - {level.levelName as string}</span>
+                    title: <span>{!props.shortLabelItem ? `${level.levelCode as string} - ${level.levelName as string}` : level.levelCode as string}</span>
                 }
             })
         }
@@ -68,6 +73,7 @@ const SelectCourse = (props: Props) => {
         <TreeSelect
             showSearch
             style={{ width: '100%' }}
+            defaultValue={props.defaultValue}
             value={value.label}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="Khoá học"
