@@ -6,6 +6,7 @@ import ToolBar from '../Tabs/ToolBar';
 import ModalCustomize from '../ModalCustomize';
 import Table from '../Table';
 import CreateLocation from './CreateLocation';
+import ManagerLocationContext from './context';
 import styles from '@/styles/class/Class.module.scss';
 
 
@@ -97,6 +98,7 @@ const Location = () => {
                 })
             }} />
             <ToolBar
+                context={ManagerLocationContext}
                 listFilter={[]}
                 createButton
                 exportCSVButton
@@ -104,6 +106,7 @@ const Location = () => {
                     setOpenModal(true);
                 }}
                 iconReload
+                enableFilter
             />
             <Table
                 className={styles.tableMangerClass}

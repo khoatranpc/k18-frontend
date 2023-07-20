@@ -1,21 +1,7 @@
 import { createContext } from "react";
+import { ContextInterface } from "../Tabs/ToolBar/interface";
 
-export interface FieldFilter {
-    key: string;
-    value: any;
-    title: string;
-}
-const ManagerClassContext = createContext<{
-    crrKeyTab: string;
-    listFieldFilter: Array<FieldFilter>;
-    setContext: (data: {
-        crrKeyTab: string;
-        listFieldFilter: Array<{
-            key: string;
-            value: any;
-        }>;
-    }) => void;
-}>({
+const ManagerClassContext = createContext<ContextInterface>({
     crrKeyTab: '',
     listFieldFilter: [],
     setContext(data) { }

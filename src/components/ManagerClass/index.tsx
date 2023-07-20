@@ -11,7 +11,8 @@ import { useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
-import ManagerClassContext, { FieldFilter } from './context';
+import { FieldFilter } from '../Tabs/ToolBar/interface';
+import ManagerClassContext from './context';
 import Tabs from '../Tabs';
 import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
 import Table from '../Table';
@@ -226,6 +227,8 @@ const ManagerClass = () => {
                     })
                 }} />
                 <ToolBar
+                    enableFilter
+                    context={ManagerClassContext}
                     listFilter={listFilter}
                     createButton
                     exportCSVButton
