@@ -10,6 +10,8 @@ import Pagination from '../Pagination';
 import styles from '@/styles/Table.module.scss';
 
 interface Props {
+    width?: number;
+    height?: number;
     className?: string;
     columns: Columns;
     rowData: RowData[];
@@ -23,6 +25,7 @@ interface Props {
     enablePaginationAjax?: boolean;
     maxPage?: number;
     bordered?: boolean;
+    hasFixedColumn?: boolean;
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
     onChangeDataPagination?: (data: { currentPage: number, currentTotalRowOnPage: number }) => void;
     hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
@@ -53,6 +56,12 @@ const Table = (props: Props) => {
     return (
         <div className={`tableCustomize ${styles.tableCustomizeAnt} ${props.className ? props.className : ''}`}>
             <TableComponent
+                style={{
+                    width: '100%'
+                }}
+                scroll={{
+                    x: props.hasFixedColumn ? '100%' : ''
+                }}
                 bordered={props.bordered}
                 dataSource={props.rowData}
                 columns={mapColumns}
