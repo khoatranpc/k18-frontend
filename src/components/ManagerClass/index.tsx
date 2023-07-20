@@ -7,8 +7,7 @@ import { fieldFilter, getClassForm, getColorFromStatusClass, mapStatusToString }
 import { ClassForm, ComponentPage, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
-import { useDetailClass, useGetListClass } from '@/utils/hooks';
-import { useHookMessage } from '@/utils/hooks/message';
+import { useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
@@ -18,9 +17,9 @@ import ToolBar, { ItemFilterField } from '../Tabs/ToolBar';
 import Table from '../Table';
 import TitleHeader from './TitleHeader';
 import ModalCustomize from '../ModalCustomize';
-import styles from '@/styles/class/Class.module.scss';
 import CreateClass from './CreateClass';
 import { TabDetailClass } from './Detail';
+import styles from '@/styles/class/Class.module.scss';
 
 const items: TabsProps['items'] = [
     {

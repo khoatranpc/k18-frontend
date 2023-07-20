@@ -74,7 +74,8 @@ export enum ComponentPage {
     HELP = 'HELP',
     WELCOME = 'WELCOME',
     LOCATION = 'LOCATION',
-    TIMESCHEDULE = 'TIMESCHEDULE'
+    TIMESCHEDULE = 'TIMESCHEDULE',
+    TEACHER = 'TEACHER'
 }
 
 export enum ClassForm {

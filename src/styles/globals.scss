@@ -119,6 +119,7 @@ a {
 
     div.ant-collapse-header {
         padding: 0 !important;
+        transition: none !important;
 
     }
 
@@ -132,6 +133,13 @@ a {
 
     &.collapse_tab {
         width: 100%;
+
+        .ant-collapse-header:has(.headerPanelActive) {
+            border-left: 2px solid var(--base) !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            padding-left: 1.4rem !important;
+        }
 
         div.ant-collapse-header {
             padding: 1.2rem 1.6rem !important;
@@ -165,6 +173,15 @@ a {
                 }
 
                 &:hover {
+                    background-color: var(--pink-red);
+                    color: var(--color-red);
+
+                    a {
+                        color: var(--color-red);
+                    }
+                }
+
+                &.activeChild {
                     background-color: var(--pink-red);
                     color: var(--color-red);
                 }
