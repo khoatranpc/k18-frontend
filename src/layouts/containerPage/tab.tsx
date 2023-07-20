@@ -3,17 +3,29 @@ import { TabRoute } from "@/global/interface";
 import { MapIconKey } from "@/global/icon";
 import CombineRoute from "@/global/route";
 import Collapse, { ItemPanels } from "@/components/Collapse";
+import ContentPanel, { ItemContentPanel } from "./Panels/Content";
+import HeaderPanel from "./Panels/Header";
 import styles from '@/styles/tabs/Tab.module.scss';
 
+const listPanelTeacher: ItemContentPanel[] = [
+    {
+        title: 'Danh sách giáo viên',
+        route: CombineRoute['TE']['MANAGER']['TEACHER']
+    },
+    {
+        title: 'Xếp hạng',
+        route: CombineRoute['TE']['MANAGER']['TEACHERRANK']
+    },
+    {
+        title: 'Lương',
+        route: CombineRoute['TE']['MANAGER']['TEACHERSALARY']
+    },
+];
 const panelsTeacher: ItemPanels[] = [
     {
-        header: <div className={styles.tabPanel}>{MapIconKey[KEY_ICON.TC]} Giáo viên</div>,
+        header: <HeaderPanel listChildRoute={[CombineRoute['TE']['MANAGER']['TEACHER'], CombineRoute['TE']['MANAGER']['TEACHERRANK'], CombineRoute['TE']['MANAGER']['TEACHERSALARY']]} className={`${styles.tabPanel} ${styles.parent}`} icon={MapIconKey[KEY_ICON.TC]} title="Giáo viên" />,
         key: 'TEACHER',
-        content: <div className="content-panel">
-            <div className="item">Danh sách giáo viên</div>
-            <div className="item">Xếp hạng</div>
-            <div className="item">Lương</div>
-        </div>
+        content: <ContentPanel listItem={listPanelTeacher} />
     }
 ]
 
@@ -147,7 +159,17 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             disable: true,
             keyIcon: KEY_ICON.HTS,
             component: ComponentPage.DETAILCLASS
-        }
+        },
+        {
+            title: 'Danh sách giáo viên',
+            route: CombineRoute['TE']['MANAGER']['TEACHER'],
+            key: 'TEACHER',
+            indexRoute: CombineRoute['TE']['MANAGER']['TEACHER'],
+            disable: true,
+            keyIcon: KEY_ICON.HTS,
+            component: ComponentPage.TEACHER,
+            noReplaceTitle: true
+        },
     ],
     TEACHER: []
 };
