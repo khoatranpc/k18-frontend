@@ -17,6 +17,8 @@ import locations from './location/localtion.reducer';
 import searchTeacher from './searchTeacher.reducer';
 import classSession from './class/classSesesion.reducer';
 import updateClassBasicInfor from './class/updateClassBasicInfor.reducer';
+import listTeacher from './teacher/listTeacher.reducer';
+import teacherRegisterCourse from './teacher/teacherRegisterCourse.reducer';
 
 const rootReducer = {
     test: test,
@@ -37,6 +39,8 @@ const rootReducer = {
     searchTeacher,
     handleTeacherInRecordBT,
     classSession,
-    updateClassBasicInfor
+    updateClassBasicInfor,
+    listTeacher,
+    teacherRegisterCourse
 };
 export default rootReducer;

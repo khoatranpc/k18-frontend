@@ -92,3 +92,8 @@ export enum Weekday {
     T7 = 'T7',
     CNB = 'CN',
 }
+export enum Gender {
+    M = 'M',
+    FM = 'FM',
+    NA = 'NA'
+}

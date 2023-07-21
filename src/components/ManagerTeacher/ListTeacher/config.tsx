@@ -1,4 +1,7 @@
-import { Columns, Obj } from "@/global/interface";
+import { Columns, Obj, RowData } from "@/global/interface";
+import { Gender } from "@/global/enum";
+import { getStringGender } from "@/global/init";
+import { formatDatetoString, generateRowDataForMergeRowSingleField } from "@/utils";
 
 const getColums = (styles?: Obj): Columns => {
     return [
@@ -6,44 +9,111 @@ const getColums = (styles?: Obj): Columns => {
             key: 'DATE',
             title: 'Ngày tham gia',
             fixed: 'left',
-            width: 120
+            className: 'header-border',
+            dataIndex: 'dateStartWork',
+            width: 120,
+            render(value) {
+                return formatDatetoString(value as Date, 'dd/MM/yyyy');
+            },
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'USERNAME',
             title: 'Họ tên',
             fixed: 'left',
             dataIndex: 'fullName',
-            width: 180
+            className: 'header-border',
+            width: 160,
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'EMAIL',
             title: 'Email',
-            width: 180
+            className: 'header-border',
+            width: 200,
+            dataIndex: 'email',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'NUMBERPHONE',
             title: 'Điện thoại',
-            width: 180
+            className: 'header-border',
+            width: 180,
+            dataIndex: 'phoneNumber',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
-            key: 'SEX',
+            key: 'GENDER',
             title: 'Giới tính',
-            width: 90
+            className: 'header-border',
+            width: 90,
+            dataIndex: 'gender',
+            render(value) {
+                return getStringGender[value as Gender];
+            },
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'DOB',
             title: 'Ngày sinh',
-            width: 120
+            className: 'header-border',
+            width: 120,
+            dataIndex: 'dob',
+            render(value) {
+                return formatDatetoString(value as Date);
+            },
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'FACEBOOK',
             title: 'Facebook',
-            width: 90
+            className: 'header-border',
+            width: 90,
+            dataIndex: 'facebookLink',
+            render(value) {
+                return 'Link'
+            },
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'TAX',
             title: 'MST',
-            width: 150
+            className: 'header-border',
+            width: 150,
+            dataIndex: 'taxCode',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'IDENTIFY',
@@ -52,49 +122,120 @@ const getColums = (styles?: Obj): Columns => {
                 {
                     key: 'IDENTIFY_NUMBER',
                     title: 'Số',
-                    width: 200
+                    width: 200,
+                    className: 'header-border',
+                    dataIndex: 'identify',
+                    onCell(data) {
+                        return {
+                            rowSpan: data.rowSpan as number,
+                        }
+                    }
                 },
                 {
                     key: 'LICENSE_DATE',
                     title: 'Ngày cấp',
-                    width: 120
+                    width: 120,
+                    className: 'header-border',
+                    dataIndex: 'licenseDate',
+                    render(value) {
+                        return formatDatetoString(value as Date);
+                    },
+                    onCell(data) {
+                        return {
+                            rowSpan: data.rowSpan as number,
+                        }
+                    }
                 },
                 {
                     key: 'LICENSE_PLACEMENT',
                     title: 'Nơi cấp',
-                    width: 120
+                    width: 120,
+                    className: 'header-border',
+                    dataIndex: 'licensePlace',
+                    onCell(data) {
+                        return {
+                            rowSpan: data.rowSpan as number,
+                        }
+                    }
                 },
-            ]
+            ],
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'AREA',
             title: 'Khu vực',
-            width: 120
+            className: 'header-border',
+            width: 120,
+            dataIndex: 'area',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'EDUCATION',
             title: 'Trường học/ngành học',
-            width: 250
+            className: 'header-border',
+            width: 250,
+            dataIndex: 'educationInfo',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'WORKUNIT_INDEX',
             title: 'Đơn vị công tác/Vị trí',
-            width: 250
+            className: 'header-border',
+            width: 250,
+            dataIndex: 'companyInfo',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'BACKGROUND',
             title: 'Lý lịch nghề',
-            width: 250
+            className: 'header-border',
+            width: 190,
+            dataIndex: 'background',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'ADDRESSS',
             title: 'Địa chỉ hiện tại',
-            width: 300
+            className: 'header-border',
+            width: 300,
+            dataIndex: 'address',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'CV',
             title: 'CV',
-            width: 70
+            className: 'header-border',
+            width: 70,
+            dataIndex: 'CVfile',
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         },
         {
             key: 'BANKING',
@@ -103,19 +244,40 @@ const getColums = (styles?: Obj): Columns => {
                 {
                     key: 'BANKNAME',
                     title: 'Tên',
-                    width: 120
+                    width: 120,
+                    className: 'header-border',
+                    dataIndex: 'bankName',
+                    onCell(data) {
+                        return {
+                            rowSpan: data.rowSpan as number,
+                        }
+                    }
                 },
                 {
                     key: 'BANKNUMBERACCOUNT',
                     title: 'STK',
-                    width: 120
+                    width: 120,
+                    className: 'header-border',
+                    dataIndex: 'bankNumber',
+                    onCell(data) {
+                        return {
+                            rowSpan: data.rowSpan as number,
+                        }
+                    }
                 },
                 {
                     key: 'BANKHOLDERNAME',
                     title: 'Chủ TK',
-                    width: 120
+                    width: 120,
+                    className: 'header-border',
+                    dataIndex: 'bankHolderName',
+                    onCell(data) {
+                        return {
+                            rowSpan: data.rowSpan as number,
+                        }
+                    }
                 },
-            ]
+            ],
         },
         {
             key: 'COURSE_REGISTER',
@@ -126,12 +288,24 @@ const getColums = (styles?: Obj): Columns => {
                     title: 'Bộ môn',
                     width: 90,
                     fixed: 'right',
+                    className: 'header-border',
+                    dataIndex: 'courseRegister',
+                    render(value) {
+                        return (value as Obj)?.idCourse.courseName || ''
+                    }
                 },
                 {
                     key: 'COURSE_LEVEL',
                     title: 'Cấp độ',
                     width: 120,
                     fixed: 'right',
+                    className: 'header-border',
+                    dataIndex: 'courseRegister',
+                    render(value) {
+                        return ((value as Obj)?.levelHandle as Array<Obj>)?.map((item, idx) => {
+                            return idx < ((value as Obj)?.levelHandle as Array<Obj>).length - 1 ? item.levelCode + ', ' : item.levelCode
+                        }) || ''
+                    }
                 }
             ],
         },
@@ -139,10 +313,29 @@ const getColums = (styles?: Obj): Columns => {
             key: 'TEACHERPOINT',
             title: 'Điểm GV',
             fixed: 'right',
-            width: 70
+            width: 80,
+            onCell(data) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
         }
     ]
 };
+const mapRowData = (data: Array<Obj>, registerCourse: Array<Obj>): RowData[] => {
+    const mappingData = data?.map((item, idx) => {
+        return {
+            ...item,
+            key: item._id as string,
+            courseRegister: registerCourse[idx]?.['coursesRegister']
+        }
+    });
+    if (registerCourse.length !== 0) {
+        return generateRowDataForMergeRowSingleField(mappingData, 'courseRegister');
+    }
+    return mappingData;
+}
 export {
-    getColums
+    getColums,
+    mapRowData
 }

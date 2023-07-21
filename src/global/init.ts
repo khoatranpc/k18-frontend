@@ -1,4 +1,4 @@
-import { ClassForm, ROLE_TEACHER, STATUS_CLASS, Weekday } from "./enum";
+import { ClassForm, Gender, ROLE_TEACHER, STATUS_CLASS, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -46,6 +46,11 @@ const mapRoleToString: Record<ROLE_TEACHER, string> = {
     SP: 'Suppoter',
     ST: 'Super Teacher'
 }
+const getStringGender: Record<Gender, string> = {
+    M: 'Nam',
+    FM: 'Nữ',
+    NA: 'Khác'
+}
 export {
     statusClass,
     fieldFilter,
@@ -53,5 +58,6 @@ export {
     getColorFromStatusClass,
     getClassForm,
     getOrderWeekday,
-    mapRoleToString
+    mapRoleToString,
+    getStringGender
 }

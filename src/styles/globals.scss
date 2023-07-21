@@ -459,6 +459,10 @@ a {
                     &:has(.sort) {
                         padding-left: 0 !important;
                     }
+
+                    &.header-border {
+                        border-left: 1px solid #f0f0f0;
+                    }
                 }
             }
 
@@ -480,6 +484,12 @@ a {
 
                         &.ant-table-cell.ant-table-cell-row-hover {
                             background-color: var(--white-bg);
+                        }
+                    }
+
+                    &.ant-table-measure-row {
+                        td {
+                            padding: 0 !important;
                         }
                     }
 
