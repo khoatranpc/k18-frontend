@@ -38,7 +38,6 @@ const generateRowDataForMergeRowSingleField = (data: Obj, fieldForMerge: string)
     const mapping: RowData[] = [];
     data.forEach((element: Obj) => {
         const arr = (element[fieldForMerge] as Array<Obj>);
-        console.log(arr);
         if (arr.length !== 0) {
             arr.forEach((item, crrIndex) => {
                 const catchedRecord = {
@@ -63,24 +62,45 @@ const generateRowDataForMergeRowSingleField = (data: Obj, fieldForMerge: string)
     });
     return mapping;
 }
-const getWeekday = (day: number) => {
-    switch (day) {
-        case 1:
-            return Weekday.T2;
-        case 2:
-            return Weekday.T3;
-        case 3:
-            return Weekday.T4;
-        case 4:
-            return Weekday.T5;
-        case 5:
-            return Weekday.T6;
-        case 6:
-            return Weekday.T7;
-        case 7:
-            return Weekday.CNB;
-        default:
-            return -1
+const getWeekday = (day: number, vi?: boolean) => {
+    if (!vi) {
+        switch (day) {
+            case 1:
+                return Weekday.T2;
+            case 2:
+                return Weekday.T3;
+            case 3:
+                return Weekday.T4;
+            case 4:
+                return Weekday.T5;
+            case 5:
+                return Weekday.T6;
+            case 6:
+                return Weekday.T7;
+            case 7:
+                return Weekday.CNB;
+            default:
+                return -1
+        }
+    } else {
+        switch (day) {
+            case 1:
+                return "TH 2";
+            case 2:
+                return "TH 3";
+            case 3:
+                return "TH 4";
+            case 4:
+                return "TH 5";
+            case 5:
+                return "TH 6";
+            case 6:
+                return "TH 7";
+            case 7:
+                return "CN";
+            default:
+                return "CN"
+        }
     }
 }
 export {

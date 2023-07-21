@@ -6,6 +6,7 @@ import store from '@/store';
 import Message from '@/components/message';
 import DefaultLayout from '@/layouts/default';
 // import styles from '@/styles/Theme.module.scss';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/globals.scss';
 import '@/styles/auth/FormCollect.scss';
 import Auth from '@/utils/hocs';

@@ -170,6 +170,14 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.TEACHER,
             noReplaceTitle: true
         },
+        {
+            title: 'Chi tiết',
+            route: CombineRoute['TE']['MANAGER']['DETAILTEACHER'],
+            key: 'DETAIL_TEACHER',
+            indexRoute: CombineRoute['TE']['MANAGER']['DETAILTEACHER'],
+            disable: true,
+            component: ComponentPage.TEACHER_DETAIL,
+        },
     ],
     TEACHER: []
 };

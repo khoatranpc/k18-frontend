@@ -47,7 +47,8 @@ export enum KEY_ICON {
     LOCATION = 'LOCATION',
     EDIT = 'EDIT',
     CLOCK = 'CLOCK',
-    TICK = 'TICK'
+    TICK = 'TICK',
+    CHEVRONLCAL = 'CHEVRONLCAL'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',
@@ -75,7 +76,8 @@ export enum ComponentPage {
     WELCOME = 'WELCOME',
     LOCATION = 'LOCATION',
     TIMESCHEDULE = 'TIMESCHEDULE',
-    TEACHER = 'TEACHER'
+    TEACHER = 'TEACHER',
+    TEACHER_DETAIL = 'TEACHER_DETAIL'
 }
 
 export enum ClassForm {

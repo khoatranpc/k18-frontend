@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TabsProps } from 'antd';
 import Tabs from '../Tabs';
 import Statistic from './Statistic';

@@ -1,0 +1,86 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+
+    .left {
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        border-radius: 0.8rem;
+        border: 1px solid var(--border-btn-calendar);
+        height: 3.4rem;
+        padding: 0 1.2rem;
+        color: var(--color-btn-calendar);
+        background-color: transparent;
+    }
+
+    .chevronL,
+    .chevronR {
+        cursor: pointer;
+
+        img {
+            width: 0.9rem;
+            height: 1.6rem;
+        }
+    }
+
+    .chevronL {
+        margin-left: 1.2rem;
+    }
+
+    .chevronR {
+        margin-left: 2.4rem;
+        margin-right: 1.2rem;
+
+        img {
+            transform: rotate(180deg);
+        }
+    }
+
+    .month {
+        font-size: 3.2rem;
+        font-weight: 500;
+    }
+
+    .btnToday {
+        background-color: var(--bg-btn-today);
+        color: var(--coding);
+        margin-left: 2.4rem;
+
+        &:hover {
+            border-color: #d9d9d9;
+            color: var(--coding);
+        }
+    }
+
+    .right {
+        margin-right: 1.2rem;
+        display: flex;
+        align-items: center;
+
+        button {
+            &:first-child {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:nth-child(2) {
+                border-radius: 0;
+                border-left: 0;
+                border-right: 0;
+            }
+
+            &:last-child {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        .active {
+            background-color: var(--bg-btn-today);
+            color: var(--coding);
+        }
+    }
+}

@@ -17,7 +17,7 @@ const ContentPanel = (props: Props) => {
         <div className="content-panel">
             {props.listItem.map((item, idx) => {
                 return <div
-                    className={`item ${router.route === item.route ? 'activeChild' : ''}`}
+                    className={`item ${router.route === item.route || router.route.includes(item.route) ? 'activeChild' : ''}`}
                     key={idx}
                     onClick={() => {
                         router.push(item.route)

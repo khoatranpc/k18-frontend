@@ -30,6 +30,10 @@
     --drop: #CF575A;
     --finish: #B4A7D6;
     --preopen: #FF9902;
+    --calender-header: #5E5E5E;
+    --bg-btn-today: #F7F7F7;
+    --border-btn-calendar: #D5D5D5;
+    --color-btn-calendar: #555F6D;
 }
 
 html {
@@ -611,4 +615,17 @@ div.ant-message {
 .hover.color-base:hover {
     cursor: pointer;
     color: var(--base);
+}
+
+.calanderCustomize {
+    .rbc-month-view {
+        border-top-left-radius: 0.8rem;
+        border-top-right-radius: 0.8rem;
+    }
+
+    .rbc-header {
+        padding: 1rem 0;
+        color: var(--calender-header);
+    }
+
 }

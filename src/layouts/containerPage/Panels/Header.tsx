@@ -1,3 +1,4 @@
+import route from '@/store/reducers/global-reducer/route';
 import { useRouter } from 'next/router';
 import React from 'react';
 interface Props {
@@ -8,9 +9,8 @@ interface Props {
 }
 const HeaderPanel = (props: Props) => {
     const router = useRouter();
-
     return (
-        <div className={`${props.className} ${props.listChildRoute.includes(router.route) ? 'headerPanelActive' : ''}`}>{props.icon} {props.title}</div>
+        <div className={`${props.className} ${props.listChildRoute.includes(router.route) || props.listChildRoute.find((item) => router.route.includes(item)) ? 'headerPanelActive' : ''}`}>{props.icon} {props.title}</div>
     )
 }
 

@@ -1,4 +1,4 @@
 import { createContextToolBar } from "../Tabs/ToolBar/config";
 
-const ManagetTeacherContext = createContextToolBar();
-export default ManagetTeacherContext;
+const ManagerTeacherContext = createContextToolBar();
+export default ManagerTeacherContext;
