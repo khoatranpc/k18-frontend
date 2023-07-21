@@ -10,6 +10,8 @@ import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from 
 import { ROLE_TEACHER } from "@/global/enum";
 import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
 import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
+import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
+import { queryTeacherRegisterCourse } from "@/store/reducers/teacher/teacherRegisterCourse.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -206,6 +208,50 @@ const useUpdateClassBasicInfor = () => {
         clear
     }
 }
+
+const useListTeacher = () => {
+    const listTeacher = useSelector((state: RootState) => (state.listTeacher as State).state);
+    const dispatch = useDispatch();
+    const query = (recordOnPage: number, currentPage: number) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        recordOnPage,
+                        currentPage
+                    }
+                }
+            }
+        }
+        dispatch(queryGetListTeacher(payload));
+    }
+    return {
+        listTeacher,
+        query
+    }
+}
+
+const useTeacherRegisterCourse = () => {
+    const listData = useSelector((state: RootState) => (state.teacherRegisterCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (listTeacherId: Array<string>) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        listTeacherId
+                    }
+                }
+            }
+        }
+        dispatch(queryTeacherRegisterCourse(payload));
+    }
+    return {
+        listData,
+        query
+    }
+}
+
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -215,5 +261,7 @@ export {
     useDetailClass,
     useHandleTeacherInRCBT,
     useClassSession,
-    useUpdateClassBasicInfor
+    useUpdateClassBasicInfor,
+    useListTeacher,
+    useTeacherRegisterCourse
 }
