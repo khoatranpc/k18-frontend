@@ -181,7 +181,7 @@ const BookTeacher = (props: Props) => {
         if (!dataRd.response) {
             query!(router.query.classId as string);
         }
-        if ((dataRd && dataRd.success && !(((dataRd.response!.data as Array<Obj>)[0].classId as string) === router.query.classId as string))) {
+        if ((dataRd && dataRd.success && !(((dataRd.response!.data as Array<Obj>)[0]?.classId as string) === router.query.classId as string))) {
             query!(router.query.classId as string);
         }
     }, []);
