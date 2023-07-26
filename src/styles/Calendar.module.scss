@@ -84,3 +84,195 @@
         }
     }
 }
+
+.eventWrapper {
+    border-radius: 0.4rem;
+    padding: 0 0.4rem;
+    cursor: pointer;
+
+    &:hover,
+    &.showModal {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .title {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+
+        .workEachTime {
+            display: flex;
+            align-items: center;
+
+
+            .status {
+                margin-right: 5px;
+                border-width: 0;
+                width: 0.7rem;
+                height: 0.7rem;
+                border-radius: 50%;
+            }
+
+            span {
+                font-size: 1rem;
+            }
+
+            .timeWorkTitle {
+                display: block;
+                max-width: 85%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .titleUnit {
+                margin-left: 0.5rem;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .allDay {
+        .title {
+            color: var(--white);
+        }
+    }
+
+}
+
+.leftFnc {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+
+    .noteCalendar {
+        margin-top: 17.4%;
+        padding: 0 1.2rem;
+
+        .addBtn {
+            button {
+                padding: 0.8rem 1.6rem;
+                border-radius: 0.8rem;
+                color: var(--blue);
+                border: 1px solid var(--blue);
+                background-color: transparent;
+            }
+        }
+
+        .listNote {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+
+            .note {
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+.cardCalendar {
+    margin-top: auto;
+
+    * {
+        border-width: 0 !important;
+    }
+
+    .toolbarCardCalendar {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 1.2rem;
+    }
+
+    .labelCard {
+        font-weight: bold;
+        font-size: 1.6rem;
+    }
+
+    .fncBtn {
+        display: flex;
+        gap: 2rem;
+
+        img {
+            width: 0.6rem;
+            height: 1rem;
+        }
+
+        .chevronL,
+        .chevronR {
+            cursor: pointer;
+        }
+
+        .chevronR {
+            img {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+.backdrop {
+    opacity: 0 !important;
+}
+
+.dialog {
+    border: none;
+}
+
+.timeHour {
+    margin-left: auto;
+    color: var(--calender-header);
+}
+
+.dateTime {
+    margin-left: 1rem;
+    color: var(--calender-header);
+}
+
+.mb12 {
+    margin-bottom: 1.2rem;
+}
+
+.timeSchedule {
+    margin-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--calender-header);
+}
+
+.bodyContent {
+    .forTeacher {
+        display: flex;
+        justify-content: space-between;
+
+        .icon {
+            img {
+                width: 2rem;
+                height: 2rem;
+            }
+
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flex {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+}
+
+div:has(.selectLocation) {
+    background-color: red;
+    z-index: 1055;
+}
+
+.flexRow {
+    display: flex;
+    align-items: center;
+}

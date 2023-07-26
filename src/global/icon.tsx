@@ -36,6 +36,9 @@ import iconEdit from '@/assets/svgs/icon-edit.svg';
 import iconClock from '@/assets/svgs/icon-clock.svg';
 import iconTick from '@/assets/svgs/icon-tick.svg';
 import chevronLCa from '@/assets/svgs/chevron-left-calendar.svg';
+import timeSchedule from '@/assets/svgs/icon-time-calendar.svg';
+import iconRole from '@/assets/svgs/icon-role.svg';
+import iconHourClass from '@/assets/svgs/icon-hour-glass.svg';
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -73,6 +76,9 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     CLOCK: < Image alt="" src={iconClock} />,
     TICK: < Image alt="" src={iconTick} />,
     CHEVRONLCAL: < Image alt="" src={chevronLCa} />,
+    TIMESCHEDULE: < Image alt="" src={timeSchedule} />,
+    ROLE: < Image alt="" src={iconRole} />,
+    HOURGLASS: < Image alt="" src={iconHourClass} />,
 }
 export {
     MapIconKey

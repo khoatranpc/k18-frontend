@@ -18,6 +18,8 @@ interface Props {
     open?: boolean;
     activeKey?: string;
     activeClass?: string;
+    overlayClassName?: string;
+    sizeButton?: 'small' | 'large' | 'middle'
     onClickItem?: (e: ClickItem, keyIndex?: string) => void;
 }
 const Dropdown = (props: Props) => {
@@ -36,15 +38,16 @@ const Dropdown = (props: Props) => {
                 menu={{ items: mapListSelect }}
                 open={props.open}
                 trigger={[props.trigger]}
-                className="dropdownCustomize"
+                className={`dropdownCustomize ${props.className}`}
                 dropdownRender={(origin) => {
                     const getArrayItems = ((origin as unknown as Obj)?.props as Obj)?.items as Array<Obj>;
                     if (getArrayItems.length === 0) return <span style={{ backgroundColor: 'white', padding: '4px' }}>Ôi, không có gì để chọn hết!</span>
                     return origin
                 }}
+                overlayClassName={props.overlayClassName}
             >
                 {typeof props.title === 'string' ?
-                    (<Button>{props.title}</Button>) :
+                    (<Button size={props.sizeButton}>{props.title}</Button>) :
                     (props.title)
                 }
 

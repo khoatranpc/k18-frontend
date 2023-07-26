@@ -34,6 +34,7 @@
     --bg-btn-today: #F7F7F7;
     --border-btn-calendar: #D5D5D5;
     --color-btn-calendar: #555F6D;
+    --time-active: #6EC9BF;
 }
 
 html {
@@ -117,6 +118,54 @@ a {
 
 .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled):after {
     border: none;
+}
+
+.FREE {
+    .ant-checkbox-inner {
+        border: 1px solid var(--uiux);
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--uiux) !important;
+        border: 1px solid var(--uiux);
+
+    }
+}
+
+.DAYOFF {
+    .ant-checkbox-inner {
+        border: 1px solid var(--pmba);
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--pmba) !important;
+        border: 1px solid var(--pmba);
+
+    }
+}
+
+.FINISH {
+    .ant-checkbox-inner {
+        border: 1px solid var(--border-btn-calendar);
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--border-btn-calendar) !important;
+        border: 1px solid var(--border-btn-calendar);
+
+    }
+}
+
+.ACTIVE {
+    .ant-checkbox-inner {
+        border: 1px solid var(--time-active);
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--time-active) !important;
+        border: 1px solid var(--time-active);
+
+    }
 }
 
 .customize-collapse {
@@ -618,14 +667,164 @@ div.ant-message {
 }
 
 .calanderCustomize {
-    .rbc-month-view {
+    display: flex;
+
+    .rbc-month-view,
+    .rbc-time-header,
+    .rbc-time-view,
+    .rbc-time-header-content {
         border-top-left-radius: 0.8rem;
+        border-top-right-radius: 0.8rem;
+
+        .rbc-header {
+            &:last-child {
+                border-top-right-radius: 0.8rem;
+            }
+        }
+    }
+
+    .rbc-time-view {
+        .rbc-time-content {
+            .eventWrapper {
+                position: absolute;
+            }
+        }
+    }
+
+    .rbc-month-view {
+        .rbc-row {
+            margin-bottom: 0.2rem !important;
+        }
+    }
+
+    .rbc-row-content,
+    .rbc-allday-cell,
+    .rbc-allday-cell .rbc-row-bg {
         border-top-right-radius: 0.8rem;
     }
 
-    .rbc-header {
-        padding: 1rem 0;
-        color: var(--calender-header);
+    .rbc-row-content .rbc-row:first-child {
+        border-top-right-radius: 0.8rem;
     }
 
+    .rbc-row-segment {
+        padding: 0 0.4rem;
+    }
+
+    .rbc-header {
+        color: var(--calender-header);
+        height: fit-content;
+
+        button {
+            padding: 1rem 0;
+        }
+    }
+
+    .cardCalendar {
+        .rbc-month-view {
+            .rbc-month-row {
+                .rbc-row-content {
+                    .rbc-row {
+                        margin-bottom: 0.2rem !important;
+
+                        div.rbc-date-cell {
+                            text-align: center;
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .rbc-date-cell {
+            button {
+                font-size: 1.2rem;
+                width: 2.4rem;
+                height: 2.4rem;
+                border-radius: 50%;
+
+                &:hover {
+                    background-color: var(--bg-btn-today);
+                }
+            }
+        }
+    }
+
+    .rbc-today {
+        background-color: transparent;
+    }
+
+    .rbc-off-range-bg {
+        background-color: transparent;
+    }
+
+    .rbc-date-cell {
+        button {
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 50%;
+
+            &:hover {
+                background-color: var(--bg-btn-today);
+            }
+        }
+
+        &.rbc-now {
+            button {
+                color: var(--white);
+                background-color: var(--coding);
+            }
+        }
+    }
+}
+
+.dialogEventPopUp {
+    .modal-body {
+        padding: 0;
+    }
+
+    .modal-content {
+        padding: 3.4rem;
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+        .modal-header {
+            padding: 0;
+            border-bottom: 0;
+        }
+    }
+
+    .contentEventPopup {
+        .title {
+            font-weight: bold;
+            font-size: 2.4rem;
+            margin-bottom: 5.2rem;
+        }
+
+        .statusEvent {
+            color: var(--white);
+            width: fit-content;
+            padding: 0.8rem 1.6rem;
+            border-radius: 0.8rem;
+        }
+
+        .timeSchedule {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+.selectNumberCustome {
+    :where(.css-dev-only-do-not-override-zjzpde).ant-input-number:hover {
+        border-color: var(--base);
+    }
+
+    span {
+        border: 0 !important;
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-input-number .ant-input-number-handler-wrap {
+        opacity: 1 !important;
+    }
 }

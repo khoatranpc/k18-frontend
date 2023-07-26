@@ -1,6 +1,7 @@
 import React from "react";
-import { ComponentPage, KEY_ICON } from "./enum";
+import { ComponentPage, KEY_ICON, ROLE_TEACHER } from "./enum";
 import { TableColumnsType } from "antd";
+import { StatusEvent } from "@/components/Calendar/Note/styles";
 
 export interface Action {
     type?: string;
@@ -50,4 +51,40 @@ export interface RowData extends Record<string, unknown> {
 export interface BaseInterfaceHookReducer {
     data: Obj | Action;
     query?: (params: string | Array<string> | Obj) => void;
+}
+export interface EventCalendar {
+    id?: string;
+    title: string,
+    start: Date,
+    end: Date,
+    allDay: boolean;
+    status?: StatusEvent;
+    resource?: {
+        /**
+         * @description
+         * For Teacher schedule
+         */
+        location?: string,
+        /**
+         * @description
+         * For Teacher schedule
+        */
+        classSession?: number,
+        /**
+          * @description
+          * For Teacher schedule
+        */
+        role?: ROLE_TEACHER,
+        /**
+            * @description
+            * For Teacher schedule
+          */
+        checked?: boolean,
+        /**
+          * @description
+          * For Teacher schedule
+        */
+        timeChecked?: number
+    };
+    [key: string]: any
 }

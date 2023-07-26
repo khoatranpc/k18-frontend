@@ -6,6 +6,9 @@ import styles from '@/styles/Location.module.scss';
 
 interface Props {
     title?: string;
+    className?: string;
+    selectClassName?: string;
+    sizeButton?: 'small' | 'large' | 'middle'
     onSelectLocation?: (locationId: string, text?: string) => void;
 }
 const items: MenuProps['items'] = [
@@ -38,9 +41,13 @@ const SelectLocation = (props: Props) => {
         }
     }, [locations])
     return (
-        <div className={styles.selectLocation}>
-            <Dropdown menu={{ items: mapLocation }} trigger={['click']}>
-                <Button>{props.title || 'Click'}</Button>
+        <div className={`${styles.selectLocation} ${props.className}`}>
+            <Dropdown
+                menu={{ items: mapLocation }}
+                trigger={['click']}
+                overlayClassName={props.selectClassName}
+            >
+                <Button size={props.sizeButton}>{props.title || 'Click'}</Button>
             </Dropdown>
         </div>
     )

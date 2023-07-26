@@ -12,6 +12,7 @@ interface Props {
     dialogClassName?: string;
     centered?: boolean;
     size?: 'sm' | 'lg' | 'xl';
+    backdropClassName?: string;
     onHide?: () => void;
 }
 const ModalCustomize = (props: Props) => {
@@ -25,6 +26,7 @@ const ModalCustomize = (props: Props) => {
                 backdrop="static"
                 keyboard={false}
                 centered={props.centered}
+                backdropClassName={props.backdropClassName}
             >
                 {
                     props.modalHeader && <Modal.Header closeButton={!props.disableCloseButtonHeader}>
