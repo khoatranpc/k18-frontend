@@ -12,6 +12,7 @@ import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer"
 import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
 import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
 import { queryTeacherRegisterCourse } from "@/store/reducers/teacher/teacherRegisterCourse.reducer";
+import { queryTeacherSchedule } from "@/store/reducers/teacher/teacherSchedule.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -252,6 +253,18 @@ const useTeacherRegisterCourse = () => {
     }
 }
 
+const useTeacherTimeSchedule = () => {
+    const listSchedule = useSelector((state: RootState) => (state.teacherSchedule as State).state);
+    const dispatch = useDispatch();
+    const queryGetListTeacherSchedule = (payload: Action) => {
+        dispatch(queryTeacherSchedule(payload));
+    }
+    return {
+        listSchedule,
+        queryGetListTeacherSchedule
+    }
+}
+
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -263,5 +276,6 @@ export {
     useClassSession,
     useUpdateClassBasicInfor,
     useListTeacher,
-    useTeacherRegisterCourse
+    useTeacherRegisterCourse,
+    useTeacherTimeSchedule
 }
