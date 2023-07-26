@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
+import { View } from 'react-big-calendar';
 import { useRouter } from 'next/router';
 import { Action, EventCalendar, Obj } from '@/global/interface';
 import Calendar from '@/components/Calendar';
 import { STATUS_CLASS } from '@/global/enum';
 import { useTeacherTimeSchedule } from '@/utils/hooks';
-
-const enddate = new Date();
-enddate.setDate((new Date()).getDate() + 4);
+import useGetDataRoute from '@/utils/hooks/getDataRoute';
 
 const Schedule = () => {
     const timeSchedule = useTeacherTimeSchedule();
+    const getDataRoute = useGetDataRoute();
     const router = useRouter();
     useEffect(() => {
-        if (!timeSchedule.listSchedule.response) {
+        if (!timeSchedule.listSchedule.response || (getDataRoute.moreData && getDataRoute.moreData.teacherId !== router.query.teacherId as string)) {
             const payload: Action = {
                 payload: {
                     query: {
@@ -49,13 +49,41 @@ const Schedule = () => {
             title: item.classSessionId.classId.codeClass,
             status: item.checked,
             resource: {
+                ...item,
                 statusClass: item.classSessionId.classId.status as STATUS_CLASS
             }
         }
     }) || [];
+    const handleNavigateCalendarForQueryData = (date: Date, view: View) => {
+        const getDate = new Date(date);
+        const getMonth = getDate.getMonth();
+        const getYear = getDate.getFullYear();
+        switch (view) {
+            case 'month':
+                const payload: Action = {
+                    payload: {
+                        query: {
+                            query: {
+                                year: getYear,
+                                month: getMonth,
+                                option: 'MONTH'
+                            },
+                            params: [router.query.teacherId as string]
+                        }
+                    }
+                }
+                timeSchedule.queryGetListTeacherSchedule(payload);
+                break;
+            default:
+                break;
+        }
+    }
     return (
         <div className="h-100">
             <Calendar
+                onNavigate={(newDate, view) => {
+                    handleNavigateCalendarForQueryData(newDate, view);
+                }}
                 listEvent={mapScheduleForCalendar}
                 enabledCalendarCard
                 enabledCalendarNote

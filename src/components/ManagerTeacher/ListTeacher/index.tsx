@@ -32,6 +32,9 @@ const ListTeacher = () => {
                 title: `Giáo viên: ${record.fullName as string}`,
                 hasBackPage: true,
                 replaceTitle: `Giáo viên: ${record.fullName as string}`,
+                moreData: {
+                    teacherId: record._id
+                }
             }
         }
         dispatch(initDataRoute(payload));

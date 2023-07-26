@@ -13,7 +13,7 @@ interface Props extends EventWrapperProps<EventCalendar> {
 }
 const EventWrapper = (props: Props) => {
     // console.log(props.isTeacherCalendar);
-    console.log(props);
+    // console.log(props);
     const [eventPopup, setEventPopup] = useState<{
         show: boolean;
         idEvent: string

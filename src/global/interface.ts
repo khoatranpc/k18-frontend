@@ -89,7 +89,8 @@ export interface EventCalendar {
           * @description
           * For Teacher schedule
         */
-        timeChecked?: number
+        timeChecked?: number,
+        [key: string]: any
     };
     [key: string]: any
 }

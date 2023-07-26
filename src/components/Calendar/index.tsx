@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import 'moment/locale/en-gb';
-import { Formats, Calendar as ReactBigCalendar, momentLocalizer, Components, View } from 'react-big-calendar';
+import { Formats, Calendar as ReactBigCalendar, momentLocalizer, Components, View, NavigateAction } from 'react-big-calendar';
 import moment from 'moment';
 import { EventCalendar, Obj } from '@/global/interface';
 import { formatDatetoString, getWeekday, uuid } from '@/utils';
@@ -21,6 +21,7 @@ interface Props {
     enabledCalendarNote?: boolean;
     isTeacherCalendar?: boolean;
     listEvent: EventCalendar[];
+    onNavigate?: (newDate: Date, view: View, action: NavigateAction) => void;
 }
 const enddate = new Date();
 enddate.setDate((new Date()).getDate() + 4);
@@ -135,6 +136,7 @@ const Calendar = (props: Props) => {
                 events={props.listEvent}
                 date={currentDate}
                 onNavigate={(newDate, view, action) => {
+                    props.onNavigate?.(newDate, view, action);
                     setCurrentDate(newDate);
                 }}
                 defaultView='month'

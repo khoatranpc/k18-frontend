@@ -5,16 +5,21 @@ import { mapRoleToString } from '@/global/init';
 
 interface Props {
     size?: 'small' | 'large' | 'middle';
+    title?: string;
+    onClickItem?: (role: ROLE_TEACHER) => void;
 }
 const SelectRole = (props: Props) => {
-    const role: Array<string> = [ROLE_TEACHER.ST, ROLE_TEACHER.MT, ROLE_TEACHER.SP];
+    const role: Array<ROLE_TEACHER> = [ROLE_TEACHER.ST, ROLE_TEACHER.MT, ROLE_TEACHER.SP];
     return (
         <Dropdown
-            title={'Chọn role'}
+            title={props.title || 'Chọn role'}
             listSelect={role.map((item) => {
                 return {
                     key: item,
-                    label: mapRoleToString[item as ROLE_TEACHER]
+                    label: mapRoleToString[item],
+                    onClick() {
+                        props.onClickItem?.(item);
+                    }
                 }
             })}
             sizeButton={props.size}
