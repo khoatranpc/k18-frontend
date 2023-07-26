@@ -4,7 +4,6 @@ import { KEY_ICON, ROLE_TEACHER } from '@/global/enum';
 import SelectLocation from '@/components/SelectLocation';
 import { EventCalendar } from '@/global/interface';
 import { formatDatetoString, getWeekday } from '@/utils';
-import { mapRoleToString } from '@/global/init';
 import ModalCustomize from '@/components/ModalCustomize';
 import { StatusEvent, getColor } from '../../Note/styles';
 import { getStringStatusEvent } from '../../Note';
@@ -20,13 +19,8 @@ interface Props {
     onHide?: () => void;
 }
 const EventPopup = (props: Props) => {
-<<<<<<< HEAD
-    console.log(props.event.recource);
-    console.log(props.event);
-=======
     // console.log(props.event.recource);
     // console.log(props.event);
->>>>>>> manager-teacher
     return (
         <div className={styles.eventPopup}>
             <ModalCustomize

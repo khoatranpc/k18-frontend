@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { uuid } from '@/utils';
 import { Action, EventCalendar, Obj } from '@/global/interface';
 import Calendar from '@/components/Calendar';
-import { StatusEvent } from '@/components/Calendar/Note/styles';
-import { ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { STATUS_CLASS } from '@/global/enum';
 import { useTeacherTimeSchedule } from '@/utils/hooks';
 
 const enddate = new Date();
