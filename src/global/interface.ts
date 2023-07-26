@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentPage, KEY_ICON, ROLE_TEACHER } from "./enum";
+import { ComponentPage, KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from "./enum";
 import { TableColumnsType } from "antd";
 import { StatusEvent } from "@/components/Calendar/Note/styles";
 
@@ -60,6 +60,11 @@ export interface EventCalendar {
     allDay: boolean;
     status?: StatusEvent;
     resource?: {
+        /**
+         * @description
+         * Status class with enum STATUS_CLASS
+         */
+        statusClass?: STATUS_CLASS
         /**
          * @description
          * For Teacher schedule

@@ -10,7 +10,8 @@ export const getStringStatusEvent: Record<StatusEvent, string> = {
     ACTIVE: 'Đang thực hiện',
     DAYOFF: 'Lịch nghỉ',
     FINISH: 'Đã kết thúc',
-    FREE: 'Lịch rảnh'
+    FREE: 'Lịch rảnh',
+    PREOPEN: 'Dự kiến'
 }
 const listNote = [
     {
@@ -33,6 +34,11 @@ const listNote = [
         key: 'DAYOFF',
         color: StatusEvent.DAYOFF
     },
+    {
+        title: 'Lịch dự kiến',
+        key: 'PREOPEN',
+        color: StatusEvent.PREOPEN
+    },
 ]
 const NoteCalendar = (props: Props) => {
     return (
@@ -44,7 +50,10 @@ const NoteCalendar = (props: Props) => {
             </div>
             <div className={styles.listNote}>
                 {listNote.map((item) => {
-                    return <div className={`${styles.note} ${item.color}`} key={item.key}>
+                    return <div
+                        className={`${styles.note} ${item.color}`}
+                        key={item.key}
+                    >
                         <Checkbox children={item.title} />
                     </div>
                 })}

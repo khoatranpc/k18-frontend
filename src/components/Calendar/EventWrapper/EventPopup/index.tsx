@@ -20,8 +20,13 @@ interface Props {
     onHide?: () => void;
 }
 const EventPopup = (props: Props) => {
+<<<<<<< HEAD
     console.log(props.event.recource);
     console.log(props.event);
+=======
+    // console.log(props.event.recource);
+    // console.log(props.event);
+>>>>>>> manager-teacher
     return (
         <div className={styles.eventPopup}>
             <ModalCustomize

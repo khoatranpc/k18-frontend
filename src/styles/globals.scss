@@ -35,6 +35,10 @@
     --border-btn-calendar: #D5D5D5;
     --color-btn-calendar: #555F6D;
     --time-active: #6EC9BF;
+<<<<<<< HEAD
+=======
+    --free-time: #13734B;
+>>>>>>> manager-teacher
 }
 
 html {
@@ -122,12 +126,21 @@ a {
 
 .FREE {
     .ant-checkbox-inner {
+<<<<<<< HEAD
         border: 1px solid var(--uiux);
     }
 
     :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
         background-color: var(--uiux) !important;
         border: 1px solid var(--uiux);
+=======
+        border: 1px solid var(--free-time);
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--free-time) !important;
+        border: 1px solid var(--free-time);
+>>>>>>> manager-teacher
 
     }
 }
@@ -144,6 +157,21 @@ a {
     }
 }
 
+<<<<<<< HEAD
+=======
+.PREOPEN {
+    .ant-checkbox-inner {
+        border: 1px solid var(--preopen);
+    }
+
+    :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--preopen) !important;
+        border: 1px solid var(--preopen);
+
+    }
+}
+
+>>>>>>> manager-teacher
 .FINISH {
     .ant-checkbox-inner {
         border: 1px solid var(--border-btn-calendar);

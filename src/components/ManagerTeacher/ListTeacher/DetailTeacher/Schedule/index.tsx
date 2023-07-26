@@ -4,7 +4,7 @@ import { uuid } from '@/utils';
 import { Action, EventCalendar, Obj } from '@/global/interface';
 import Calendar from '@/components/Calendar';
 import { StatusEvent } from '@/components/Calendar/Note/styles';
-import { ROLE_TEACHER } from '@/global/enum';
+import { ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { useTeacherTimeSchedule } from '@/utils/hooks';
 
 const enddate = new Date();
@@ -43,7 +43,6 @@ const Schedule = () => {
         currentDateSchedule.setMinutes(Number(getTimeEnd.split('h')[1]));
 
         const timeEnd = new Date(currentDateSchedule);
-        console.log(item);
         return {
             id: item._id,
             allDay: false,
@@ -52,7 +51,7 @@ const Schedule = () => {
             title: item.classSessionId.classId.codeClass,
             status: item.checked,
             resource: {
-                // statusClass: item.
+                statusClass: item.classSessionId.classId.status as STATUS_CLASS
             }
         }
     }) || [];
