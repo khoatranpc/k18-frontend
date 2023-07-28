@@ -336,7 +336,7 @@ const OverView = () => {
                 title: 'Lịch học',
                 data: getDataClassSession.map((item, idx) => {
                     return {
-                        title: `Buổi ${idx + 1}: ${getWeekday((new Date(item.date as Date)).getDay())} - ${formatDatetoString(item.date as Date, 'dd/MM')}`,
+                        title: `Buổi ${item.sessionNumber}: ${getWeekday((new Date(item.date as Date)).getDay())} - ${formatDatetoString(item.date as Date, 'dd/MM')}`,
                         value: []
                     }
                 })

@@ -11,7 +11,8 @@ export const getStringStatusEvent: Record<StatusEvent, string> = {
     DAYOFF: 'Lịch nghỉ',
     FINISH: 'Đã kết thúc',
     FREE: 'Lịch rảnh',
-    PREOPEN: 'Dự kiến'
+    PREOPEN: 'Dự kiến',
+    RUNNING: 'Đang chạy'
 }
 const listNote = [
     {

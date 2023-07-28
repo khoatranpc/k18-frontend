@@ -218,3 +218,57 @@
     color: var(--base) !important;
     background-color: #0000000a;
 }
+
+.btnFilterBySession {
+    border-color: var(--base);
+    color: var(--base) !important;
+
+    &:hover {
+        border-color: var(--base) !important;
+        color: var(--base) !important;
+    }
+}
+
+.pickSession {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.actionChecked {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+
+    .iconCheck {
+        &:hover {
+            color: var(--base);
+        }
+    }
+
+    .active {
+        color: var(--base);
+    }
+
+    .deactive {
+        color: var(--grey);
+    }
+}
+
+div.selectHours {
+    margin: auto;
+    width: 6rem;
+}
+
+.inputSelectHours {
+    &:hover {
+        >div:first-child {
+            opacity: 1 !important;
+        }
+    }
+
+    >div:first-child {
+        opacity: 0 !important;
+    }
+}

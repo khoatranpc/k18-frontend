@@ -34,7 +34,7 @@ const formatDatetoString = (date: Date | string | number, formatString?: string)
     return format(new Date(date), formatString || 'MM/dd/yyyy');
 }
 
-const generateRowDataForMergeRowSingleField = (data: Obj, fieldForMerge: string): RowData[] => {
+const generateRowDataForMergeRowSingleField = (data: Obj[], fieldForMerge: string): RowData[] => {
     const mapping: RowData[] = [];
     data.forEach((element: Obj) => {
         const arr = (element[fieldForMerge] as Array<Obj>);

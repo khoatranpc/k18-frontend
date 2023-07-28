@@ -11,7 +11,7 @@ import { useDetailClass } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import Tabs from '@/components/Tabs';
 import OverView from './OverView';
-import Attendace from './Attendace';
+import Attendace from './Attendance';
 import FeedBack from './FeedBack';
 import ManagerGroup from './ManagerGroup';
 import Student from './Student';
@@ -120,10 +120,22 @@ const Detail = (props: Props) => {
                     dispatch(initDataRoute(payloadRoute));
                 }
                 break;
+            case TabDetailClass.ATTENDACE:
+                const payloadRoute: PayloadRoute = {
+                    payload: {
+                        route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
+                        title: 'Điểm danh',
+                        replaceTitle: <TitleHeader  tabDetail={TabDetailClass.ATTENDACE} title={'Điểm danh'} />,
+                        hasBackPage: true,
+                        component: ComponentPage.ATTENDANCE_TEACHER_CLASS
+                    }
+                };
+                dispatch(initDataRoute(payloadRoute));
+                break;
             default:
                 break;
         }
-    }, [currentContent, data])
+    }, [currentContent, data]);
     return (
         <div className={styles.detailClassContainer}>
             <Tabs

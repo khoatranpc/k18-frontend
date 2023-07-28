@@ -29,6 +29,9 @@ const configDataClassSession = (response: Record<string, unknown> | null) => {
         listClassSession.push(newRecordSession);
     }
     );
+    listClassSession.sort((a, b) => {
+        return Number(a.sessionNumber) - Number(b.sessionNumber);
+    })
     return listClassSession;
 };
 export {

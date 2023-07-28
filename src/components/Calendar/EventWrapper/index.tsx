@@ -63,7 +63,7 @@ const EventWrapper = (props: Props) => {
                     }}
                     event={props.event}
                     show={eventPopup.show}
-                    status={StatusEvent.PREOPEN}
+                    status={props.event.resource?.statusClass as unknown as StatusEvent}
                 />
             }
         </>

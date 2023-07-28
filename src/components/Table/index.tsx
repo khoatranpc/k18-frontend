@@ -14,7 +14,7 @@ interface Props {
     height?: number;
     className?: string;
     columns: Columns;
-    rowData: RowData[];
+    rowData?: RowData[];
     customizeSelectionsDropDown?: boolean | INTERNAL_SELECTION_ITEM[] | undefined;
     hideSelectAll?: boolean;
     enableRowSelection?: boolean;

@@ -8,20 +8,50 @@ import { KEY_ICON, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { useDetailClass, useUpdateClassBasicInfor } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
+import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { TabDetailClass } from '../Detail';
 import styles from '@/styles/class/TitleHeader.module.scss';
 
 interface Props {
     title?: string;
-    statusClass?: STATUS_CLASS;
-    dateStart?: string;
-    editTitle?: boolean;
     tabDetail: TabDetailClass;
+    /**
+   * @description
+   * For title detail class overview
+   */
+    statusClass?: STATUS_CLASS;
+    /**
+   * @description
+   * For title detail class overview
+   */
+    dateStart?: string;
+    /**
+    * @description
+    * For title detail class overview
+    */
+    editTitle?: boolean;
+    /**
+    * @description
+    * For attendance tab
+    */
+    isAttendance?: boolean;
+    /**
+    * @description
+    * For attendance tab
+    */
+    dateAttendance?: boolean;
+    /**
+    * @description
+    * For attendance tab
+    */
+    sessionAttendance?: boolean;
+
 }
 const TitleHeader = (props: Props) => {
     const detailClass = useDetailClass('GET');
     const message = useHookMessage();
     const [title, settitle] = useState<string>('');
+    const currentDataRoute = useGetDataRoute();
     useEffect(() => {
         settitle(props.title as string);
     }, [props.title]);
@@ -42,7 +72,7 @@ const TitleHeader = (props: Props) => {
     const mapTabDetailBreadcrumb: Record<TabDetailClass, React.ReactNode> = {
         OVERVIEW: <span>{title}</span>,
         STUDENT: <span>{title}</span>,
-        ATTENDACE: '',
+        ATTENDACE: <span>Buổi số: {currentDataRoute.moreData && currentDataRoute.moreData.isAttendance ? `${currentDataRoute.moreData.currentSession}` : '1'}</span>,
         BOOK_TEACHER: '',
         FEEDBACK: '',
         MANAGER_GROUP: '',

@@ -13,6 +13,7 @@ import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/s
 import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
 import { queryTeacherRegisterCourse } from "@/store/reducers/teacher/teacherRegisterCourse.reducer";
 import { queryTeacherSchedule } from "@/store/reducers/teacher/teacherSchedule.reducer";
+import { queryAttendanceTeacherInClassSession } from "@/store/reducers/class/attendanceTeacherInClassSession.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -265,6 +266,28 @@ const useTeacherTimeSchedule = () => {
     }
 }
 
+const useGetAttendanceTeacher = () => {
+    const data = useSelector((state: RootState) => (state.attendanceTeacherInClassSession as State).state);
+    const dispatch = useDispatch();
+    const queryGetData = (classId: string, sessionNumber: number) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        classId,
+                        sessionNumber,
+                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId']
+                    }
+                }
+            }
+        }
+        dispatch(queryAttendanceTeacherInClassSession(payload));
+    }
+    return {
+        data,
+        queryGetData
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -277,5 +300,6 @@ export {
     useUpdateClassBasicInfor,
     useListTeacher,
     useTeacherRegisterCourse,
-    useTeacherTimeSchedule
+    useTeacherTimeSchedule,
+    useGetAttendanceTeacher
 }

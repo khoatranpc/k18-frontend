@@ -842,7 +842,11 @@ div.ant-message {
         border: 0 !important;
     }
 
-    :where(.css-dev-only-do-not-override-zjzpde).ant-input-number .ant-input-number-handler-wrap {
-        opacity: 1 !important;
+
+}
+
+.inputNumberCustom {
+    .ant-input-number-handler-wrap {
+        opacity: 1;
     }
 }
