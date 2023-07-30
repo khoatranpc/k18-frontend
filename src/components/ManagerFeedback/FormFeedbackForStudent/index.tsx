@@ -57,7 +57,7 @@ const FormFeedbackForStudent = () => {
     }, []);
     // missing logic call data class matching course
     useEffect(() => {
-        if (courses.listCourse && !values.course) {
+        if (courses.listCourse && !values.course && courses.success) {
             setFieldValue('course', getListCoures[0]._id as string)
         }
     }, [courses.listCourse, values]);
@@ -236,7 +236,7 @@ const FormFeedbackForStudent = () => {
                                 {
                                     (!courses.listCourse || courses.loading) ? <Loading /> :
                                         (
-                                            (getListCoures).length > 0 ?
+                                            (getListCoures)?.length > 0 ?
                                                 (
                                                     <Radio.Group className={styles.listRadio} value={values.course || getListCoures[0]._id as string} onChange={(e) => {
                                                         setFieldValue('course', e.target.value)

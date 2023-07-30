@@ -32,7 +32,8 @@ const useGetListCourse = () => {
     return {
         listCourse: listCourse.response as Obj,
         queryListCourse,
-        loading: listCourse.isLoading
+        loading: listCourse.isLoading,
+        success: listCourse.success
     };
 }
 const useGetLocations = () => {
