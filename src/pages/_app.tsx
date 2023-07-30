@@ -23,7 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <DefaultLayout>
       {
         Public ?
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
           :
           (!Layout.isAuth ? <Auth>
             <Layout>

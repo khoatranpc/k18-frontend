@@ -1,5 +1,6 @@
+import React from 'react';
+import FeedbackLayout from '@/layouts/feedback';
 import FormFeedbackForStudent from '@/components/ManagerFeedback/FormFeedbackForStudent';
-import React from 'react'
 
 const Feedback = () => {
     return (
@@ -8,4 +9,5 @@ const Feedback = () => {
 }
 
 export default Feedback;
+Feedback.Layout = FeedbackLayout;
 Feedback.isPublic = true;
