@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Dropdown as DropdownComponent, MenuProps } from 'antd';
 import { Obj } from '@/global/interface';
+import { MapIconKey } from '@/global/icon';
+import { KEY_ICON } from '@/global/enum';
 
 export interface ClickItem {
     key: string;
@@ -19,7 +21,9 @@ interface Props {
     activeKey?: string;
     activeClass?: string;
     overlayClassName?: string;
-    sizeButton?: 'small' | 'large' | 'middle'
+    sizeButton?: 'small' | 'large' | 'middle';
+    icon?: boolean;
+    onOpenChange?: (open: boolean) => void;
     onClickItem?: (e: ClickItem, keyIndex?: string) => void;
 }
 const Dropdown = (props: Props) => {
@@ -37,6 +41,9 @@ const Dropdown = (props: Props) => {
             <DropdownComponent
                 menu={{ items: mapListSelect }}
                 open={props.open}
+                onOpenChange={(open) => {
+                    props.onOpenChange?.(open);
+                }}
                 trigger={[props.trigger]}
                 className={`dropdownCustomize ${props.className}`}
                 dropdownRender={(origin) => {
@@ -47,7 +54,7 @@ const Dropdown = (props: Props) => {
                 overlayClassName={props.overlayClassName}
             >
                 {typeof props.title === 'string' ?
-                    (<Button size={props.sizeButton}>{props.title}</Button>) :
+                    (<Button size={props.sizeButton}>{props.title} {props.icon && MapIconKey[KEY_ICON.CHEVROND]}</Button>) :
                     (props.title)
                 }
 

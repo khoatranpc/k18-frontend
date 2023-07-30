@@ -29,6 +29,21 @@ const panelsTeacher: ItemPanels[] = [
     }
 ]
 
+const listPanelFeedback: ItemContentPanel[] = [
+    {
+        title: 'Form feedback',
+        route: CombineRoute['TE']['MANAGER']['FEEDBACK']
+    },
+];
+const panelsFeedback: ItemPanels[] = [
+    {
+        header: <HeaderPanel listChildRoute={[CombineRoute['TE']['MANAGER']['FEEDBACK']]} className={`${styles.tabPanel} ${styles.parent}`} icon={MapIconKey[KEY_ICON.MS]} title="Feedback" />,
+        key: 'FEEDBACK',
+        content: <ContentPanel listItem={listPanelFeedback} />
+    }
+]
+
+
 const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     TE: [
         {
@@ -112,14 +127,14 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.TIMESCHEDULE
         },
         {
-            title: 'Feed back',
+            title: <Collapse panels={panelsFeedback} className={`collapse_tab ${styles.collapseFeedback}`} />,
             route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
             key: 'FEED_BACK',
-            keyIcon: KEY_ICON.MS,
             showIcon: true,
             indexRoute: '',
-            noReplaceTitle: true,
-            component: ComponentPage.MANAGER_FEEDBACK
+            component: ComponentPage.MANAGER_FEEDBACK,
+            notRouting: true,
+            className: `${styles.tabFeedback}`
         },
         {
             title: 'Lịch',
@@ -177,6 +192,15 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             indexRoute: CombineRoute['TE']['MANAGER']['DETAILTEACHER'],
             disable: true,
             component: ComponentPage.TEACHER_DETAIL,
+        },
+        {
+            title: 'Form feedback',
+            route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
+            key: 'DETAIL_TEACHER',
+            indexRoute: CombineRoute['TE']['MANAGER']['FEEDBACK'],
+            disable: true,
+            component: ComponentPage.MANAGER_FEEDBACK,
+            noReplaceTitle: true,
         },
     ],
     TEACHER: []

@@ -55,7 +55,9 @@ const NoteCalendar = (props: Props) => {
                         className={`${styles.note} ${item.color}`}
                         key={item.key}
                     >
-                        <Checkbox children={item.title} />
+                        <Checkbox>
+                            {item.title}
+                        </Checkbox>
                     </div>
                 })}
             </div>

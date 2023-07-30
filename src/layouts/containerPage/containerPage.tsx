@@ -104,7 +104,7 @@ const ContainerPage = (props: Props) => {
                                     }
                                 }}
                             >
-                                <div className={`${!item.key.includes('PN') ? styles.tab : styles.panel}`} key={item.key}>
+                                <div className={`${!item.key.includes('PN') ? styles.tab : styles.panel} ${item.className}`} key={item.key}>
                                     {item.showIcon && MapIconKey[item.keyIcon as KEY_ICON]}
                                     <span>{item.title}</span>
                                 </div></Link>;

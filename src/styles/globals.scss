@@ -36,6 +36,8 @@
     --color-btn-calendar: #555F6D;
     --time-active: #6EC9BF;
     --free-time: #13734B;
+    --light-purple: #F0EBF8;
+    --purple: #673AB6;
 }
 
 html {
@@ -110,6 +112,18 @@ a {
     &:hover {
         color: var(--white) !important;
     }
+}
+
+.radius {
+    border-radius: 0.8rem;
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+.pd-2 {
+    padding: 2rem;
 }
 
 :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-checked .ant-checkbox-inner {
@@ -435,6 +449,13 @@ a {
             transform: rotate(45deg);
             cursor: pointer;
         }
+    }
+}
+
+.dropdownCustomize {
+    &:hover {
+        border-color: var(--base) !important;
+        color: var(--base) !important;
     }
 }
 

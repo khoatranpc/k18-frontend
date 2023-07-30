@@ -16,18 +16,22 @@ const EmptyLayout = ({ children }: { children: React.ReactElement }) => {
 }
 export default function App({ Component, pageProps }: AppProps) {
   const Layout = (Component as Obj)?.Layout || EmptyLayout;
+  const Public = (Component as Obj)?.isPublic;
   return <Provider store={store}>
     {/* <div className={styles.theme}> */}
     <Message />
     <DefaultLayout>
       {
-        !Layout.isAuth ? <Auth>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </Auth> : <Layout>
+        Public ?
           <Component {...pageProps} />
-        </Layout>
+          :
+          (!Layout.isAuth ? <Auth>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Auth> : <Layout>
+            <Component {...pageProps} />
+          </Layout>)
       }
 
     </DefaultLayout>

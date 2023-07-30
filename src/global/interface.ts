@@ -41,6 +41,7 @@ export interface TabRoute {
     noReplaceTitle?: boolean;
     component: ComponentPage;
     notRouting?: boolean;
+    className?: string;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

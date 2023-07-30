@@ -1,4 +1,3 @@
-import route from '@/store/reducers/global-reducer/route';
 import { useRouter } from 'next/router';
 import React from 'react';
 interface Props {
