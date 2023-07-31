@@ -1,24 +1,62 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Switch, Checkbox, DatePicker, Radio } from 'antd';
 import { CheckCircleOutlined, CheckOutlined, CloseCircleOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
-import { useGetListClassFeedback } from '@/utils/hooks';
+import { useDebounce, useGetListClassFeedback, useUpdateClassFeedback } from '@/utils/hooks';
 import Table from '@/components/Table';
 import styles from '@/styles/feedback/Feedback.module.scss';
 
 const ListClass = () => {
     const dataListClass = useGetListClassFeedback();
+    const [fieldFilter, setFieldFilter] = useState<{
+        codeClassText: string;
+        time: number[];
+        date: {
+            month: number;
+            year: number;
+        };
+        enabled: boolean[];
+        done: boolean;
+    }>({
+        codeClassText: '',
+        time: [1],
+        date: {
+            month: new Date().getMonth() + 1,
+            year: new Date().getFullYear(),
+        },
+        enabled: [true, false],
+        done: false
+    });
+    const debounce = useDebounce(fieldFilter, 500);
+    const updateClass = useUpdateClassFeedback();
+    const hanldeChangeFilter = (fields: string, value: string | number[] | boolean[] | number | boolean | Obj) => {
+        setFieldFilter({
+            ...fieldFilter,
+            [fields]: value
+        });
+    }
     // pending logic filter for column
+    useEffect(() => {
+        const fields: Array<string> = ['codeClassText', '_id', 'date', 'done', 'enabled', 'numberCollected', 'time'];
+        dataListClass.query(debounce.date.month, fields, fieldFilter);
+    }, [debounce]);
+    useEffect(() => {
+        if (updateClass.success) {
+            const fields: Array<string> = ['codeClassText', '_id', 'date', 'done', 'enabled', 'numberCollected', 'time'];
+            dataListClass.query(fieldFilter.date.month, fields, fieldFilter);
+            updateClass.clear();
+        }
+    }, [updateClass, fieldFilter]);
     const columns: Columns = [
         {
             key: 'CODE_CLASS',
-            dataIndex: 'codeClass',
+            dataIndex: 'codeClassText',
             title: 'Mã lớp',
             render(value, record, index) {
-                return value.codeClass || '';
+                return value;
             },
             onCell(data) {
                 return {
@@ -26,21 +64,25 @@ const ListClass = () => {
                 }
             },
             filterDropdown(props) {
-                return <Input className="inputAntd" placeholder="Tìm kiếm mã lớp" />
+                return <Input className="inputAntd" placeholder="Tìm kiếm mã lớp" value={fieldFilter.codeClassText} onChange={(e) => {
+                    hanldeChangeFilter('codeClassText', e.target.value);
+                }} />
             },
             filterIcon: <SearchOutlined />
         },
         {
             key: 'TIMECOLLECT',
             dataIndex: 'time',
-            title: 'Lần',
+            title: `Lần (${fieldFilter.time})`,
             className: 'text-center',
             render(value, record, index) {
                 return value as string
             },
             filterDropdown(props) {
                 return <div className={styles.selectTime}>
-                    <Checkbox.Group className={styles.checkboxGroup} defaultValue={[1]}>
+                    <Checkbox.Group className={styles.checkboxGroup} defaultValue={[1]} onChange={(checkedValue) => {
+                        hanldeChangeFilter('time', checkedValue as Array<number>)
+                    }}>
                         <Checkbox value={1}>
                             Lần 1
                         </Checkbox>
@@ -54,21 +96,28 @@ const ListClass = () => {
         {
             key: 'DATE',
             dataIndex: 'date',
-            title: 'Ngày lấy',
+            title: `Ngày lấy (Tháng ${fieldFilter.date.month})`,
             render(value) {
                 return formatDatetoString(value as Date || new Date(), 'dd/MM/yyyy') || '';
             },
             filterDropdown: (props) => {
-                return <DatePicker size={'middle'} picker="month" placeholder="Tháng" />
+                return <DatePicker size={'middle'} picker="month" placeholder="Tháng" onChange={((day) => {
+                    hanldeChangeFilter('date', {
+                        month: (day as unknown as Obj)?.$M as number + 1,
+                        year: (day as unknown as Obj)?.$y as number,
+                    })
+                })} />
             },
-            filterIcon: MapIconKey[KEY_ICON.TIMESCHEDULE]
+            filterIcon: MapIconKey[KEY_ICON.TIMESCHEDULE],
+            width: 200
         },
         {
             key: 'RATE',
             dataIndex: '',
+            // (pending)
             title: 'Tỉ lệ',
-            render(value) {
-                return `0%`
+            render(value, record) {
+                return !record.enabled ? 'Chưa triển khai' : `0%`
             },
             filterDropdown(props) {
                 return <Radio.Group className={styles.option}>
@@ -82,18 +131,23 @@ const ListClass = () => {
             dataIndex: 'enabled',
             title: 'Triển khai',
             className: `${styles.status} text-center`,
-            render(value, record, index) {
+            render(value, record) {
                 return <Switch
-                    disabled={value}
+                    disabled={record.done as boolean}
                     className={styles.switch}
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     checked={value as boolean}
+                    onChange={(checked) => {
+                        updateClass.query(record._id as string, 'enabled', checked);
+                    }}
                 />
             },
             filterDropdown(props) {
                 return <div className={styles.selectTime}>
-                    <Checkbox.Group className={styles.checkboxGroup} defaultValue={[true, false]}>
+                    <Checkbox.Group className={styles.checkboxGroup} defaultValue={fieldFilter.enabled} onChange={(checkedvalue) => {
+                        hanldeChangeFilter('enabled', checkedvalue as Array<boolean>);
+                    }}>
                         <Checkbox value={true}>
                             Đã triển khai
                         </Checkbox>
@@ -107,45 +161,43 @@ const ListClass = () => {
         {
             key: 'DONE',
             dataIndex: 'done',
-            title: 'Hoàn thành',
-            render(value) {
+            title: `${fieldFilter.done ? 'Hoàn thành' : 'Chưa hoàn thành'}`,
+            render(value, record) {
                 return <div className={styles.actionChecked}>
-                    <CheckCircleOutlined className={`${value.done ? styles.active : styles.deactive} ${styles.iconCheck}`} />
-                    <CloseCircleOutlined className={`${!value.done ? styles.active : styles.deactive} ${styles.iconCheck}`} />
+                    <CheckCircleOutlined onClick={() => {
+                        updateClass.query(record._id as string, 'done', true);
+                    }}
+                        className={`${value ? styles.active : styles.deactive} ${styles.iconCheck}`} />
+                    <CloseCircleOutlined
+                        onClick={() => {
+                            updateClass.query(record._id as string, 'done', false);
+                        }}
+                        className={`${!value ? styles.active : styles.deactive} ${styles.iconCheck}`} />
                 </div>
             },
             width: 150,
             filterDropdown(props) {
-                return <Radio.Group className={styles.option} defaultValue={true}>
+                return <Radio.Group className={styles.option} defaultValue={fieldFilter.done} onChange={(e) => {
+                    hanldeChangeFilter('done', Boolean(e.target.value));
+                }}>
                     <Radio value={false}>Chưa hoàn thành</Radio>
                     <Radio value={true}>Đã hoàn thành</Radio>
                 </Radio.Group>
             },
         }
-    ]
+    ];
     const rowData: RowData[] = (dataListClass.data.response?.data as Array<Obj>)?.map((item) => {
         return {
             ...item,
             key: item._id as string,
         }
     }) || [];
-    useEffect(() => {
-        if (!dataListClass.data.response) {
-            const fields: Array<string> = ['codeClass', '_id', 'date', 'done', 'enabled', 'numberCollected', 'time'];
-            dataListClass.query(8, fields);
-        }
-    }, []);
     return (
         <div className={styles.listClass}>
-            <div
-                className={styles.filter}
-            >
-
-            </div>
             <Table
                 bordered
+                loading={dataListClass.data.isLoading}
                 disableDefaultPagination
-                enablePaginationAjax
                 columns={columns}
                 rowData={rowData}
             />

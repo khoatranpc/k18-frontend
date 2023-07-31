@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Action, BaseInterfaceHookReducer, Obj, State } from "@/global/interface";
 import { AppDispatch, RootState } from "@/store";
@@ -15,6 +16,7 @@ import { queryTeacherRegisterCourse } from "@/store/reducers/teacher/teacherRegi
 import { queryTeacherSchedule } from "@/store/reducers/teacher/teacherSchedule.reducer";
 import { queryAttendanceTeacherInClassSession } from "@/store/reducers/class/attendanceTeacherInClassSession.reducer";
 import { queryListClassFeedbackView } from "@/store/reducers/feedback/listClass.reducer";
+import { clearResUpdateClassForFeedback, queryUpdateClassForFeedback } from "@/store/reducers/feedback/updateClassForFeedback.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -295,14 +297,15 @@ const useGetAttendanceTeacher = () => {
 const useGetListClassFeedback = () => {
     const data = useSelector((state: RootState) => (state.listClassActionFeedback as State).state);
     const dispatch = useDispatch();
-    const query = (month: number, fields?: Array<string>) => {
+    const query = (month: number, fields?: Array<string>, filter?: Obj) => {
         if (month > 13 || month < 1) return;
         const payload: Action = {
             payload: {
                 query: {
                     query: {
                         month,
-                        fields
+                        fields,
+                        ...filter
                     }
                 }
             }
@@ -312,6 +315,41 @@ const useGetListClassFeedback = () => {
     return {
         data,
         query
+    }
+}
+const useDebounce = (state: any, delayTime?: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(state);
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedValue(state), delayTime || 500)
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [state, delayTime]);
+    return debouncedValue;
+};
+const useUpdateClassFeedback = () => {
+    const data = useSelector((state: RootState) => (state.updateClassForFeedback as State).state);
+    const dispatch = useDispatch();
+    const query = (feedbackId: string, field: string, value: boolean) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body: {
+                        [field]: value,
+                    },
+                    params: [feedbackId]
+                }
+            }
+        }
+        dispatch(queryUpdateClassForFeedback(payload));
+    }
+    const clear = () => {
+        dispatch(clearResUpdateClassForFeedback());
+    }
+    return {
+        success: data.success,
+        query,
+        clear
     }
 }
 export {
@@ -328,5 +366,7 @@ export {
     useTeacherRegisterCourse,
     useTeacherTimeSchedule,
     useGetAttendanceTeacher,
-    useGetListClassFeedback
+    useGetListClassFeedback,
+    useDebounce,
+    useUpdateClassFeedback
 }
