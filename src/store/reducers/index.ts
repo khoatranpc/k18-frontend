@@ -21,6 +21,7 @@ import listTeacher from './teacher/listTeacher.reducer';
 import teacherRegisterCourse from './teacher/teacherRegisterCourse.reducer';
 import teacherSchedule from './teacher/teacherSchedule.reducer';
 import attendanceTeacherInClassSession from './class/attendanceTeacherInClassSession.reducer';
+import listClassActionFeedback from './feedback/listClass.reducer';
 
 const rootReducer = {
     test: test,
@@ -45,6 +46,7 @@ const rootReducer = {
     listTeacher,
     teacherRegisterCourse,
     teacherSchedule,
-    attendanceTeacherInClassSession
+    attendanceTeacherInClassSession,
+    listClassActionFeedback
 };
 export default rootReducer;

@@ -69,6 +69,13 @@ body {
     }
 }
 
+.inputAntd {
+    border-color: var(--base) !important;
+
+    &:hover {
+        border-color: var(--base);
+    }
+}
 
 .container_default {
     // min-width: 100vw;

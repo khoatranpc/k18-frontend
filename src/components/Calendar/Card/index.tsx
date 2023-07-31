@@ -1,12 +1,16 @@
 import React, { useMemo } from 'react';
-import { Components, DateLocalizer, Formats, NavigateAction, Calendar as ReactBigCalendar, View } from "react-big-calendar";
+import 'moment/locale/en-gb';
+import moment from 'moment';
+import { Components, DateLocalizer, Formats, NavigateAction, Calendar as ReactBigCalendar, View, momentLocalizer } from "react-big-calendar";
 import { EventCalendar } from '@/global/interface';
 import Toolbar from './Toolbar';
-import styles from '@/styles/Calendar.module.scss';
 import { getWeekday } from '@/utils';
+import styles from '@/styles/Calendar.module.scss';
 
+moment.locale('en-GB');
+const localizer = momentLocalizer(moment)
 interface Props {
-    localizer: DateLocalizer;
+    localizer?: DateLocalizer;
     date: Date;
     onNavigate?: (newDate: Date, view: View, action: NavigateAction) => void;
     onClickDay?: (date: Date, view: View) => void;
@@ -43,7 +47,7 @@ const CardCalendar = (props: Props) => {
                     props.onView?.(view);
                 }}
                 defaultDate={props.date}
-                localizer={props.localizer}
+                localizer={props.localizer || localizer}
                 components={components}
                 view='month'
                 formats={formats}

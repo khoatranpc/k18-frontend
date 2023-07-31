@@ -307,14 +307,16 @@ const FormFeedbackForStudent = () => {
                                     </i>
                                 </b>
                             </div>
-                            <Button onClick={() => {
-                                getTouched(step);
-                            }}
-                                disabled={!values.codeClass || !values.course || !values.groupNumber || !values.phoneNumber || !values.studentName}
-                            >
-                                Tiếp tục
-                            </Button>
-                            <Button onClick={handleReset}>Xoá hết câu trả lời</Button>
+                            <div>
+                                <Button onClick={() => {
+                                    getTouched(step);
+                                }}
+                                    disabled={!values.codeClass || !values.course || !values.groupNumber || !values.phoneNumber || !values.studentName}
+                                >
+                                    Tiếp tục
+                                </Button>
+                                <Button onClick={handleReset} className={styles.reset}>Xoá hết câu trả lời</Button>
+                            </div>
                         </>)
                         :
                         (
@@ -359,16 +361,21 @@ const FormFeedbackForStudent = () => {
                                         </Form.Group>
                                     })
                                 }
-                                {/* <div classNamz */}
-                                <Button onClick={() => {
-                                    setStep(1);
-                                }}>Quay trở lại</Button>
-                                <Button
-                                    disabled={!values.pointCxo || !values.pointMT || !values.pointOb || !values.pointST || !values.pointSyl || !values.docDetail}
-                                    htmlType="submit"
-                                >
-                                    Gửi
-                                </Button>
+                                <div>
+                                    <Button onClick={() => {
+                                        setStep(1);
+                                    }}>Quay trở lại</Button>
+                                    <Button
+                                        disabled={!values.pointCxo || !values.pointMT || !values.pointOb || !values.pointST || !values.pointSyl || !values.docDetail}
+                                        htmlType="submit"
+                                    >
+                                        Gửi
+                                    </Button>
+                                    <Button onClick={(e) => {
+                                        handleReset(e);
+                                        setStep(1);
+                                    }} className={styles.reset}>Xoá hết câu trả lời</Button>
+                                </div>
                             </>
                         )
                     }

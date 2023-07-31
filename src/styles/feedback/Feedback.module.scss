@@ -166,3 +166,49 @@
         }
     }
 }
+
+.reset {
+    float: right;
+}
+
+.actionChecked {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+
+    .iconCheck {
+        &:hover {
+            color: var(--base);
+        }
+    }
+
+    .active {
+        color: var(--base);
+    }
+
+    .deactive {
+        color: var(--grey);
+    }
+}
+
+.selectTime {
+    width: fit-content;
+
+    .checkboxGroup {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+
+        * {
+            margin: 0;
+        }
+    }
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+}

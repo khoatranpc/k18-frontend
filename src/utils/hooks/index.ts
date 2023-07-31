@@ -14,6 +14,7 @@ import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reduce
 import { queryTeacherRegisterCourse } from "@/store/reducers/teacher/teacherRegisterCourse.reducer";
 import { queryTeacherSchedule } from "@/store/reducers/teacher/teacherSchedule.reducer";
 import { queryAttendanceTeacherInClassSession } from "@/store/reducers/class/attendanceTeacherInClassSession.reducer";
+import { queryListClassFeedbackView } from "@/store/reducers/feedback/listClass.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -290,6 +291,29 @@ const useGetAttendanceTeacher = () => {
         queryGetData
     }
 }
+
+const useGetListClassFeedback = () => {
+    const data = useSelector((state: RootState) => (state.listClassActionFeedback as State).state);
+    const dispatch = useDispatch();
+    const query = (month: number, fields?: Array<string>) => {
+        if (month > 13 || month < 1) return;
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        month,
+                        fields
+                    }
+                }
+            }
+        }
+        dispatch(queryListClassFeedbackView(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -303,5 +327,6 @@ export {
     useListTeacher,
     useTeacherRegisterCourse,
     useTeacherTimeSchedule,
-    useGetAttendanceTeacher
+    useGetAttendanceTeacher,
+    useGetListClassFeedback
 }
