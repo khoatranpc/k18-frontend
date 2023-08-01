@@ -4,8 +4,8 @@ import { useFormik } from 'formik';
 import Image from 'next/image';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
-import { useGetListCourse } from '@/utils/hooks';
 import { Obj } from '@/global/interface';
+import { useGetListCourse, useGetListGroupClassInFormFeedback, useListClassInFormFeedback } from '@/utils/hooks';
 import Loading from '@/components/loading';
 import Dropdown from '@/components/Dropdown';
 import Point from './Point';
@@ -29,6 +29,8 @@ const validationSchema = yup.object({
 const FormFeedbackForStudent = () => {
     const courses = useGetListCourse();
     const [step, setStep] = useState(1);
+    const listClassInForm = useListClassInFormFeedback();
+    const listGroupClass = useGetListGroupClassInFormFeedback();
     const getListCoures = (courses.listCourse as Obj)?.data as Array<Obj>;
     const { values, errors, touched, handleChange, isValid, handleBlur, setFieldValue, setErrors, setTouched, handleSubmit, handleReset } = useFormik({
         initialValues: {
@@ -55,10 +57,10 @@ const FormFeedbackForStudent = () => {
             courses.queryListCourse();
         }
     }, []);
-    // missing logic call data class matching course
     useEffect(() => {
         if (courses.listCourse && !values.course && courses.success) {
-            setFieldValue('course', getListCoures[0]._id as string)
+            setFieldValue('course', getListCoures[0].courseName as string);
+            listClassInForm.query(getListCoures[0].courseName as string);
         }
     }, [courses.listCourse, values]);
     const handleErrors = (open: boolean, field: 'codeClass' | 'groupNumber') => {
@@ -82,18 +84,18 @@ const FormFeedbackForStudent = () => {
             });
         }
     };
-    const listClass: MenuProps['items'] = [
-        {
-            key: '129323',
-            label: 'TC-C4EJS148'
+    const listClass: MenuProps['items'] = (listClassInForm.data.response?.data as Array<Obj>)?.map((item) => {
+        return {
+            key: item.codeClass._id,
+            label: item.codeClass.codeClass
         }
-    ];
-    const listGroup: MenuProps['items'] = [
-        {
-            key: '9',
-            label: 'Nhóm 1- HĐT'
+    }) || [];
+    const listGroup: MenuProps['items'] = (listGroupClass.data.response?.data as Array<Obj>)?.map((item) => {
+        return {
+            key: item._id,
+            label: `Nhóm ${item.groupNumber} - ${item.locationId.locationCode}`
         }
-    ];
+    }) || [];
     const getTouched = (step: number) => {
         if (step === 1) {
             if (Object.keys(touched).length === 0) {
@@ -238,14 +240,16 @@ const FormFeedbackForStudent = () => {
                                         (
                                             (getListCoures)?.length > 0 ?
                                                 (
-                                                    <Radio.Group className={styles.listRadio} value={values.course || getListCoures[0]._id as string} onChange={(e) => {
-                                                        setFieldValue('course', e.target.value)
+                                                    <Radio.Group className={styles.listRadio} value={values.course || getListCoures[0].courseName as string} onChange={(e) => {
+                                                        setFieldValue('course', e.target.value);
+                                                        listClassInForm.query(e.target.value);
+                                                        setFieldValue('codeClass', '');
                                                     }}>
                                                         {
                                                             getListCoures?.map((item) => {
                                                                 return <Radio
                                                                     key={item._id as string}
-                                                                    value={item._id as string}
+                                                                    value={item.courseName as string}
                                                                     name='courseName'
                                                                 >
                                                                     {item.courseName as string}
@@ -269,9 +273,10 @@ const FormFeedbackForStudent = () => {
                                     listSelect={listClass}
                                     onClickItem={(e) => {
                                         setFieldValue('codeClass', e.key);
+                                        listGroupClass.query(e.key as string);
                                     }}
                                     trigger='click'
-                                    title={values.codeClass ? values.codeClass : 'Chọn mã lớp'}
+                                    title={values.codeClass ? (((listClass.find((item) => (item?.key === values.codeClass)) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}
                                     icon
                                     onOpenChange={(open) => {
                                         handleErrors(open, 'codeClass');
@@ -284,13 +289,14 @@ const FormFeedbackForStudent = () => {
                                     <span>Nhóm học tập <span className="field_required">*</span></span>
                                 </Form.Label>
                                 <Dropdown
+                                    disabled={values.codeClass ? false : true}
                                     className={`${styles.dropdownSelect}`}
                                     listSelect={listGroup}
                                     onClickItem={(e, key) => {
                                         setFieldValue('groupNumber', e.key);
                                     }}
                                     trigger='click'
-                                    title={values.groupNumber ? values.groupNumber : 'Chọn nhóm'}
+                                    title={values.groupNumber ? (values.groupNumber ? (((listGroup.find(item => values.groupNumber === item?.key)) as Obj)).label as string : 'Chọn nhóm') : 'Chọn nhóm'}
                                     icon
                                     onOpenChange={(open) => {
                                         handleErrors(open, 'groupNumber');

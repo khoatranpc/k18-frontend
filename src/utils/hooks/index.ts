@@ -17,6 +17,8 @@ import { queryTeacherSchedule } from "@/store/reducers/teacher/teacherSchedule.r
 import { queryAttendanceTeacherInClassSession } from "@/store/reducers/class/attendanceTeacherInClassSession.reducer";
 import { queryListClassFeedbackView } from "@/store/reducers/feedback/listClass.reducer";
 import { clearResUpdateClassForFeedback, queryUpdateClassForFeedback } from "@/store/reducers/feedback/updateClassForFeedback.reducer";
+import { queryGetListClassInFormFeedback } from "@/store/reducers/feedback/listClassInGetFeedback.reducer";
+import { queryGetListGroupClassInFormFeedback } from "@/store/reducers/feedback/listGroupInFormFeedback.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -352,6 +354,45 @@ const useUpdateClassFeedback = () => {
         clear
     }
 }
+
+const useListClassInFormFeedback = () => {
+    const data = useSelector((state: RootState) => (state.listClassInFormFeedback as State).state);
+    const dispatch = useDispatch();
+    const query = (courseName: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        courseName
+                    }
+                }
+            }
+        }
+        dispatch(queryGetListClassInFormFeedback(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
+const useGetListGroupClassInFormFeedback = () => {
+    const data = useSelector((state: RootState) => (state.listGroupClassInFormFeedback as State).state);
+    const dispatch = useDispatch();
+    const query = (classId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    params: [classId]
+                }
+            }
+        }
+        dispatch(queryGetListGroupClassInFormFeedback(payload));
+    };
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -368,5 +409,7 @@ export {
     useGetAttendanceTeacher,
     useGetListClassFeedback,
     useDebounce,
-    useUpdateClassFeedback
+    useUpdateClassFeedback,
+    useListClassInFormFeedback,
+    useGetListGroupClassInFormFeedback
 }

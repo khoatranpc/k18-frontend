@@ -39,6 +39,7 @@ const Dropdown = (props: Props) => {
     return (
         <div className={props.className}>
             <DropdownComponent
+                disabled={props.disabled}
                 menu={{ items: mapListSelect }}
                 open={props.open}
                 onOpenChange={(open) => {

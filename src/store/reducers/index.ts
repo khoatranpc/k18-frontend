@@ -23,6 +23,8 @@ import teacherSchedule from './teacher/teacherSchedule.reducer';
 import attendanceTeacherInClassSession from './class/attendanceTeacherInClassSession.reducer';
 import listClassActionFeedback from './feedback/listClass.reducer';
 import updateClassForFeedback from './feedback/updateClassForFeedback.reducer';
+import listClassInFormFeedback from './feedback/listClassInGetFeedback.reducer';
+import listGroupClassInFormFeedback from './feedback/listGroupInFormFeedback.reducer';
 
 const rootReducer = {
     test: test,
@@ -49,6 +51,8 @@ const rootReducer = {
     teacherSchedule,
     attendanceTeacherInClassSession,
     listClassActionFeedback,
-    updateClassForFeedback
+    updateClassForFeedback,
+    listClassInFormFeedback,
+    listGroupClassInFormFeedback
 };
 export default rootReducer;
