@@ -96,7 +96,7 @@ const ListClass = () => {
         {
             key: 'DATE',
             dataIndex: 'date',
-            title: `Ngày lấy (Tháng ${fieldFilter.date.month})`,
+            title: `Ngày lấy  (${fieldFilter.date.month ? `Tháng ${fieldFilter.date.month}` : 'Chưa chọn'})`,
             render(value) {
                 return formatDatetoString(value as Date || new Date(), 'dd/MM/yyyy') || '';
             },
