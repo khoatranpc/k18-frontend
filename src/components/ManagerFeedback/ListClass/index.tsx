@@ -38,7 +38,6 @@ const ListClass = () => {
             [fields]: value
         });
     }
-    // pending logic filter for column
     useEffect(() => {
         const fields: Array<string> = ['codeClassText', '_id', 'date', 'done', 'enabled', 'numberCollected', 'time'];
         dataListClass.query(debounce.date.month, fields, fieldFilter);

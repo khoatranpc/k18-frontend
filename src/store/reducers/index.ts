@@ -25,6 +25,7 @@ import listClassActionFeedback from './feedback/listClass.reducer';
 import updateClassForFeedback from './feedback/updateClassForFeedback.reducer';
 import listClassInFormFeedback from './feedback/listClassInGetFeedback.reducer';
 import listGroupClassInFormFeedback from './feedback/listGroupInFormFeedback.reducer';
+import responseFeedback from './feedback/responseFeedback.reducer';
 
 const rootReducer = {
     test: test,
@@ -53,6 +54,7 @@ const rootReducer = {
     listClassActionFeedback,
     updateClassForFeedback,
     listClassInFormFeedback,
-    listGroupClassInFormFeedback
+    listGroupClassInFormFeedback,
+    responseFeedback
 };
 export default rootReducer;

@@ -5,12 +5,13 @@ import Image from 'next/image';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
-import { useGetListCourse, useGetListGroupClassInFormFeedback, useListClassInFormFeedback } from '@/utils/hooks';
+import { useGetListCourse, useGetListGroupClassInFormFeedback, useListClassInFormFeedback, useResponseFeedbackForStudent } from '@/utils/hooks';
 import Loading from '@/components/loading';
 import Dropdown from '@/components/Dropdown';
 import Point from './Point';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/feedback/Feedback.module.scss';
+import { useHookMessage } from '@/utils/hooks/message';
 
 const validationSchema = yup.object({
     codeClass: yup.string().required('Bạn cần chọn mã lớp!'),
@@ -18,21 +19,17 @@ const validationSchema = yup.object({
     phoneNumber: yup.string().required('Bạn chưa nhập số điện thoại!'),
     course: yup.string().required('Bạn chưa chọn khoá học!'),
     groupNumber: yup.string().required('Bạn chưa chọn nhóm học tập!'),
-    pointCxo: yup.number().required('Bạn chưa chọn điểm quản lý!'),
-    pointST: yup.number().required('Bạn chưa chọn điểm giảng viên!'),
-    pointMT: yup.number().required('Bạn chưa chọn điểm mentor!'),
-    pointOb: yup.number().required('Bạn chưa chọn điểm cơ sở vật chất!'),
-    pointSyl: yup.number().required('Bạn chưa chọn điểm Chương trình đào tạo!'),
-    docDetail: yup.string().required('Vui lòng chia sẻ thêm về cảm nhận!'),
 });
 
 const FormFeedbackForStudent = () => {
     const courses = useGetListCourse();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const listClassInForm = useListClassInFormFeedback();
     const listGroupClass = useGetListGroupClassInFormFeedback();
     const getListCoures = (courses.listCourse as Obj)?.data as Array<Obj>;
-    const { values, errors, touched, handleChange, isValid, handleBlur, setFieldValue, setErrors, setTouched, handleSubmit, handleReset } = useFormik({
+    const responseFeedback = useResponseFeedbackForStudent();
+    const message = useHookMessage();
+    const { values, errors, touched, handleChange, handleBlur, setFieldValue, setErrors, setTouched, handleSubmit, handleReset } = useFormik({
         initialValues: {
             course: '',
             codeClass: '',
@@ -49,7 +46,7 @@ const FormFeedbackForStudent = () => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log(values);
+            responseFeedback.query(values);
         }
     });
     useEffect(() => {
@@ -58,8 +55,19 @@ const FormFeedbackForStudent = () => {
         }
     }, []);
     useEffect(() => {
+        if (responseFeedback.data.response && !responseFeedback.data.success) {
+            message.open({
+                content: responseFeedback.data.response.message as string,
+                type: 'error'
+            });
+            message.close(undefined, () => {
+                responseFeedback.clear();
+            });
+        }
+    }, [responseFeedback.data]);
+    useEffect(() => {
         if (courses.listCourse && !values.course && courses.success) {
-            setFieldValue('course', getListCoures[0].courseName as string);
+            setFieldValue('course', getListCoures[0]._id as string);
             listClassInForm.query(getListCoures[0].courseName as string);
         }
     }, [courses.listCourse, values]);
@@ -184,6 +192,12 @@ const FormFeedbackForStudent = () => {
                         <b>
                             <i>
                                 Gợi ý:
+                                <ul>
+                                    <li>Chất lượng giảng dạy của Giảng viên, Mentor</li>
+                                    <li>Khả năng tương tác, hỗ trợ của Giảng viên, Mentor</li>
+                                    <li>Chất lượng giáo trình, các điểm cần cải thiện</li>
+                                    <li>Các trang, thiết bị tại cơ sở</li>
+                                </ul>
                             </i>
                         </b>
                     </small>
@@ -198,195 +212,227 @@ const FormFeedbackForStudent = () => {
             <div className={`${styles.logo} radius border w-50 mb-3`}>
                 <Image src={logo} alt='' className={styles.imgLogo} />
             </div>
-            <div className={`${styles.header} w-50 margin-auto bg-white mb-3 border`}>
-                <div className={`${styles.line}`}>
-                </div>
-                <div className={`${styles.contentTitle} pd-2`}>
-                    <h1>MINDX | KHẢO SÁT TRẢI NGHIỆM HỌC VIÊN</h1>
-                    <p>
-                        Với tinh thần cầu thị, MindX rất muốn ghi nhận <b>đánh giá tổng quan chất lượng khóa học của Học viên</b> mà chúng tôi đem lại. Để nâng cao chất lượng, MindX rất mong Học viên sẽ có một chút thời gian để hoàn thành khảo sát này.
-                    </p>
-                </div>
-            </div>
-            <div className={`${styles.form} w-50 margin-auto`}>
-                <Form onSubmit={handleSubmit}>
-                    {step === 1 ?
-                        (<>
-                            <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                <Form.Label>
-                                    <span>Tên bạn là gì <span className="field_required">*</span></span>
-                                </Form.Label>
-                                <Input status={errors.studentName && touched.studentName ? 'error' : ''} type="text" alt='' name="studentName" placeholder="Câu trả lời của bạn" size="middle" className={styles.input} value={values.studentName} onChange={handleChange} onBlur={handleBlur} />
-                                {errors.studentName && touched.studentName && <p className="error">{errors.studentName}</p>}
-                            </Form.Group>
-                            <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                <Form.Label>
-                                    <span>Số điện thoại của bạn <span className="field_required">*</span></span>
-                                </Form.Label>
-                                <small>
-                                    <b>
-                                        <i>MindX cam kết bảo mật thông tin Học viên và chỉ sử dụng trong trường hợp liên hệ hỗ trợ!</i>
-                                    </b>
-                                </small>
-                                <Input status={errors.phoneNumber && touched.phoneNumber ? 'error' : ''} type="text" alt='' name="phoneNumber" value={values.phoneNumber} placeholder="Câu trả lời của bạn" size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
-                                {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
-                            </Form.Group>
-                            <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                <Form.Label>
-                                    <span>Học phần đang theo học <span className="field_required">*</span></span>
-                                </Form.Label>
-                                {
-                                    (!courses.listCourse || courses.loading) ? <Loading /> :
-                                        (
-                                            (getListCoures)?.length > 0 ?
-                                                (
-                                                    <Radio.Group className={styles.listRadio} value={values.course || getListCoures[0].courseName as string} onChange={(e) => {
-                                                        setFieldValue('course', e.target.value);
-                                                        listClassInForm.query(e.target.value);
-                                                        setFieldValue('codeClass', '');
-                                                    }}>
-                                                        {
-                                                            getListCoures?.map((item) => {
-                                                                return <Radio
-                                                                    key={item._id as string}
-                                                                    value={item.courseName as string}
-                                                                    name='courseName'
-                                                                >
-                                                                    {item.courseName as string}
-                                                                </Radio>
-                                                            })
-                                                        }
-                                                    </Radio.Group>
-                                                )
-                                                :
-                                                ('Chưa có dữ liệu! Liên hệ với quản lý để được hỗ trợ!')
-                                        )
-                                }
-                            </Form.Group>
-
-                            <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                <Form.Label>
-                                    <span>Mã lớp <span className="field_required">*</span></span>
-                                </Form.Label>
-                                <Dropdown
-                                    className={`${styles.dropdownSelect}`}
-                                    listSelect={listClass}
-                                    onClickItem={(e) => {
-                                        setFieldValue('codeClass', e.key);
-                                        listGroupClass.query(e.key as string);
-                                    }}
-                                    trigger='click'
-                                    title={values.codeClass ? (((listClass.find((item) => (item?.key === values.codeClass)) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}
-                                    icon
-                                    onOpenChange={(open) => {
-                                        handleErrors(open, 'codeClass');
-                                    }}
-                                />
-                                {errors.codeClass && touched.codeClass && <p className="error">{errors.codeClass}</p>}
-                            </Form.Group>
-                            <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                <Form.Label>
-                                    <span>Nhóm học tập <span className="field_required">*</span></span>
-                                </Form.Label>
-                                <Dropdown
-                                    disabled={values.codeClass ? false : true}
-                                    className={`${styles.dropdownSelect}`}
-                                    listSelect={listGroup}
-                                    onClickItem={(e, key) => {
-                                        setFieldValue('groupNumber', e.key);
-                                    }}
-                                    trigger='click'
-                                    title={values.groupNumber ? (values.groupNumber ? (((listGroup.find(item => values.groupNumber === item?.key)) as Obj)).label as string : 'Chọn nhóm') : 'Chọn nhóm'}
-                                    icon
-                                    onOpenChange={(open) => {
-                                        handleErrors(open, 'groupNumber');
-                                    }}
-                                />
-                                {errors.groupNumber && touched.groupNumber && <p className="error">{errors.groupNumber}</p>}
-                            </Form.Group>
-                            <div className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                <b>
-                                    <i>
-                                        Call Center Hotline: 02477710666
-                                        <br />
-                                        Email Head Office: cxo.ho@mindx.edu.vn
-                                    </i>
-                                </b>
+            {!responseFeedback.data.success ?
+                (
+                    <>
+                        <div className={`${styles.header} w-50 margin-auto bg-white mb-3 border`}>
+                            <div className={`${styles.line}`}>
                             </div>
-                            <div>
-                                <Button onClick={() => {
-                                    getTouched(step);
-                                }}
-                                    disabled={!values.codeClass || !values.course || !values.groupNumber || !values.phoneNumber || !values.studentName}
-                                >
-                                    Tiếp tục
-                                </Button>
-                                <Button onClick={handleReset} className={styles.reset}>Xoá hết câu trả lời</Button>
+                            <div className={`${styles.contentTitle} pd-2`}>
+                                <h1>MINDX | KHẢO SÁT TRẢI NGHIỆM HỌC VIÊN</h1>
+                                <p>
+                                    Với tinh thần cầu thị, MindX rất muốn ghi nhận <b>đánh giá tổng quan chất lượng khóa học của Học viên</b> mà chúng tôi đem lại. Để nâng cao chất lượng, MindX rất mong Học viên sẽ có một chút thời gian để hoàn thành khảo sát này.
+                                </p>
                             </div>
-                        </>)
-                        :
-                        (
-                            <>
-                                <div className={`${styles.header} margin-auto bg-white mb-3 border`}>
-                                    <div className={`${styles.line} ${styles.line2}`}>
-                                        <h2>ĐÁNH GIÁ TỔNG QUAN CHẤT LƯỢNG KHÓA HỌC</h2>
-                                    </div>
-                                    <div className={`${styles.contentTitle} pd-2 ${styles.contentTitle2}`}>
-                                        <p>
-                                            Nội dung khảo sát bao gồm các câu hỏi về <b>chất lượng dịch vụ, đội ngũ giảng dạy, chương trình đào tạo</b> để MindX tiếp tục cải thiện. Hãy đánh dấu <b>mức độ hoàn thành</b> vào ô tương ứng theo <b> &quot;Biểu điểm thang 5&quot;</b> như sau:
-                                        </p>
-                                        <ol>
-                                            <b className={styles.point}><li> Rất không hài lòng</li></b>
-                                            <b className={styles.point}><li> không hài lòng</li></b>
-                                            <b className={styles.point}><li> Bình thường</li></b>
-                                            <b className={styles.point}><li> Hài lòng</li></b>
-                                            <b className={styles.point}><li> Rất hài lòng</li></b>
-                                        </ol>
-                                    </div>
-                                </div>
-                                {
-                                    listPoint.map((item: any, idx) => {
-                                        return <Form.Group key={idx} className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                        </div>
+                        <div className={`${styles.form} w-50 margin-auto`}>
+                            <Form onSubmit={handleSubmit}>
+                                {step === 1 ?
+                                    (<>
+                                        <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
                                             <Form.Label>
-                                                {/* <span>Bạn đánh giá khả năng hỗ trợ và chăm sóc của <b>Quản lí lớp</b> tại MindX như thế nào?
-                                                    <span className="field_required">*</span>
-                                                </span> */}
-                                                {item.label}
+                                                <span>Tên bạn là gì <span className="field_required">*</span></span>
                                             </Form.Label>
-                                            {item.isPoint ?
-                                                <Point
-                                                    value={item.value}
-                                                    onChange={(value) => {
-                                                        setFieldValue(item.name, value);
-                                                    }}
-                                                />
-                                                :
-                                                <Input type="text" alt='' placeholder="Câu trả lời của bạn" size="middle" className={styles.input} value={item.value} name={item.name} onChange={handleChange} onBlur={handleBlur} />
-                                            }
-                                            {errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && touched[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && <p className="error">{errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail']}</p>}
+                                            <Input status={errors.studentName && touched.studentName ? 'error' : ''} type="text" alt='' name="studentName" placeholder="Câu trả lời của bạn" size="middle" className={styles.input} value={values.studentName} onChange={handleChange} onBlur={handleBlur} />
+                                            {errors.studentName && touched.studentName && <p className="error">{errors.studentName}</p>}
                                         </Form.Group>
-                                    })
+                                        <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                                            <Form.Label>
+                                                <span>Số điện thoại của bạn <span className="field_required">*</span></span>
+                                            </Form.Label>
+                                            <small>
+                                                <b>
+                                                    <i>MindX cam kết bảo mật thông tin Học viên và chỉ sử dụng trong trường hợp liên hệ hỗ trợ!</i>
+                                                </b>
+                                            </small>
+                                            <Input status={errors.phoneNumber && touched.phoneNumber ? 'error' : ''} type="text" alt='' name="phoneNumber" value={values.phoneNumber} placeholder="Câu trả lời của bạn" size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                                            {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
+                                        </Form.Group>
+                                        <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                                            <Form.Label>
+                                                <span>Học phần đang theo học <span className="field_required">*</span></span>
+                                            </Form.Label>
+                                            {
+                                                (!courses.listCourse || courses.loading) ? <Loading /> :
+                                                    (
+                                                        (getListCoures)?.length > 0 ?
+                                                            (
+                                                                <Radio.Group className={styles.listRadio} value={values.course || getListCoures[0]._id as string} onChange={(e) => {
+                                                                    setFieldValue('course', e.target.value);
+                                                                    const findIdCourse = getListCoures.find((item) => item._id === e.target.value);
+                                                                    listClassInForm.query(findIdCourse?.courseName);
+                                                                    setFieldValue('codeClass', '');
+                                                                }}>
+                                                                    {
+                                                                        getListCoures?.map((item) => {
+                                                                            return <Radio
+                                                                                key={item._id as string}
+                                                                                value={item._id as string}
+                                                                                name='courseName'
+                                                                            >
+                                                                                {item.courseName as string}
+                                                                            </Radio>
+                                                                        })
+                                                                    }
+                                                                </Radio.Group>
+                                                            )
+                                                            :
+                                                            ('Chưa có dữ liệu! Liên hệ với quản lý để được hỗ trợ!')
+                                                    )
+                                            }
+                                        </Form.Group>
+
+                                        <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                                            <Form.Label>
+                                                <span>Mã lớp <span className="field_required">*</span></span>
+                                            </Form.Label>
+                                            <Dropdown
+                                                className={`${styles.dropdownSelect}`}
+                                                listSelect={listClass}
+                                                onClickItem={(e) => {
+                                                    setFieldValue('codeClass', e.key);
+                                                    listGroupClass.query(e.key as string);
+                                                }}
+                                                trigger='click'
+                                                title={values.codeClass ? (((listClass.find((item) => (item?.key === values.codeClass)) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}
+                                                icon
+                                                onOpenChange={(open) => {
+                                                    handleErrors(open, 'codeClass');
+                                                }}
+                                            />
+                                            {errors.codeClass && touched.codeClass && <p className="error">{errors.codeClass}</p>}
+                                        </Form.Group>
+                                        <Form.Group className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                                            <Form.Label>
+                                                <span>Nhóm học tập <span className="field_required">*</span></span>
+                                            </Form.Label>
+                                            <Dropdown
+                                                disabled={values.codeClass ? false : true}
+                                                className={`${styles.dropdownSelect}`}
+                                                listSelect={listGroup}
+                                                onClickItem={(e, key) => {
+                                                    setFieldValue('groupNumber', e.key);
+                                                }}
+                                                trigger='click'
+                                                title={values.groupNumber ? (values.groupNumber ? (((listGroup.find(item => values.groupNumber === item?.key)) as Obj)).label as string : 'Chọn nhóm') : 'Chọn nhóm'}
+                                                icon
+                                                onOpenChange={(open) => {
+                                                    handleErrors(open, 'groupNumber');
+                                                }}
+                                            />
+                                            {errors.groupNumber && touched.groupNumber && <p className="error">{errors.groupNumber}</p>}
+                                        </Form.Group>
+                                        <div className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                                            <b>
+                                                <i>
+                                                    Call Center Hotline: 02477710666
+                                                    <br />
+                                                    Email Head Office: cxo.ho@mindx.edu.vn
+                                                </i>
+                                            </b>
+                                        </div>
+                                        <div>
+                                            <Button onClick={() => {
+                                                getTouched(step);
+                                            }}
+                                                disabled={!values.codeClass || !values.course || !values.groupNumber || !values.phoneNumber || !values.studentName}
+                                            >
+                                                Tiếp tục
+                                            </Button>
+                                            <Button onClick={handleReset} className={styles.reset}>Xoá hết câu trả lời</Button>
+                                        </div>
+                                    </>)
+                                    :
+                                    (
+                                        // step 2
+                                        <>
+                                            <div className={`${styles.header} margin-auto bg-white mb-3 border`}>
+                                                <div className={`${styles.line} ${styles.line2}`}>
+                                                    <h2>ĐÁNH GIÁ TỔNG QUAN CHẤT LƯỢNG KHÓA HỌC</h2>
+                                                </div>
+                                                <div className={`${styles.contentTitle} pd-2 ${styles.contentTitle2}`}>
+                                                    <p>
+                                                        Nội dung khảo sát bao gồm các câu hỏi về <b>chất lượng dịch vụ, đội ngũ giảng dạy, chương trình đào tạo</b> để MindX tiếp tục cải thiện. Hãy đánh dấu <b>mức độ hoàn thành</b> vào ô tương ứng theo <b> &quot;Biểu điểm thang 5&quot;</b> như sau:
+                                                    </p>
+                                                    <ol>
+                                                        <b className={styles.point}><li> Rất không hài lòng</li></b>
+                                                        <b className={styles.point}><li> không hài lòng</li></b>
+                                                        <b className={styles.point}><li> Bình thường</li></b>
+                                                        <b className={styles.point}><li> Hài lòng</li></b>
+                                                        <b className={styles.point}><li> Rất hài lòng</li></b>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                            {
+                                                listPoint.map((item: any, idx) => {
+                                                    return <Form.Group key={idx} className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
+                                                        <Form.Label>
+                                                            {item.label}
+                                                        </Form.Label>
+                                                        {item.isPoint ?
+                                                            <Point
+                                                                value={item.value}
+                                                                onChange={(value) => {
+                                                                    setFieldValue(item.name, value);
+                                                                }}
+                                                            />
+                                                            :
+                                                            <Input.TextArea autoSize placeholder="Câu trả lời của bạn" size="middle" className={styles.input} value={item.value} name={item.name} onChange={handleChange} onBlur={handleBlur} />
+                                                        }
+                                                        {errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && touched[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && <p className="error">{errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail']}</p>}
+                                                    </Form.Group>
+                                                })
+                                            }
+                                            <div>
+                                                <Button onClick={() => {
+                                                    setStep(1);
+                                                }}>Quay trở lại</Button>
+                                                <Button
+                                                    disabled={!values.pointCxo || !values.pointMT || !values.pointOb || !values.pointST || !values.pointSyl || !values.docDetail}
+                                                    htmlType="submit"
+                                                    loading={responseFeedback.data.isLoading}
+                                                    className={styles.submit}
+                                                >
+                                                    Gửi
+                                                </Button>
+                                                <Button onClick={(e) => {
+                                                    handleReset(e);
+                                                    setStep(1);
+                                                }} className={styles.reset}>Xoá hết câu trả lời</Button>
+                                            </div>
+                                        </>
+                                    )
                                 }
-                                <div>
-                                    <Button onClick={() => {
-                                        setStep(1);
-                                    }}>Quay trở lại</Button>
-                                    <Button
-                                        disabled={!values.pointCxo || !values.pointMT || !values.pointOb || !values.pointST || !values.pointSyl || !values.docDetail}
-                                        htmlType="submit"
-                                    >
-                                        Gửi
-                                    </Button>
-                                    <Button onClick={(e) => {
+                            </Form>
+                        </div>
+                    </>
+                )
+                :
+                (
+                    <div className="conGr">
+                        <div className={`${styles.header} w-50 margin-auto bg-white mb-3 border`}>
+                            <div className={`${styles.line}`}>
+                            </div>
+                            <div className={`${styles.contentTitle} pd-2`}>
+                                <h1>Cảm ơn bạn đã phản hồi</h1>
+                                <p>
+                                    Chúng tôi rất cảm ơn bạn đã dành chút quỹ thời gian để gửi phản hồi! Mong rằng bạn sẽ tiếp tục có những buổi học có đầy ý nghĩa và nhiều sự trải nghiệm!
+                                </p>
+                                <small style={{ cursor: 'pointer' }}
+                                    onClick={(e) => {
+                                        responseFeedback.clear();
                                         handleReset(e);
                                         setStep(1);
-                                    }} className={styles.reset}>Xoá hết câu trả lời</Button>
-                                </div>
-                            </>
-                        )
-                    }
-                </Form>
-            </div>
+                                    }}
+                                >
+                                    <u>Gửi câu trả lời khác!</u>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
         </div>
     )
 }

@@ -19,6 +19,7 @@ import { queryListClassFeedbackView } from "@/store/reducers/feedback/listClass.
 import { clearResUpdateClassForFeedback, queryUpdateClassForFeedback } from "@/store/reducers/feedback/updateClassForFeedback.reducer";
 import { queryGetListClassInFormFeedback } from "@/store/reducers/feedback/listClassInGetFeedback.reducer";
 import { queryGetListGroupClassInFormFeedback } from "@/store/reducers/feedback/listGroupInFormFeedback.reducer";
+import { clearResponseFeedback, queryResponseFeedback } from "@/store/reducers/feedback/responseFeedback.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -393,6 +394,28 @@ const useGetListGroupClassInFormFeedback = () => {
         query
     }
 }
+const useResponseFeedbackForStudent = () => {
+    const data = useSelector((state: RootState) => (state.responseFeedback as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body
+                }
+            }
+        }
+        dispatch(queryResponseFeedback(payload));
+    };
+    const clear = () => {
+        dispatch(clearResponseFeedback());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -411,5 +434,6 @@ export {
     useDebounce,
     useUpdateClassFeedback,
     useListClassInFormFeedback,
-    useGetListGroupClassInFormFeedback
+    useGetListGroupClassInFormFeedback,
+    useResponseFeedbackForStudent
 }
