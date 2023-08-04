@@ -31,7 +31,7 @@ const logout = () => {
     window.location.assign('/auth/login');
 }
 const formatDatetoString = (date: Date | string | number, formatString?: string) => {
-    return format(new Date(date), formatString || 'MM/dd/yyyy');
+    return date ? format(new Date(date), formatString || 'MM/dd/yyyy') : '';
 }
 
 const generateRowDataForMergeRowSingleField = (data: Obj[], fieldForMerge: string): RowData[] => {
@@ -121,6 +121,9 @@ const getWeekday = (day: number, vi?: boolean, short?: boolean) => {
                 return "CN"
         }
     }
+}
+const formatNumberPhone = (str: string) => {
+    let getString = '';
 }
 export {
     uuid,

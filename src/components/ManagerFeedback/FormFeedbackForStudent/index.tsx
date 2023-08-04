@@ -23,7 +23,7 @@ const validationSchema = yup.object({
 
 const FormFeedbackForStudent = () => {
     const courses = useGetListCourse();
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const listClassInForm = useListClassInFormFeedback();
     const listGroupClass = useGetListGroupClassInFormFeedback();
     const getListCoures = (courses.listCourse as Obj)?.data as Array<Obj>;
@@ -36,6 +36,7 @@ const FormFeedbackForStudent = () => {
             studentName: '',
             phoneNumber: '',
             groupNumber: '',
+            feedbackId: '',
 
             pointCxo: '',
             pointST: '',
@@ -292,6 +293,10 @@ const FormFeedbackForStudent = () => {
                                                 onClickItem={(e) => {
                                                     setFieldValue('codeClass', e.key);
                                                     listGroupClass.query(e.key as string);
+                                                    const getIdFeedback = (listClassInForm.data.response?.data as Array<Obj>)?.find((item) => {
+                                                        return item.codeClass._id === e.key
+                                                    });
+                                                    setFieldValue('feedbackId', getIdFeedback!._id as string);
                                                 }}
                                                 trigger='click'
                                                 title={values.codeClass ? (((listClass.find((item) => (item?.key === values.codeClass)) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}

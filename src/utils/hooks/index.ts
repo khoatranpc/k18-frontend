@@ -20,6 +20,7 @@ import { clearResUpdateClassForFeedback, queryUpdateClassForFeedback } from "@/s
 import { queryGetListClassInFormFeedback } from "@/store/reducers/feedback/listClassInGetFeedback.reducer";
 import { queryGetListGroupClassInFormFeedback } from "@/store/reducers/feedback/listGroupInFormFeedback.reducer";
 import { clearResponseFeedback, queryResponseFeedback } from "@/store/reducers/feedback/responseFeedback.reducer";
+import { queryGetListResponseFeedback } from "@/store/reducers/feedback/listResponseFeedback.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -416,6 +417,28 @@ const useResponseFeedbackForStudent = () => {
         clear
     }
 }
+const useGetListFeedback = () => {
+    const data = useSelector((state: RootState) => (state.listResponseFeedback as State).state);
+    const dispatch = useDispatch();
+    const query = (rowOnPage?: number, currentPage?: number) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        fields: ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'time'],
+                        rowOnPage,
+                        currentPage
+                    }
+                }
+            }
+        };
+        dispatch(queryGetListResponseFeedback(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -435,5 +458,6 @@ export {
     useUpdateClassFeedback,
     useListClassInFormFeedback,
     useGetListGroupClassInFormFeedback,
-    useResponseFeedbackForStudent
+    useResponseFeedbackForStudent,
+    useGetListFeedback
 }
