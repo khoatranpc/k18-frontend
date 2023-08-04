@@ -5,9 +5,10 @@ import { Columns, Obj, RowData } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import { formatDatetoString, uuid } from '@/utils';
-import { useGetListClass, useGetListCourse, useGetListFeedback } from '@/utils/hooks';
+import { useGetListCourse, useGetListFeedback } from '@/utils/hooks';
 import Table from '@/components/Table';
 import styles from '@/styles/feedback/CollectionResponse.module.scss';
+import ExportCSV from '@/components/ExportCSV';
 
 
 const initFilter = {
@@ -262,11 +263,16 @@ const CollectionAnswer = () => {
                 >
                     <span>{MapIconKey[KEY_ICON.RELOAD]} Reset</span>
                 </Button>
-                <Button
-                    className={`${styles.btn}`}
+                <ExportCSV
+                    data={rowData}
+                    fileName='textTwo'
                 >
-                    <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
-                </Button>
+                    <Button
+                        className={`${styles.btn}`}
+                    >
+                        <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
+                    </Button>
+                </ExportCSV>
             </div>
             <Table
                 enablePaginationAjax={!filter.isFilter}
