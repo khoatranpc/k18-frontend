@@ -12,7 +12,7 @@ interface Props {
 const ExportCSV = (props: Props) => {
     return (
         <CSVLink
-            filename={`${props.fileName}.csv`}
+            filename={`${props.fileName}`}
             data={props.data || []}
             className={`${props.className}`}
         >
