@@ -51,7 +51,7 @@ const CollectionAnswer = () => {
     }
     useEffect(() => {
         if (!listResponseFeedback.data.response) {
-            listResponseFeedback.query();
+            listResponseFeedback.query(10, 1);
         }
     }, []);
     useEffect(() => {
@@ -62,7 +62,7 @@ const CollectionAnswer = () => {
             listCourse.queryListCourse();
         }
     }, []);
-    const rowData: RowData[] = (listResponseFeedback.data.response?.data as Array<Obj>)?.map((item) => {
+    const rowData: RowData[] = ((listResponseFeedback.data.response?.data as Obj)?.list as Array<Obj>)?.map((item) => {
         return {
             key: uuid(),
             ...item
@@ -216,28 +216,40 @@ const CollectionAnswer = () => {
             dataIndex: 'pointST',
             title: 'Giảng viên',
             className: `text-center hasSort ${styles.flexReverse}`,
-            width: 120
+            width: 120,
+            sorter: (a, b) => {
+                return Number(a.pointST) - Number(b.pointST);
+            },
         },
         {
             key: 'MT',
             dataIndex: 'pointMT',
             title: 'Mentor',
             className: `text-center hasSort ${styles.flexReverse}`,
-            width: 90
+            width: 90,
+            sorter: (a, b) => {
+                return Number(a.pointMT) - Number(b.pointMT);
+            },
         },
         {
             key: 'OB',
             dataIndex: 'pointOb',
             className: `text-center hasSort ${styles.flexReverse}`,
             title: 'CSVC',
-            width: 90
+            width: 90,
+            sorter: (a, b) => {
+                return Number(a.pointOb) - Number(b.pointOb);
+            },
         },
         {
             key: 'SYL',
             dataIndex: 'pointSyl',
             title: 'Giáo trình',
             className: `text-center hasSort ${styles.flexReverse}`,
-            width: 90
+            width: 90,
+            sorter: (a, b) => {
+                return Number(a.pointSyl) - Number(b.pointSyl);
+            },
         },
         {
             key: 'DOCDETAIL',
@@ -275,6 +287,11 @@ const CollectionAnswer = () => {
                 </ExportCSV>
             </div>
             <Table
+                loading={listResponseFeedback.data.isLoading}
+                onChangeDataPagination={(data) => {
+                    listResponseFeedback.query(data.currentTotalRowOnPage, data.currentPage);
+                }}
+                maxPage={(listResponseFeedback.data.response?.data as Obj)?.totalPage || 1}
                 enablePaginationAjax={!filter.isFilter}
                 disableDefaultPagination
                 className={styles.tableAnswerFeedback}

@@ -102,7 +102,7 @@ const FormFeedbackForStudent = () => {
     const listGroup: MenuProps['items'] = (listGroupClass.data.response?.data as Array<Obj>)?.map((item) => {
         return {
             key: item._id,
-            label: `Nhóm ${item.groupNumber} - ${item.locationId.locationCode}`
+            label: `Nhóm ${item.groupNumber} - ${item.locationId.locationCode}, MT: ${(item.teacherRegister as Array<Obj>)?.[0].idTeacher.fullName || ''}`
         }
     }) || [];
     const getTouched = (step: number) => {
