@@ -142,14 +142,15 @@ const FormRegister = () => {
             handleMessage.open({
                 content: (registerPreTeacher.response as Obj)?.message as string,
                 type: ((registerPreTeacher.response as Obj)?.status as boolean) ? "success" : "error"
-            }, 3000);
-            if((registerPreTeacher.response as Obj)?.status){
+            }, 2500);
+            handleMessage.close(2500);
+            if ((registerPreTeacher.response as Obj)?.status) {
                 router.push('/auth/login');
             }
             dispatch(clean());
-            
+
         }
-        return()=>{
+        return () => {
             handleMessage.close();
         }
     }, [registerPreTeacher]);
