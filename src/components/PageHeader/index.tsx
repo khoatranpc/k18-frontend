@@ -15,6 +15,9 @@ const PageHeader = () => {
             case ComponentPage.DETAILCLASS:
                 router.push(CombineRoute['TE']['MANAGER']['CLASS']);
                 break;
+            case ComponentPage.TEACHER_DETAIL:
+                router.push(CombineRoute['TE']['MANAGER']['TEACHER']);
+                break;
             default:
                 router.back();
                 break;

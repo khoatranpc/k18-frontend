@@ -1,12 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Checkbox, Input } from 'antd';
-import { Columns, Obj, RowData } from '@/global/interface';
+import { Columns, Obj } from '@/global/interface';
 import { SearchOutlined } from '@ant-design/icons';
 import { formatDatetoString, getColor3Point } from '@/utils';
-import { useGetListFeedback, useListTeacher } from '@/utils/hooks';
+import { useDispatchDataRouter, useGetListFeedback, useListTeacher } from '@/utils/hooks';
 import Table from '@/components/Table';
 import SelectInputNumber from '@/components/SelectInputNumber';
 import styles from '@/styles/class/DetailClass.module.scss';
+import CombineRoute from '@/global/route';
+import { ComponentPage } from '@/global/enum';
+
 
 interface Props {
     codeClassId?: string;
@@ -22,14 +26,15 @@ const initConditionalFilter: Obj = {
 }
 const FeedBack = (props: Props) => {
     const listResponseFeedback = useGetListFeedback();
+    const dispatchRouter = useDispatchDataRouter();
     const timeCollect = useRef(1);
-
+    const router = useRouter();
     const listTeacher = useListTeacher();
 
     const [conditionalFiter, setConditionalFilter] = useState<Obj>(initConditionalFilter);
     const rowData = useMemo(() => {
         const dataResource = (listResponseFeedback?.data.response?.data as Array<Obj>);
-        const listData = dataResource?.map((item) => {
+        const listData = dataResource.length !== 0 ? dataResource.map((item) => {
             const getMentor = ((listTeacher.listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.find((tc) => {
                 return tc._id === item.groupNumber.teacherRegister[0].idTeacher
             })?.fullName;
@@ -44,8 +49,8 @@ const FeedBack = (props: Props) => {
                 key: item?._id,
                 mentor: getMentor || ''
             }
-        });
-        const mapDataWithConditional = listData?.filter(rowData => {
+        }) : [];
+        const mapDataWithConditional = listData.filter(rowData => {
             return Object.keys(conditionalFiter).every(key => {
                 if (!(conditionalFiter[key] as any).length) {
                     return true;
@@ -112,6 +117,7 @@ const FeedBack = (props: Props) => {
             title: 'Mentor',
             dataIndex: 'mentor',
             key: 'mentor',
+            className: `${styles.mentor}`,
             filterDropdown(props) {
                 return <Checkbox.Group className={styles.selectGroup} defaultValue={listTeacherCheck} onChange={(checkList) => {
                     setConditionalFilter({
@@ -128,6 +134,17 @@ const FeedBack = (props: Props) => {
             },
             render(value) {
                 return value;
+            },
+            onCell(data: Obj) {
+                return {
+                    onClick() {
+                        const teacherId = (data.groupNumber.teacherRegister as Array<Obj>)[0].idTeacher as string;
+                        router.push(`/te/manager/teacher/detail/${teacherId}`);
+                        dispatchRouter(CombineRoute['TE']['MANAGER']['DETAILTEACHER'], `Giáo viên: ${data.mentor as string}`, `Giáo viên: ${data.mentor as string}`, ComponentPage.TEACHER_DETAIL, true, {
+                            teacherId
+                        })
+                    }
+                }
             }
         },
         {

@@ -2,31 +2,27 @@ import React, { useEffect } from 'react';
 import { View } from 'react-big-calendar';
 import { useRouter } from 'next/router';
 import { Action, EventCalendar, Obj } from '@/global/interface';
-import Calendar from '@/components/Calendar';
 import { STATUS_CLASS } from '@/global/enum';
 import { useTeacherTimeSchedule } from '@/utils/hooks';
-import useGetDataRoute from '@/utils/hooks/getDataRoute';
+import Calendar from '@/components/Calendar';
 
 const Schedule = () => {
     const timeSchedule = useTeacherTimeSchedule();
-    const getDataRoute = useGetDataRoute();
     const router = useRouter();
     useEffect(() => {
-        if (!timeSchedule.listSchedule.response || (getDataRoute.moreData && getDataRoute.moreData.teacherId !== router.query.teacherId as string)) {
-            const payload: Action = {
-                payload: {
+        const payload: Action = {
+            payload: {
+                query: {
                     query: {
-                        query: {
-                            year: 2023,
-                            month: 7,
-                            option: 'MONTH'
-                        },
-                        params: [router.query.teacherId as string]
-                    }
+                        year: 2023,
+                        month: 7,
+                        option: 'MONTH'
+                    },
+                    params: [router.query.teacherId as string]
                 }
             }
-            timeSchedule.queryGetListTeacherSchedule(payload);
         }
+        timeSchedule.queryGetListTeacherSchedule(payload);
     }, []);
     const mapScheduleForCalendar: EventCalendar[] = (timeSchedule.listSchedule.response?.data as Array<Obj>)?.map((item) => {
         const currentDateSchedule = new Date((item.classSessionId as Obj).date as Date);

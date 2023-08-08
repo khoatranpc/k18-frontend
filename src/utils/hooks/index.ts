@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Action, BaseInterfaceHookReducer, Obj, State } from "@/global/interface";
 import { AppDispatch, RootState } from "@/store";
@@ -8,7 +8,7 @@ import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reduc
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
 import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
-import { ROLE_TEACHER } from "@/global/enum";
+import { ComponentPage, ROLE_TEACHER } from "@/global/enum";
 import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
 import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
 import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
@@ -21,6 +21,7 @@ import { queryGetListClassInFormFeedback } from "@/store/reducers/feedback/listC
 import { queryGetListGroupClassInFormFeedback } from "@/store/reducers/feedback/listGroupInFormFeedback.reducer";
 import { clearResponseFeedback, queryResponseFeedback } from "@/store/reducers/feedback/responseFeedback.reducer";
 import { queryGetListResponseFeedback } from "@/store/reducers/feedback/listResponseFeedback.reducer";
+import { PayloadRoute, initDataRoute } from "@/store/reducers/global-reducer/route";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -441,6 +442,22 @@ const useGetListFeedback = () => {
         query
     }
 }
+const useDispatchDataRouter = () => {
+    const dispatch = useDispatch();
+    return (combineRoute: string, title: string, replaceTitle: React.ReactElement | string, componentPage?: ComponentPage, hasBackPage?: boolean, moreData?: Obj) => {
+        const payloadRouteFeedback: PayloadRoute = {
+            payload: {
+                route: combineRoute,
+                title: title,
+                replaceTitle: replaceTitle,
+                hasBackPage: !!hasBackPage,
+                component: componentPage,
+                moreData
+            }
+        };
+        dispatch(initDataRoute(payloadRouteFeedback));
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -461,5 +478,6 @@ export {
     useListClassInFormFeedback,
     useGetListGroupClassInFormFeedback,
     useResponseFeedbackForStudent,
-    useGetListFeedback
+    useGetListFeedback,
+    useDispatchDataRouter
 }

@@ -291,6 +291,13 @@ div.selectHours {
         }
     }
 
+    td.mentor {
+        cursor: pointer;
+
+        &:hover {
+            color: var(--base);
+        }
+    }
 
 }
 
