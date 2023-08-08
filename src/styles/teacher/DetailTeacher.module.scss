@@ -3,3 +3,70 @@
     display: flex;
     flex-direction: column;
 }
+
+.overViewTeacher {
+    padding: 0 2.4rem;
+
+    .fullName {
+        font-size: 2.4rem !important;
+        font-weight: 500;
+    }
+
+    .hr {
+        width: 75%;
+        margin: auto;
+    }
+
+    .headerOverview {
+        display: flex;
+        justify-content: center;
+        padding: 1.2rem 0;
+        gap: 8rem;
+
+        .overView {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                margin: 0;
+            }
+
+            .flex {
+                display: flex;
+                gap: 4rem;
+            }
+
+            .info {
+                display: flex;
+                gap: 4rem;
+            }
+
+            .indexes {
+                display: flex;
+            }
+
+            b {
+                font-weight: 500;
+            }
+
+            .courseRegister {
+                .containerCourse {
+                    display: flex;
+
+                    li {
+                        margin-left: 3rem;
+                    }
+                }
+
+                .course {
+                    font-weight: 500;
+                }
+            }
+
+            .listCourseRegister {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

@@ -34,7 +34,7 @@ const FeedBack = (props: Props) => {
     const [conditionalFiter, setConditionalFilter] = useState<Obj>(initConditionalFilter);
     const rowData = useMemo(() => {
         const dataResource = (listResponseFeedback?.data.response?.data as Array<Obj>);
-        const listData = dataResource.length !== 0 ? dataResource.map((item) => {
+        const listData = dataResource && dataResource.length !== 0 ? dataResource.map((item) => {
             const getMentor = ((listTeacher.listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.find((tc) => {
                 return tc._id === item.groupNumber.teacherRegister[0].idTeacher
             })?.fullName;

@@ -3,12 +3,13 @@ import { Action, Obj, State } from "@/global/interface";
 import { METHOD } from "@/global/enum";
 import { GET_TOKEN_LOGIN } from "./actions";
 import { createAction } from "@reduxjs/toolkit";
+import { initState } from "@/global/init-data";
 
 export const queryToken = createRequest(GET_TOKEN_LOGIN, '/api/v1/account', METHOD.POST);
 
 const getToken = createSliceReducer('token', queryToken, {
     clear: (state: State) => {
-        state.state.response = null;
+        state.state = initState.state;
     },
     update: (state: State, action?: Action) => {
         state.state.response = {

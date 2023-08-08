@@ -38,7 +38,7 @@ const generateRowDataForMergeRowSingleField = (data: Obj[], fieldForMerge: strin
     const mapping: RowData[] = [];
     data.forEach((element: Obj) => {
         const arr = (element[fieldForMerge] as Array<Obj>);
-        if (arr.length !== 0) {
+        if (arr && arr.length !== 0) {
             arr.forEach((item, crrIndex) => {
                 const catchedRecord = {
                     ...element,

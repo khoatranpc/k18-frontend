@@ -16,10 +16,9 @@ interface Props {
 
 const AuthLayout = (props: Props) => {
     const router = useRouter();
-    const crrToken = useSelector((state: RootState) => (state.token as State).state);
     const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
-        if (localStorage.getItem('access_token') || (crrToken.response && crrToken.response.status)) {
+        if (localStorage.getItem('access_token')) {
             router.push('/');
         } else {
             setLoading(false);
