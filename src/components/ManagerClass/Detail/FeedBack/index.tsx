@@ -12,20 +12,21 @@ interface Props {
     codeClassId?: string;
 }
 const MAX_TIME = 2;
-let listGroup: Array<number> = [];
-let listTeacherCheck: Array<string> = [];
+const listGroup: Array<number> = [];
+const listTeacherCheck: Array<string> = [];
 
+const initConditionalFilter: Obj = {
+    studentName: '',
+    groupNumber: [],
+    mentor: []
+}
 const FeedBack = (props: Props) => {
     const listResponseFeedback = useGetListFeedback();
     const timeCollect = useRef(1);
 
     const listTeacher = useListTeacher();
 
-    const [conditionalFiter, setConditionalFilter] = useState<Obj>({
-        studentName: '',
-        groupNumber: [],
-        mentor: []
-    });
+    const [conditionalFiter, setConditionalFilter] = useState<Obj>(initConditionalFilter);
     const rowData = useMemo(() => {
         const dataResource = (listResponseFeedback?.data.response?.data as Array<Obj>);
         const listData = dataResource?.map((item) => {
