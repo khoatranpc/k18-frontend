@@ -148,7 +148,7 @@ const Attendace = (props: Props) => {
                             setSessionNumber(Number(e.key));
                             props.onChangeSession?.(Number(e.key));
                         }}
-                        total={16}
+                        max={16}
                         formatLabel={(number) => {
                             return `Buổi ${number}`
                         }}

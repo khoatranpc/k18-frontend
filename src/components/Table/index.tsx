@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Table as TableComponent } from 'antd';
+import { Table as TableComponent, TableProps } from 'antd';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { INTERNAL_SELECTION_ITEM } from 'antd/es/table/hooks/useSelection';
 import { Columns, Obj, RowData } from '@/global/interface';
@@ -29,16 +29,32 @@ interface Props {
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
     onChangeDataPagination?: (data: { currentPage: number, currentTotalRowOnPage: number }) => void;
     hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
+    /**
+     * @description
+     * onChange: Callback executed when pagination default, filters or sorter is changed
+     */
+    onChange?: TableProps<Obj>['onChange'];
 }
 
 const Table = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const mapColumns = useMemo(() => {
+    const mapColumns: Columns = useMemo(() => {
         return props.columns.map((item) => {
             return {
                 ...item,
                 title: item.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{MapIconKey[KEY_ICON.SORT]} {item.title as React.ReactNode}</div> : item.title,
-                showSorterTooltip: false
+                showSorterTooltip: false,
+                children: ((item as any)?.children as Columns) ? (
+                    ((item as any)?.children as Columns).map((child) => {
+                        return {
+                            ...child,
+                            showSorterTooltip: false,
+                            title: child.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{MapIconKey[KEY_ICON.SORT]} {child.title as React.ReactNode}</div> : child.title
+                        }
+                    })
+                )
+                    :
+                    null
             }
         })
     }, [props.columns]);
@@ -77,6 +93,7 @@ const Table = (props: Props) => {
                         }
                     }
                 }}
+                onChange={props.onChange}
                 pagination={props.disableDefaultPagination ? !props.disableDefaultPagination : {}}
             />
             {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination

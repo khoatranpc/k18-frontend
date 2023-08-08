@@ -203,6 +203,9 @@ const ManagerClass = () => {
     }
     const [openModal, setOpenModal] = useState<boolean>(false);
     useEffect(() => {
+        handleQueryListClass(1, 10);
+    }, []);
+    useEffect(() => {
         if (!listClass.response && firstQuery.current) {
             handleQueryListClass(1, 10)
             firstQuery.current = false

@@ -15,6 +15,7 @@
                 .sortHeader {
                     display: flex;
                     align-items: center;
+                    flex-direction: row-reverse;
                     gap: 0.8rem;
                 }
             }
@@ -30,6 +31,7 @@
 
     .loadingInTable {
         margin: 0 !important;
+        transform: translate(-1.5rem, 0.5rem);
 
         img {
             position: absolute;

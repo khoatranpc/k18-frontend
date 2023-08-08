@@ -58,7 +58,7 @@ export const listTab: TabsProps['items'] = [
     },
     {
         key: TabDetailClass.FEEDBACK,
-        label: 'Feedback'
+        label: 'Phản hồi'
     },
     {
         key: TabDetailClass.BOOK_TEACHER,
@@ -78,7 +78,7 @@ const Detail = (props: Props) => {
     const getComponent: Record<TabDetailClass, React.ReactElement> = {
         OVERVIEW: <OverView />,
         ATTENDACE: <Attendace />,
-        FEEDBACK: <FeedBack />,
+        FEEDBACK: <FeedBack codeClassId={router.query.classId as string} />,
         MANAGER_GROUP: <ManagerGroup />,
         STUDENT: <Student />,
         SYLLABUS: <Syllabus />,
@@ -125,12 +125,24 @@ const Detail = (props: Props) => {
                     payload: {
                         route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
                         title: 'Điểm danh',
-                        replaceTitle: <TitleHeader  tabDetail={TabDetailClass.ATTENDACE} title={'Điểm danh'} />,
+                        replaceTitle: <TitleHeader tabDetail={TabDetailClass.ATTENDACE} title={'Điểm danh'} />,
                         hasBackPage: true,
                         component: ComponentPage.ATTENDANCE_TEACHER_CLASS
                     }
                 };
                 dispatch(initDataRoute(payloadRoute));
+                break;
+            case TabDetailClass.FEEDBACK:
+                const payloadRouteFeedback: PayloadRoute = {
+                    payload: {
+                        route: CombineRoute['TE']['MANAGER']['FEEDBACK'],
+                        title: 'Feedback',
+                        replaceTitle: <TitleHeader tabDetail={TabDetailClass.FEEDBACK} title={'Phản hồi'} />,
+                        hasBackPage: true,
+                        component: ComponentPage.MANAGER_FEEDBACK
+                    }
+                };
+                dispatch(initDataRoute(payloadRouteFeedback));
                 break;
             default:
                 break;

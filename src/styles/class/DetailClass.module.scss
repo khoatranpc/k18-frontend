@@ -272,3 +272,35 @@ div.selectHours {
         opacity: 0 !important;
     }
 }
+
+.feedbackDetailClass {
+    .point {
+        display: block;
+        padding: 0.4rem;
+        border-radius: 0.4rem;
+        color: var(--white);
+    }
+
+    .filter {
+        margin-bottom: 1.2rem;
+
+        .timeCollect {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-end;
+        }
+    }
+
+
+}
+
+.selectGroup {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    padding: 0.4rem;
+
+    * {
+        margin: 0 !important;
+    }
+}

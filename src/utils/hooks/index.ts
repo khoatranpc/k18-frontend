@@ -223,13 +223,14 @@ const useUpdateClassBasicInfor = () => {
 const useListTeacher = () => {
     const listTeacher = useSelector((state: RootState) => (state.listTeacher as State).state);
     const dispatch = useDispatch();
-    const query = (recordOnPage: number, currentPage: number) => {
+    const query = (recordOnPage?: number, currentPage?: number, query?: Obj) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
                         recordOnPage,
-                        currentPage
+                        currentPage,
+                        ...query
                     }
                 }
             }
@@ -420,14 +421,15 @@ const useResponseFeedbackForStudent = () => {
 const useGetListFeedback = () => {
     const data = useSelector((state: RootState) => (state.listResponseFeedback as State).state);
     const dispatch = useDispatch();
-    const query = (rowOnPage?: number, currentPage?: number) => {
+    const query = (rowOnPage?: number, currentPage?: number, query?: Obj) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
-                        fields: ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'time'],
+                        fields: ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'time', 'teacherRegister'],
                         recordOnPage: rowOnPage,
-                        currentPage
+                        currentPage,
+                        ...query
                     }
                 }
             }

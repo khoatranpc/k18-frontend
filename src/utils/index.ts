@@ -125,6 +125,16 @@ const getWeekday = (day: number, vi?: boolean, short?: boolean) => {
 const formatNumberPhone = (str: string) => {
     let getString = '';
 }
+const getColor3Point = (point: number) => {
+    const MAXPOINT = 5;
+    const getRatePoint = Math.round(MAXPOINT / 2);
+    if (point > getRatePoint) {
+        return '#02bf34';
+    } else if (2 < point && point <= getRatePoint) {
+        return '#FF9902';
+    }
+    return '#CF575A';
+}
 export {
     uuid,
     listMonth,
@@ -132,5 +142,6 @@ export {
     logout,
     formatDatetoString,
     generateRowDataForMergeRowSingleField,
-    getWeekday
+    getWeekday,
+    getColor3Point
 }
