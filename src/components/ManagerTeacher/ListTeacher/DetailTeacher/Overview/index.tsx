@@ -5,8 +5,8 @@ import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import { useGetTeacherDetail, useTeacherRegisterCourse } from '@/utils/hooks';
-import styles from '@/styles/teacher/DetailTeacher.module.scss';
 import Tabs from '@/components/Tabs';
+import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 
 const Overview = () => {
@@ -14,15 +14,19 @@ const Overview = () => {
     const dataTeacherRegisterCourse = useTeacherRegisterCourse();
     const router = useRouter();
     const getTeacher = currentTeacher.data.response?.data as Obj;
-    const getCourseTeacherRegister = dataTeacherRegisterCourse.listData.response?.data as Array<Obj>;
+    // const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>);
+    const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>)?.filter((item) => {
+        return item.idTeacher === router.query.teacherId
+    })
 
     // order by: SuperTeacher, Mentor, Suppoter
     const mapRole = [getTeacher?.roleIsST, getTeacher?.roleIsMT, getTeacher?.roleIsSP];
-
     useEffect(() => {
         currentTeacher.query(router.query.teacherId as string, []);
-        dataTeacherRegisterCourse.query([router.query.teacherId as string]);
-    }, [getTeacher]);
+        if (!getCourseTeacherRegister) {
+            dataTeacherRegisterCourse.query([router.query.teacherId as string]);
+        }
+    }, []);
     return (
         <div className={styles.overViewTeacher}>
             <div className={styles.headerOverview}>

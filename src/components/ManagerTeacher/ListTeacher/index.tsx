@@ -1,17 +1,17 @@
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 import React, { useEffect, useRef } from 'react';
-import ToolBar from '@/components/Tabs/ToolBar';
 import ManagerTeacherContext from '../context';
-import Table from '@/components/Table';
 import { Obj } from '@/global/interface';
 import { useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
-import { getColums, mapRowData } from './config';
-import styles from '@/styles/teacher/ManagerTeacher.module.scss';
-import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { ComponentPage } from '@/global/enum';
 import CombineRoute from '@/global/route';
-import { useDispatch } from 'react-redux';
+import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { AppDispatch } from '@/store';
-import { useRouter } from 'next/router';
+import Table from '@/components/Table';
+import ToolBar from '@/components/Tabs/ToolBar';
+import { getColums, mapRowData } from './config';
+import styles from '@/styles/teacher/ManagerTeacher.module.scss';
 
 const ListTeacher = () => {
     const { listTeacher, query } = useListTeacher();
@@ -41,16 +41,15 @@ const ListTeacher = () => {
         router.push(`/te/manager/teacher/detail/${record._id as string}`);
     }
     useEffect(() => {
-        if (!listTeacher.response) {
-            handleQueryListTeacher(10, 1);
-        }
+        handleQueryListTeacher(10, 1);
     }, []);
     useEffect(() => {
-        if (!dataTeacherRegisterCourse.listData.response && listTeacher.success && firstQuery.current) {
+        if (firstQuery.current && listTeacher.success) {
             firstQuery.current = false;
-            dataTeacherRegisterCourse.query(((listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.map((item) => item._id));
+            const getListId = ((listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.map((item) => item._id) || [];
+            dataTeacherRegisterCourse.query(getListId);
         }
-    }, [dataTeacherRegisterCourse.listData, listTeacher]);
+    }, [listTeacher]);
     return (
         <div className={styles.listTeacher}>
             <ToolBar
