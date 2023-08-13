@@ -23,6 +23,7 @@ import { clearResponseFeedback, queryResponseFeedback } from "@/store/reducers/f
 import { queryGetListResponseFeedback } from "@/store/reducers/feedback/listResponseFeedback.reducer";
 import { PayloadRoute, initDataRoute } from "@/store/reducers/global-reducer/route";
 import { queryDetailTeacher } from "@/store/reducers/teacher/detailTeacher.reducer";
+import { queryGetClassTeacherRegister } from "@/store/reducers/teacher/getClassTeacherRegister.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -480,6 +481,27 @@ const useGetTeacherDetail = () => {
         query
     }
 }
+const useClassTeacherRegister = () => {
+    const data = useSelector((state: RootState) => (state.getClassTeacherRegister as State).state);
+    const dispatch = useDispatch();
+    const query = (teacherId: string, fields?: string[]) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    params: [teacherId],
+                    query: {
+                        fields
+                    }
+                }
+            }
+        }
+        dispatch(queryGetClassTeacherRegister(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -502,5 +524,6 @@ export {
     useResponseFeedbackForStudent,
     useGetListFeedback,
     useDispatchDataRouter,
-    useGetTeacherDetail
+    useGetTeacherDetail,
+    useClassTeacherRegister
 }

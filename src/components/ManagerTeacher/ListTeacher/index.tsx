@@ -54,6 +54,10 @@ const ListTeacher = () => {
         <div className={styles.listTeacher}>
             <ToolBar
                 context={ManagerTeacherContext}
+                onClickReload={() => {
+                    //pending get current data pagination
+                    handleQueryListTeacher(10, 1);
+                }}
                 listFilter={[]}
                 exportCSVButton
                 createButton

@@ -158,7 +158,6 @@
     .itemPoint {
         display: flex;
         height: 100%;
-        flex-direction: column-reverse;
         gap: 2rem;
 
         &::after {

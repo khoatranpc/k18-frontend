@@ -47,9 +47,11 @@ const OverView = () => {
         return configDataClassSession(classSession.classSession.response as Record<string, unknown>)
     }, [classSession.classSession]);
     useEffect(() => {
+        const crrClassId = router.query.classId as string;
         if (!(bookTeacherRQ.data as Obj).response) {
-            bookTeacherRQ.query!(router.query.classId as string);
+            bookTeacherRQ.query!(crrClassId);
         }
+        classSession.queryGetClassSession(crrClassId);
     }, []);
     const dataOverView: Array<ItemOverView> = useMemo(() => {
         const dtSt: { teacherId: string; fullName: string; groupNumber: number }[] = [];
@@ -210,6 +212,7 @@ const OverView = () => {
                                 <sup className={styles.supI} style={{ cursor: 'pointer', width: '5px', fontSize: '-0.25em', marginLeft: '2px' }}>
                                     <InfoCircleOutlined style={{ color: '#BB0409' }} />
                                 </sup>
+                                <br />
                             </Popover>
                         </span>
                     })
@@ -355,18 +358,10 @@ const OverView = () => {
     }, []);
 
     useEffect(() => {
-        const crrStoreDetailClass = detailClass.data.response?.data._id as string;
-        const crrClassId = router.query.classId as string;
-
-        if (!classSession.classSession.response || (crrStoreDetailClass !== crrClassId)) {
-            classSession.queryGetClassSession(router.query.classId as string);
-        }
-    }, []);
-
-    useEffect(() => {
         if (updatedClassBasicInfor.updated.response) {
             updatedClassBasicInfor.clear();
             detailClass.query!(router.query.classId as string);
+            classSession.queryGetClassSession(router.query.classId as string);
         }
     }, [updatedClassBasicInfor]);
 

@@ -143,6 +143,13 @@ const BookTeacher = (props: Props) => {
             },
         },
         {
+            key: 'SALARY',
+            title: 'Lương/h',
+            render(value) {
+                return 150000
+            },
+        },
+        {
             key: 'STATUS',
             dataIndex: 'teacherRegister',
             title: 'Trạng thái duyệt',

@@ -5,11 +5,13 @@ import Overview from './Overview';
 import Schedule from './Schedule';
 import TimeKeeping from './TimeKeeping';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
+import Class from './Class';
 
 enum Content {
     OVERVIEW = 'OVERVIEW',
     SCHEDULE = 'SCHEDULE',
-    TIMEKEEPING = 'TIMEKEEPING'
+    TIMEKEEPING = 'TIMEKEEPING',
+    CLASS = 'CLASS'
 }
 const listTab: TabsProps['items'] = [
     {
@@ -23,12 +25,17 @@ const listTab: TabsProps['items'] = [
     {
         key: Content.TIMEKEEPING,
         label: 'Chấm công'
+    },
+    {
+        key: Content.CLASS,
+        label: 'Lớp học'
     }
 ]
 const currentContentTab: Record<Content, React.ReactElement> = {
     OVERVIEW: <Overview />,
     SCHEDULE: <Schedule />,
-    TIMEKEEPING: <TimeKeeping />
+    TIMEKEEPING: <TimeKeeping />,
+    CLASS: <Class />
 }
 const DetailTeacher = () => {
     const [tab, setTab] = useState<Content>(Content.OVERVIEW);

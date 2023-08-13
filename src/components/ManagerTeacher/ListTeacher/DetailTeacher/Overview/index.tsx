@@ -7,6 +7,7 @@ import { KEY_ICON } from '@/global/enum';
 import { useGetTeacherDetail, useTeacherRegisterCourse } from '@/utils/hooks';
 import Tabs from '@/components/Tabs';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
+import Input from 'antd/es/input/Input';
 
 
 const Overview = () => {
@@ -17,7 +18,8 @@ const Overview = () => {
     // const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>);
     const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>)?.filter((item) => {
         return item.idTeacher === router.query.teacherId
-    })
+    });
+    const getSalaryTeacher = getTeacher?.salaryPH as Array<Obj>;
 
     // order by: SuperTeacher, Mentor, Suppoter
     const mapRole = [getTeacher?.roleIsST, getTeacher?.roleIsMT, getTeacher?.roleIsSP];
@@ -56,6 +58,14 @@ const Overview = () => {
                                         </li>
                                     })}
                                 </ul>
+                            </div>
+                            <div className={styles.salaryPH}>
+                                <b>Lương/h: </b>
+                                <Input
+                                    size="small"
+                                    style={{ width: 'fit-content' }}
+                                    value={(getSalaryTeacher?.[getSalaryTeacher.length - 1]?.rank as number || 0).toLocaleString()}
+                                />
                             </div>
                         </div>
                         <div className={`${styles.column} ${styles.flex}`}>

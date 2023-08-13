@@ -42,14 +42,14 @@ const Table = (props: Props) => {
         return props.columns.map((item) => {
             return {
                 ...item,
-                title: item.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{MapIconKey[KEY_ICON.SORT]} {item.title as React.ReactNode}</div> : item.title,
+                title: item.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{item.title as React.ReactNode} {MapIconKey[KEY_ICON.SORT]}</div> : item.title,
                 showSorterTooltip: false,
                 children: ((item as any)?.children as Columns) ? (
                     ((item as any)?.children as Columns).map((child) => {
                         return {
                             ...child,
                             showSorterTooltip: false,
-                            title: child.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{MapIconKey[KEY_ICON.SORT]} {child.title as React.ReactNode}</div> : child.title
+                            title: child.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{item.title as React.ReactNode} {MapIconKey[KEY_ICON.SORT]}</div> : child.title
                         }
                     })
                 )

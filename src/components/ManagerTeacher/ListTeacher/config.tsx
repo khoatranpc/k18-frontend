@@ -313,11 +313,15 @@ const getColums = (styles?: Obj): Columns => {
             key: 'TEACHERPOINT',
             title: 'Điểm GV',
             fixed: 'right',
+            dataIndex: 'teacherPoint',
             width: 80,
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,
                 }
+            },
+            render(value) {
+                return Number(value).toFixed(2);
             }
         }
     ]

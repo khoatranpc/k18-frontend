@@ -70,3 +70,25 @@
         }
     }
 }
+
+.classRegister {
+    .codeClass {
+        &:hover {
+            color: var(--base);
+        }
+    }
+
+    .statusClass {
+        border-radius: 0.8rem;
+        width: fit-content;
+        padding: 0.8rem 1.6rem;
+        font-weight: 500;
+    }
+
+    .iconEnroll {
+        img {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+}

@@ -99,7 +99,7 @@ const getWeekday = (day: number, vi?: boolean, short?: boolean) => {
             case 7:
                 return Weekday.CNB;
             default:
-                return -1
+                return Weekday.CNB;
         }
     } else {
         switch (day) {

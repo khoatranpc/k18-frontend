@@ -3,7 +3,8 @@
     border-radius: 0.8rem;
     color: var(--white);
     background-color: var(--coding);
-    width: 6.8rem;
+    min-width: 6.8rem;
+    width: fit-content;
 }
 
 .colTimeSchedule {

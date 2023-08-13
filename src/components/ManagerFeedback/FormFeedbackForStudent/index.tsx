@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
+import { ROLE_TEACHER } from '@/global/enum';
 import { useGetListCourse, useGetListGroupClassInFormFeedback, useListClassInFormFeedback, useResponseFeedbackForStudent } from '@/utils/hooks';
+import { useHookMessage } from '@/utils/hooks/message';
 import Loading from '@/components/loading';
 import Dropdown from '@/components/Dropdown';
 import Point from './Point';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/feedback/Feedback.module.scss';
-import { useHookMessage } from '@/utils/hooks/message';
 
 const validationSchema = yup.object({
     codeClass: yup.string().required('Bạn cần chọn mã lớp!'),
@@ -21,6 +22,7 @@ const validationSchema = yup.object({
     groupNumber: yup.string().required('Bạn chưa chọn nhóm học tập!'),
 });
 
+let getRoleTeacher = '';
 const FormFeedbackForStudent = () => {
     const courses = useGetListCourse();
     const [step, setStep] = useState(1);
@@ -43,11 +45,21 @@ const FormFeedbackForStudent = () => {
             pointMT: '',
             pointOb: '',
             pointSyl: '',
-            docDetail: ''
+            docDetail: '',
+
+            teacherId: '',
+            timeCollect: ''
         },
         validationSchema,
         onSubmit(values) {
-            responseFeedback.query(values);
+            const calcTP = (getRoleTeacher === ROLE_TEACHER.ST) ?
+                ((Number(values.pointST) + Number(values.pointMT)) / 2)
+                :
+                (values.pointMT);
+            responseFeedback.query({
+                ...values,
+                teacherPoint: calcTP
+            });
         }
     });
     useEffect(() => {
@@ -96,13 +108,17 @@ const FormFeedbackForStudent = () => {
     const listClass: MenuProps['items'] = (listClassInForm.data.response?.data as Array<Obj>)?.map((item) => {
         return {
             key: item.codeClass._id,
-            label: item.codeClass.codeClass
+            label: item.codeClass.codeClass,
+            timecollect: item.time
         }
     }) || [];
     const listGroup: MenuProps['items'] = (listGroupClass.data.response?.data as Array<Obj>)?.map((item) => {
+        const teacher = ((item.teacherRegister as Array<Obj>)?.[0])?.idTeacher;
         return {
             key: item._id,
-            label: `Nhóm ${item.groupNumber} - ${item.locationId.locationCode}, MT: ${(item.teacherRegister as Array<Obj>)?.[0].idTeacher.fullName || ''}`
+            label: `Nhóm ${item.groupNumber} - ${item.locationId.locationCode}, MT: ${(item.teacherRegister as Array<Obj>)?.[0].idTeacher.fullName || ''}`,
+            teacherid: teacher?._id,
+            role: ((item.teacherRegister as Array<Obj>)?.[0])?.roleRegister
         }
     }) || [];
     const getTouched = (step: number) => {
@@ -297,6 +313,7 @@ const FormFeedbackForStudent = () => {
                                                         return item.codeClass._id === e.key
                                                     });
                                                     setFieldValue('feedbackId', getIdFeedback!._id as string);
+                                                    setFieldValue('timeCollect', (e.item as Obj)?.props.timecollect);
                                                 }}
                                                 trigger='click'
                                                 title={values.codeClass ? (((listClass.find((item) => (item?.key === values.codeClass)) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}
@@ -316,6 +333,9 @@ const FormFeedbackForStudent = () => {
                                                 className={`${styles.dropdownSelect}`}
                                                 listSelect={listGroup}
                                                 onClickItem={(e, key) => {
+                                                    const getTeacherId = (e.item as Obj)?.props.teacherid;
+                                                    setFieldValue('teacherId', getTeacherId);
+                                                    getRoleTeacher = (e.item as Obj)?.props.role as string;
                                                     setFieldValue('groupNumber', e.key);
                                                 }}
                                                 trigger='click'
