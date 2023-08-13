@@ -22,6 +22,8 @@ import teacherRegisterCourse from './teacher/teacherRegisterCourse.reducer';
 import detailTeacher from './teacher/detailTeacher.reducer';
 import teacherSchedule from './teacher/teacherSchedule.reducer';
 import getClassTeacherRegister from './teacher/getClassTeacherRegister.reducer';
+import preTeacher from './teacher/preTeacher.reducer';
+import acceptPreTeacher from './teacher/acceptPreTeacher.reducer';
 import attendanceTeacherInClassSession from './class/attendanceTeacherInClassSession.reducer';
 import listClassActionFeedback from './feedback/listClass.reducer';
 import updateClassForFeedback from './feedback/updateClassForFeedback.reducer';
@@ -61,6 +63,8 @@ const rootReducer = {
     responseFeedback,
     listResponseFeedback,
     detailTeacher,
-    getClassTeacherRegister
+    getClassTeacherRegister,
+    preTeacher,
+    acceptPreTeacher
 };
 export default rootReducer;

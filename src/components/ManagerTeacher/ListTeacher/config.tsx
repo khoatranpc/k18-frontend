@@ -95,7 +95,7 @@ const getColums = (styles?: Obj): Columns => {
             width: 90,
             dataIndex: 'facebookLink',
             render(value) {
-                return 'Link'
+                return <a href={value} style={{ textDecoration: 'underline' }} target="_blank">Link</a>
             },
             onCell(data) {
                 return {
@@ -231,6 +231,9 @@ const getColums = (styles?: Obj): Columns => {
             className: 'header-border',
             width: 70,
             dataIndex: 'CVfile',
+            render(value) {
+                return <a href={value} style={{ textDecoration: 'underline' }} target="_blank">Link</a>
+            },
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,

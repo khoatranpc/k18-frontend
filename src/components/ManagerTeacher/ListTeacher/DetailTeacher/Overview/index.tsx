@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Avatar } from 'antd';
+import { Avatar, Badge, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
@@ -35,7 +35,11 @@ const Overview = () => {
                 <Avatar size={150} icon={MapIconKey[KEY_ICON.TEACHER_MALE]} />
                 <div className={styles.overView}>
                     <div className={styles.fullName}>
-                        {getTeacher?.fullName}
+                        <Tooltip title={`Điểm GV: ${Number(getTeacher?.teacherPoint || 0).toFixed(2)}`}>
+                            <Badge count={Number(getTeacher?.teacherPoint || 0).toFixed(2)} offset={[25, 0]}>
+                                {getTeacher?.fullName}
+                            </Badge>
+                        </Tooltip>
                     </div>
                     <div className={styles.info}>
                         <div className={styles.column}>

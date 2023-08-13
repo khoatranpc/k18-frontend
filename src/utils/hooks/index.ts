@@ -24,6 +24,8 @@ import { queryGetListResponseFeedback } from "@/store/reducers/feedback/listResp
 import { PayloadRoute, initDataRoute } from "@/store/reducers/global-reducer/route";
 import { queryDetailTeacher } from "@/store/reducers/teacher/detailTeacher.reducer";
 import { queryGetClassTeacherRegister } from "@/store/reducers/teacher/getClassTeacherRegister.reducer";
+import { queryPreTeacher } from "@/store/reducers/teacher/preTeacher.reducer";
+import { queryAcceptPreTeacher, clear as clearAcceptPreTeacher } from "@/store/reducers/teacher/acceptPreTeacher.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -502,6 +504,51 @@ const useClassTeacherRegister = () => {
         query
     }
 }
+const useGetPreTeacher = () => {
+    const data = useSelector((state: RootState) => (state.preTeacher as State).state);
+    const dispatch = useDispatch();
+
+    const query = (recordOnPage: number, currentPage: number, fields?: string[]) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        recordOnPage,
+                        currentPage,
+                        fields
+                    }
+                }
+            }
+        }
+        dispatch(queryPreTeacher(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
+const useAcceptPreTeacher = () => {
+    const data = useSelector((state: RootState) => (state.acceptPreTeacher as State).state);
+    const dispatch = useDispatch();
+    const query = (teacherId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    params: [teacherId]
+                }
+            }
+        }
+        dispatch(queryAcceptPreTeacher(payload));
+    }
+    const clear = () => {
+        dispatch(clearAcceptPreTeacher());
+    }
+    return {
+        data,
+        query,
+        clear,
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -525,5 +572,7 @@ export {
     useGetListFeedback,
     useDispatchDataRouter,
     useGetTeacherDetail,
-    useClassTeacherRegister
+    useClassTeacherRegister,
+    useGetPreTeacher,
+    useAcceptPreTeacher
 }
