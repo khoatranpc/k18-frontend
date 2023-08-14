@@ -26,6 +26,7 @@ import { queryDetailTeacher } from "@/store/reducers/teacher/detailTeacher.reduc
 import { queryGetClassTeacherRegister } from "@/store/reducers/teacher/getClassTeacherRegister.reducer";
 import { queryPreTeacher } from "@/store/reducers/teacher/preTeacher.reducer";
 import { queryAcceptPreTeacher, clear as clearAcceptPreTeacher } from "@/store/reducers/teacher/acceptPreTeacher.reducer";
+import { queryListResponseFeedbackForTeacher } from "@/store/reducers/feedback/listResponseFeedbackForTeacher.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -549,6 +550,27 @@ const useAcceptPreTeacher = () => {
         clear,
     }
 }
+const useGetListFeedbackResponseForTeacher = () => {
+    const data = useSelector((state: RootState) => (state.listResponseFeedbackForTeacher as State).state);
+    const dispatch = useDispatch();
+    const query = (teacherId: string, fields?: Array<string>) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        teacherId,
+                        fields
+                    }
+                }
+            }
+        };
+        dispatch(queryListResponseFeedbackForTeacher(payload));
+    };
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -574,5 +596,6 @@ export {
     useGetTeacherDetail,
     useClassTeacherRegister,
     useGetPreTeacher,
-    useAcceptPreTeacher
+    useAcceptPreTeacher,
+    useGetListFeedbackResponseForTeacher
 }

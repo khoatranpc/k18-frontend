@@ -5,6 +5,7 @@
 }
 
 .overViewTeacher {
+    flex: 1;
     padding: 0 2.4rem;
 
     .fullName {
@@ -90,5 +91,82 @@
             width: 2rem;
             height: 2rem;
         }
+    }
+}
+
+.overViewTeacherInfo {
+    .formInfo {
+        display: flex;
+        gap: 0.8rem;
+
+        .input {
+            margin-bottom: 1.2rem;
+        }
+
+        .left,
+        .right {
+            flex: 1;
+        }
+
+        .roleRegister {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .titleRole {
+            display: flex;
+
+            .icon {
+                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.2rem;
+                height: 1.2rem;
+                border-radius: 50%;
+                border: 1px solid var(--base);
+                cursor: pointer;
+            }
+        }
+    }
+
+
+}
+
+.feedbackTeacher {
+    .toolBar {
+        display: flex;
+        margin-bottom: 1.2rem;
+
+        a {
+            margin-left: auto;
+        }
+
+        .btnExport {
+            border-color: var(--base);
+
+            &:hover {
+                color: var(--base);
+                border-color: var(--base);
+            }
+        }
+    }
+
+    td.classCell {
+        &:hover {
+            color: var(--base);
+        }
+    }
+
+    .table {
+        background-color: transparent !important;
+
+        td.point {
+            font-weight: 500;
+        }
+    }
+
+    .paginationAjax {
+        background-color: transparent !important;
     }
 }

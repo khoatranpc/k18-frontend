@@ -51,6 +51,16 @@ const getStringGender: Record<Gender, string> = {
     FM: 'Nữ',
     NA: 'Khác'
 }
+const getColorTeacherPoint = (teacherPoint: number) => {
+    console.log(teacherPoint);
+    if (teacherPoint >= 2 && teacherPoint < 4) {
+        return '#FF9902'
+    } else if (teacherPoint >= 4) {
+        return '#13734B'
+    } else if (teacherPoint > 0 && teacherPoint < 2) {
+        return '#CF575A'
+    }
+}
 export {
     statusClass,
     fieldFilter,
@@ -59,5 +69,6 @@ export {
     getClassForm,
     getOrderWeekday,
     mapRoleToString,
-    getStringGender
+    getStringGender,
+    getColorTeacherPoint
 }

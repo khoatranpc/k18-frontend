@@ -31,6 +31,7 @@ import listClassInFormFeedback from './feedback/listClassInGetFeedback.reducer';
 import listGroupClassInFormFeedback from './feedback/listGroupInFormFeedback.reducer';
 import responseFeedback from './feedback/responseFeedback.reducer';
 import listResponseFeedback from './feedback/listResponseFeedback.reducer';
+import listResponseFeedbackForTeacher from './feedback/listResponseFeedbackForTeacher.reducer';
 
 const rootReducer = {
     test: test,
@@ -65,6 +66,7 @@ const rootReducer = {
     detailTeacher,
     getClassTeacherRegister,
     preTeacher,
-    acceptPreTeacher
+    acceptPreTeacher,
+    listResponseFeedbackForTeacher
 };
 export default rootReducer;

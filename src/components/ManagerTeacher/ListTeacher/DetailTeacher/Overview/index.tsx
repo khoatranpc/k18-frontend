@@ -1,21 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Input from 'antd/es/input/Input';
 import { Avatar, Badge, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
-import { KEY_ICON } from '@/global/enum';
+import { Gender, KEY_ICON } from '@/global/enum';
+import { getColorTeacherPoint } from '@/global/init';
 import { useGetTeacherDetail, useTeacherRegisterCourse } from '@/utils/hooks';
 import Tabs from '@/components/Tabs';
+import Feedback from './Feedback';
+import TeacherInfo from './TeacherInfo';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
-import Input from 'antd/es/input/Input';
 
+enum TabOverView {
+    INFOR = 'INFOR',
+    FEEDBACK = 'FEEDBACK'
+}
 
 const Overview = () => {
     const currentTeacher = useGetTeacherDetail();
     const dataTeacherRegisterCourse = useTeacherRegisterCourse();
     const router = useRouter();
     const getTeacher = currentTeacher.data.response?.data as Obj;
-    // const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>);
+    const [tabOverView, setTabOverview] = useState<TabOverView>(TabOverView.INFOR);
     const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>)?.filter((item) => {
         return item.idTeacher === router.query.teacherId
     });
@@ -23,6 +30,16 @@ const Overview = () => {
 
     // order by: SuperTeacher, Mentor, Suppoter
     const mapRole = [getTeacher?.roleIsST, getTeacher?.roleIsMT, getTeacher?.roleIsSP];
+    let count = 0;
+    mapRole.forEach((item) => {
+        if (item) {
+            count += 1;
+        }
+    });
+    const ComponentTabOverview: Record<TabOverView, React.ReactElement> = {
+        FEEDBACK: <Feedback />,
+        INFOR: <TeacherInfo countRole={count} />
+    }
     useEffect(() => {
         currentTeacher.query(router.query.teacherId as string, []);
         if (!getCourseTeacherRegister) {
@@ -32,11 +49,11 @@ const Overview = () => {
     return (
         <div className={styles.overViewTeacher}>
             <div className={styles.headerOverview}>
-                <Avatar size={150} icon={MapIconKey[KEY_ICON.TEACHER_MALE]} />
+                <Avatar size={150} icon={getTeacher?.gender === Gender.M ? MapIconKey[KEY_ICON.TEACHER_MALE] : MapIconKey[KEY_ICON.TEACHER_FEMALE]} />
                 <div className={styles.overView}>
                     <div className={styles.fullName}>
                         <Tooltip title={`Điểm GV: ${Number(getTeacher?.teacherPoint || 0).toFixed(2)}`}>
-                            <Badge count={Number(getTeacher?.teacherPoint || 0).toFixed(2)} offset={[25, 0]}>
+                            <Badge count={Number(getTeacher?.teacherPoint || 0).toFixed(2)} offset={[25, 0]} color={getColorTeacherPoint(Number(getTeacher?.teacherPoint || 0))}>
                                 {getTeacher?.fullName}
                             </Badge>
                         </Tooltip>
@@ -99,17 +116,25 @@ const Overview = () => {
             <hr className={styles.hr} />
             <Tabs
                 className={styles.listTabChild}
+                onClickTab={(key) => {
+                    setTabOverview(key as TabOverView)
+                }}
+                notAllowContent
+                activeKey={tabOverView}
                 listItemTab={[
                     {
-                        key: 'INFO',
+                        key: TabOverView.INFOR,
                         label: 'Cá nhân'
                     },
                     {
-                        key: 'FEEDBACK',
+                        key: TabOverView.FEEDBACK,
                         label: 'Phản hồi'
                     },
                 ]}
             />
+            <div className={styles.contentTabOverview}>
+                {ComponentTabOverview[tabOverView]}
+            </div>
         </div>
     )
 }
