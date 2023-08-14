@@ -7,8 +7,9 @@ import { KEY_ICON } from '@/global/enum';
 import { formatDatetoString, uuid } from '@/utils';
 import { useGetListCourse, useGetListFeedback } from '@/utils/hooks';
 import Table from '@/components/Table';
-import styles from '@/styles/feedback/CollectionResponse.module.scss';
 import ExportCSV from '@/components/ExportCSV';
+import styles from '@/styles/feedback/CollectionResponse.module.scss';
+import { getColorTeacherPoint } from '@/global/init';
 
 
 const initFilter = {
@@ -118,7 +119,6 @@ const CollectionAnswer = () => {
                 }} />
             },
             filterIcon: <SearchOutlined />
-
         },
         {
             key: 'COURSE',
@@ -210,6 +210,14 @@ const CollectionAnswer = () => {
             sorter: (a, b) => {
                 return Number(a.pointCxo) - Number(b.pointCxo);
             },
+            onCell(data: Obj) {
+                return {
+                    style: {
+                        color: getColorTeacherPoint(data.pointCxo),
+                        fontWeight: 'bold'
+                    }
+                }
+            },
         },
         {
             key: 'ST',
@@ -219,6 +227,14 @@ const CollectionAnswer = () => {
             width: 120,
             sorter: (a, b) => {
                 return Number(a.pointST) - Number(b.pointST);
+            },
+            onCell(data: Obj) {
+                return {
+                    style: {
+                        color: getColorTeacherPoint(data.pointST),
+                        fontWeight: 'bold'
+                    }
+                }
             },
         },
         {
@@ -230,6 +246,14 @@ const CollectionAnswer = () => {
             sorter: (a, b) => {
                 return Number(a.pointMT) - Number(b.pointMT);
             },
+            onCell(data: Obj) {
+                return {
+                    style: {
+                        color: getColorTeacherPoint(data.pointMT),
+                        fontWeight: 'bold'
+                    }
+                }
+            },
         },
         {
             key: 'OB',
@@ -240,6 +264,14 @@ const CollectionAnswer = () => {
             sorter: (a, b) => {
                 return Number(a.pointOb) - Number(b.pointOb);
             },
+            onCell(data: Obj) {
+                return {
+                    style: {
+                        color: getColorTeacherPoint(data.pointOb),
+                        fontWeight: 'bold'
+                    }
+                }
+            },
         },
         {
             key: 'SYL',
@@ -249,6 +281,14 @@ const CollectionAnswer = () => {
             width: 90,
             sorter: (a, b) => {
                 return Number(a.pointSyl) - Number(b.pointSyl);
+            },
+            onCell(data: Obj) {
+                return {
+                    style: {
+                        color: getColorTeacherPoint(data.pointSyl),
+                        fontWeight: 'bold'
+                    }
+                }
             },
         },
         {

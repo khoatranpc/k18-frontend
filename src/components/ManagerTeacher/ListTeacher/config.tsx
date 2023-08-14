@@ -1,6 +1,6 @@
 import { Columns, Obj, RowData } from "@/global/interface";
 import { Gender } from "@/global/enum";
-import { getStringGender } from "@/global/init";
+import { getColorTeacherPoint, getStringGender } from "@/global/init";
 import { formatDatetoString, generateRowDataForMergeRowSingleField } from "@/utils";
 
 const getColums = (styles?: Obj): Columns => {
@@ -80,7 +80,7 @@ const getColums = (styles?: Obj): Columns => {
             width: 120,
             dataIndex: 'dob',
             render(value) {
-                return formatDatetoString(value as Date);
+                return formatDatetoString(value as Date, 'dd/MM/yyyy');
             },
             onCell(data) {
                 return {
@@ -138,7 +138,7 @@ const getColums = (styles?: Obj): Columns => {
                     className: 'header-border',
                     dataIndex: 'licenseDate',
                     render(value) {
-                        return formatDatetoString(value as Date);
+                        return formatDatetoString(value as Date, 'dd/MM/yyyy');
                     },
                     onCell(data) {
                         return {
@@ -317,10 +317,15 @@ const getColums = (styles?: Obj): Columns => {
             title: 'Điểm GV',
             fixed: 'right',
             dataIndex: 'teacherPoint',
+            className: 'text-center',
             width: 80,
-            onCell(data) {
+            onCell(data: Obj) {
                 return {
                     rowSpan: data.rowSpan as number,
+                    style: {
+                        color: getColorTeacherPoint(data.teacherPoint),
+                        fontWeight: 'bold'
+                    }
                 }
             },
             render(value) {
