@@ -2,6 +2,7 @@ import { Columns, Obj, RowData } from "@/global/interface";
 import { Gender } from "@/global/enum";
 import { getColorTeacherPoint, getStringGender } from "@/global/init";
 import { formatDatetoString, generateRowDataForMergeRowSingleField } from "@/utils";
+import Loading from "@/components/loading";
 
 const getColums = (styles?: Obj): Columns => {
     return [
@@ -294,7 +295,7 @@ const getColums = (styles?: Obj): Columns => {
                     className: 'header-border',
                     dataIndex: 'courseRegister',
                     render(value) {
-                        return (value as Obj)?.idCourse.courseName || ''
+                        return (value as Obj)?.idCourse.courseName || <Loading className="margin-auto" />
                     }
                 },
                 {
@@ -307,8 +308,8 @@ const getColums = (styles?: Obj): Columns => {
                     render(value) {
                         return ((value as Obj)?.levelHandle as Array<Obj>)?.map((item, idx) => {
                             return idx < ((value as Obj)?.levelHandle as Array<Obj>).length - 1 ? item.levelCode + ', ' : item.levelCode
-                        }) || ''
-                    }
+                        }) || <Loading className="margin-auto" />
+                    },
                 }
             ],
         },
