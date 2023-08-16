@@ -52,7 +52,6 @@ const getStringGender: Record<Gender, string> = {
     NA: 'Khác'
 }
 const getColorTeacherPoint = (teacherPoint: number) => {
-    console.log(teacherPoint);
     if (teacherPoint >= 2 && teacherPoint < 4) {
         return '#FF9902'
     } else if (teacherPoint >= 4) {

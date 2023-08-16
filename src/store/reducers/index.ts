@@ -16,6 +16,7 @@ import handleTeacherInRecordBT from './class/handleTeacherInRecordBT.reducer';
 import locations from './location/localtion.reducer';
 import searchTeacher from './searchTeacher.reducer';
 import classSession from './class/classSesesion.reducer';
+import classTeacherPoint from './class/classTeacherPoint.reducer';
 import updateClassBasicInfor from './class/updateClassBasicInfor.reducer';
 import listTeacher from './teacher/listTeacher.reducer';
 import teacherRegisterCourse from './teacher/teacherRegisterCourse.reducer';
@@ -67,6 +68,7 @@ const rootReducer = {
     getClassTeacherRegister,
     preTeacher,
     acceptPreTeacher,
-    listResponseFeedbackForTeacher
+    listResponseFeedbackForTeacher,
+    classTeacherPoint
 };
 export default rootReducer;
