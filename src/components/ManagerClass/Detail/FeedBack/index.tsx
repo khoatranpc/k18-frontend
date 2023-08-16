@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Checkbox, Input } from 'antd';
 import { Columns, Obj } from '@/global/interface';
 import { SearchOutlined } from '@ant-design/icons';
-import { formatDatetoString, getColor3Point } from '@/utils';
-import { useDispatchDataRouter, useGetListFeedback, useListTeacher } from '@/utils/hooks';
-import Table from '@/components/Table';
-import SelectInputNumber from '@/components/SelectInputNumber';
-import styles from '@/styles/class/DetailClass.module.scss';
 import CombineRoute from '@/global/route';
 import { ComponentPage } from '@/global/enum';
+import { formatDatetoString, getColor3Point } from '@/utils';
+import { useDispatchDataRouter, useGetClassTeacherPonit, useGetListFeedback, useListTeacher } from '@/utils/hooks';
+import SelectInputNumber from '@/components/SelectInputNumber';
+import Table from '@/components/Table';
+import styles from '@/styles/class/DetailClass.module.scss';
+import { getColorTeacherPoint } from '@/global/init';
 
 
 interface Props {
@@ -29,8 +30,20 @@ const FeedBack = (props: Props) => {
     const dispatchRouter = useDispatchDataRouter();
     const timeCollect = useRef(1);
     const router = useRouter();
+    const classId = router.query.classId as string;
     const listTeacher = useListTeacher();
 
+    const listClassTeacherPoint = useGetClassTeacherPonit();
+
+    const getClassTeacherPoint = () => {
+        if (listClassTeacherPoint.data.response && listClassTeacherPoint.data.success) {
+            const listClassTeacherPointOfClass: Array<Obj> = (listClassTeacherPoint.data.response?.data as Array<Obj>)?.filter((item) => {
+                return item.classId === classId
+            });
+            return listClassTeacherPointOfClass[listClassTeacherPointOfClass.length - 1]?.teacherPoint as number || 0;
+        }
+        return 0;
+    }
     const [conditionalFiter, setConditionalFilter] = useState<Obj>(initConditionalFilter);
     const rowData = useMemo(() => {
         const dataResource = ((listResponseFeedback.data.response?.data as Obj)?.list as Array<Obj>) || [];
@@ -206,6 +219,18 @@ const FeedBack = (props: Props) => {
             }
         }
     }, [listResponseFeedback.data.response, listTeacher]);
+    useEffect(() => {
+        if (listClassTeacherPoint.data.response) {
+            const findExistdClTeacherPoint = (listClassTeacherPoint.data.response.data as Array<Obj>)?.find((item) => {
+                return item.classId === classId
+            });
+            if (!findExistdClTeacherPoint) {
+                listClassTeacherPoint.query([router.query.classId as string]);
+            }
+        } else if (!listClassTeacherPoint.data.response && !listClassTeacherPoint.data.isLoading) {
+            listClassTeacherPoint.query([router.query.classId as string]);
+        }
+    }, []);
     return (
         <div className={styles.feedbackDetailClass}>
             <div className={styles.filter}>
@@ -237,6 +262,9 @@ const FeedBack = (props: Props) => {
                         }}
                     />
                 </div>
+                <span>
+                    Điểm giáo viên lớp: <span style={{ fontWeight: 'bold', color: getColorTeacherPoint(Number(getClassTeacherPoint())) }}>{Number(getClassTeacherPoint()).toFixed(2)}</span>
+                </span>
             </div>
             <Table
                 loading={listResponseFeedback.data.isLoading}

@@ -3,11 +3,11 @@ import { TabsProps } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Action, Columns, Obj, RowData } from '@/global/interface';
-import { fieldFilter, getClassForm, getColorFromStatusClass, mapStatusToString } from '@/global/init';
+import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
 import { ClassForm, ComponentPage, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
-import { useGetListClass } from '@/utils/hooks';
+import { useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
@@ -81,6 +81,7 @@ const ManagerClass = () => {
     const router = useRouter();
     const listClass = useGetListClass();
     const firstQuery = useRef<boolean>(true);
+    const isQueryClassTeacherPoint = useRef<boolean>(true);
     const mapDataListClass: RowData[] = ((listClass.response?.data as Obj)?.classes as Array<Obj>)?.map((item) => {
         let crrST = '';
         (item.recordBookTeacher as Array<Obj>)!.find((rc) => {
@@ -103,6 +104,9 @@ const ManagerClass = () => {
     }) || [];
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState<boolean>(true);
+    const listClassTeacherPoint = useGetClassTeacherPonit();
+    const getListClTeacherPoint = (listClassTeacherPoint.data.response?.data as Array<Obj>);
+
     const columns: Columns = [
         {
             key: 'codeClass',
@@ -111,6 +115,18 @@ const ManagerClass = () => {
             className: 'hasSort',
             sorter: (a, b) => {
                 return sortByString(a.codeClass as string, b.codeClass as string)
+            },
+            render(value, record, index) {
+                const filterClTeacherPoint: Array<Obj> = getListClTeacherPoint?.filter((item) => {
+                    return item.classId === record.key
+                });
+                return <span>{value} {filterClTeacherPoint &&
+                    <b style={{ color: getColorTeacherPoint(Number(filterClTeacherPoint[filterClTeacherPoint.length - 1]?.teacherPoint)) }}>
+                        <small>
+                            {Number(filterClTeacherPoint[filterClTeacherPoint.length - 1]?.teacherPoint || 0).toFixed(2)}
+                        </small>
+                    </b>}
+                </span>
             },
         },
         {
@@ -140,8 +156,8 @@ const ManagerClass = () => {
             sorter: (a, b) => {
                 return sortByString(a.teacher as string, b.teacher as string)
             },
-            render(value, record, index) {
-                return value || 'Thiếu'
+            render(value) {
+                return value || <span style={{ color: 'var(--base)' }}>Thiếu</span>
             },
         },
         {
@@ -215,6 +231,12 @@ const ManagerClass = () => {
             }
         }
     }, [listClass, loading, setLoading, handleQueryListClass]);
+    useEffect(() => {
+        if (listClass.response && isQueryClassTeacherPoint.current) {
+            isQueryClassTeacherPoint.current = false;
+            listClassTeacherPoint.query(((listClass.response.data as Obj)?.classes as Array<Obj>)?.map((item) => item._id as string))
+        }
+    }, [listClass]);
     return (
         <ManagerClassContext.Provider value={{
             crrKeyTab: storeManagerClass!.crrKeyTab,
@@ -254,6 +276,7 @@ const ManagerClass = () => {
                 enablePaginationAjax
                 onChangeDataPagination={(dataPagination: { currentPage: number; currentTotalRowOnPage: number; }) => {
                     handleQueryListClass(dataPagination.currentPage, dataPagination.currentTotalRowOnPage);
+                    isQueryClassTeacherPoint.current = true;
                 }
                 }
                 hanldeClickRow={handleClickRow}
