@@ -26,6 +26,8 @@ interface Props {
     maxPage?: number;
     bordered?: boolean;
     hasFixedColumn?: boolean;
+    size?: "small" | "middle" | "large";
+    heightToScroll?: number | string;
     handleSelectRow?: (listRowSelected: React.Key[]) => void;
     onChangeDataPagination?: (data: { currentPage: number, currentTotalRowOnPage: number }) => void;
     hanldeClickRow?: (record: Obj, index?: number, e?: React.MouseEvent<any, MouseEvent>) => void;
@@ -76,8 +78,10 @@ const Table = (props: Props) => {
                     width: '100%'
                 }}
                 scroll={{
-                    x: props.hasFixedColumn ? '100%' : ''
+                    x: props.hasFixedColumn ? '100%' : '',
+                    y: props.heightToScroll
                 }}
+                size={props.size}
                 bordered={props.bordered}
                 dataSource={props.rowData}
                 columns={mapColumns}

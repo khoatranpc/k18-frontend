@@ -38,7 +38,7 @@ const getComponentTab: Record<TabManagerTeacher, React.ReactElement> = {
 }
 
 const ManagerTeacher = () => {
-    const [tab, setTab] = useState<TabManagerTeacher>(TabManagerTeacher.LISTTEACHER);
+    const [tab, setTab] = useState<TabManagerTeacher>(TabManagerTeacher.STATISTIC);
 
     return (
         <div className={styles.managerTeacher}>

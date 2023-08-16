@@ -534,6 +534,21 @@ a {
 }
 
 .tableCustomize {
+    tbody {
+        tr.ant-table-measure-row {
+            td {
+                padding: 0 !important;
+            }
+        }
+
+        .stt {
+            padding: 0.8rem 1.6rem !important;
+            border-radius: 0.8rem;
+            width: 9.7rem;
+            text-align: center;
+        }
+    }
+
     :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-indeterminate .ant-checkbox-inner:after {
         background-color: var(--base);
     }
@@ -569,12 +584,7 @@ a {
                             padding-left: 1.6rem !important;
                         }
 
-                        .stt {
-                            padding: 0.8rem 1.6rem;
-                            border-radius: 0.8rem;
-                            width: 9.7rem;
-                            text-align: center;
-                        }
+
 
                         &.ant-table-cell.ant-table-cell-row-hover {
                             background-color: var(--white-bg);
@@ -877,4 +887,8 @@ div.ant-message {
     .ant-input-number-handler-wrap {
         opacity: 1;
     }
+}
+
+.highcharts-credits {
+    display: none;
 }
