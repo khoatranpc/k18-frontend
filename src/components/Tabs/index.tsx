@@ -19,7 +19,7 @@ const Tabs = (props: Props) => {
         }
     });
     return <TabsComponent
-        defaultActiveKey={props.listItemTab![0].key}
+        defaultActiveKey={props.listItemTab?.[0]?.key || ''}
         activeKey={props.activeKey as string}
         items={mapContent}
         onChange={props.onClickTab}

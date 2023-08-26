@@ -1,0 +1,166 @@
+.containerManagerRecruitment {
+    .filterBar {
+        padding: 1.2rem;
+
+        .listFilter {
+            display: flex;
+            gap: 1.6rem;
+        }
+
+        display: flex;
+        justify-content: space-between;
+
+        .itemFilter {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .dropdown {
+            padding: 0.2rem;
+            border-radius: 0.8rem;
+            background-color: var(--bg-btn-today);
+            cursor: pointer;
+        }
+
+        .labelField {
+            font-size: 1.2rem;
+
+            img {
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        .fnc {
+            position: relative;
+            flex: 0.7;
+
+            .button {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                gap: 1.6rem;
+                position: absolute;
+                z-index: 1;
+                top: -4.8rem;
+            }
+        }
+    }
+
+    .tableView {
+
+        tr {
+            .icon {
+                display: none;
+            }
+
+
+            &:hover {
+                .icon {
+                    display: block;
+                }
+            }
+        }
+
+        .viewDetail {
+            display: flex;
+            align-items: center;
+            gap: 1.6rem;
+        }
+    }
+
+}
+
+.contentPopup {
+    .form {
+        .mb_24 {
+            margin-bottom: 1.2rem;
+        }
+
+        .tabList {
+            width: 100%;
+
+            &>div {
+                &:first-child {
+                    div {
+                        padding-top: 0;
+                        padding-left: 0;
+                    }
+                }
+            }
+        }
+
+        .infoResourse {
+            display: flex;
+            gap: 0.4rem;
+
+            .left,
+            .right {
+                flex: 1;
+            }
+        }
+
+    }
+}
+
+.popUpDatePicker {
+    z-index: 1555;
+}
+
+.processing {
+    display: flex;
+
+    .left,
+    .right {
+        flex: 1;
+    }
+
+    img {
+        width: 1rem;
+        height: 1rem;
+        margin-left: 1.2rem;
+    }
+}
+
+.skill {
+    display: flex;
+
+    .left,
+    .right {
+        flex: 1;
+
+        .courseRegister {
+            img {
+                width: 1rem;
+                height: 1rem;
+                margin-left: 1.2rem;
+            }
+
+        }
+
+        .selectExp {
+            width: 6rem;
+        }
+
+        .mrAuto {
+            float: right;
+        }
+    }
+
+    .levelTechnique {
+        img {
+            width: 1rem;
+            height: 1rem;
+            margin-left: 1.2rem;
+        }
+    }
+}
+
+.selectResourse {
+    img {
+        margin-left: 1.6rem;
+        width: 1rem;
+        height: 1rem;
+    }
+}

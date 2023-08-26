@@ -105,3 +105,7 @@ export enum Gender {
     FM = 'FM',
     NA = 'NA'
 }
+export enum ObjectTeach {
+    K18 = 'K18',
+    K12 = 'K12'
+}

@@ -1,4 +1,4 @@
-import { ClassForm, Gender, ROLE_TEACHER, STATUS_CLASS, Weekday } from "./enum";
+import { ClassForm, Gender, ObjectTeach, ROLE_TEACHER, STATUS_CLASS, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -60,6 +60,10 @@ const getColorTeacherPoint = (teacherPoint: number) => {
         return '#CF575A'
     }
 }
+const getStringObjectTeach: Record<ObjectTeach, string> = {
+    K12: 'Kid & teen',
+    K18: '18+'
+}
 export {
     statusClass,
     fieldFilter,
@@ -69,5 +73,6 @@ export {
     getOrderWeekday,
     mapRoleToString,
     getStringGender,
+    getStringObjectTeach,
     getColorTeacherPoint
 }

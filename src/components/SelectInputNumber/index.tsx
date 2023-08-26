@@ -8,6 +8,7 @@ import styles from '@/styles/SelectInputNumber.module.scss';
 interface Props {
     className?: string;
     max?: number;
+    min?: number;
     size?: 'small' | 'large' | 'middle';
     value?: number;
     open?: boolean;
@@ -38,20 +39,26 @@ const SelectInputNumber = (props: Props) => {
                 title={<InputNumber
                     step={props.step}
                     size={props.size || 'small'}
-                    min={1}
+                    min={props.min || 1}
                     max={props.max}
                     className={`${styles.inputNumber} inputNumberCustom ${props.inputClassName}`}
                     value={value}
                     upHandler={<span className={styles.iconChevron} onClick={() => {
                         props.onHandlerNumber?.('INCRE');
-                        if (value < Number(props.max)) {
-                            setValue(value + 1);
+                        if (props.max) {
+                            if (value < Number(props.max)) {
+                                setValue(props.step ? value + props.step : value + 1);
+                            }
+                        } else {
+                            if (value < 10) {
+                                setValue(props.step ? value + props.step : value + 1);
+                            }
                         }
                     }}>{MapIconKey[KEY_ICON.CHEVRONU]}</span>}
                     downHandler={< span className={styles.iconChevron} onClick={() => {
                         props.onHandlerNumber?.('DECRE');
                         if (value > 1) {
-                            setValue(value - 1);
+                            setValue(props.step ? value - props.step : value - 1);
                         }
                     }}> {MapIconKey[KEY_ICON.CHEVROND]}</span >}
                 />}

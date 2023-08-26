@@ -2,7 +2,7 @@ const CombineRoute = {
     EMPTY: '/empty',
     TE: {
         OVERVIEW: '/te/over-view',
-        RECRUITMENT: '/te/recruitment',
+        RECRUITMENT: '/te/manager/recruitment',
         MANAGER: {
             CLASS: '/te/manager/class',
             DETAILCLASS: '/te/manager/class/detail/[classId]',
