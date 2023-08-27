@@ -1,4 +1,4 @@
-import { ClassForm, Gender, ObjectTeach, ROLE_TEACHER, STATUS_CLASS, Weekday } from "./enum";
+import { ClassForm, Gender, ObjectTeach, ROLE_TEACHER, ResourseApply, STATUS_CLASS, StatusProcessing, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -64,6 +64,17 @@ const getStringObjectTeach: Record<ObjectTeach, string> = {
     K12: 'Kid & teen',
     K18: '18+'
 }
+const getStringStatusProcess: Record<StatusProcessing, string> = {
+    DONE: 'Đã xử lý',
+    NOPROCESS: 'Chưa xử lý',
+    PROCESSING: 'Đang xử lý'
+}
+const getStringResourseApply: Record<ResourseApply, string> = {
+    AN: 'Khác',
+    FB: "Facebook",
+    LKD: "Linkedin",
+    RF: 'Gợi ý (tham khảo)'
+}
 export {
     statusClass,
     fieldFilter,
@@ -74,5 +85,7 @@ export {
     mapRoleToString,
     getStringGender,
     getStringObjectTeach,
+    getStringStatusProcess,
+    getStringResourseApply,
     getColorTeacherPoint
 }

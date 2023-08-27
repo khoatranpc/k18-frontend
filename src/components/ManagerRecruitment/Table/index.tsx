@@ -1,7 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { EyeOutlined } from '@ant-design/icons';
-import { Columns, RowData } from '@/global/interface';
-import { formatDatetoString } from '@/utils';
+import { Columns, Obj, RowData } from '@/global/interface';
+import { StatusProcessing } from '@/global/enum';
+import { getStringStatusProcess } from '@/global/init';
+import { formatDatetoString, getColorByCourseName, getColorByStatusProcess } from '@/utils';
+import { useGetListDataRecruitment } from '@/utils/hooks';
 import { ContextRecruitment } from '../context';
 import Table from '@/components/Table';
 import Popup from '../Popup';
@@ -12,10 +15,10 @@ const TableRecruitment = () => {
         {
             key: 'TIME',
             title: 'Thời gian ứng tuyển',
-            dataIndex: 'time',
+            dataIndex: 'timeApply',
             render(value, record) {
                 return <div className={styles.viewDetail}>
-                    {formatDatetoString(value)}
+                    {formatDatetoString(value, 'dd/MM/yyyy')}
                     <EyeOutlined
                         className={styles.icon}
                         onClick={() => {
@@ -38,29 +41,56 @@ const TableRecruitment = () => {
         {
             key: 'COURSE_REGISTER',
             title: 'Bộ môn',
-            dataIndex: 'courseRegister'
+            dataIndex: 'courseApply',
+            render(value) {
+                return <div className={styles.subject} style={{ backgroundColor: getColorByCourseName[value.courseName] }}>
+                    {value.courseName}
+                </div> || ''
+            }
         },
         {
             key: 'CONTACT',
             title: 'Liên hệ',
-            dataIndex: 'contact'
+            render(_, record: Obj) {
+                return <div>
+                    {record.phoneNumber && <p>{record.phoneNumber}</p>}
+                    {record.email && <p>{record.email}</p>}
+                    {record.linkFacebook && <p>{record.linkFacebook}</p>}
+                </div>
+            }
         },
         {
             key: 'PROGRESS',
             title: 'Trạng thái',
-            dataIndex: 'progress'
+            dataIndex: 'statusProcess',
+            render(value) {
+                return <div className={styles.statusProcess} style={{ backgroundColor: getColorByStatusProcess[value as StatusProcessing] }}>
+                    {getStringStatusProcess[value as StatusProcessing]}
+                </div> || ''
+            },
         },
         {
             key: 'RESULT',
             title: 'Kết quả',
-            dataIndex: 'result'
+            dataIndex: 'result',
+            render(_, record) {
+                return <div className={styles.result} style={{
+                    backgroundColor: `${typeof record.result === 'boolean' ?
+                        (record.result ? '#69A84F' : '#C00000') :
+                        ('#F1C233')}`
+                }}>
+                    {typeof record.result === 'boolean' ?
+                        (record.result ? 'Đạt' : 'Trượt') :
+                        ('Đang xử lý')}
+                </div>
+            }
         },
         {
             key: 'LASTUPDATE',
             title: 'Cập nhật',
             dataIndex: 'updatedAt',
             render(value) {
-                return formatDatetoString(value);
+                return formatDatetoString(value, 'dd/MM/yyyy');
             }
         },
         {
@@ -68,24 +98,22 @@ const TableRecruitment = () => {
             title: 'CV',
             dataIndex: 'linkCv',
             render(value) {
-                return <a target="_blank" style={{ color: 'blue' }} href={value}>{value}</a>
+                return <a target="_blank" style={{ color: 'blue' }} href={value}>Link</a>
             }
         },
     ];
-    const rowData: RowData[] = [
-        {
-            key: '1',
-            time: new Date(),
-            fullName: 'Nguyễn Võ Mộng Du',
-            courseRegister: 'Data',
-            contact: '07653213',
-            progress: 'Đang xử lý',
-            result: 'Trượt',
-            updatedAt: new Date(),
-            linkCv: 'Link'
-        },
-    ];
     const { modal } = useContext(ContextRecruitment);
+    const listDataRecruitment = useGetListDataRecruitment();
+    const rowData: RowData[] = ((listDataRecruitment.data.response?.data as Obj)?.listData as Array<Obj>)?.map((item) => {
+        return {
+            key: item._id,
+            ...item
+        }
+    })
+    useEffect(() => {
+        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply']);
+    }, []);
+    console.log(listDataRecruitment);
     return (
         <div className={styles.tableView}>
             <Table
@@ -93,6 +121,7 @@ const TableRecruitment = () => {
                 columns={columns}
                 rowData={rowData}
                 enablePaginationAjax
+                loading={listDataRecruitment.data.isLoading}
             />
             {
                 modal.config.isShow && <Popup

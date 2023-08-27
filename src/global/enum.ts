@@ -109,3 +109,17 @@ export enum ObjectTeach {
     K18 = 'K18',
     K12 = 'K12'
 }
+export enum StatusProcessing {
+    // no process
+    NOPROCESS = 'NOPROCESS',
+    // processing
+    PROCESSING = 'PROCESSING',
+    // DONE
+    DONE = 'DONE'
+}
+export enum ResourseApply {
+    FB = 'FB',
+    LKD = 'LKD',
+    RF = 'RF',
+    AN = 'AN'
+}

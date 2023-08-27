@@ -6,7 +6,7 @@ import { Action, Columns, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
 import { ClassForm, ComponentPage, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
-import { formatDatetoString, sortByString } from '@/utils';
+import { formatDatetoString, getColorByCourseName, sortByString } from '@/utils';
 import { useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
@@ -138,7 +138,7 @@ const ManagerClass = () => {
                 return sortByString(a.subject as string, b.subject as string)
             },
             render(value) {
-                return <div className={styles.subject}>
+                return <div className={styles.subject} style={{ backgroundColor: getColorByCourseName[value] }}>
                     {value}
                 </div>
             },

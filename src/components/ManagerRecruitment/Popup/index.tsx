@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button, DatePicker, Input, MenuProps, TabsProps } from 'antd';
 import { Form } from 'react-bootstrap';
-import { ObjectTeach, ROLE_TEACHER } from '@/global/enum';
+import { ObjectTeach, ROLE_TEACHER, ResourseApply, StatusProcessing } from '@/global/enum';
+import { getStringObjectTeach, getStringResourseApply, getStringStatusProcess, mapRoleToString } from '@/global/init';
 import ModalCustomize from '@/components/ModalCustomize';
 import Tabs from '@/components/Tabs';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
 import SelectLevelTechnique from '@/components/SelectLevelTechnique';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss'
-import { getStringObjectTeach, mapRoleToString } from '@/global/init';
 
 interface Props {
     isCreate?: boolean;
@@ -19,30 +19,34 @@ interface Props {
 
 const listSelectResourse: MenuProps['items'] = [
     {
-        key: 'facebook',
-        label: 'Facebook',
+        key: ResourseApply.FB,
+        label: getStringResourseApply[ResourseApply.FB],
     },
     {
-        key: 'refer',
-        label: 'Gợi ý (Tham khảo)',
+        key: ResourseApply.LKD,
+        label: getStringResourseApply[ResourseApply.LKD],
     },
     {
-        key: 'an',
-        label: 'Khác'
+        key: ResourseApply.RF,
+        label: getStringResourseApply[ResourseApply.RF],
+    },
+    {
+        key: ResourseApply.AN,
+        label: getStringResourseApply[ResourseApply.AN]
     }
 ];
 const statusProcessing: MenuProps['items'] = [
     {
-        key: 'DOING',
-        label: 'Đang xử lý'
+        key: StatusProcessing.PROCESSING,
+        label: getStringStatusProcess[StatusProcessing.PROCESSING]
     },
     {
-        key: 'UNDONE',
-        label: 'Chưa xử lý'
+        key: StatusProcessing.NOPROCESS,
+        label: getStringStatusProcess[StatusProcessing.NOPROCESS]
     },
     {
-        key: 'DONE',
-        label: 'Đã xử lý'
+        key: StatusProcessing.DONE,
+        label: getStringStatusProcess[StatusProcessing.DONE]
     }
 ];
 const mailingProcessing: MenuProps['items'] = [

@@ -11,7 +11,6 @@ import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const ManagerRecruitment = () => {
     const allCourse = useGetListCourse();
-    console.log(allCourse);
     useEffect(() => {
         if (!allCourse.listCourse) {
             allCourse.queryListCourse();

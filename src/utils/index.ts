@@ -1,7 +1,7 @@
 import { v4 as uid } from 'uuid';
 import { format } from 'date-fns';
 import { Obj, RowData } from '@/global/interface';
-import { Weekday } from '@/global/enum';
+import { StatusProcessing, Weekday } from '@/global/enum';
 
 const uuid = () => {
     return uid() as string;
@@ -135,6 +135,15 @@ const getColor3Point = (point: number) => {
     }
     return '#CF575A';
 }
+const getColorByCourseName: Obj = {
+    'Data': '#6792F4',
+    'Coding': '#DA4646'
+}
+const getColorByStatusProcess: Record<StatusProcessing, string> = {
+    DONE: '#69A84F',
+    NOPROCESS: '#E06666',
+    PROCESSING: '#F1C233'
+}
 export {
     uuid,
     listMonth,
@@ -143,5 +152,7 @@ export {
     formatDatetoString,
     generateRowDataForMergeRowSingleField,
     getWeekday,
-    getColor3Point
+    getColor3Point,
+    getColorByCourseName,
+    getColorByStatusProcess
 }
