@@ -123,3 +123,16 @@ export enum ResourseApply {
     RF = 'RF',
     AN = 'AN'
 }
+export enum ResultInterview {
+    PASS = 'PASS',
+    NOTPASS = 'NOTPASS',
+    PENDING = 'PENDING'
+}
+export enum LevelTechnique {
+    INTERN = 'INTERN',
+    FRESHER = 'FRESHER',
+    JUNIOR = 'JUNIOR',
+    MIDDLE = 'MIDDLE',
+    SENIOR = 'SENIOR',
+    LEADER = 'LEADER'
+}

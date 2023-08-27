@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuProps, InputNumber } from 'antd';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
@@ -17,16 +17,17 @@ interface Props {
     onHandlerNumber?: (type: 'INCRE' | 'DECRE') => void;
     formatLabel?: (number: number) => string;
     onSelect?: (e: ClickItem, keyIndex?: string) => void;
+    onChange?: (number: number) => void;
 }
 const SelectInputNumber = (props: Props) => {
     const listSelectNumber: MenuProps['items'] = [];
-    for (let i = 1; i <= (props.max as number || 10); i++) {
+    for (let i = props.min ?? 1; i <= (props.max as number || 10); i++) {
         listSelectNumber.push({
             key: i,
             label: props.formatLabel?.(i) || i
         });
     }
-    const [value, setValue] = useState(props.value || 1);
+    const [value, setValue] = useState(props.value ?? props.min ?? 1);
     return (
         <div className={styles.selectInputNumber}>
             <Dropdown
@@ -39,7 +40,7 @@ const SelectInputNumber = (props: Props) => {
                 title={<InputNumber
                     step={props.step}
                     size={props.size || 'small'}
-                    min={props.min || 1}
+                    min={props.min ?? 1}
                     max={props.max}
                     className={`${styles.inputNumber} inputNumberCustom ${props.inputClassName}`}
                     value={value}
@@ -47,17 +48,20 @@ const SelectInputNumber = (props: Props) => {
                         props.onHandlerNumber?.('INCRE');
                         if (props.max) {
                             if (value < Number(props.max)) {
+                                props.onChange?.(props.step ? value + props.step : value + 1);
                                 setValue(props.step ? value + props.step : value + 1);
                             }
                         } else {
                             if (value < 10) {
+                                props.onChange?.(props.step ? value + props.step : value + 1);
                                 setValue(props.step ? value + props.step : value + 1);
                             }
                         }
                     }}>{MapIconKey[KEY_ICON.CHEVRONU]}</span>}
                     downHandler={< span className={styles.iconChevron} onClick={() => {
                         props.onHandlerNumber?.('DECRE');
-                        if (value > 1) {
+                        if (value > 1 || (typeof props.min === 'number' && value > Number(props.min))) {
+                            props.onChange?.(props.step ? value - props.step : value - 1);
                             setValue(props.step ? value - props.step : value - 1);
                         }
                     }}> {MapIconKey[KEY_ICON.CHEVROND]}</span >}

@@ -1,16 +1,29 @@
 import React, { useContext, useEffect } from 'react'
 import { EyeOutlined } from '@ant-design/icons';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { StatusProcessing } from '@/global/enum';
-import { getStringStatusProcess } from '@/global/init';
+import { ResultInterview, StatusProcessing } from '@/global/enum';
+import { getColorByResultInterview, getStringResultInterview, getStringStatusProcess } from '@/global/init';
 import { formatDatetoString, getColorByCourseName, getColorByStatusProcess } from '@/utils';
-import { useGetListDataRecruitment } from '@/utils/hooks';
+import { useGetDetailCandidate, useGetListDataRecruitment } from '@/utils/hooks';
 import { ContextRecruitment } from '../context';
 import Table from '@/components/Table';
 import Popup from '../Popup';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const TableRecruitment = () => {
+    const { modal } = useContext(ContextRecruitment);
+    const candidate = useGetDetailCandidate();
+    const listDataRecruitment = useGetListDataRecruitment();
+    const rowData: RowData[] = ((listDataRecruitment.data.response?.data as Obj)?.listData as Array<Obj>)?.map((item) => {
+        return {
+            key: item._id,
+            ...item
+        }
+    })
+    useEffect(() => {
+        // pending logic with pagination
+        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply']);
+    }, []);
     const columns: Columns = [
         {
             key: 'TIME',
@@ -27,7 +40,8 @@ const TableRecruitment = () => {
                                 isShow: true,
                                 isCreate: false,
                                 title: `Thông tin ứng viên: ${record.fullName as string}`
-                            })
+                            });
+                            candidate.query([record._id as string]);
                         }}
                     />
                 </div>;
@@ -73,16 +87,12 @@ const TableRecruitment = () => {
             key: 'RESULT',
             title: 'Kết quả',
             dataIndex: 'result',
-            render(_, record) {
+            render(value, record) {
                 return <div className={styles.result} style={{
-                    backgroundColor: `${typeof record.result === 'boolean' ?
-                        (record.result ? '#69A84F' : '#C00000') :
-                        ('#F1C233')}`
-                }}>
-                    {typeof record.result === 'boolean' ?
-                        (record.result ? 'Đạt' : 'Trượt') :
-                        ('Đang xử lý')}
-                </div>
+                    backgroundColor: getColorByResultInterview[value as ResultInterview]
+                }} >
+                    {getStringResultInterview[value as ResultInterview]}
+                </div >
             }
         },
         {
@@ -102,18 +112,6 @@ const TableRecruitment = () => {
             }
         },
     ];
-    const { modal } = useContext(ContextRecruitment);
-    const listDataRecruitment = useGetListDataRecruitment();
-    const rowData: RowData[] = ((listDataRecruitment.data.response?.data as Obj)?.listData as Array<Obj>)?.map((item) => {
-        return {
-            key: item._id,
-            ...item
-        }
-    })
-    useEffect(() => {
-        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply']);
-    }, []);
-    console.log(listDataRecruitment);
     return (
         <div className={styles.tableView}>
             <Table

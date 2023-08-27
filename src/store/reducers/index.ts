@@ -34,6 +34,7 @@ import responseFeedback from './feedback/responseFeedback.reducer';
 import listResponseFeedback from './feedback/listResponseFeedback.reducer';
 import listResponseFeedbackForTeacher from './feedback/listResponseFeedbackForTeacher.reducer';
 import recruitment from './recruitment/recruitment.reducer';
+import detailCandidate from './recruitment/detailCandidate.reducer';
 
 const rootReducer = {
     test: test,
@@ -71,6 +72,7 @@ const rootReducer = {
     acceptPreTeacher,
     listResponseFeedbackForTeacher,
     classTeacherPoint,
-    recruitment
+    recruitment,
+    detailCandidate
 };
 export default rootReducer;
