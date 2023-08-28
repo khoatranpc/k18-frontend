@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import dayjs from 'dayjs';
-import { Button, DatePicker, Input, MenuProps, TabsProps } from 'antd';
+import { Button, DatePicker, Input, MenuProps, TabsProps, Radio } from 'antd';
 import { Form } from 'react-bootstrap';
-import { LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, StatusProcessing } from '@/global/enum';
+import * as yup from 'yup';
+import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, StatusProcessing } from '@/global/enum';
 import { getStringByLevelTechnique, getStringObjectTeach, getStringResourseApply, getStringStatusProcess, mapRoleToString } from '@/global/init';
+import { Obj } from '@/global/interface';
 import { useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
 import ModalCustomize from '@/components/ModalCustomize';
 import Tabs from '@/components/Tabs';
@@ -12,7 +14,6 @@ import SelectLevelTechnique from '@/components/SelectLevelTechnique';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss'
-import { Obj } from '@/global/interface';
 
 interface Props {
     isCreate?: boolean;
@@ -97,15 +98,29 @@ const listObjectTeach: MenuProps['items'] = [
         label: getStringObjectTeach[ObjectTeach.K18]
     },
 ]
+const validationSchema = yup.object({
+    timeApply: yup.date().required('Thiếu thời gian ứng tuyển!'),
+    dob: yup.date().required('Thiếu ngày tháng năm sinh!'),
+    linkCv: yup.string().required('Thiếu link CV!'),
+    fullName: yup.string().required('Thiếu họ và tên ứng viên!'),
+    phoneNumber: yup.string().required('Thiếu số điện thoại!'),
+    courseApply: yup.string().required('Thiếu khối ứng tuyển!'),
+    email: yup.string().email('Không đúng định dạng email').required('Thiếu email!'),
+});
+
 const Popup = (props: Props) => {
     const candidate = useGetDetailCandidate();
     const firstMounted = useRef(true);
     const listCourse = useGetListCourse();
-    const { values, errors, touched, handleChange, handleSubmit, handleBlur, setValues, setFieldValue } = useFormik({
+    const { values, errors, touched, handleChange, handleSubmit, handleBlur, setValues, setFieldValue, setTouched, setErrors } = useFormik({
         initialValues: {
             fullName: '',
             timeApply: '',
             courseApply: '',
+            graduatedUniversity: false,
+            education: Education.BACHELOR,
+            specializedIt: true,
+            teacherCertification: false,
             subject: '',
             phoneNumber: '',
             levelTechnique: LevelTechnique.FRESHER,
@@ -119,7 +134,6 @@ const Popup = (props: Props) => {
             linkCv: '',
             expTimeTech: 0,
             scoreSoftsSkill: 0,
-            qualifications: '',
             technique: '',
             expTimeTeach: 0,
             statusProcess: StatusProcessing.NOPROCESS,
@@ -127,9 +141,10 @@ const Popup = (props: Props) => {
             dateInterview: '',
             linkMeet: '',
             result: '',
-            createdAt: '',
-            updatedAt: ''
+            createdAt: new Date(),
+            updatedAt: new Date()
         },
+        validationSchema,
         onSubmit(value) {
             console.log(value);
         }
@@ -145,6 +160,14 @@ const Popup = (props: Props) => {
             return item._id === value
         });
         return findCourse
+    };
+    const handleBlurDropdown = (open: boolean, field: keyof typeof values) => {
+        if (!open && !touched[field]) {
+            setTouched({
+                ...touched,
+                [field]: true
+            });
+        }
     }
     const tabsForm: TabsProps['items'] = [
         {
@@ -153,22 +176,28 @@ const Popup = (props: Props) => {
             children: <div className={styles.infoResourse}>
                 <div className={styles.left}>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Thời gian ứng tuyển</Form.Label>
+                        <Form.Label>Họ và tên: <span className="field_required">*</span></Form.Label>
+                        <Input type="text" size="small" name="fullName" value={values.fullName} onChange={handleChange} onBlur={handleBlur} />
+                        {errors.fullName && touched.fullName && <p className="error">{errors.fullName}</p>}
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>Thời gian ứng tuyển <span className="field_required">*</span></Form.Label>
                         <br />
                         <DatePicker
                             onBlur={handleBlur}
                             size="small"
-                            name='timeAplly'
+                            name='timeApply'
                             value={values.timeApply ? dayjs(new Date(values.timeApply)) : null}
                             onChange={(value: any) => {
-                                const getDate = value?.$d || new Date();
+                                const getDate = value?.$d || null;
                                 setFieldValue('timeApply', getDate);
                             }}
                             format={'DD/MM/YYYY'}
                             rootClassName={styles.popUpDatePicker} />
+                        {errors.timeApply && touched.timeApply && <p className="error">{errors.timeApply}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Vị trí</Form.Label>
+                        <Form.Label>Vị trí <span className="field_required">*</span></Form.Label>
                         {/* pending handle change */}
                         <Dropdown
                             className={styles.selectResourse}
@@ -177,23 +206,30 @@ const Popup = (props: Props) => {
                             sizeButton="small"
                             title={mapRoleToString[values.roleApply as ROLE_TEACHER]}
                             icon
+                            onClickItem={(e) => {
+                                setFieldValue('roleApply', e.key as string);
+                            }}
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Nguồn ứng tuyển</Form.Label>
+                        <Form.Label>Nguồn ứng tuyển <span className="field_required">*</span></Form.Label>
                         {/* pending handle change */}
                         <Dropdown
                             className={styles.selectResourse}
                             trigger="click"
                             listSelect={listSelectResourse}
+                            onClickItem={(e) => {
+                                setFieldValue('resourseApply', e.key as string);
+                            }}
                             sizeButton="small"
                             title={getStringResourseApply[values.resourseApply as ResourseApply]}
                             icon
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Link CV:</Form.Label>
+                        <Form.Label>Link CV: <span className="field_required">*</span></Form.Label>
                         <Input type="text" size="small" name="linkCv" value={values.linkCv} onChange={handleChange} onBlur={handleBlur} />
+                        {errors.linkCv && touched.linkCv && <p className="error">{errors.linkCv}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Ghi chú</Form.Label>
@@ -202,7 +238,7 @@ const Popup = (props: Props) => {
                 </div>
                 <div className={styles.right}>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Năm sinh</Form.Label>
+                        <Form.Label>Năm sinh <span className="field_required">*</span></Form.Label>
                         <br />
                         <DatePicker
                             onBlur={handleBlur}
@@ -216,18 +252,21 @@ const Popup = (props: Props) => {
                             format={'DD/MM/YYYY'}
                             rootClassName={styles.popUpDatePicker}
                         />
+                        {errors.dob && touched.dob && <p className="error">{errors.dob}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Số điện thoại</Form.Label>
-                        <Input type="text" size="small" name="phoneNumber" value={values.phoneNumber} onChange={handleChange} />
+                        <Form.Label>Số điện thoại <span className="field_required">*</span></Form.Label>
+                        <Input type="text" size="small" name="phoneNumber" value={values.phoneNumber} onChange={handleChange} onBlur={handleBlur} />
+                        {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>Email <span className="field_required">*</span></Form.Label>
+                        <Input type="text" size="small" onChange={handleChange} name="email" value={values.email} onBlur={handleBlur} />
+                        {errors.email && touched.email && <p className="error">{errors.email}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Link facebook</Form.Label>
                         <Input type="text" size="small" name="linkFacebook" value={values.linkFacebook} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group className={styles.mb_24}>
-                        <Form.Label>Email</Form.Label>
-                        <Input type="text" size="small" onChange={handleChange} name="email" value={values.email} onBlur={handleBlur} />
                     </Form.Group>
                 </div>
             </div>
@@ -238,8 +277,11 @@ const Popup = (props: Props) => {
             children: <div className={styles.skill}>
                 <div className={styles.left}>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Khối ứng tuyển</Form.Label>
+                        <Form.Label>Khối ứng tuyển <span className="field_required">*</span></Form.Label>
                         <Dropdown
+                            onOpenChange={(e) => {
+                                handleBlurDropdown(e, 'courseApply');
+                            }}
                             className={`${styles.courseRegister}`}
                             trigger="click"
                             listSelect={getListCourseSelect}
@@ -250,9 +292,10 @@ const Popup = (props: Props) => {
                                 setFieldValue('courseApply', e.key as string);
                             }}
                         />
+                        {errors.courseApply && touched.courseApply && !values.courseApply && <p className="error">{errors.courseApply}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Số năm kinh nghiệm</Form.Label>
+                        <Form.Label>Số năm kinh nghiệm <span className="field_required">*</span></Form.Label>
                         <SelectInputNumber
                             value={Number(values.expTimeTech || 0)}
                             min={0}
@@ -267,7 +310,7 @@ const Popup = (props: Props) => {
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Trình độ</Form.Label>
+                        <Form.Label>Trình độ <span className="field_required">*</span></Form.Label>
                         <SelectLevelTechnique
                             size="small"
                             title={getStringByLevelTechnique[values.levelTechnique as LevelTechnique]}
@@ -278,7 +321,7 @@ const Popup = (props: Props) => {
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Kỹ năng mềm</Form.Label>
+                        <Form.Label>Kỹ năng mềm <span className="field_required">*</span></Form.Label>
                         <SelectInputNumber
                             max={5}
                             min={0}
@@ -293,7 +336,7 @@ const Popup = (props: Props) => {
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Kinh nghiệm giảng dạy</Form.Label>
+                        <Form.Label>Kinh nghiệm giảng dạy <span className="field_required">*</span></Form.Label>
                         <SelectInputNumber
                             min={0}
                             className={styles.selectExp}
@@ -320,17 +363,45 @@ const Popup = (props: Props) => {
                             icon
                         />
                     </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>Chứng chỉ NVSP</Form.Label>
+                        <Radio.Group defaultValue={values.teacherCertification} onChange={handleChange} name="teacherCertification">
+                            <Radio value={true}>Đã có</Radio>
+                            <Radio value={false}>Chưa có</Radio>
+                        </Radio.Group>
+                    </Form.Group>
                 </div>
                 <div className={styles.right}>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Bằng cấp/Chứng chỉ</Form.Label>
-                        <Input.TextArea value={values.qualifications} name="qualificationss" onChange={handleChange} />
+                        <Form.Label>Tốt nghiệp đại học</Form.Label>
+                        <Radio.Group defaultValue={values.graduatedUniversity} onChange={handleChange} name="graduatedUniversity">
+                            <Radio value={true}>Đã tốt nghệp</Radio>
+                            <Radio value={false}>Chưa tốt nghệp</Radio>
+                        </Radio.Group>
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Công nghệ sử dụng</Form.Label>
-                        <Input.TextArea value={values.technique} name="technique" onChange={handleChange} />
+                        <Form.Label>Tốt nghiệp chuyên ngành</Form.Label>
+                        <Radio.Group defaultValue={values.specializedIt} onChange={handleChange} name="specializedIt">
+                            <Radio value={true}>IT</Radio>
+                            <Radio value={false}>Khác</Radio>
+                        </Radio.Group>
                     </Form.Group>
-                    <Button className={styles.mrAuto}>Đánh giá</Button>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>Học vấn</Form.Label>
+                        <Radio.Group defaultValue={values.education} onChange={handleChange} name="graduatedUniversity">
+                            <Radio value={Education.BACHELOR}>Cử nhân</Radio>
+                            <Radio value={Education.ENGINEER}>Kỹ sư</Radio>
+                            <Radio value={Education.MASTER}>Thạc sĩ</Radio>
+                            <Radio value={Education.DOCTOR}>Tiến sĩ</Radio>
+                        </Radio.Group>
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>Công nghệ sử dụng <span className="field_required">*</span></Form.Label>
+                        <Input value={values.technique} name="technique" onChange={handleChange} />
+                    </Form.Group>
+                    {
+                        !props.isCreate && <Button className={styles.mrAuto}>Đánh giá</Button>
+                    }
                 </div>
             </div>
         },
