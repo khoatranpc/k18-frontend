@@ -4,10 +4,11 @@ import dayjs from 'dayjs';
 import { Button, DatePicker, Input, MenuProps, TabsProps, Radio } from 'antd';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
-import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, StatusProcessing } from '@/global/enum';
-import { getStringByLevelTechnique, getStringObjectTeach, getStringResourseApply, getStringStatusProcess, mapRoleToString } from '@/global/init';
+import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, StatusProcessing } from '@/global/enum';
+import { getStringByLevelTechnique, getStringObjectTeach, getStringResourseApply, getStringResultInterview, getStringStatusProcess, mapRoleToString } from '@/global/init';
 import { Obj } from '@/global/interface';
-import { useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
+import { useCreateCandidate, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
+import { useHookMessage } from '@/utils/hooks/message';
 import ModalCustomize from '@/components/ModalCustomize';
 import Tabs from '@/components/Tabs';
 import SelectLevelTechnique from '@/components/SelectLevelTechnique';
@@ -112,7 +113,9 @@ const Popup = (props: Props) => {
     const candidate = useGetDetailCandidate();
     const firstMounted = useRef(true);
     const listCourse = useGetListCourse();
-    const { values, errors, touched, handleChange, handleSubmit, handleBlur, setValues, setFieldValue, setTouched, setErrors } = useFormik({
+    const message = useHookMessage();
+    const createCandidate = useCreateCandidate();
+    const { values, errors, touched, handleChange, handleSubmit, handleBlur, setValues, setFieldValue, setTouched } = useFormik({
         initialValues: {
             fullName: '',
             timeApply: '',
@@ -121,7 +124,6 @@ const Popup = (props: Props) => {
             education: Education.BACHELOR,
             specializedIt: true,
             teacherCertification: false,
-            subject: '',
             phoneNumber: '',
             levelTechnique: LevelTechnique.FRESHER,
             linkFacebook: '',
@@ -140,13 +142,13 @@ const Popup = (props: Props) => {
             sendMail: false,
             dateInterview: '',
             linkMeet: '',
-            result: '',
+            result: ResultInterview.PENDING,
             createdAt: new Date(),
             updatedAt: new Date()
         },
         validationSchema,
         onSubmit(value) {
-            console.log(value);
+            createCandidate.query(value);
         }
     });
     const getListCourseSelect = (listCourse.listCourse.data as Array<Obj>)?.map((item) => {
@@ -388,7 +390,7 @@ const Popup = (props: Props) => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Học vấn</Form.Label>
-                        <Radio.Group defaultValue={values.education} onChange={handleChange} name="graduatedUniversity">
+                        <Radio.Group defaultValue={values.education} onChange={handleChange} name="education">
                             <Radio value={Education.BACHELOR}>Cử nhân</Radio>
                             <Radio value={Education.ENGINEER}>Kỹ sư</Radio>
                             <Radio value={Education.MASTER}>Thạc sĩ</Radio>
@@ -470,8 +472,11 @@ const Popup = (props: Props) => {
                             trigger="click"
                             listSelect={resultProcessing}
                             sizeButton="small"
-                            title="Đang xử lý"
+                            title={getStringResultInterview[values.result as ResultInterview]}
                             icon
+                            onClickItem={(e) => {
+                                setFieldValue('result', e.key);
+                            }}
                         />
                     </Form.Group>
                     {props.isCreate && <Button htmlType="submit">Tạo</Button>}
@@ -492,6 +497,17 @@ const Popup = (props: Props) => {
             listCourse.queryListCourse();
         }
     }, [listCourse]);
+    useEffect(() => {
+        if (createCandidate.data.response) {
+            message.open({
+                type: createCandidate.data.success ? 'success' : 'error',
+                content: createCandidate.data.success ? 'Thêm ứng viên thành công!' : 'Tạo ứng viên thất bại!'
+            });
+            message.close(undefined, () => {
+                createCandidate.clear();
+            });
+        }
+    }, [createCandidate]);
     return (
         <div className={styles.popup}>
             <ModalCustomize

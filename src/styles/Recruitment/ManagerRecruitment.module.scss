@@ -7,6 +7,19 @@
             gap: 1.6rem;
         }
 
+        .rightFnc {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .btnReload {
+
+            img {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+
         display: flex;
         justify-content: space-between;
 

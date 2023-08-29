@@ -30,6 +30,7 @@ import { queryListResponseFeedbackForTeacher } from "@/store/reducers/feedback/l
 import { queryClassTeacherPoint } from "@/store/reducers/class/classTeacherPoint.reducer";
 import { queryGetListDataRecruitment } from "@/store/reducers/recruitment/recruitment.reducer";
 import { queryDetailCandidate } from "@/store/reducers/recruitment/detailCandidate.reducer";
+import { clearCreateCandidate, queryCreateCandidate } from "@/store/reducers/recruitment/createCandidate.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -637,6 +638,28 @@ const useGetDetailCandidate = () => {
         query
     }
 }
+const useCreateCandidate = () => {
+    const data = useSelector((state: RootState) => (state.createCandidate as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body
+                }
+            }
+        }
+        dispatch(queryCreateCandidate(payload));
+    }
+    const clear = () => {
+        dispatch(clearCreateCandidate());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -666,5 +689,6 @@ export {
     useGetListFeedbackResponseForTeacher,
     useGetClassTeacherPonit,
     useGetListDataRecruitment,
-    useGetDetailCandidate
+    useGetDetailCandidate,
+    useCreateCandidate
 }

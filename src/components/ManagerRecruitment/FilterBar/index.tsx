@@ -128,7 +128,16 @@ const FilterBar = (props: Props) => {
                         })
                     })}>Thêm mới</Button>
                 </div>
-                <Input placeholder="Tìm kiếm" prefix={<SearchOutlined />} />
+                <div className={styles.rightFnc}>
+                    <Input placeholder="Tìm kiếm" prefix={<SearchOutlined />} />
+                    <Button
+                        className={`btn-toolbar ${styles.btnReload}`}
+                        onClick={() => {
+                        }}
+                    >
+                        <span className={styles.reload}>{MapIconKey[KEY_ICON.RELOAD]}</span>
+                    </Button>
+                </div>
             </div>
         </div>
     )
