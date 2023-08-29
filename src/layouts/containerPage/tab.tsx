@@ -92,7 +92,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             key: 'COURSES',
             keyIcon: KEY_ICON.CR,
             showIcon: true,
-            indexRoute: '',
+            indexRoute: CombineRoute['TE']['MANAGER']['COURSE'],
             noReplaceTitle: true,
             component: ComponentPage.MANAGER_COURSE
         },

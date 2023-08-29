@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 import { ROLE_USER } from '@/global/enum';
 import Loading from '@/components/loading';
 
-const CreatePage = (dir: string, role: ROLE_USER, layout: (props: any) => JSX.Element) => {
-    const DynamicComponent = dynamic(() => import(dir), {
+const CreatePage = (module: string, role: ROLE_USER, layout: (props: any) => JSX.Element) => {
+    const DynamicComponent = dynamic(() => import(`@/components/${module}`), {
         ssr: false,
         loading: () => <Loading />
     })
