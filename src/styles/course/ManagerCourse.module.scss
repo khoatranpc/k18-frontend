@@ -1,0 +1,32 @@
+.containerTable {
+    .reload {
+        margin: 1.6rem 0;
+        padding-right: 1.6rem;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                color: var(--base);
+                border-color: var(--base);
+            }
+
+            &.btnReload {
+                margin-left: 1.6rem;
+            }
+        }
+
+        span {
+            margin: 0;
+        }
+
+        img {
+            width: 1.6rem;
+            height: 1.6rem;
+        }
+    }
+}
