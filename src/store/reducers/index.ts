@@ -7,6 +7,8 @@ import registerPreTeacher from './registerPreTeacher.reducer';
 import getDataRoute from './global-reducer/route';
 import listClass from './class/listClass.reducer';
 import listCourse from './course/listCourse.reducer';
+import detailCourse from './course/detailCourse.reducer';
+import createCourse from './course/createCourse.reducer';
 import timeSchedule from './timeSchedule.reducer';
 import createClass from './class/createClass.reducer';
 import bookTeacher from './class/bookTeacher.reducer';
@@ -75,6 +77,8 @@ const rootReducer = {
     classTeacherPoint,
     recruitment,
     detailCandidate,
-    createCandidate
+    createCandidate,
+    createCourse,
+    detailCourse
 };
 export default rootReducer;

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
 import { Columns, Obj } from '@/global/interface';
+import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import { useGetListCourse } from '@/utils/hooks';
 import { generateRowDataForMergeRowSingleField } from '@/utils';
 import Table from '@/components/Table';
-import { MapIconKey } from '@/global/icon';
-import styles from '@/styles/course/ManagerCourse.module.scss';
 import Popup from '../Popup';
+import styles from '@/styles/course/ManagerCourse.module.scss';
+import PopupDetailCourse from '../PopupDetailCourse';
 
 const initModal = {
     show: false,
@@ -23,15 +25,38 @@ const List = () => {
         courseId: string;
         levelId: string;
     }>(initModal);
+
+    const [modalDetail, setModalDetail] = useState<{
+        show: boolean;
+        courseId: string;
+    }>({
+        show: false,
+        courseId: '',
+    });
     const columns: Columns = [
         {
             key: 'COURSE',
             title: 'Khoá',
             dataIndex: 'courseName',
+            className: `tdCourse`,
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,
                 }
+            },
+            render(value, record) {
+                return <div className={styles.divFlex}>
+                    <span>{value}</span>
+                    <EyeOutlined
+                        className={`${styles.iconEye} iconEye`}
+                        onClick={() => {
+                            setModalDetail({
+                                show: true,
+                                courseId: record._id as string
+                            })
+                        }}
+                    />
+                </div>
             }
         },
         {
@@ -39,7 +64,7 @@ const List = () => {
             title: 'Lộ trình',
             dataIndex: 'syllabus',
             render(value) {
-                return <a href={value || ''} target="_blank">Link</a>
+                return value ? <a href={value || ''} target="_blank" className={"link"}>Link</a> : 'Thiếu'
             },
             onCell(data) {
                 return {
@@ -56,7 +81,7 @@ const List = () => {
                     title: 'STT',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.levelNumber || ''
+                        return value.levelNumber || 'Thiếu'
                     }
 
                 },
@@ -65,7 +90,7 @@ const List = () => {
                     title: 'Mã',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.levelCode || ''
+                        return value.levelCode || 'Thiếu'
                     }
                 },
                 {
@@ -73,7 +98,7 @@ const List = () => {
                     title: 'Tên',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.levelName || ''
+                        return value.levelName || 'Thiếu'
                     }
                 },
                 {
@@ -81,7 +106,7 @@ const List = () => {
                     title: 'Giáo trình',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return <a href={value.textBook || ''} target="_blank">Link</a>
+                        return value.textBook ? <a href={value.textBook || ''} target="_blank" className={"link"}>Link</a> : 'Thiếu'
                     }
                 },
             ]
@@ -94,7 +119,7 @@ const List = () => {
         }
     }, []);
     return (
-        <div className={styles.containerTable}>
+        <div className={`${styles.containerTable} tableListCourse`}>
             <div className={styles.reload}>
                 <Button
                     size="small"
@@ -131,6 +156,16 @@ const List = () => {
                 title={modal.title}
                 onHide={() => {
                     setModal(initModal);
+                }}
+            />}
+            {modalDetail.show && <PopupDetailCourse
+                courseId={modalDetail.courseId}
+                show={modalDetail.show}
+                onHide={() => {
+                    setModalDetail({
+                        show: false,
+                        courseId: ''
+                    });
                 }}
             />}
         </div>

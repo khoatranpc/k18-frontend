@@ -29,4 +29,37 @@
             height: 1.6rem;
         }
     }
+
+    .divFlex {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    tr {
+        .divFlex {
+            .iconEye {
+                color: var(--white);
+            }
+        }
+
+        &:hover {
+            .divFlex {
+                .iconEye {
+                    color: var(--black);
+                }
+            }
+        }
+    }
+}
+
+.divBtn {
+    margin-top: 1.2rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    button:last-child {
+        margin-left: 0.8rem;
+    }
 }

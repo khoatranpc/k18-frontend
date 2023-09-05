@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
+import Loading from '../loading';
 import styles from '@/styles/Modal.module.scss';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
     centered?: boolean;
     size?: 'sm' | 'lg' | 'xl';
     backdropClassName?: string;
+    loading?: boolean;
     onHide?: () => void;
 }
 const ModalCustomize = (props: Props) => {
@@ -30,7 +32,10 @@ const ModalCustomize = (props: Props) => {
             >
                 {
                     props.modalHeader && <Modal.Header closeButton={!props.disableCloseButtonHeader}>
-                        <Modal.Title>{props.modalHeader}</Modal.Title>
+                        <Modal.Title className={styles.modalTitle}>
+                            {props.modalHeader}
+                            {props.loading && <Loading />}
+                        </Modal.Title>
                     </Modal.Header>
                 }
 

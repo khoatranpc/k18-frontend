@@ -31,6 +31,8 @@ import { queryClassTeacherPoint } from "@/store/reducers/class/classTeacherPoint
 import { queryGetListDataRecruitment } from "@/store/reducers/recruitment/recruitment.reducer";
 import { queryDetailCandidate } from "@/store/reducers/recruitment/detailCandidate.reducer";
 import { clearCreateCandidate, queryCreateCandidate } from "@/store/reducers/recruitment/createCandidate.reducer";
+import { clearCreateCourse, queryCreateCourse } from "@/store/reducers/course/createCourse.reducer";
+import { queryDetailCourse } from "@/store/reducers/course/detailCourse.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -660,6 +662,47 @@ const useCreateCandidate = () => {
         clear
     }
 }
+const useCreateCourse = () => {
+    const data = useSelector((state: RootState) => (state.createCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body
+                }
+            }
+        }
+        dispatch(queryCreateCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearCreateCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
+const useGetDetailCourse = () => {
+    const data = useSelector((state: RootState) => (state.detailCourse as State).state);
+    const dispatch = useDispatch();
+
+    const query = (courseId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    params: [courseId]
+                }
+            }
+        }
+        dispatch(queryDetailCourse(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -690,5 +733,7 @@ export {
     useGetClassTeacherPonit,
     useGetListDataRecruitment,
     useGetDetailCandidate,
-    useCreateCandidate
+    useCreateCandidate,
+    useCreateCourse,
+    useGetDetailCourse
 }

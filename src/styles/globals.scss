@@ -107,6 +107,10 @@ a {
     color: var(--orange);
 }
 
+.link {
+    color: var(--blue);
+}
+
 .btn_base {
     margin-top: 4rem;
     display: flex;
@@ -894,4 +898,12 @@ div.ant-message {
 
 .highcharts-credits {
     display: none;
+}
+
+.tableListCourse {
+    .tdCourse.ant-table-cell-row-hover {
+        .iconEye {
+            color: var(--black);
+        }
+    }
 }
