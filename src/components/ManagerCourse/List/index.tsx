@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
 import { Columns, Obj } from '@/global/interface';
+import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import { useGetListCourse } from '@/utils/hooks';
 import { generateRowDataForMergeRowSingleField } from '@/utils';
 import Table from '@/components/Table';
-import { MapIconKey } from '@/global/icon';
-import styles from '@/styles/course/ManagerCourse.module.scss';
 import Popup from '../Popup';
+import styles from '@/styles/course/ManagerCourse.module.scss';
 
 const initModal = {
     show: false,
@@ -32,6 +33,12 @@ const List = () => {
                 return {
                     rowSpan: data.rowSpan as number,
                 }
+            },
+            render(value) {
+                return <div className={`${styles.cellCourseName}`}>
+                    {value}
+                    <EyeOutlined className={`${styles.icon} iconEyeCourse`} />
+                </div>
             }
         },
         {
@@ -39,7 +46,7 @@ const List = () => {
             title: 'Lộ trình',
             dataIndex: 'syllabus',
             render(value) {
-                return <a href={value || ''} target="_blank">Link</a>
+                return value ? <a href={value || ''} target="_blank" className="link">Link</a> : <span className="error">Thiếu</span>
             },
             onCell(data) {
                 return {
@@ -56,7 +63,7 @@ const List = () => {
                     title: 'STT',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.levelNumber || ''
+                        return value.levelNumber || <span className="error">Thiếu</span>
                     }
 
                 },
@@ -65,7 +72,7 @@ const List = () => {
                     title: 'Mã',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.levelCode || ''
+                        return value.levelCode || <span className="error">Thiếu</span>
                     }
                 },
                 {
@@ -73,7 +80,7 @@ const List = () => {
                     title: 'Tên',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.levelName || ''
+                        return value.levelName || <span className="error">Thiếu</span>
                     }
                 },
                 {
@@ -81,7 +88,7 @@ const List = () => {
                     title: 'Giáo trình',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return <a href={value.textBook || ''} target="_blank">Link</a>
+                        return value.textBook ? <a href={value.textBook || ''} target="_blank">Link</a> : <span className="error">Thiếu</span>
                     }
                 },
             ]
@@ -94,7 +101,7 @@ const List = () => {
         }
     }, []);
     return (
-        <div className={styles.containerTable}>
+        <div className={`${styles.containerTable} tableCourse`}>
             <div className={styles.reload}>
                 <Button
                     size="small"

@@ -29,4 +29,14 @@
             height: 1.6rem;
         }
     }
+
+    .cellCourseName {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        .icon {
+            color: var(--white);
+        }
+    }
 }

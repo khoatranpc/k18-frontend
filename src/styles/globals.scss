@@ -895,3 +895,17 @@ div.ant-message {
 .highcharts-credits {
     display: none;
 }
+
+.link {
+    color: var(--blue);
+}
+
+.tableCourse {
+    tr {
+        td.ant-table-cell-row-hover {
+            .iconEyeCourse {
+                color: var(--black);
+            }
+        }
+    }
+}
