@@ -8,7 +8,7 @@ interface Reducer {
     [k: string]: (state: any, action?: PayloadAction<any>) => void
 }
 
-const createRequest = (type: string, api: string, method: METHOD) => {
+const createRequest = (type: string, api: string, method: METHOD): any => {
     return createAsyncThunk(type, async (action: Action | any) => {
         const rs = await actionRequest(api, method, action);
         return rs.data;

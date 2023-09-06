@@ -40,3 +40,19 @@
         }
     }
 }
+
+.containerPopupDetailCourse {
+    .btn {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.containerPopupLevel {
+    .btn {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+}

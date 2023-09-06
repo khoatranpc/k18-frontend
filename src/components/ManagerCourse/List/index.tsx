@@ -9,12 +9,17 @@ import { generateRowDataForMergeRowSingleField } from '@/utils';
 import Table from '@/components/Table';
 import Popup from '../Popup';
 import styles from '@/styles/course/ManagerCourse.module.scss';
+import PopupDetailCourse from '../PopupDetailCourse';
 
 const initModal = {
     show: false,
     title: '',
     courseId: '',
     levelId: ''
+}
+const initModalDetail = {
+    show: false,
+    courseId: ''
 }
 const List = () => {
     const listCourse = useGetListCourse();
@@ -24,6 +29,14 @@ const List = () => {
         courseId: string;
         levelId: string;
     }>(initModal);
+    const [modalDetail, setModalDetail] = useState<
+        {
+            show: boolean;
+            courseId: string
+        }>({
+            show: false,
+            courseId: ''
+        })
     const columns: Columns = [
         {
             key: 'COURSE',
@@ -34,10 +47,18 @@ const List = () => {
                     rowSpan: data.rowSpan as number,
                 }
             },
-            render(value) {
+            render(value, record) {
                 return <div className={`${styles.cellCourseName}`}>
                     {value}
-                    <EyeOutlined className={`${styles.icon} iconEyeCourse`} />
+                    <EyeOutlined
+                        className={`${styles.icon} iconEyeCourse`}
+                        onClick={() => {
+                            setModalDetail({
+                                show: true,
+                                courseId: record._id as string
+                            });
+                        }}
+                    />
                 </div>
             }
         },
@@ -140,6 +161,15 @@ const List = () => {
                     setModal(initModal);
                 }}
             />}
+            {
+                modalDetail.show && <PopupDetailCourse
+                    show={modalDetail.show}
+                    onHide={() => {
+                        setModalDetail(initModalDetail);
+                    }}
+                    courseId={modalDetail.courseId}
+                />
+            }
         </div>
     )
 }
