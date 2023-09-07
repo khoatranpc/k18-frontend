@@ -4,10 +4,11 @@ import { useFormik } from 'formik';
 import { Button, Input } from 'antd';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
-import { useGetDetailCourse } from '@/utils/hooks';
+import { useGetDetailCourse, useUpdateCourse } from '@/utils/hooks';
 import ModalCustomize from '@/components/ModalCustomize';
 import PopupLevel from '../PopupLevel';
 import styles from '@/styles/course/ManagerCourse.module.scss';
+import { useHookMessage } from '@/utils/hooks/message';
 
 interface Props {
     courseId: string;
@@ -20,6 +21,9 @@ const validationSchema = yup.object({
 });
 const PopupDetailCourse = (props: Props) => {
     const detailCourse = useGetDetailCourse();
+    const updateCourse = useUpdateCourse();
+    const message = useHookMessage();
+
     const [isCreateLevel, setIsCreateLevel] = useState<{
         show: boolean;
         courseId: string
@@ -32,10 +36,14 @@ const PopupDetailCourse = (props: Props) => {
         initialValues: {
             courseName: '',
             syllabus: '',
-            _id: ''
+            _id: props.courseId
         }, validationSchema,
         onSubmit(values) {
-            console.log(values);
+            const body = {
+                courseName: values.courseName,
+                syllabus: values.syllabus,
+            }
+            updateCourse.query(body, values._id);
         }
     });
     useEffect(() => {
@@ -45,9 +53,19 @@ const PopupDetailCourse = (props: Props) => {
         if (detailCourse.data.response) {
             setFieldValue('courseName', (detailCourse.data.response.data as Obj)?.courseName);
             setFieldValue('syllabus', (detailCourse.data.response.data as Obj)?.syllabus);
-            setFieldValue('_id', (detailCourse.data.response.data as Obj)?._id);
         }
     }, [detailCourse.data.response]);
+    useEffect(() => {
+        if (updateCourse.data.response) {
+            message.open({
+                content: updateCourse.data.response.message as string,
+                type: updateCourse.data.success ? 'success' : 'error'
+            });
+            message.close(undefined, () => {
+                updateCourse.clear();
+            });
+        }
+    }, [updateCourse.data]);
     return (
         <ModalCustomize
             show={props.show}
@@ -76,7 +94,7 @@ const PopupDetailCourse = (props: Props) => {
                                 courseId: props.courseId
                             })
                         }}>Thêm khoá</Button>
-                        <Button htmlType="submit" size="small">Lưu</Button>
+                        <Button htmlType="submit" size="small" loading={updateCourse.data.isLoading}>Lưu</Button>
                     </div>
                 </Form>
                 {

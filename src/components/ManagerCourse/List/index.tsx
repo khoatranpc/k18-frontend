@@ -40,7 +40,7 @@ const List = () => {
     const columns: Columns = [
         {
             key: 'COURSE',
-            title: 'Khoá',
+            title: 'Khối',
             dataIndex: 'courseName',
             onCell(data) {
                 return {

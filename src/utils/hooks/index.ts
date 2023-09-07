@@ -33,6 +33,7 @@ import { queryDetailCandidate } from "@/store/reducers/recruitment/detailCandida
 import { clearCreateCandidate, queryCreateCandidate } from "@/store/reducers/recruitment/createCandidate.reducer";
 import { queryDetailCourse } from "@/store/reducers/course/detailCourse.reducer";
 import { queryCreateLevelCourse } from "@/store/reducers/course/createLevelCourse.reducer";
+import { clearUpdateCourse, queryUpdateCourse } from "@/store/reducers/course/updateCourse.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -698,6 +699,29 @@ const useCreateLevelCourse = () => {
         query,
     }
 }
+const useUpdateCourse = () => {
+    const data = useSelector((state: RootState) => (state.updateCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj, courseId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body,
+                    params: [courseId]
+                }
+            }
+        }
+        dispatch(queryUpdateCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearUpdateCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -730,5 +754,6 @@ export {
     useGetDetailCandidate,
     useCreateCandidate,
     useGetDetailCourse,
-    useCreateLevelCourse
+    useCreateLevelCourse,
+    useUpdateCourse
 }
