@@ -39,6 +39,14 @@
             color: var(--white);
         }
     }
+
+    tbody {
+        td.tdHover {
+            &:hover {
+                color: var(--base);
+            }
+        }
+    }
 }
 
 .containerPopupDetailCourse {

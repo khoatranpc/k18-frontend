@@ -8,8 +8,9 @@ import { useGetListCourse } from '@/utils/hooks';
 import { generateRowDataForMergeRowSingleField } from '@/utils';
 import Table from '@/components/Table';
 import Popup from '../Popup';
-import styles from '@/styles/course/ManagerCourse.module.scss';
 import PopupDetailCourse from '../PopupDetailCourse';
+import PopupLevel from '../PopupLevel';
+import styles from '@/styles/course/ManagerCourse.module.scss';
 
 const initModal = {
     show: false,
@@ -36,7 +37,18 @@ const List = () => {
         }>({
             show: false,
             courseId: ''
-        })
+        });
+    const [modalLevelCourse, setModalLevelCourse] = useState<{
+        show: boolean,
+        courseId: string;
+        levelId: string;
+        level: Obj
+    }>({
+        courseId: '',
+        levelId: '',
+        show: false,
+        level: {}
+    });
     const columns: Columns = [
         {
             key: 'COURSE',
@@ -52,7 +64,7 @@ const List = () => {
                     {value}
                     <EyeOutlined
                         className={`${styles.icon} iconEyeCourse`}
-                        onClick={() => {
+                        onClick={function (e) {
                             setModalDetail({
                                 show: true,
                                 courseId: record._id as string
@@ -60,7 +72,7 @@ const List = () => {
                         }}
                     />
                 </div>
-            }
+            },
         },
         {
             key: 'SYLLABUS',
@@ -92,16 +104,46 @@ const List = () => {
                     key: 'CODE',
                     title: 'Mã',
                     dataIndex: 'courseLevel',
+                    className: `${styles.tdHover}`,
                     render(value) {
                         return value.levelCode || <span className="error">Thiếu</span>
+                    },
+                    onCell(record: Obj) {
+                        return {
+                            onClick() {
+                                setModalLevelCourse({
+                                    show: true,
+                                    courseId: record._id as string,
+                                    levelId: record.courseLevel._id as string,
+                                    level: {
+                                        ...record.courseLevel as Obj
+                                    }
+                                })
+                            }
+                        }
                     }
                 },
                 {
                     key: 'NAME',
                     title: 'Tên',
+                    className: `${styles.tdHover}`,
                     dataIndex: 'courseLevel',
                     render(value) {
                         return value.levelName || <span className="error">Thiếu</span>
+                    },
+                    onCell(record: Obj) {
+                        return {
+                            onClick() {
+                                setModalLevelCourse({
+                                    show: true,
+                                    courseId: record._id as string,
+                                    levelId: record.courseLevel._id as string,
+                                    level: {
+                                        ...record.courseLevel as Obj
+                                    }
+                                })
+                            }
+                        }
                     }
                 },
                 {
@@ -168,6 +210,25 @@ const List = () => {
                         setModalDetail(initModalDetail);
                     }}
                     courseId={modalDetail.courseId}
+                />
+            }
+            {
+                modalLevelCourse.show && <PopupLevel
+                    show={modalLevelCourse.show}
+                    courseId={modalDetail.courseId}
+                    levelCode={modalLevelCourse.level.levelCode}
+                    levelName={modalLevelCourse.level.levelName}
+                    levelId={modalLevelCourse.level._id}
+                    levelNumber={modalLevelCourse.level.levelNumber}
+                    textBook={modalLevelCourse.level.textBook}
+                    onHide={() => {
+                        setModalLevelCourse({
+                            show: false,
+                            courseId: '',
+                            levelId: '',
+                            level: {}
+                        });
+                    }}
                 />
             }
         </div>

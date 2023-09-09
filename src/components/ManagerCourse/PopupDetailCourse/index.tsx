@@ -7,8 +7,8 @@ import { Obj } from '@/global/interface';
 import { useGetDetailCourse, useUpdateCourse } from '@/utils/hooks';
 import ModalCustomize from '@/components/ModalCustomize';
 import PopupLevel from '../PopupLevel';
-import styles from '@/styles/course/ManagerCourse.module.scss';
 import { useHookMessage } from '@/utils/hooks/message';
+import styles from '@/styles/course/ManagerCourse.module.scss';
 
 interface Props {
     courseId: string;
@@ -48,6 +48,12 @@ const PopupDetailCourse = (props: Props) => {
     });
     useEffect(() => {
         detailCourse.query(props.courseId);
+        return () => {
+            setIsCreateLevel({
+                courseId: '',
+                show: false
+            })
+        }
     }, []);
     useEffect(() => {
         if (detailCourse.data.response) {
