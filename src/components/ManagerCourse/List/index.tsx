@@ -49,6 +49,18 @@ const List = () => {
         show: false,
         level: {}
     });
+    const handleClickCellLevelCourse = (record: Obj) => {
+        if (record.courseLevel._id) {
+            setModalLevelCourse({
+                show: true,
+                courseId: record._id as string,
+                levelId: record.courseLevel._id as string,
+                level: {
+                    ...record.courseLevel as Obj
+                }
+            })
+        }
+    }
     const columns: Columns = [
         {
             key: 'COURSE',
@@ -111,14 +123,7 @@ const List = () => {
                     onCell(record: Obj) {
                         return {
                             onClick() {
-                                setModalLevelCourse({
-                                    show: true,
-                                    courseId: record._id as string,
-                                    levelId: record.courseLevel._id as string,
-                                    level: {
-                                        ...record.courseLevel as Obj
-                                    }
-                                })
+                                handleClickCellLevelCourse(record);
                             }
                         }
                     }
@@ -134,14 +139,7 @@ const List = () => {
                     onCell(record: Obj) {
                         return {
                             onClick() {
-                                setModalLevelCourse({
-                                    show: true,
-                                    courseId: record._id as string,
-                                    levelId: record.courseLevel._id as string,
-                                    level: {
-                                        ...record.courseLevel as Obj
-                                    }
-                                })
+                                handleClickCellLevelCourse(record);
                             }
                         }
                     }
