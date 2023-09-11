@@ -32,8 +32,9 @@ import { queryGetListDataRecruitment } from "@/store/reducers/recruitment/recrui
 import { queryDetailCandidate } from "@/store/reducers/recruitment/detailCandidate.reducer";
 import { clearCreateCandidate, queryCreateCandidate } from "@/store/reducers/recruitment/createCandidate.reducer";
 import { queryDetailCourse } from "@/store/reducers/course/detailCourse.reducer";
-import { queryCreateLevelCourse } from "@/store/reducers/course/createLevelCourse.reducer";
+import { clearCreateLevelCourse, queryCreateLevelCourse } from "@/store/reducers/course/createLevelCourse.reducer";
 import { clearUpdateCourse, queryUpdateCourse } from "@/store/reducers/course/updateCourse.reducer";
+import { clearUpdateLevelCourse, queryUpdateLevelCourse } from "@/store/reducers/course/updateLevelCourse.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -694,9 +695,13 @@ const useCreateLevelCourse = () => {
         }
         dispatch(queryCreateLevelCourse(payload));
     }
+    const clear = () => {
+        dispatch(clearCreateLevelCourse());
+    }
     return {
         data,
         query,
+        clear
     }
 }
 const useUpdateCourse = () => {
@@ -715,6 +720,29 @@ const useUpdateCourse = () => {
     }
     const clear = () => {
         dispatch(clearUpdateCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
+const useUpdateLevelCourse = () => {
+    const data = useSelector((state: RootState) => (state.updateLevelCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj, levelId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body,
+                    params: [levelId]
+                }
+            }
+        }
+        dispatch(queryUpdateLevelCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearUpdateLevelCourse());
     }
     return {
         data,
@@ -755,5 +783,6 @@ export {
     useCreateCandidate,
     useGetDetailCourse,
     useCreateLevelCourse,
-    useUpdateCourse
+    useUpdateCourse,
+    useUpdateLevelCourse
 }

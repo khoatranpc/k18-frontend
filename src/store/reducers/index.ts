@@ -9,6 +9,7 @@ import listClass from './class/listClass.reducer';
 import listCourse from './course/listCourse.reducer';
 import detailCourse from './course/detailCourse.reducer';
 import createLevelCourse from './course/createLevelCourse.reducer';
+import updateLevelCourse from './course/updateLevelCourse.reducer';
 import updateCourse from './course/updateCourse.reducer';
 import timeSchedule from './timeSchedule.reducer';
 import createClass from './class/createClass.reducer';
@@ -81,6 +82,7 @@ const rootReducer = {
     createCandidate,
     detailCourse,
     createLevelCourse,
-    updateCourse
+    updateCourse,
+    updateLevelCourse
 };
 export default rootReducer;

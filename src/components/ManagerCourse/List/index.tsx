@@ -149,7 +149,7 @@ const List = () => {
                     title: 'Giáo trình',
                     dataIndex: 'courseLevel',
                     render(value) {
-                        return value.textBook ? <a href={value.textBook || ''} target="_blank">Link</a> : <span className="error">Thiếu</span>
+                        return value.textbook ? <a href={value.textbook || ''} target="_blank" className="link">Link</a> : <span className="error">Thiếu</span>
                     }
                 },
             ]
@@ -218,7 +218,7 @@ const List = () => {
                     levelName={modalLevelCourse.level.levelName}
                     levelId={modalLevelCourse.level._id}
                     levelNumber={modalLevelCourse.level.levelNumber}
-                    textBook={modalLevelCourse.level.textBook}
+                    textbook={modalLevelCourse.level.textbook}
                     onHide={() => {
                         setModalLevelCourse({
                             show: false,
