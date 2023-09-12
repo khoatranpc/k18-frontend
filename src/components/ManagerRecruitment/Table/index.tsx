@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import { EyeOutlined } from '@ant-design/icons';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { ResultInterview, StatusProcessing } from '@/global/enum';
+import { ComponentPage, ResultInterview, StatusProcessing } from '@/global/enum';
 import { getColorByResultInterview, getStringResultInterview, getStringStatusProcess } from '@/global/init';
 import { formatDatetoString, getColorByCourseName, getColorByStatusProcess } from '@/utils';
 import { useGetDetailCandidate, useGetListDataRecruitment } from '@/utils/hooks';
@@ -9,9 +11,13 @@ import { ContextRecruitment } from '../context';
 import Table from '@/components/Table';
 import Popup from '../Popup';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
+import CombineRoute from '@/global/route';
 
 const TableRecruitment = () => {
     const { modal } = useContext(ContextRecruitment);
+    const router = useRouter();
+    const dispatch = useDispatch();
     const candidate = useGetDetailCandidate();
     const listDataRecruitment = useGetListDataRecruitment();
     const rowData: RowData[] = ((listDataRecruitment.data.response?.data as Obj)?.listData as Array<Obj>)?.map((item) => {
@@ -32,18 +38,18 @@ const TableRecruitment = () => {
             render(value, record) {
                 return <div className={styles.viewDetail}>
                     {formatDatetoString(value, 'dd/MM/yyyy')}
-                    <EyeOutlined
+                    {/* <EyeOutlined
                         className={styles.icon}
                         onClick={() => {
-                            modal.update({
-                                ...modal.config,
-                                isShow: true,
-                                isCreate: false,
-                                title: `Thông tin ứng viên: ${record.fullName as string}`
-                            });
-                            candidate.query([record._id as string]);
+                            // modal.update({
+                            //     ...modal.config,
+                            //     isShow: true,
+                            //     isCreate: false,
+                            //     title: `Thông tin ứng viên: ${record.fullName as string}`
+                            // });
+                            // candidate.query([record._id as string]);
                         }}
-                    />
+                    /> */}
                 </div>;
             }
         },
@@ -112,6 +118,19 @@ const TableRecruitment = () => {
             }
         },
     ];
+    const handleRedirectDetail = (candidateId: string) => {
+        const routerPayload: PayloadRoute = {
+            payload: {
+                component: ComponentPage.RECRUITMENT_DETAIL_CANDIDATE,
+                route: CombineRoute['TE']['RECRUITMENT_DETAIL_CANDIDATE'],
+                title: 'Chi tiết ứng viên',
+                hasBackPage: true,
+                replaceTitle: 'Chi tiết ứng viên',
+            }
+        };
+        router.push(`/te/manager/recruitment/${candidateId}`);
+        dispatch(initDataRoute(routerPayload));
+    }
     return (
         <div className={styles.tableView}>
             <Table
@@ -120,6 +139,9 @@ const TableRecruitment = () => {
                 rowData={rowData}
                 enablePaginationAjax
                 loading={listDataRecruitment.data.isLoading}
+                hanldeClickRow={(record) => {
+                    handleRedirectDetail(record._id as string);
+                }}
             />
             {
                 modal.config.isShow && <Popup

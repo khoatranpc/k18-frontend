@@ -1,0 +1,17 @@
+.inProgress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem 1.6rem;
+    gap: 0.8rem;
+    border-radius: 1.6rem;
+    background-color: var(--light-blue);
+    width: fit-content;
+    color: var(--deep-blue);
+    font-weight: 600;
+
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+}

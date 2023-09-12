@@ -67,6 +67,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.RECRUITMENT
         },
         {
+            title: 'Chi tiết ứng viên',
+            route: CombineRoute['TE']['RECRUITMENT_DETAIL_CANDIDATE'],
+            key: 'RECRUITMENT',
+            keyIcon: KEY_ICON.RCM,
+            showIcon: true,
+            indexRoute: CombineRoute['TE']['RECRUITMENT_DETAIL_CANDIDATE'],
+            component: ComponentPage.RECRUITMENT_DETAIL_CANDIDATE,
+            disable: true,
+        },
+        {
             title: <Collapse panels={panelsTeacher} className="collapse_tab" />,
             route: '/',
             key: 'TEACHERS_PN',

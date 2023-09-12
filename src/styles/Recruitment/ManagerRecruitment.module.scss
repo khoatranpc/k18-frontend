@@ -200,3 +200,71 @@
         height: 1rem;
     }
 }
+
+.detailCandidate {
+    padding: 1rem 3.2rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 1.8rem;
+
+    .baseInfo {
+        padding: 5rem;
+        flex: 0.25;
+        border: 1px solid var(--grey);
+        border-radius: 0.8rem;
+
+        .candidate {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .image {
+                img {
+                    width: 14rem;
+                    height: 14rem;
+                }
+            }
+        }
+
+        .info {
+            .item {
+                margin-bottom: 1.2rem;
+
+                &.flex {
+                    display: flex;
+                    gap: 0.8rem;
+                }
+
+                .label {
+                    font-weight: 600;
+                }
+
+                .contact {
+                    display: flex;
+                    align-items: center;
+                    gap: 1.2rem;
+                }
+
+                svg {
+                    cursor: pointer;
+
+                    &:hover {
+                        path {
+                            stroke: red;
+                        }
+                    }
+                }
+            }
+
+            .timeApplied {
+                font-weight: normal;
+            }
+        }
+    }
+
+    .progressInfo {
+        flex: 1;
+    }
+}
