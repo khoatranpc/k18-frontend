@@ -206,7 +206,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    gap: 1.8rem;
+    gap: 3.2rem;
 
     .baseInfo {
         padding: 5rem;
@@ -266,5 +266,178 @@
 
     .progressInfo {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        .headerFunction {
+            display: flex;
+            justify-content: space-between;
+
+            .tab {
+                display: flex;
+                width: fit-content;
+                background-color: var(--cool-grey);
+                padding: 0.4rem;
+                border-top-left-radius: 0.8rem;
+                border-top-right-radius: 0.8rem;
+
+                button {
+                    border: 0;
+                    padding: 0.4rem;
+                    border-radius: 0.4rem;
+                    display: flex;
+                    gap: 0.8rem;
+                    align-items: center;
+                    color: var(--placeholder);
+                    background-color: var(--cool-grey);
+
+                    &.active {
+                        background-color: var(--white);
+                        color: var(--black);
+                    }
+                }
+            }
+
+            .btnFunction {
+
+                button {
+                    border-radius: 0.8rem;
+                    padding: 0.8rem 1rem;
+                    background-color: var(--violet);
+                    border: 1px solid var(--violet);
+                    color: var(--white);
+
+                    &:first-child {
+                        margin-right: 0.8rem;
+                        background-color: var(--white);
+                        border: 1px solid var(--color-btn-calendar);
+                        color: var(--color-btn-calendar);
+                    }
+                }
+            }
+        }
+
+        .mainContent {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            border: 1px solid var(--grey);
+            border-radius: 0.8rem;
+            padding: 3.2rem;
+
+            .round {
+                cursor: pointer;
+            }
+
+            .progress {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 4rem;
+
+                .content {
+                    flex: 1;
+                    display: flex;
+
+                    .roundCv {
+                        position: relative;
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+
+                        .infoCv {
+                            border-bottom: 1px solid var(--black);
+                            padding-bottom: 4rem;
+                            margin-bottom: 4rem;
+
+                            h2 {
+                                font-weight: 600;
+                                margin-bottom: 1.8rem;
+                            }
+
+                            .linkCv {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.8rem;
+                                cursor: pointer;
+                                font-size: 1.8rem;
+                                font-weight: 600;
+                                color: var(--deep-blue);
+
+                                path {
+                                    stroke: var(--deep-blue);
+                                }
+                            }
+                        }
+
+                        .handleStep {
+                            display: flex;
+                            gap: 0.8rem;
+                            justify-content: flex-end;
+
+                            button {
+                                color: var(--white);
+                                border: 0;
+                                border-radius: 0.8rem;
+                                padding: 1rem 2rem;
+                                background-color: var(--success);
+
+                                &:first-child {
+                                    background-color: var(--light-red);
+                                }
+                            }
+                        }
+
+                        .comments {
+                            padding-right: 0.4rem;
+                            width: 100%;
+                            position: relative;
+                            max-height: 40vh;
+                            flex: 1;
+                            overflow: scroll;
+                            display: flex;
+                            flex-direction: column;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.comment {
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+
+    .author {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        width: fit-content;
+
+        span.user {
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+    }
+
+    .commentContent {
+        border-radius: 0.8rem;
+        margin-left: auto;
+        margin-right: 0.8rem;
+        max-width: 70%;
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        flex-direction: column;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+
+    .action {
+        cursor: pointer;
     }
 }

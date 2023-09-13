@@ -16,6 +16,7 @@
     --pink: #EC9E9E;
     --placeholder: #9EA8B3;
     --grey: #A6A6A6;
+    --cool-grey: #F0F3F5;
     --light-blue: #DAEBFF;
     --deep-blue: #2064F0;
     --white-bg: #F0F0F0;
@@ -43,6 +44,10 @@
     --status-process-processing: #F1C233;
     --status-process-no-process: #E06666;
     --status-process-done: #69A84F;
+    --violet: #803AED;
+    --success: #0FAF55;
+    --light-success: #B5EBCD;
+    --light-red: #E25A5A;
 }
 
 html {
@@ -909,5 +914,62 @@ div.ant-message {
                 color: var(--black);
             }
         }
+    }
+}
+
+.stepComponent {
+
+    .ant-steps-item-tail {
+        top: -8px !important;
+        padding-left: 1.2rem !important;
+        padding-right: 1.2rem !important;
+    }
+
+    .ant-steps-item-icon {
+        background-color: var(--white) !important;
+        border-color: var(--success) !important;
+
+        span {
+            color: var(--success) !important;
+        }
+
+        &:has(.anticon-check.ant-steps-finish-icon) {
+            background-color: var(--success) !important;
+        }
+
+        .ant-steps-icon {
+
+            svg {
+                fill: var(--white);
+            }
+        }
+    }
+
+    .ant-steps-item {
+
+        &.ant-steps-item-finish {
+            .ant-steps-item-tail {
+                &::after {
+                    background-color: var(--success) !important;
+                }
+            }
+        }
+
+        .ant-steps-item-tail {
+            &::after {
+                height: 2px;
+                background-color: var(--light-success) !important;
+            }
+        }
+    }
+
+    .ant-steps-item-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ant-steps-item-content {
+        margin: 0 !important;
     }
 }
