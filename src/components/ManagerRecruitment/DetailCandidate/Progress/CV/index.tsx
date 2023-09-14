@@ -1,6 +1,6 @@
 import React from 'react';
 import IconArrowView from '@/icons/IconArrowView';
-import Comment from './Comment';
+import Comment from '../Comment';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 interface Props {

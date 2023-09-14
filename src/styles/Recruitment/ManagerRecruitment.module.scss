@@ -341,6 +341,40 @@
                     flex: 1;
                     display: flex;
 
+                    h2 {
+                        font-weight: 600;
+                        margin-bottom: 1.8rem;
+                    }
+
+                    .handleStep {
+                        display: flex;
+                        gap: 0.8rem;
+                        justify-content: flex-end;
+
+                        button {
+                            color: var(--white);
+                            border: 0;
+                            border-radius: 0.8rem;
+                            padding: 1rem 2rem;
+                            background-color: var(--success);
+
+                            &:first-child {
+                                background-color: var(--light-red);
+                            }
+                        }
+                    }
+
+                    .comments {
+                        padding-right: 0.4rem;
+                        width: 100%;
+                        position: relative;
+                        max-height: 40vh;
+                        flex: 1;
+                        overflow: scroll;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
                     .roundCv {
                         position: relative;
                         flex: 1;
@@ -351,11 +385,6 @@
                             border-bottom: 1px solid var(--black);
                             padding-bottom: 4rem;
                             margin-bottom: 4rem;
-
-                            h2 {
-                                font-weight: 600;
-                                margin-bottom: 1.8rem;
-                            }
 
                             .linkCv {
                                 display: flex;
@@ -371,34 +400,26 @@
                                 }
                             }
                         }
+                    }
 
-                        .handleStep {
-                            display: flex;
-                            gap: 0.8rem;
-                            justify-content: flex-end;
+                    .roundInterview {
+                        width: 100%;
 
-                            button {
-                                color: var(--white);
-                                border: 0;
-                                border-radius: 0.8rem;
-                                padding: 1rem 2rem;
-                                background-color: var(--success);
-
-                                &:first-child {
-                                    background-color: var(--light-red);
-                                }
-                            }
+                        .handleInterview {
+                            border-bottom: 1px solid var(--black);
+                            padding-bottom: 4rem;
+                            margin-bottom: 4rem;
                         }
 
-                        .comments {
-                            padding-right: 0.4rem;
+                        .function {
                             width: 100%;
-                            position: relative;
-                            max-height: 40vh;
-                            flex: 1;
-                            overflow: scroll;
                             display: flex;
-                            flex-direction: column;
+                            justify-content: space-between;
+
+                            .handleSchedule {
+                                cursor: pointer;
+                                color: var(--deep-blue);
+                            }
                         }
                     }
                 }

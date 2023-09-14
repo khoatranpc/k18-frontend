@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Step from '@/components/Step';
-import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import CV from './CV';
+import Interview from './Interview';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 enum RoundProgress {
     CV = 'CV',
@@ -17,7 +18,7 @@ const Progress = () => {
         CV: <CV />,
         CLAUTID: <>Dự thính</>,
         CLASSIFY: <>Phân loại</>,
-        INTERVIEW: <>Phỏng vấn</>,
+        INTERVIEW: <Interview />,
         TEST: <>Test dạy thử</>
     };
     const handleClickStep = (step: RoundProgress) => {
