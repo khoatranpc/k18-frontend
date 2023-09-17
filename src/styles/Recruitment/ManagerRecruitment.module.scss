@@ -557,6 +557,10 @@
             flex-direction: column;
             gap: 0.8rem;
 
+            .selectExp {
+                min-width: 6rem;
+            }
+
             .mb_24 {
                 height: 5rem;
                 margin-bottom: 0.8rem;
@@ -574,6 +578,23 @@
 
                     img {
                         margin-left: auto;
+                    }
+                }
+            }
+
+            .btn {
+                margin-top: 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.8rem;
+
+                button {
+                    border-color: var(--placeholder);
+                    color: var(--color-btn-calendar);
+
+                    &:first-child {
+                        color: var(--base);
+                        border-color: var(--base);
                     }
                 }
             }

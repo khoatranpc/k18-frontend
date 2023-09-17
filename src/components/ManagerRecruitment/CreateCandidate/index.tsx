@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
-import { DatePicker, Input, MenuProps, Radio } from 'antd';
+import { Button, DatePicker, Input, MenuProps, Radio } from 'antd';
+import { getStringObjectTeach, mapRoleToString } from '@/global/init';
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
 import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, StatusProcessing } from '@/global/enum';
@@ -9,7 +10,6 @@ import { useGetListCourse } from '@/utils/hooks';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { getStringObjectTeach, mapRoleToString } from '@/global/init';
 
 const listObjectTeach: MenuProps['items'] = [
     {
@@ -59,6 +59,7 @@ const CreateCandidate = () => {
             expTimeTech: 0,
             scoreSoftsSkill: 0,
             technique: '',
+            jobPosition: '',
             expTimeTeach: 0,
             statusProcess: StatusProcessing.NOPROCESS,
             result: ResultInterview.PENDING,
@@ -258,6 +259,10 @@ const CreateCandidate = () => {
                         <Input value={values.technique} size="middle" name="technique" onChange={handleChange} />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
+                        <Form.Label className="bold">Vị trí công việc <span className="field_required">*</span></Form.Label>
+                        <Input value={values.jobPosition} size="middle" name="jobPosition" onChange={handleChange} />
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Số năm kinh nghiệm <span className="field_required">*</span></Form.Label>
                         <SelectInputNumber
                             value={Number(values.expTimeTech || 0)}
@@ -271,6 +276,14 @@ const CreateCandidate = () => {
                                 setFieldValue('expTimeTech', number);
                             }}
                         />
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label className="bold">Ghi chú</Form.Label>
+                        <Input.TextArea value={values.note} size="middle" name="note" onChange={handleChange} />
+                        <div className={styles.btn}>
+                            <Button size="small" htmlType="submit">Tạo</Button>
+                            <Button size="small">Cancel</Button>
+                        </div>
                     </Form.Group>
                 </div>
             </Form>
