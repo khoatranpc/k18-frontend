@@ -1,20 +1,21 @@
 import React from 'react';
 import { formatDatetoString } from '@/utils';
 import CalendarAdd from '@/icons/CalendarAdd';
-import Comment from '../Comment';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import Comment from '../Comment';
 
-const Interview = () => {
+const Test = () => {
     return (
-        <div className={styles.roundInterview}>
-            <div className={styles.handleInterview}>
-                <h2>Vòng phỏng vấn</h2>
-                <div className={styles.infoInterview}>
+        <div className={styles.roundTest}>
+            <div className={styles.handleTest}>
+                <h2>Vòng kiểm tra dạy thử</h2>
+                <div className={styles.infoRoundTest}>
                     <p>Link meet: <a href="#" className="link" target="_blank">httsp://meet.google.com/buo-kk-odas</a></p>
                     <p>Thời gian: {formatDatetoString(new Date(), 'dd/MM/yyyy, HH:mm-a')}</p>
+                    <p>Tài liệu: <a href="#" className="link" target="_blank">https://notion.syllabus.com</a></p>
                 </div>
                 <div className={styles.function}>
-                    <span className={styles.handleSchedule}>
+                    <span className={`${styles.handleCalendar} link`}>
                         <CalendarAdd /> Tạo lịch
                     </span>
                     <div className={styles.handleStep}>
@@ -34,11 +35,9 @@ const Interview = () => {
                 <Comment />
                 <Comment />
                 <Comment />
-                <Comment />
-                <Comment />
             </div>
         </div>
     )
 }
 
-export default Interview;
+export default Test;

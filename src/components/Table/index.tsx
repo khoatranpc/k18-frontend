@@ -10,7 +10,7 @@ import Pagination from '../Pagination';
 import styles from '@/styles/Table.module.scss';
 
 interface Props {
-    width?: number;
+    width?: number | string;
     height?: number;
     className?: string;
     columns: Columns;
@@ -75,10 +75,10 @@ const Table = (props: Props) => {
         <div className={`tableCustomize ${styles.tableCustomizeAnt} ${props.className ? props.className : ''}`}>
             <TableComponent
                 style={{
-                    width: '100%'
+                    width: props.width ?? '100%'
                 }}
                 scroll={{
-                    x: props.hasFixedColumn ? '100%' : '',
+                    x: props.hasFixedColumn ? (props.width ?? '100%') : '',
                     y: props.heightToScroll
                 }}
                 size={props.size}

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Step from '@/components/Step';
 import CV from './CV';
 import Interview from './Interview';
+import Clautid from './Clautid';
+import Test from './Test';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 enum RoundProgress {
@@ -16,14 +18,14 @@ const Progress = () => {
     const [step, setStep] = useState<RoundProgress>(RoundProgress.CV);
     const ContentRoundProgess: Record<RoundProgress, React.ReactElement> = {
         CV: <CV />,
-        CLAUTID: <>Dự thính</>,
+        CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
         INTERVIEW: <Interview />,
-        TEST: <>Test dạy thử</>
+        TEST: <Test />
     };
     const handleClickStep = (step: RoundProgress) => {
         setStep(step);
-    }
+    };
     return (
         <div className={styles.progress}>
             <Step

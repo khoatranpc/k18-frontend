@@ -413,6 +413,7 @@
 
                         .function {
                             width: 100%;
+                            align-items: center;
                             display: flex;
                             justify-content: space-between;
 
@@ -420,6 +421,84 @@
                                 cursor: pointer;
                                 color: var(--deep-blue);
                             }
+                        }
+                    }
+
+                    .roundClautid {
+                        width: 100%;
+
+                        .table {
+                            position: relative;
+
+                            .iconExpand {
+                                cursor: pointer;
+                                width: 2rem;
+                                height: 2rem;
+                                position: absolute;
+                                z-index: 10;
+                                right: 0;
+                                top: -2rem;
+                            }
+                        }
+
+                        .handleClautid {
+                            border-bottom: 1px solid var(--black);
+                            padding-bottom: 4rem;
+                            margin-bottom: 4rem;
+                        }
+
+                        .classClautid {
+                            .classRegister {
+                                .class {
+                                    span {
+                                        display: flex;
+                                        gap: 0.5rem;
+                                    }
+
+                                    .iconCheck {
+                                        width: 1.5rem;
+                                        height: 1.5rem;
+
+                                        &.checked {
+                                            path {
+                                                stroke: var(--success);
+                                            }
+                                        }
+
+                                        &.unChecked {
+                                            path {
+                                                stroke: var(--base);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .function {
+                            margin-top: 1rem;
+                            display: flex;
+                            justify-content: space-between;
+
+                            .handleSchedule {
+                                color: var(--deep-blue);
+                            }
+                        }
+                    }
+
+                    .roundTest {
+                        width: 100%;
+
+                        .function {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        }
+
+                        .handleTest {
+                            border-bottom: 1px solid var(--black);
+                            padding-bottom: 4rem;
+                            margin-bottom: 4rem;
                         }
                     }
                 }
