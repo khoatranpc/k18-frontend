@@ -4,6 +4,7 @@ const CombineRoute = {
         OVERVIEW: '/te/over-view',
         RECRUITMENT: '/te/manager/recruitment',
         RECRUITMENT_DETAIL_CANDIDATE: '/te/manager/recruitment/[candidateId]',
+        RECRUITMENT_CREATE_CANDIDATE: '/te/manager/recruitment/create-candidate',
         MANAGER: {
             CLASS: '/te/manager/class',
             DETAILCLASS: '/te/manager/class/detail/[classId]',

@@ -27,7 +27,7 @@ interface Props {
     onClickItem?: (e: ClickItem, keyIndex?: string) => void;
 }
 const Dropdown = (props: Props) => {
-    const mapListSelect: any = props.listSelect!.map((item) => {
+    const mapListSelect: any = props.listSelect?.map((item) => {
         return {
             ...item,
             className: props.activeKey === item!.key ? props.activeClass : '',
@@ -40,7 +40,7 @@ const Dropdown = (props: Props) => {
         <div className={props.className}>
             <DropdownComponent
                 disabled={props.disabled}
-                menu={{ items: mapListSelect }}
+                menu={mapListSelect ? { items: mapListSelect } : undefined}
                 open={props.open}
                 onOpenChange={(open) => {
                     props.onOpenChange?.(open);

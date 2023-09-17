@@ -71,6 +71,7 @@ export enum ComponentPage {
     DETAILCLASS = 'DETAILCLASS',
     RECRUITMENT = 'RECRUITMENT',
     RECRUITMENT_DETAIL_CANDIDATE = 'RECRUITMENT_DETAIL_CANDIDATE',
+    RECRUITMENT_CREATE_CANDIDATE = 'RECRUITMENT_CREATE_CANDIDATE',
     TEACHERS = 'TEACHERS',
     MANAGER_CLASS = 'MANAGER_CLASS',
     MANAGER_COURSE = 'MANAGER_COURSE',
@@ -138,7 +139,9 @@ export enum LevelTechnique {
     LEADER = 'LEADER'
 }
 export enum Education {
+    // cử nhân
     BACHELOR = 'BACHELOR',
+    // kỹ sư
     ENGINEER = 'ENGINEER',
     // thạc sĩ
     MASTER = 'MASTER',

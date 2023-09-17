@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { Button, Input } from 'antd';
+import { useRouter } from 'next/router';
 import { SearchOutlined } from '@ant-design/icons';
-import { KEY_ICON } from '@/global/enum';
+import { ComponentPage, KEY_ICON } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
-import { ContextRecruitment } from '../context';
+import CombineRoute from '@/global/route';
+import { useDispatchDataRouter } from '@/utils/hooks';
 import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
@@ -85,7 +87,8 @@ const listFieldFilter = [
 ]
 
 const FilterBar = (props: Props) => {
-    const { modal } = useContext(ContextRecruitment);
+    const router = useRouter();
+    const dispatchRouter = useDispatchDataRouter();
     return (
         <div className={styles.filterBar}>
             <div className={styles.listFilter}>
@@ -119,14 +122,12 @@ const FilterBar = (props: Props) => {
             <div className={styles.fnc}>
                 <div className={styles.button}>
                     <Button>Duyệt CSV</Button>
-                    <Button onClick={(() => {
-                        modal.update({
-                            ...modal.config,
-                            isCreate: true,
-                            isShow: true,
-                            title: 'Thêm mới ứng viên',
-                        })
-                    })}>Thêm mới</Button>
+                    <Button onClick={() => {
+                        dispatchRouter(CombineRoute['TE']['RECRUITMENT_CREATE_CANDIDATE'], "Tạo ứng viên", "Tạo ứng viên", ComponentPage.RECRUITMENT_CREATE_CANDIDATE, true);
+                        router.push(CombineRoute['TE']['RECRUITMENT_CREATE_CANDIDATE']);
+                    }}>
+                        Tạo ứng viên
+                    </Button>
                 </div>
                 <div className={styles.rightFnc}>
                     <Input placeholder="Tìm kiếm" prefix={<SearchOutlined />} />

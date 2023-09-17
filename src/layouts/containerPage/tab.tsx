@@ -67,6 +67,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.RECRUITMENT
         },
         {
+            title: 'Thêm mới ứng viên',
+            route: CombineRoute['TE']['RECRUITMENT_CREATE_CANDIDATE'],
+            key: 'RECRUITMENT',
+            keyIcon: KEY_ICON.RCM,
+            showIcon: true,
+            indexRoute: CombineRoute['TE']['RECRUITMENT_CREATE_CANDIDATE'],
+            component: ComponentPage.RECRUITMENT,
+            disable: true,
+        },
+        {
             title: 'Chi tiết ứng viên',
             route: CombineRoute['TE']['RECRUITMENT_DETAIL_CANDIDATE'],
             key: 'RECRUITMENT',
