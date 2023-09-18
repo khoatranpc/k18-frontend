@@ -214,6 +214,15 @@
         border: 1px solid var(--grey);
         border-radius: 0.8rem;
 
+        .containerBaseInfo {
+            position: relative;
+
+            .loading {
+                position: absolute;
+                right: 0;
+            }
+        }
+
         .candidate {
             display: flex;
             justify-content: center;

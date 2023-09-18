@@ -5,7 +5,7 @@ import styles from '@/styles/Progressing.module.scss';
 interface Props {
     className?: string;
 }
-const InProgressing = (props: Props) => {
+const Processing = (props: Props) => {
     return (
         <div className={styles.inProgress}>
             <Progressing className={`${styles.progressing} ${props.className}`} />
@@ -14,4 +14,4 @@ const InProgressing = (props: Props) => {
     )
 }
 
-export default InProgressing;
+export default Processing;

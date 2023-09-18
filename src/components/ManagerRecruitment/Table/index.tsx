@@ -1,24 +1,30 @@
 import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { EyeOutlined } from '@ant-design/icons';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { ComponentPage, ResultInterview, StatusProcessing } from '@/global/enum';
 import { getColorByResultInterview, getStringResultInterview, getStringStatusProcess } from '@/global/init';
 import { formatDatetoString, getColorByCourseName, getColorByStatusProcess } from '@/utils';
-import { useGetDetailCandidate, useGetListDataRecruitment } from '@/utils/hooks';
+import { useGetListDataRecruitment } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { ContextRecruitment } from '../context';
 import Table from '@/components/Table';
 import Popup from '../Popup';
 import CombineRoute from '@/global/route';
+import NoProgress from '@/components/NoPress';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import Processing from '@/components/Processing';
+import ProcessDone from '@/components/ProcessDone';
 
+export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
+    DONE: <ProcessDone />,
+    NOPROCESS: <NoProgress />,
+    PROCESSING: <Processing />
+}
 const TableRecruitment = () => {
     const { modal } = useContext(ContextRecruitment);
     const router = useRouter();
     const dispatch = useDispatch();
-    const candidate = useGetDetailCandidate();
     const listDataRecruitment = useGetListDataRecruitment();
     const rowData: RowData[] = ((listDataRecruitment.data.response?.data as Obj)?.listData as Array<Obj>)?.map((item) => {
         return {
@@ -39,12 +45,16 @@ const TableRecruitment = () => {
                 return <div className={styles.viewDetail}>
                     {formatDatetoString(value, 'dd/MM/yyyy')}
                 </div>;
-            }
+            },
+            fixed: 'left',
+            width: 150
         },
         {
             key: 'FULLNAME',
             title: 'Họ và tên',
-            dataIndex: 'fullName'
+            dataIndex: 'fullName',
+            fixed: 'left',
+            width: 170
         },
         {
             key: 'COURSE_REGISTER',
@@ -54,7 +64,9 @@ const TableRecruitment = () => {
                 return <div className={styles.subject} style={{ backgroundColor: getColorByCourseName[value.courseName] }}>
                     {value.courseName}
                 </div> || ''
-            }
+            },
+            fixed: 'left',
+            width: 100
         },
         {
             key: 'CONTACT',
@@ -65,25 +77,28 @@ const TableRecruitment = () => {
                     {record.email && <p>{record.email}</p>}
                     {record.linkFacebook && <p>{record.linkFacebook}</p>}
                 </div>
-            }
+            },
+            width: 300
         },
         {
             key: 'PROGRESS',
             title: 'Trạng thái',
             dataIndex: 'statusProcess',
             render(value) {
-                return <div className={styles.statusProcess} style={{ backgroundColor: getColorByStatusProcess[value as StatusProcessing] }}>
-                    {getStringStatusProcess[value as StatusProcessing]}
+                return <div className={styles.statusProcess}>
+                    {getStatusProcess[value as StatusProcessing]}
                 </div> || ''
             },
+            width: 150
         },
         {
             key: 'PROCESSING',
-            title: 'Vòng xử lý',
+            title: 'Vòng',
             dataIndex: 'round',
             render(value) {
-                return <div>Vòng Test</div>
+                return <div>Test</div>
             },
+            width: 70
         },
         {
             key: 'RESULT',
@@ -95,7 +110,8 @@ const TableRecruitment = () => {
                 }} >
                     {getStringResultInterview[value as ResultInterview]}
                 </div >
-            }
+            },
+            width: 120
         },
         {
             key: 'STATUS_MAIL',
@@ -103,7 +119,8 @@ const TableRecruitment = () => {
             dataIndex: 'sendMail',
             render(value, record) {
                 return 'Đã gửi'
-            }
+            },
+            width: 80
         },
         {
             key: 'LASTUPDATE',
@@ -111,7 +128,8 @@ const TableRecruitment = () => {
             dataIndex: 'updatedAt',
             render(value) {
                 return formatDatetoString(value, 'dd/MM/yyyy');
-            }
+            },
+            width: 120
         },
         {
             key: 'CV',
@@ -119,7 +137,9 @@ const TableRecruitment = () => {
             dataIndex: 'linkCv',
             render(value) {
                 return <a target="_blank" style={{ color: 'blue' }} href={value}>Link</a>
-            }
+            },
+            fixed: 'right',
+            width: 50
         },
     ];
     const handleRedirectDetail = (candidateId: string) => {
@@ -138,6 +158,7 @@ const TableRecruitment = () => {
     return (
         <div className={styles.tableView}>
             <Table
+                hasFixedColumn
                 disableDefaultPagination
                 columns={columns}
                 rowData={rowData}
