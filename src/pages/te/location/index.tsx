@@ -1,20 +1,7 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import Loading from '@/components/loading';
-import ContainerPage from '@/layouts/containerPage/containerPage';
 import { ROLE_USER } from '@/global/enum';
+import CreatePage from '@/utils/hocs/ProviderPage';
+import ContainerPage from '@/layouts/containerPage/containerPage';
 
-const DynamicComponent = dynamic(() => import("@/components/Location"), {
-    ssr: false,
-    loading: () => <Loading />
-});
-
-const Location = () => {
-    return (
-        <DynamicComponent />
-    )
-}
+const Location = CreatePage('Location', ROLE_USER.TE, ContainerPage);
 
 export default Location;
-Location.Layout = ContainerPage;
-Location.Role = ROLE_USER.TE;

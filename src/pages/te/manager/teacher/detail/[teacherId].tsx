@@ -1,19 +1,6 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
 import { ROLE_USER } from '@/global/enum';
 import ContainerPage from '@/layouts/containerPage/containerPage';
-import Loading from '@/components/loading';
+import CreatePage from '@/utils/hocs/ProviderPage';
 
-const DynamicComponent = dynamic(() => import('@/components/ManagerTeacher/ListTeacher/DetailTeacher'), {
-    ssr: false,
-    loading: () => <Loading />
-});
-const DetailTeacher = () => {
-    return (
-        <DynamicComponent />
-    )
-}
-
+const DetailTeacher = CreatePage('ManagerTeacher/ListTeacher/DetailTeacher', ROLE_USER.TE, ContainerPage);
 export default DetailTeacher;
-DetailTeacher.Layout = ContainerPage;
-DetailTeacher.Role = ROLE_USER.TE;

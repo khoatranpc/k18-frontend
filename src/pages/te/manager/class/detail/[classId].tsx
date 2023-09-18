@@ -1,17 +1,6 @@
-import React from 'react';
+import { ROLE_USER } from '@/global/enum';
+import CreatePage from '@/utils/hocs/ProviderPage';
 import ContainerPage from '@/layouts/containerPage/containerPage';
-import dynamic from 'next/dynamic';
-import Loading from '@/components/loading';
 
-const DynamicComponent = dynamic(() => import('@/components/ManagerClass/Detail'), {
-  ssr: false,
-  loading: () => <Loading />
-});
-const DetailClassPage = () => {
-  return (
-    <DynamicComponent />
-  )
-}
-
+const DetailClassPage = CreatePage('ManagerClass/Detail', ROLE_USER.TE, ContainerPage);
 export default DetailClassPage;
-DetailClassPage.Layout = ContainerPage;
