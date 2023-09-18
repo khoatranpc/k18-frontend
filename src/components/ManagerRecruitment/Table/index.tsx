@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { ComponentPage, ResultInterview, StatusProcessing } from '@/global/enum';
-import { getColorByResultInterview, getStringResultInterview, getStringStatusProcess } from '@/global/init';
-import { formatDatetoString, getColorByCourseName, getColorByStatusProcess } from '@/utils';
+import { getColorByResultInterview, getStringResultInterview  } from '@/global/init';
+import { formatDatetoString, getColorByCourseName } from '@/utils';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { ContextRecruitment } from '../context';
@@ -12,9 +12,9 @@ import Table from '@/components/Table';
 import Popup from '../Popup';
 import CombineRoute from '@/global/route';
 import NoProgress from '@/components/NoPress';
-import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import Processing from '@/components/Processing';
 import ProcessDone from '@/components/ProcessDone';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
     DONE: <ProcessDone />,
@@ -75,7 +75,6 @@ const TableRecruitment = () => {
                 return <div>
                     {record.phoneNumber && <p>{record.phoneNumber}</p>}
                     {record.email && <p>{record.email}</p>}
-                    {record.linkFacebook && <p>{record.linkFacebook}</p>}
                 </div>
             },
             width: 300

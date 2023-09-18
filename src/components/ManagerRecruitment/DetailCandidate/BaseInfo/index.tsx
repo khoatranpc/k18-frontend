@@ -9,14 +9,10 @@ import InProgressing from '@/components/Processing';
 import Loading from '@/components/loading';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
-interface Props {
-    load?: boolean;
-}
-const BaseInfo = (props: Props) => {
+const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
     return (
         <div className={styles.containerBaseInfo}>
-            {props.load && <Loading className={styles.loading} />}
             <div className={styles.candidate}>
                 <span className={styles.image}>
                     {MapIconKey[KEY_ICON.TEACHER_MALE]}

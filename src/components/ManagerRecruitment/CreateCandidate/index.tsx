@@ -344,12 +344,12 @@ const CreateCandidate = () => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Ghi chú</Form.Label>
-                        <Input.TextArea value={values.note} size="middle" name="note" onChange={handleChange} onBlur={handleBlur} />
-                        <div className={styles.btn}>
-                            <Button size="small" htmlType="submit" loading={createCandidate.data.isLoading}>Tạo</Button>
-                            <Button size="small" disabled={createCandidate.data.isLoading}>Cancel</Button>
-                        </div>
+                        <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size="middle" name="note" onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
+                    <div className={styles.btn}>
+                        <Button size="small" htmlType="submit" loading={createCandidate.data.isLoading}>Tạo</Button>
+                        <Button size="small" disabled={createCandidate.data.isLoading}>Cancel</Button>
+                    </div>
                 </div>
             </Form>
         </div>
