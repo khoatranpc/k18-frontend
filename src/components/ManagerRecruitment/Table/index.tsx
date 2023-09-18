@@ -7,12 +7,12 @@ import { ComponentPage, ResultInterview, StatusProcessing } from '@/global/enum'
 import { getColorByResultInterview, getStringResultInterview, getStringStatusProcess } from '@/global/init';
 import { formatDatetoString, getColorByCourseName, getColorByStatusProcess } from '@/utils';
 import { useGetDetailCandidate, useGetListDataRecruitment } from '@/utils/hooks';
+import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { ContextRecruitment } from '../context';
 import Table from '@/components/Table';
 import Popup from '../Popup';
-import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import CombineRoute from '@/global/route';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const TableRecruitment = () => {
     const { modal } = useContext(ContextRecruitment);
@@ -38,18 +38,6 @@ const TableRecruitment = () => {
             render(value, record) {
                 return <div className={styles.viewDetail}>
                     {formatDatetoString(value, 'dd/MM/yyyy')}
-                    {/* <EyeOutlined
-                        className={styles.icon}
-                        onClick={() => {
-                            // modal.update({
-                            //     ...modal.config,
-                            //     isShow: true,
-                            //     isCreate: false,
-                            //     title: `Thông tin ứng viên: ${record.fullName as string}`
-                            // });
-                            // candidate.query([record._id as string]);
-                        }}
-                    /> */}
                 </div>;
             }
         },
@@ -90,6 +78,14 @@ const TableRecruitment = () => {
             },
         },
         {
+            key: 'PROCESSING',
+            title: 'Vòng xử lý',
+            dataIndex: 'round',
+            render(value) {
+                return <div>Vòng Test</div>
+            },
+        },
+        {
             key: 'RESULT',
             title: 'Kết quả',
             dataIndex: 'result',
@@ -99,6 +95,14 @@ const TableRecruitment = () => {
                 }} >
                     {getStringResultInterview[value as ResultInterview]}
                 </div >
+            }
+        },
+        {
+            key: 'STATUS_MAIL',
+            title: 'TT Mail',
+            dataIndex: 'sendMail',
+            render(value, record) {
+                return 'Đã gửi'
             }
         },
         {

@@ -6,7 +6,7 @@ import Loading from '@/components/loading';
 const CreatePage = (componentDirectString: string, role: ROLE_USER, layout: (props: any) => JSX.Element) => {
     const DynamicComponent = dynamic(() => import(`@/components/${componentDirectString}`), {
         ssr: false,
-        loading: () => <Loading />
+        loading: () => <Loading isCenterScreen/>
     })
     const Page = () => {
         return (
