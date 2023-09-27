@@ -8,7 +8,7 @@ import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reduc
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
 import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
-import { ComponentPage, ROLE_TEACHER } from "@/global/enum";
+import { ComponentPage, ROLE_TEACHER, RoundProcess } from "@/global/enum";
 import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
 import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
 import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
@@ -35,6 +35,8 @@ import { queryDetailCourse } from "@/store/reducers/course/detailCourse.reducer"
 import { clearCreateLevelCourse, queryCreateLevelCourse } from "@/store/reducers/course/createLevelCourse.reducer";
 import { clearUpdateCourse, queryUpdateCourse } from "@/store/reducers/course/updateCourse.reducer";
 import { clearUpdateLevelCourse, queryUpdateLevelCourse } from "@/store/reducers/course/updateLevelCourse.reducer";
+import { queryRoundProcessCandidate } from "@/store/reducers/recruitment/roundProcessCandidate.reducer";
+import { queryRoundComments } from "@/store/reducers/recruitment/roundComment.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -750,6 +752,47 @@ const useUpdateLevelCourse = () => {
         clear
     }
 }
+const useGetDataRoundProcess = () => {
+    const data = useSelector((state: RootState) => (state.roundProcess as State).state);
+    const dispatch = useDispatch();
+    const query = (round: RoundProcess, listCandidateId: Array<string>) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        listCandidateId: listCandidateId.toString(),
+                        round
+                    }
+                }
+            }
+        }
+        dispatch(queryRoundProcessCandidate(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
+const useGetDataRoundComments = () => {
+    const data = useSelector((state: RootState) => (state.roundComments as State).state);
+    const dispatch = useDispatch();
+    const query = (roundId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        roundId
+                    }
+                }
+            }
+        }
+        dispatch(queryRoundComments(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -784,5 +827,7 @@ export {
     useGetDetailCourse,
     useCreateLevelCourse,
     useUpdateCourse,
-    useUpdateLevelCourse
+    useUpdateLevelCourse,
+    useGetDataRoundProcess,
+    useGetDataRoundComments
 }

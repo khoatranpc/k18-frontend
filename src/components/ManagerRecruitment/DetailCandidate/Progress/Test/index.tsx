@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDatetoString } from '@/utils';
 import CalendarAdd from '@/icons/CalendarAdd';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import Comment from '../Comment';
+import ListComment from '../Comment';
 
 const Test = () => {
     return (
@@ -28,14 +28,7 @@ const Test = () => {
                     </div>
                 </div>
             </div>
-            <div className={styles.comments}>
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-            </div>
+            <ListComment className={styles.comments} />
         </div>
     )
 }

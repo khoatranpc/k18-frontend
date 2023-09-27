@@ -1,16 +1,18 @@
 import React from 'react';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
-import { KEY_ICON } from '@/global/enum';
+import { KEY_ICON, StatusProcessing } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
 import { useGetDetailCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
 import InProgressing from '@/components/Processing';
 import Loading from '@/components/loading';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { getStatusProcess } from '../../Table';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    console.log(detailCandidate);
     return (
         <div className={styles.containerBaseInfo}>
             <div className={styles.candidate}>
@@ -39,7 +41,7 @@ const BaseInfo = () => {
                         Trạng thái tuyển dụng
                     </label>
                     <br />
-                    <InProgressing />
+                    {getStatusProcess[detailCandidate?.statusProcess as StatusProcessing]}
                 </div>
                 <div className={`${styles.item}`}>
                     <label className={`${styles.label}`}>
@@ -68,7 +70,7 @@ const BaseInfo = () => {
                 </div>
                 <div className={`${styles.item}`}>
                     <label className={`${styles.label}`}>
-                        <span>Ứng tuyển</span> <span className={styles.timeApplied}>{formatDatetoString(new Date())}</span>
+                        <span>Ứng tuyển</span> <span className={styles.timeApplied}>{formatDatetoString(new Date(detailCandidate?.timeApply), 'dd/MM/yyyy')}</span>
                     </label>
 
                 </div>

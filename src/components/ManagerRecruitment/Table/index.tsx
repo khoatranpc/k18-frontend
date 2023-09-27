@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { ComponentPage, ResultInterview, StatusProcessing } from '@/global/enum';
-import { getColorByResultInterview, getStringResultInterview  } from '@/global/init';
+import { getColorByResultInterview, getStringResultInterview } from '@/global/init';
 import { formatDatetoString, getColorByCourseName } from '@/utils';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
@@ -34,7 +34,7 @@ const TableRecruitment = () => {
     })
     useEffect(() => {
         // pending logic with pagination
-        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply']);
+        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess']);
     }, []);
     const columns: Columns = [
         {
@@ -93,9 +93,9 @@ const TableRecruitment = () => {
         {
             key: 'PROCESSING',
             title: 'Vòng',
-            dataIndex: 'round',
+            dataIndex: 'roundProcess',
             render(value) {
-                return <div>Test</div>
+                return <div>{value}</div>
             },
             width: 70
         },
@@ -117,7 +117,7 @@ const TableRecruitment = () => {
             title: 'TT Mail',
             dataIndex: 'sendMail',
             render(value, record) {
-                return 'Đã gửi'
+                return !value ? 'Chưa gửi' : 'Đã gửi'
             },
             width: 80
         },

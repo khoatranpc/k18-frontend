@@ -1,18 +1,21 @@
 import React from 'react';
+import { Obj } from '@/global/interface';
+import { useGetDetailCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
-import Comment from '../Comment';
+import ListComment from '../Comment';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
-interface Props {
+const CV = () => {
+    const crrCandidate = useGetDetailCandidate();
+    const getDataCandidate = crrCandidate.data.response?.data as Obj;
 
-}
-
-const CV = (props: Props) => {
     return (
         <div className={styles.roundCv}>
             <div className={styles.infoCv}>
                 <h2>Vòng CV</h2>
-                <div className={styles.linkCv}>
+                <div className={styles.linkCv} onClick={(() => {
+                    window.open(`${getDataCandidate.linkCv}`, 'blank');
+                })}>
                     Link CV <IconArrowView />
                 </div>
                 <div className={styles.handleStep}>
@@ -24,16 +27,7 @@ const CV = (props: Props) => {
                     </button>
                 </div>
             </div>
-            <div className={styles.comments}>
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-            </div>
+            <ListComment className={styles.comments} />
         </div>
     )
 }

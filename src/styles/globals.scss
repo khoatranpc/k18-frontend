@@ -979,3 +979,10 @@ div.ant-message {
         margin: 0 !important;
     }
 }
+
+.stepComponent {
+    div.ant-steps-item.ant-steps-item-process.ant-steps-item-active {
+        font-weight: 600;
+        color: var(--black);
+    }
+}

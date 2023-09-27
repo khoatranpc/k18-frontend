@@ -1,11 +1,17 @@
 import React from 'react';
 import { Avatar } from 'antd';
-import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { formatDatetoString } from '@/utils';
+import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
+import { formatDatetoString } from '@/utils';
+import { useGetDataRoundComments } from '@/utils/hooks';
+import NoData from '@/components/table-ant/NoData';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
-const Comment = () => {
+interface Props {
+    comment?: Obj;
+}
+const Comment = (props: Props) => {
     return (
         <div className={styles.comment}>
             <div className={styles.author}>
@@ -18,10 +24,10 @@ const Comment = () => {
             </div>
             <div className={styles.commentContent}>
                 <small className={styles.updatedAt}>
-                    {formatDatetoString(new Date().toString(), 'MMMM dd, yyyy - HH:mm a')}
+                    {formatDatetoString(props.comment ? new Date(props.comment.updatedAt) : new Date(), 'MMMM dd, yyyy - HH:mm a')}
                 </small>
                 <p className={styles.cmtContent}>
-                    {"Lorem ipsum dolor sit amet, lconsectetur adipisicing elit. Dignissimos possimus modi nihil pariatur veniam velit vero repellendus tempore facilis ratione, officiis fuga est, reiciendis rem vitae quae cumque asperiores sed?".slice(0, 200)}
+                    {props.comment?.contentComment.slice(0, 200)}
                 </p>
             </div>
             <div className={styles.action}>
@@ -31,4 +37,20 @@ const Comment = () => {
     )
 }
 
-export default Comment;
+interface ListCommentProps {
+    className?: string;
+}
+const ListComment = (props: ListCommentProps) => {
+    const dataComments = useGetDataRoundComments();
+    const getDataComments = (dataComments.data.response?.data as Array<Obj>) || [];
+    return <div className={props.className}>
+        {
+            getDataComments.length === 0 ? <NoData className={styles.nodataCenter} /> :
+                getDataComments.map((item) => {
+                    return <Comment key={item._id as string} comment={item} />
+                })
+        }
+    </div>
+
+};
+export default ListComment;

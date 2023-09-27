@@ -40,6 +40,8 @@ import listResponseFeedbackForTeacher from './feedback/listResponseFeedbackForTe
 import recruitment from './recruitment/recruitment.reducer';
 import detailCandidate from './recruitment/detailCandidate.reducer';
 import createCandidate from './recruitment/createCandidate.reducer';
+import roundProcess from './recruitment/roundProcessCandidate.reducer';
+import roundComments from './recruitment/roundComment.reducer';
 
 const rootReducer = {
     test: test,
@@ -83,6 +85,8 @@ const rootReducer = {
     detailCourse,
     createLevelCourse,
     updateCourse,
-    updateLevelCourse
+    updateLevelCourse,
+    roundProcess,
+    roundComments
 };
 export default rootReducer;
