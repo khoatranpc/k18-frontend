@@ -1,4 +1,4 @@
-import { ClassForm, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, STATUS_CLASS, StatusProcessing, Weekday } from "./enum";
+import { ClassForm, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, RoundProcess, STATUS_CLASS, StatusProcessing, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -93,6 +93,14 @@ const getStringByLevelTechnique: Record<LevelTechnique, string> = {
     SENIOR: 'Senior',
     LEADER: 'Leader'
 }
+const getLabelRoundProcess: Record<RoundProcess, string> = {
+    CV: 'CV',
+    CLASSIFY: 'Đánh giá',
+    CLAUTID: 'Dự thính',
+    DONE: 'Xong',
+    INTERVIEW: 'Phỏng vấn',
+    TEST: 'Dạy thử'
+}
 export {
     statusClass,
     fieldFilter,
@@ -108,5 +116,6 @@ export {
     getStringResultInterview,
     getColorByResultInterview,
     getStringByLevelTechnique,
+    getLabelRoundProcess,
     getColorTeacherPoint
 }

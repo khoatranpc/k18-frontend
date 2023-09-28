@@ -626,3 +626,10 @@
     align-items: center;
     justify-content: center;
 }
+
+.modalConfirm {
+    .handleConfirm {
+        display: flex;
+        gap: 0.8rem;
+    }
+}

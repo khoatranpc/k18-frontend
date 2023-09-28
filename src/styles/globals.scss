@@ -882,6 +882,14 @@ div.ant-message {
     }
 }
 
+.passStep {
+    color: var(--success);
+}
+
+.failStep {
+    color: var(--light-red);
+}
+
 .selectNumberCustome {
     :where(.css-dev-only-do-not-override-zjzpde).ant-input-number:hover {
         border-color: var(--base);
