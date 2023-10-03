@@ -41,7 +41,7 @@ export const Comment = (props: Props) => {
                 }
                 {
                     !props.isCreate && <p className={styles.cmtContent}>
-                        {props.comment?.contentComment.slice(0, 200)}
+                        {(props.comment?.contentComment as string)?.slice(0, 200)}
                     </p>
                 }
                 {
