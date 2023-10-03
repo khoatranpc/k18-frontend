@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { FormEventHandler, useState } from 'react';
 import { Avatar, Button } from 'antd';
 import { Form } from 'react-bootstrap';
 import TextArea from 'antd/es/input/TextArea';
-import * as yup from 'yup';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
@@ -19,6 +18,11 @@ interface Props {
     className?: string;
 }
 export const Comment = (props: Props) => {
+    const [comment, setComment] = useState<string>('');
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const getCommentValue = (e.target as any).comment.value;
+    }
     return (
         <div className={`${styles.comment} ${props.isCreate && styles.isCreate}`}>
             <div className={styles.author}>
@@ -41,13 +45,15 @@ export const Comment = (props: Props) => {
                     </p>
                 }
                 {
-                    props.isCreate && <Form>
-                        <TextArea className={styles.inputComment} autoSize styles={{ textarea: { resize: 'none' } }} placeholder="Để lại feedback!" />
+                    props.isCreate && <Form onSubmit={handleSubmit}>
+                        <TextArea name="comment" value={comment} onChange={(e) => {
+                            setComment(e.target.value);
+                        }} className={styles.inputComment} autoSize styles={{ textarea: { resize: 'none' } }} placeholder="Để lại feedback!" />
                         <div className={styles.btnFnc}>
                             <Button className={styles.buttonFormComment}>
                                 <UnCheck />
                             </Button>
-                            <Button className={styles.buttonFormComment}>
+                            <Button disabled={!comment} className={styles.buttonFormComment} htmlType="submit">
                                 <Send className={styles.send} />
                             </Button>
                         </div>
