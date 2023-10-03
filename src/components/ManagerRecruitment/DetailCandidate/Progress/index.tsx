@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
+import { getLabelRoundProcess } from '@/global/init';
 import { useGetDataRoundComments, useGetDataRoundProcess, useGetDetailCandidate } from '@/utils/hooks';
 import ConfirmContext from './context';
 import Step from '@/components/Step';
@@ -12,7 +13,6 @@ import Clautid from './Clautid';
 import Test from './Test';
 import PopupConfirm from './PopupConfirm';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { getLabelRoundProcess } from '@/global/init';
 
 const getStepByRound: Record<RoundProcess, number> = {
     CV: 0,

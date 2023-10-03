@@ -17,7 +17,7 @@ const CV = () => {
     }
     return (
         <div className={styles.roundCv}>
-            <div className={styles.infoCv}>
+            <div className={`${styles.infoRound} ${styles.infoCv}`}>
                 <h2>Vòng CV</h2>
                 <div className={styles.linkCv} onClick={(() => {
                     window.open(`${getDataCandidate.linkCv}`, 'blank');

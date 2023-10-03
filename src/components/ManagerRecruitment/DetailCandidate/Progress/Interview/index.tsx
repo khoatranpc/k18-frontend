@@ -7,7 +7,7 @@ import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 const Interview = () => {
     return (
         <div className={styles.roundInterview}>
-            <div className={styles.handleInterview}>
+            <div className={`${styles.handleInterview} ${styles.infoRound}`}>
                 <h2>Vòng phỏng vấn</h2>
                 <div className={styles.infoInterview}>
                     <p>Link meet: <a href="#" className="link" target="_blank">httsp://meet.google.com/buo-kk-odas</a></p>
@@ -27,7 +27,7 @@ const Interview = () => {
                     </div>
                 </div>
             </div>
-            <ListComment className={styles.comments}/>
+            <ListComment className={styles.comments} />
         </div>
     )
 }

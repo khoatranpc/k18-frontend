@@ -39,7 +39,7 @@ const Clautid = () => {
     ];
     const [modalFeedback, setModalFeedback] = useState<boolean>(false);
     return (
-        <div className={styles.roundClautid}>
+        <div className={`${styles.roundClautid} ${styles.infoRound}`}>
             <div className={styles.handleClautid}>
                 <h2>Dự thính</h2>
                 <div className={styles.classClautid}>

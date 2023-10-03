@@ -7,7 +7,7 @@ import ListComment from '../Comment';
 const Test = () => {
     return (
         <div className={styles.roundTest}>
-            <div className={styles.handleTest}>
+            <div className={`${styles.handleTest} ${styles.infoRound}`}>
                 <h2>Vòng kiểm tra dạy thử</h2>
                 <div className={styles.infoRoundTest}>
                     <p>Link meet: <a href="#" className="link" target="_blank">httsp://meet.google.com/buo-kk-odas</a></p>
