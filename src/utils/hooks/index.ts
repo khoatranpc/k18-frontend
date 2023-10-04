@@ -37,6 +37,8 @@ import { clearUpdateCourse, queryUpdateCourse } from "@/store/reducers/course/up
 import { clearUpdateLevelCourse, queryUpdateLevelCourse } from "@/store/reducers/course/updateLevelCourse.reducer";
 import { queryRoundProcessCandidate } from "@/store/reducers/recruitment/roundProcessCandidate.reducer";
 import { queryRoundComments } from "@/store/reducers/recruitment/roundComment.reducer";
+import { createHookQueryReducer } from "..";
+import { clearReducerCreateComment, queryCreateComment } from "@/store/reducers/recruitment/createComment.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -776,12 +778,13 @@ const useGetDataRoundProcess = () => {
 const useGetDataRoundComments = () => {
     const data = useSelector((state: RootState) => (state.roundComments as State).state);
     const dispatch = useDispatch();
-    const query = (roundId: string) => {
+    const query = (roundId: string, fields: Array<string>) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
-                        roundId
+                        roundId,
+                        fields: fields.toString()
                     }
                 }
             }
@@ -793,6 +796,7 @@ const useGetDataRoundComments = () => {
         query
     }
 }
+const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -829,5 +833,6 @@ export {
     useUpdateCourse,
     useUpdateLevelCourse,
     useGetDataRoundProcess,
-    useGetDataRoundComments
+    useGetDataRoundComments,
+    useCreateCommentsRoundProcess
 }

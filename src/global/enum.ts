@@ -156,3 +156,9 @@ export enum RoundProcess {
     DONE = 'DONE',
     CLASSIFY = 'CLASSIFY'
 }
+export enum PositionTe {
+    LEADER = 'LEADER',
+    ASSISTANT = 'ASSISTANT',
+    QC = 'QC',
+    HR = 'HR'
+}

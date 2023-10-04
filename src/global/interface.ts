@@ -25,7 +25,7 @@ export interface Query {
     body?: Obj;
     query?: {
         [k: string]: {} | undefined | any;
-        fields?: Array<string>;
+        fields?: Array<string> | string;
     };
     params?: Array<string>;
 }

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { State } from '@/global/interface';
 import Loading from '@/components/loading';
 import mindx from '@/assets/imgs/mindx.png';
 import dotArea from '@/assets/svgs/dot-area.svg';

@@ -4,12 +4,14 @@ import { Avatar, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { ComponentPage, KEY_ICON, ROLE_USER } from '@/global/enum';
+import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from '@/global/enum';
 import { Obj, State } from '@/global/interface';
 import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
-import useGetDataRoute from '@/utils/hooks/getDataRoute';
+import { getLabelPositionTe } from '@/global/init';
 import { logout } from '@/utils';
+import { useGetListCourse } from '@/utils/hooks';
+import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { AppDispatch, RootState } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import PageHeader from '@/components/PageHeader';
@@ -25,11 +27,15 @@ interface Props {
 const ContainerPage = (props: Props) => {
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
     const crrRole = (crrUser.response as Obj)?.data.roleAccount as ROLE_USER;
+    const course = useGetListCourse();
     const mappingTab = tabForRole[crrRole];
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const routeStore = useGetDataRoute();
 
+    const getCourseTe = (course.listCourse?.data as Array<Obj>)?.find((item) => {
+        return (crrUser.response as Obj)?.data?.courseId?._id as string === item._id
+    });
     const badgeMoreAction: MenuProps['items'] = [
         {
             key: 'LOG_OUT',
@@ -85,6 +91,11 @@ const ContainerPage = (props: Props) => {
         }
         dispatch(initDataRoute(refRoute.current));
     }, [router.route]);
+    useEffect(() => {
+        if (!course.listCourse) {
+            course.queryListCourse();
+        }
+    }, [course.listCourse]);
     return (
         <div className={styles.containerPage}>
             <div className={`${styles.navTab} ${styles.bgWhite}`}>
@@ -114,8 +125,15 @@ const ContainerPage = (props: Props) => {
                 <div className={styles.badge}>
                     <Avatar size='large' />
                     <div className={styles.user}>
-                        <p>Nguyễn Văn A</p>
-                        <span className={styles.role}>Leader</span>
+                        <p>{(crrUser.response as Obj)?.data?.teName as string}</p>
+                        <span className={styles.role}>
+                            {
+                                ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
+                                    :
+                                    ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER)
+
+                            }
+                        </span>
                     </div>
                     <Dropdown menu={{ items: badgeMoreAction }} placement="top">
                         <span className={styles.moreAction}>

@@ -47,6 +47,7 @@ const Progress = () => {
 
     const dataRoundProcess = useGetDataRoundProcess();
     const getDataRoundProcess = dataRoundProcess.data.response?.data as Array<Obj>;
+    const getDataRound = getDataRoundProcess?.[0] as Obj;
     const roundComments = useGetDataRoundComments();
 
     const [confirmModal, setConfirmModal] = useState<{
@@ -66,7 +67,7 @@ const Progress = () => {
         });
     }
     const ContentRoundProgess: Record<RoundProcess, React.ReactElement> = {
-        CV: <CV />,
+        CV: <CV roundId={getDataRound?._id as string} />,
         CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
         INTERVIEW: <Interview />,
@@ -79,8 +80,7 @@ const Progress = () => {
     useEffect(() => {
         if (!dataRoundProcess.data.isLoading) {
             if (getDataRoundProcess?.length !== 0) {
-                const getDataRound = getDataRoundProcess?.[0] as Obj;
-                roundComments.query(getDataRound?._id as string);
+                roundComments.query(getDataRound?._id as string, ['roundId', 'teId', '_id', 'teName', 'positionTe', 'courseId', 'content', 'createdAt', 'updatedAt']);
             }
         }
     }, [dataRoundProcess.data]);

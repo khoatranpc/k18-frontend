@@ -6,7 +6,10 @@ import ListComment from '../Comment';
 import ConfirmContext from '../context';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
-const CV = () => {
+interface Props {
+    roundId?: string;
+}
+const CV = (props: Props) => {
     const crrCandidate = useGetDetailCandidate();
     const getDataCandidate = crrCandidate.data.response?.data as Obj;
     const confirm = useContext(ConfirmContext);
@@ -37,7 +40,7 @@ const CV = () => {
                     </button>
                 </div>
             </div>
-            <ListComment className={styles.comments} />
+            <ListComment className={styles.comments} roundId={props.roundId} />
         </div>
     )
 }
