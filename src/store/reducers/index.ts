@@ -44,6 +44,7 @@ import roundProcess from './recruitment/roundProcessCandidate.reducer';
 import roundComments from './recruitment/roundComment.reducer';
 import createComment from './recruitment/createComment.reducer';
 import updateDataRoundProcessCandidate from './recruitment/updateDataRound.reducer';
+import createDataRoundProcess from './recruitment/createDataRoundProcess.reducer';
 
 const rootReducer = {
     test: test,
@@ -91,6 +92,7 @@ const rootReducer = {
     roundProcess,
     roundComments,
     createComment,
-    updateDataRoundProcessCandidate
+    updateDataRoundProcessCandidate,
+    createDataRoundProcess
 };
 export default rootReducer;

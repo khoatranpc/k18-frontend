@@ -39,7 +39,8 @@ import { queryRoundProcessCandidate } from "@/store/reducers/recruitment/roundPr
 import { queryRoundComments } from "@/store/reducers/recruitment/roundComment.reducer";
 import { createHookQueryReducer } from "..";
 import { clearReducerCreateComment, queryCreateComment } from "@/store/reducers/recruitment/createComment.reducer";
-import { queryUpdateDataRoundProcessCandidate } from "@/store/reducers/recruitment/updateDataRound.reducer";
+import { clearQueryUpdateDataRoundProcessCandidate, queryUpdateDataRoundProcessCandidate } from "@/store/reducers/recruitment/updateDataRound.reducer";
+import { queryCreateDataRoundProcess } from "@/store/reducers/recruitment/createDataRoundProcess.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -798,7 +799,8 @@ const useGetDataRoundComments = () => {
     }
 }
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
-const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate);
+const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
+const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
 
 export {
     useGetListClass,
@@ -838,5 +840,6 @@ export {
     useGetDataRoundProcess,
     useGetDataRoundComments,
     useCreateCommentsRoundProcess,
-    useUpdateDataProcessRoundCandidate
+    useUpdateDataProcessRoundCandidate,
+    useCreateDataRoundProcess
 }

@@ -98,10 +98,12 @@ const Progress = () => {
         }
     }, [dataRoundProcess.data]);
     useEffect(() => {
+        // pending handle mapping step
         if (updateDataRoundProcessCandidate.data.response && updateDataRoundProcessCandidate.data.success) {
             crrCandidate.query([String(getCandidateId.candidateId)]);
+            updateDataRoundProcessCandidate.clear?.();
         }
-    }, [updateDataRoundProcessCandidate.data]);
+    }, [updateDataRoundProcessCandidate.data, step]);
     const handleClickStep = (step: RoundProcess) => {
         setStep((prev) => {
             if (prev !== step) {
