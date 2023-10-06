@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Button } from 'antd';
+import { RoundProcess } from '@/global/enum';
 import ConfirmContext from '../context';
 import ModalCustomize from '@/components/ModalCustomize';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
@@ -33,7 +34,7 @@ const PopupConfirm = (props: Props) => {
                 </Button>
                 <Button size="small"
                     onClick={() => {
-                        confirmModal.onConfirm?.(confirmModal.round, true);
+                        confirmModal.onConfirm?.(confirmModal.round);
                     }}
                 >
                     Đồng ý

@@ -4,15 +4,15 @@ import { RoundProcess } from "@/global/enum";
 const ConfirmContext = createContext<{
     show?: boolean,
     round: RoundProcess,
-    onConfirm: (round: RoundProcess, result?: boolean) => void;
+    onConfirm: (round: RoundProcess) => void;
     title?: React.ReactElement | string;
     handleModal?: (show?: boolean, title?: React.ReactElement | string, type?: 'PASS' | 'FAIL') => void;
     type?: 'PASS' | 'FAIL'
 }>({
     show: false,
-    onConfirm(round, result) { },
+    onConfirm(round) { },
     title: "",
-    handleModal(show, title) {
+    handleModal(show, title, type) {
     },
     round: RoundProcess.CV,
     type: 'FAIL'

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
 import { getLabelRoundProcess } from '@/global/init';
-import { useGetDataRoundComments, useGetDataRoundProcess, useGetDetailCandidate } from '@/utils/hooks';
+import { useGetDataRoundComments, useGetDataRoundProcess, useGetDetailCandidate, useUpdateDataProcessRoundCandidate } from '@/utils/hooks';
 import ConfirmContext from './context';
 import Step from '@/components/Step';
 import WaitingProcess from './WaitingProcess';
@@ -42,6 +42,7 @@ const listRound = [{
 const Progress = () => {
     const [step, setStep] = useState<RoundProcess>(RoundProcess.CV);
     const router = useRouter();
+    const getCandidateId = router.query;
     const crrCandidate = useGetDetailCandidate();
     const getDataCandidate = crrCandidate.data.response?.data as Obj;
 
@@ -49,6 +50,7 @@ const Progress = () => {
     const getDataRoundProcess = dataRoundProcess.data.response?.data as Array<Obj>;
     const getDataRound = getDataRoundProcess?.[0] as Obj;
     const roundComments = useGetDataRoundComments();
+    const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
 
     const [confirmModal, setConfirmModal] = useState<{
         show?: boolean,
@@ -74,6 +76,17 @@ const Progress = () => {
         TEST: <Test />,
         DONE: <></>
     };
+    const queryHandleDataStep = (round: RoundProcess, roundId: string, result?: boolean, linkMeet?: string, time?: Date, doc?: string) => {
+        updateDataRoundProcessCandidate.query({
+            params: [roundId],
+            body: {
+                result, linkMeet, time, doc, round,
+                ...getCandidateId.candidateId ? {
+                    candidateId: getCandidateId.candidateId
+                } : {}
+            }
+        });
+    };
     useEffect(() => {
         dataRoundProcess.query(RoundProcess.CV, [router.query.candidateId as string]);
     }, []);
@@ -84,22 +97,33 @@ const Progress = () => {
             }
         }
     }, [dataRoundProcess.data]);
+    useEffect(() => {
+        if (updateDataRoundProcessCandidate.data.response && updateDataRoundProcessCandidate.data.success) {
+            crrCandidate.query([String(getCandidateId.candidateId)]);
+        }
+    }, [updateDataRoundProcessCandidate.data]);
     const handleClickStep = (step: RoundProcess) => {
-        setStep(() => {
-            dataRoundProcess.query(step, [router.query.candidateId as string]);
-            return step;
+        setStep((prev) => {
+            if (prev !== step) {
+                dataRoundProcess.query(step, [router.query.candidateId as string]);
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                });
+            }
+            return prev !== step ? step : prev;
         });
     };
     return (
         <ConfirmContext.Provider value={{
             ...confirmModal,
-            onConfirm(round, result) {
-                // pending call api
+            onConfirm(round) {
                 setConfirmModal({
                     ...confirmModal,
                     show: false
                 });
-                console.log(result);
+                // handl pass, fail round process
+                queryHandleDataStep(round, getDataRound?._id as string, confirmModal.type === 'PASS' ? true : false);
             },
             handleModal,
             round: step
