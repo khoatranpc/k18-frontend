@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Button } from 'antd';
-import { RoundProcess } from '@/global/enum';
 import ConfirmContext from '../context';
 import ModalCustomize from '@/components/ModalCustomize';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
@@ -19,7 +18,7 @@ const PopupConfirm = (props: Props) => {
             dialogClassName={styles.modalConfirm}
             modalHeader={confirmModal.title ?? 'Xác nhận'}
             onHide={() => {
-                confirmModal.onConfirm?.(confirmModal.round);
+                confirmModal.onConfirm?.(confirmModal.round, false);
             }}
             show={props.show}
             centered
@@ -27,14 +26,14 @@ const PopupConfirm = (props: Props) => {
                 <Button
                     size="small"
                     onClick={() => {
-                        confirmModal.onConfirm?.(confirmModal.round);
+                        confirmModal.onConfirm?.(confirmModal.round, false);
                     }}
                 >
                     Huỷ
                 </Button>
                 <Button size="small"
                     onClick={() => {
-                        confirmModal.onConfirm?.(confirmModal.round);
+                        confirmModal.onConfirm?.(confirmModal.round, true);
                     }}
                 >
                     Đồng ý

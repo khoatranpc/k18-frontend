@@ -5,14 +5,11 @@ import { KEY_ICON, StatusProcessing } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
 import { useGetDetailCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
-import InProgressing from '@/components/Processing';
-import Loading from '@/components/loading';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import { getStatusProcess } from '../../Table';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
-    console.log(detailCandidate);
     return (
         <div className={styles.containerBaseInfo}>
             <div className={styles.candidate}>

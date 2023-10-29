@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
@@ -41,6 +41,7 @@ const listRound = [{
 }];
 const Progress = () => {
     const [step, setStep] = useState<RoundProcess>(RoundProcess.CV);
+    const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
     const getCandidateId = router.query;
     const crrCandidate = useGetDetailCandidate();
@@ -61,7 +62,7 @@ const Progress = () => {
         title: "",
         type: 'FAIL'
     });
-    const handleModal = (show?: boolean, title?: React.ReactElement | string, type?: 'PASS' | 'FAIL') => {
+    const handleModal = (show?: boolean, title?: React.ReactElement | string, type?: 'PASS' | 'FAIL', callback?: () => void) => {
         setConfirmModal({
             show,
             title,
@@ -91,7 +92,8 @@ const Progress = () => {
         dataRoundProcess.query(RoundProcess.CV, [router.query.candidateId as string]);
     }, []);
     useEffect(() => {
-        if (!dataRoundProcess.data.isLoading) {
+        if (!dataRoundProcess.data.isLoading && dataRoundProcess.data.response) {
+            setLoading(false);
             if (getDataRoundProcess?.length !== 0) {
                 roundComments.query(getDataRound?._id as string, ['roundId', 'teId', '_id', 'teName', 'positionTe', 'courseId', 'content', 'createdAt', 'updatedAt']);
             }
@@ -102,6 +104,7 @@ const Progress = () => {
         if (updateDataRoundProcessCandidate.data.response && updateDataRoundProcessCandidate.data.success) {
             crrCandidate.query([String(getCandidateId.candidateId)]);
             updateDataRoundProcessCandidate.clear?.();
+            dataRoundProcess.query(RoundProcess.CV, [router.query.candidateId as string]);
         }
     }, [updateDataRoundProcessCandidate.data, step]);
     const handleClickStep = (step: RoundProcess) => {
@@ -112,6 +115,7 @@ const Progress = () => {
                     top: 0,
                     behavior: 'smooth',
                 });
+                setLoading(true);
             }
             return prev !== step ? step : prev;
         });
@@ -119,13 +123,14 @@ const Progress = () => {
     return (
         <ConfirmContext.Provider value={{
             ...confirmModal,
-            onConfirm(round) {
+            onConfirm(round, confirm) {
                 setConfirmModal({
                     ...confirmModal,
                     show: false
                 });
-                // handl pass, fail round process
-                queryHandleDataStep(round, getDataRound?._id as string, confirmModal.type === 'PASS' ? true : false);
+                if (confirm) {
+                    queryHandleDataStep(round, getDataRound?._id as string, confirmModal.type === 'PASS' ? true : false);
+                }
             },
             handleModal,
             round: step
@@ -145,7 +150,12 @@ const Progress = () => {
                     }
                 />
                 <div className={styles.content}>
-                    {!dataRoundProcess.data.isLoading && (dataRoundProcess.data.response?.data as Array<Obj>)?.length !== 0 ? ContentRoundProgess[step] : <WaitingProcess isLoading={dataRoundProcess.data.isLoading} />}
+                    {loading ? <WaitingProcess isLoading={true} /> :
+                        (dataRoundProcess.data.response?.data as Array<Obj>)?.length !== 0
+                            ?
+                            ContentRoundProgess[step] :
+                            <WaitingProcess isLoading={dataRoundProcess.data.isLoading} />
+                    }
                 </div>
             </div>
             <PopupConfirm

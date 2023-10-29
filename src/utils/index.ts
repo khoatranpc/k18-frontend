@@ -169,8 +169,8 @@ const createHookQueryReducer = (reducer: keyof RootState, queryThunk: Function, 
     }
 }
 const shortenName = (fullName: string) => {
-    const words = fullName.split(' ');
-    if (words.length >= 2) {
+    const words = fullName?.split(' ');
+    if (words && words.length >= 2) {
         const initials = words.map(word => word[0]).join('');
 
         const lastName = words.slice(-1)[0].substring(1);
