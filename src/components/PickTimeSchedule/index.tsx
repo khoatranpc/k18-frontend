@@ -8,6 +8,7 @@ import { queryGetListTimeSchedule } from '@/store/reducers/timeSchedule.reducer'
 import styles from '@/styles/PickTimeSchedule.module.scss'
 
 interface Props {
+    size?: 'small' | 'middle' | 'large';
     className?: string;
     title?: string;
     keyIndex?: string;
@@ -43,6 +44,7 @@ const PickTimeSchedule = (props: Props) => {
     }, [listTimeSchedule, dispatch]);
     return (
         <Dropdown
+            sizeButton={props.size}
             className={`${props.className}  ${styles.pickTimeSchedule}`}
             trigger='click'
             listSelect={listSelect}

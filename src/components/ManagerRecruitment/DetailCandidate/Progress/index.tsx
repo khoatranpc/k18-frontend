@@ -4,6 +4,7 @@ import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
 import { getLabelRoundProcess } from '@/global/init';
 import { useGetDataRoundComments, useGetDataRoundProcess, useGetDetailCandidate, useUpdateDataProcessRoundCandidate } from '@/utils/hooks';
+import { useHookMessage } from '@/utils/hooks/message';
 import ConfirmContext from './context';
 import Step from '@/components/Step';
 import WaitingProcess from './WaitingProcess';
@@ -40,28 +41,31 @@ const listRound = [{
     title: 'Phân loại'
 }];
 const Progress = () => {
-    const [step, setStep] = useState<RoundProcess>(RoundProcess.CV);
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
     const getCandidateId = router.query;
     const crrCandidate = useGetDetailCandidate();
     const getDataCandidate = crrCandidate.data.response?.data as Obj;
 
+    const [step, setStep] = useState<RoundProcess>(getDataCandidate.roundProcess as RoundProcess || RoundProcess.CV);
     const dataRoundProcess = useGetDataRoundProcess();
     const getDataRoundProcess = dataRoundProcess.data.response?.data as Array<Obj>;
     const getDataRound = getDataRoundProcess?.[0] as Obj;
     const roundComments = useGetDataRoundComments();
     const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
 
-    const [confirmModal, setConfirmModal] = useState<{
-        show?: boolean,
-        title?: React.ReactElement | string;
-        type?: 'PASS' | 'FAIL'
-    }>({
-        show: false,
-        title: "",
-        type: 'FAIL'
-    });
+    const firstMount = useRef(true);
+
+    const message = useHookMessage()
+        ; const [confirmModal, setConfirmModal] = useState<{
+            show?: boolean,
+            title?: React.ReactElement | string;
+            type?: 'PASS' | 'FAIL'
+        }>({
+            show: false,
+            title: "",
+            type: 'FAIL'
+        });
     const handleModal = (show?: boolean, title?: React.ReactElement | string, type?: 'PASS' | 'FAIL', callback?: () => void) => {
         setConfirmModal({
             show,
@@ -73,7 +77,7 @@ const Progress = () => {
         CV: <CV roundId={getDataRound?._id as string} />,
         CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
-        INTERVIEW: <Interview />,
+        INTERVIEW: <Interview roundId={getDataRound?._id as string} />,
         TEST: <Test />,
         DONE: <></>
     };
@@ -89,8 +93,11 @@ const Progress = () => {
         });
     };
     useEffect(() => {
-        dataRoundProcess.query(RoundProcess.CV, [router.query.candidateId as string]);
-    }, []);
+        if (getDataCandidate && firstMount.current) {
+            firstMount.current = false;
+            dataRoundProcess.query(getDataCandidate.roundProcess, [router.query.candidateId as string]);
+        }
+    }, [getDataCandidate]);
     useEffect(() => {
         if (!dataRoundProcess.data.isLoading && dataRoundProcess.data.response) {
             setLoading(false);
@@ -103,8 +110,13 @@ const Progress = () => {
         // pending handle mapping step
         if (updateDataRoundProcessCandidate.data.response && updateDataRoundProcessCandidate.data.success) {
             crrCandidate.query([String(getCandidateId.candidateId)]);
+            message.open({
+                content: 'Cập nhật thành công!',
+                type: 'success',
+            });
+            message.close();
             updateDataRoundProcessCandidate.clear?.();
-            dataRoundProcess.query(RoundProcess.CV, [router.query.candidateId as string]);
+            dataRoundProcess.query(step, [router.query.candidateId as string]);
         }
     }, [updateDataRoundProcessCandidate.data, step]);
     const handleClickStep = (step: RoundProcess) => {

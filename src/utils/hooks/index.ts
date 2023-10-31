@@ -41,6 +41,7 @@ import { createHookQueryReducer } from "..";
 import { clearReducerCreateComment, queryCreateComment } from "@/store/reducers/recruitment/createComment.reducer";
 import { clearQueryUpdateDataRoundProcessCandidate, queryUpdateDataRoundProcessCandidate } from "@/store/reducers/recruitment/updateDataRound.reducer";
 import { queryCreateDataRoundProcess } from "@/store/reducers/recruitment/createDataRoundProcess.reducer";
+import { queryGetAllTe } from "@/store/reducers/te/getTe.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -765,9 +766,10 @@ const useGetDataRoundProcess = () => {
                 query: {
                     query: {
                         listCandidateId: listCandidateId.toString(),
-                        round
+                        round,
+                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName'
                     }
-                }
+                },
             }
         }
         dispatch(queryRoundProcessCandidate(payload));
@@ -801,6 +803,8 @@ const useGetDataRoundComments = () => {
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
 const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
+const useFindGetAllTe = createHookQueryReducer('getAllTe', queryGetAllTe);
+
 
 export {
     useGetListClass,
@@ -841,5 +845,6 @@ export {
     useGetDataRoundComments,
     useCreateCommentsRoundProcess,
     useUpdateDataProcessRoundCandidate,
-    useCreateDataRoundProcess
+    useCreateDataRoundProcess,
+    useFindGetAllTe
 }

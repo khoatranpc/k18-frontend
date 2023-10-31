@@ -45,6 +45,7 @@ import roundComments from './recruitment/roundComment.reducer';
 import createComment from './recruitment/createComment.reducer';
 import updateDataRoundProcessCandidate from './recruitment/updateDataRound.reducer';
 import createDataRoundProcess from './recruitment/createDataRoundProcess.reducer';
+import getAllTe from './te/getTe.reducer';
 
 const rootReducer = {
     test: test,
@@ -93,6 +94,7 @@ const rootReducer = {
     roundComments,
     createComment,
     updateDataRoundProcessCandidate,
-    createDataRoundProcess
+    createDataRoundProcess,
+    getAllTe
 };
 export default rootReducer;

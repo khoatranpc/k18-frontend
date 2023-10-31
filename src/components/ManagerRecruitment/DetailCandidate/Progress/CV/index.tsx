@@ -24,7 +24,7 @@ const CV = (props: Props) => {
     return (
         <div className={styles.roundCv}>
             <div className={`${styles.infoRound} ${styles.infoCv}`}>
-                <h2>Vòng CV {getDataRoundProcess?.processed && (<sup>{getDataRoundProcess?.result ? 'Pass' : 'Failed'}</sup>)}</h2>
+                <h2>Vòng CV {getDataRoundProcess?.processed && (<sup style={{ color: !getDataRoundProcess?.result ? 'var(--light-red)' : 'var(--success)' }}>{getDataRoundProcess?.result ? 'Pass' : 'Failed'}</sup>)}</h2>
                 <label className={styles.linkCv} onClick={(() => {
                     window.open(`${getDataCandidate.linkCv}`, 'blank');
                 })}>

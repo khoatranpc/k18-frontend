@@ -431,6 +431,28 @@
                                 cursor: pointer;
                                 color: var(--deep-blue);
                             }
+
+                            .actions {
+                                display: flex;
+                                align-items: center;
+                            }
+
+                            .sentMail {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                cursor: pointer;
+                                margin-left: 1.2rem;
+                                color: var(--deep-blue);
+                            }
+
+                            .iconSent {
+                                width: 2.4rem;
+
+                                path {
+                                    stroke: var(--deep-blue);
+                                }
+                            }
                         }
                     }
 
@@ -673,4 +695,15 @@
             }
         }
     }
+}
+
+.pickDate {
+    z-index: 1150;
+}
+
+.btnCreateScheduleInterview {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
 }
