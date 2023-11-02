@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import { Button } from 'antd';
 import { Obj } from '@/global/interface';
+import { RoundProcess } from '@/global/enum';
 import { useGetDataRoundProcess, useGetDetailCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
 import ListComment from '../Comment';
 import ConfirmContext from '../context';
+import SendingMail from '../SendingMail';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 interface Props {
@@ -25,11 +27,15 @@ const CV = (props: Props) => {
         <div className={styles.roundCv}>
             <div className={`${styles.infoRound} ${styles.infoCv}`}>
                 <h2>Vòng CV {getDataRoundProcess?.processed && (<sup style={{ color: !getDataRoundProcess?.result ? 'var(--light-red)' : 'var(--success)' }}>{getDataRoundProcess?.result ? 'Pass' : 'Failed'}</sup>)}</h2>
-                <label className={styles.linkCv} onClick={(() => {
-                    window.open(`${getDataCandidate.linkCv}`, 'blank');
-                })}>
-                    Link CV <IconArrowView />
-                </label>
+                <div>
+                    <label className={styles.linkCv} onClick={(() => {
+                        window.open(`${getDataCandidate.linkCv}`, 'blank');
+                    })}>
+                        Link CV <IconArrowView />
+                    </label>
+                    {getDataRoundProcess?.processed && !getDataRoundProcess?.result && <SendingMail pass={false} round={RoundProcess.CV} />}
+
+                </div>
                 <div className={styles.handleStep}>
                     <Button className={styles.btnHandleStep} onClick={() => {
                         handleModal(false, 'FAIL');

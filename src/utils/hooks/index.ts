@@ -42,6 +42,10 @@ import { clearReducerCreateComment, queryCreateComment } from "@/store/reducers/
 import { clearQueryUpdateDataRoundProcessCandidate, queryUpdateDataRoundProcessCandidate } from "@/store/reducers/recruitment/updateDataRound.reducer";
 import { queryCreateDataRoundProcess } from "@/store/reducers/recruitment/createDataRoundProcess.reducer";
 import { queryGetAllTe } from "@/store/reducers/te/getTe.reducer";
+import { queryMailTemplate } from "@/store/reducers/mailTemplate/mailTemplate.reducer";
+import { clearCreateMailTemplate, queryCreateMailTemplate } from "@/store/reducers/mailTemplate/createMailTemplate.reducer";
+import { clearUpdateMailTemplate, queryUpdateMailTemplate } from "@/store/reducers/mailTemplate/updateMailTemplate.reducer";
+import { clearMailer, queryMailer } from "@/store/reducers/mailer.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -804,6 +808,10 @@ const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', qu
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
 const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
 const useFindGetAllTe = createHookQueryReducer('getAllTe', queryGetAllTe);
+const useGetMailTemplate = createHookQueryReducer('mailTemplate', queryMailTemplate);
+const useCreateMailTemplate = createHookQueryReducer('createMailTemplate', queryCreateMailTemplate, clearCreateMailTemplate);
+const useUpdateMailTemplate = createHookQueryReducer('updateMailTemplate', queryUpdateMailTemplate, clearUpdateMailTemplate);
+const useMailer = createHookQueryReducer('mailer', queryMailer, clearMailer);
 
 
 export {
@@ -846,5 +854,9 @@ export {
     useCreateCommentsRoundProcess,
     useUpdateDataProcessRoundCandidate,
     useCreateDataRoundProcess,
-    useFindGetAllTe
+    useFindGetAllTe,
+    useGetMailTemplate,
+    useCreateMailTemplate,
+    useUpdateMailTemplate,
+    useMailer
 }

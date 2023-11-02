@@ -10,6 +10,7 @@ import Table from '@/components/Table';
 import Expand from '@/icons/Expand';
 import ModalCustomize from '@/components/ModalCustomize';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { Button } from 'antd';
 
 const Clautid = () => {
 
@@ -58,12 +59,24 @@ const Clautid = () => {
                         <CalendarAdd /> Tạo lịch
                     </span>
                     <div className={styles.handleStep}>
-                        <button className={styles.btnHandleStep}>
+                        <Button
+                            // disabled={getDataRoundProcess?.result}
+                            className={styles.btnHandleStep}
+                            onClick={() => {
+                                // handleModal(false, 'FAIL');
+                            }}
+                        >
                             Trượt
-                        </button>
-                        <button className={styles.btnHandleStep}>
+                        </Button>
+                        <Button
+                            // disabled={getDataRoundProcess?.result}
+                            className={styles.btnHandleStep}
+                            onClick={() => {
+                                // handleModal(true, 'PASS');
+                            }}
+                        >
                             Bước tiếp theo
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,8 @@ const CombineRoute = {
             TEACHER: '/te/manager/teacher',
             TEACHERRANK: '/te/manager/teacher/rank',
             TEACHERSALARY: '/te/manager/teacher/salary',
-            DETAILTEACHER: '/te/manager/teacher/detail/[teacherId]'
+            DETAILTEACHER: '/te/manager/teacher/detail/[teacherId]',
+            TEMPLATE_MAIL: '/te/manager/template-mail'
         },
         CALENDAR: '/te/calendar',
         SETTING: '/te/setting',

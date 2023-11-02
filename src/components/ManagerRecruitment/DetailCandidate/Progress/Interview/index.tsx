@@ -17,6 +17,7 @@ import ListComment from '../Comment';
 import ModalCustomize from '@/components/ModalCustomize';
 import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import SendingMail from '../SendingMail';
 
 interface Props {
     roundId?: string;
@@ -57,7 +58,7 @@ const Interview = (props: Props) => {
         initialValues: {
             linkMeet: getDataRoundProcess?.linkMeet as string || '',
             time: getDataRoundProcess?.time as string || '',
-            te: getDataRoundProcess?.te._id as string || ''
+            te: getDataRoundProcess?.te?._id as string || ''
         },
         validationSchema,
         onSubmit(values) {
@@ -132,13 +133,12 @@ const Interview = (props: Props) => {
                             <CalendarAdd /> {getDataRoundProcess?.time ? ('Cập nhật') : ('Tạo lịch')}
                         </span>
                         <span className={styles.sentMail}>
-                            {getDataRoundProcess ? (getDataRoundProcess.mailInterviewSent ? <ReloadOutlined className={styles.reSent} /> : <Send className={styles.iconSent} />) : ''}
-                            {getDataRoundProcess ? (getDataRoundProcess.mailInterviewSent ? ('Gửi lại mail') : ('Gửi mail')) : ''}
+                            <SendingMail pass={getDataRoundProcess.result} round={RoundProcess.INTERVIEW} />
                         </span>
                     </div>
                     <div className={styles.handleStep}>
                         <Button
-                            disabled={getDataRoundProcess?.result}
+                            // disabled={getDataRoundProcess?.result}
                             className={styles.btnHandleStep}
                             onClick={() => {
                                 handleModal(false, 'FAIL');
@@ -147,7 +147,7 @@ const Interview = (props: Props) => {
                             Trượt
                         </Button>
                         <Button
-                            disabled={getDataRoundProcess?.result}
+                            // disabled={getDataRoundProcess?.result}
                             className={styles.btnHandleStep}
                             onClick={() => {
                                 handleModal(true, 'PASS');

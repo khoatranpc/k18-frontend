@@ -222,6 +222,17 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
             component: ComponentPage.MANAGER_FEEDBACK,
             noReplaceTitle: true,
         },
+        {
+            title: 'Mẫu mail',
+            route: CombineRoute['TE']['MANAGER']['TEMPLATE_MAIL'],
+            key: 'TEMPLATE_MAIL',
+            showIcon: true,
+            keyIcon: KEY_ICON.MAIL,
+            indexRoute: CombineRoute['TE']['MANAGER']['TEMPLATE_MAIL'],
+            disable: false,
+            component: ComponentPage.TEMPLATE_MAIL,
+            noReplaceTitle: true,
+        },
     ],
     TEACHER: []
 };

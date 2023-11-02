@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { ComponentPage, ResultInterview, StatusProcessing } from '@/global/enum';
-import { getColorByResultInterview, getStringResultInterview } from '@/global/init';
+import { ComponentPage, ResultInterview, RoundProcess, StatusProcessing } from '@/global/enum';
+import { getColorByResultInterview, getLabelRoundProcess, getStringResultInterview } from '@/global/init';
 import { formatDatetoString, getColorByCourseName } from '@/utils';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
@@ -34,7 +34,7 @@ const TableRecruitment = () => {
     })
     useEffect(() => {
         // pending logic with pagination
-        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess']);
+        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail']);
     }, []);
     const columns: Columns = [
         {
@@ -95,9 +95,9 @@ const TableRecruitment = () => {
             title: 'Vòng',
             dataIndex: 'roundProcess',
             render(value) {
-                return <div>{value}</div>
+                return <div>{getLabelRoundProcess[value as RoundProcess]}</div>
             },
-            width: 70
+            width: 90
         },
         {
             key: 'RESULT',

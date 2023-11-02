@@ -46,6 +46,10 @@ import createComment from './recruitment/createComment.reducer';
 import updateDataRoundProcessCandidate from './recruitment/updateDataRound.reducer';
 import createDataRoundProcess from './recruitment/createDataRoundProcess.reducer';
 import getAllTe from './te/getTe.reducer';
+import mailTemplate from './mailTemplate/mailTemplate.reducer';
+import createMailTemplate from './mailTemplate/createMailTemplate.reducer';
+import updateMailTemplate from './mailTemplate/updateMailTemplate.reducer';
+import mailer from './mailer.reducer';
 
 const rootReducer = {
     test: test,
@@ -95,6 +99,10 @@ const rootReducer = {
     createComment,
     updateDataRoundProcessCandidate,
     createDataRoundProcess,
-    getAllTe
+    getAllTe,
+    mailTemplate,
+    createMailTemplate,
+    updateMailTemplate,
+    mailer
 };
 export default rootReducer;

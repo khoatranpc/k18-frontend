@@ -994,3 +994,25 @@ div.ant-message {
         color: var(--black);
     }
 }
+
+.customize-text-editor {
+
+    a.jodit-status-bar-link {
+        display: none !important;
+    }
+
+    .btnStorage {
+        margin-top: 1.2rem;
+        float: right;
+    }
+
+    .title {
+        input {
+            border-radius: 0;
+        }
+    }
+}
+
+span.jodit-toolbar-button_about.jodit-ui-group__about {
+    display: none !important;
+}

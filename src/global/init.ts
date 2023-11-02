@@ -1,4 +1,4 @@
-import { ClassForm, Gender, LevelTechnique, ObjectTeach, PositionTe, ROLE_TEACHER, ResourseApply, ResultInterview, RoundProcess, STATUS_CLASS, StatusProcessing, Weekday } from "./enum";
+import { ClassForm, Gender, LevelTechnique, ObjectTeach, PositionTe, ROLE_TEACHER, ResourseApply, ResultInterview, RoundProcess, STATUS_CLASS, StatusProcessing, TemplateMail, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -107,6 +107,12 @@ const getLabelPositionTe: Record<PositionTe, string> = {
     LEADER: 'Leader',
     QC: 'QC'
 }
+const getLabelMailTemplate: Record<TemplateMail, string> = {
+    FAILCV: 'Fail CV',
+    FAILINTERVIEW: ' Fail PV',
+    NOCONNECT: 'Không liên hệ được',
+    PASSINTERVIEW: 'Pass PV'
+}
 export {
     statusClass,
     fieldFilter,
@@ -124,5 +130,6 @@ export {
     getStringByLevelTechnique,
     getLabelRoundProcess,
     getLabelPositionTe,
+    getLabelMailTemplate,
     getColorTeacherPoint
 }

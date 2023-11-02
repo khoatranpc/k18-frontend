@@ -280,6 +280,20 @@
         flex-direction: column;
         gap: 1.6rem;
 
+        .iconSent {
+            width: 2.4rem;
+
+            path {
+                stroke: var(--deep-blue);
+            }
+        }
+
+        .btnSentMailCv {
+            margin-top: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
         .headerFunction {
             display: flex;
             justify-content: space-between;
@@ -446,7 +460,12 @@
                                 color: var(--deep-blue);
                             }
 
+                            button {
+                                margin-top: 0 !important;
+                            }
+
                             .iconSent {
+
                                 width: 2.4rem;
 
                                 path {
