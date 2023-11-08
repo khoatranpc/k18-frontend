@@ -46,6 +46,8 @@ import { queryMailTemplate } from "@/store/reducers/mailTemplate/mailTemplate.re
 import { clearCreateMailTemplate, queryCreateMailTemplate } from "@/store/reducers/mailTemplate/createMailTemplate.reducer";
 import { clearUpdateMailTemplate, queryUpdateMailTemplate } from "@/store/reducers/mailTemplate/updateMailTemplate.reducer";
 import { clearMailer, queryMailer } from "@/store/reducers/mailer.reducer";
+import { queryCheckCandidateInfo } from "@/store/reducers/candidateOnboard/checkCandidateInfo.reducer";
+import { queryGetRoundCalautid } from "@/store/reducers/candidateOnboard/getRoundClautid.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -812,7 +814,8 @@ const useGetMailTemplate = createHookQueryReducer('mailTemplate', queryMailTempl
 const useCreateMailTemplate = createHookQueryReducer('createMailTemplate', queryCreateMailTemplate, clearCreateMailTemplate);
 const useUpdateMailTemplate = createHookQueryReducer('updateMailTemplate', queryUpdateMailTemplate, clearUpdateMailTemplate);
 const useMailer = createHookQueryReducer('mailer', queryMailer, clearMailer);
-
+const useGetCandidateOnboard = createHookQueryReducer('checkCandidateInfo', queryCheckCandidateInfo);
+const useGetClautidForCandidateOnboard = createHookQueryReducer('getRoundClautid', queryGetRoundCalautid);
 
 export {
     useGetListClass,
@@ -858,5 +861,7 @@ export {
     useGetMailTemplate,
     useCreateMailTemplate,
     useUpdateMailTemplate,
-    useMailer
+    useMailer,
+    useGetCandidateOnboard,
+    useGetClautidForCandidateOnboard
 }

@@ -50,6 +50,8 @@ import mailTemplate from './mailTemplate/mailTemplate.reducer';
 import createMailTemplate from './mailTemplate/createMailTemplate.reducer';
 import updateMailTemplate from './mailTemplate/updateMailTemplate.reducer';
 import mailer from './mailer.reducer';
+import checkCandidateInfo from './candidateOnboard/checkCandidateInfo.reducer';
+import getRoundClautid from './candidateOnboard/getRoundClautid.reducer';
 
 const rootReducer = {
     test: test,
@@ -103,6 +105,8 @@ const rootReducer = {
     mailTemplate,
     createMailTemplate,
     updateMailTemplate,
-    mailer
+    mailer,
+    checkCandidateInfo,
+    getRoundClautid
 };
 export default rootReducer;

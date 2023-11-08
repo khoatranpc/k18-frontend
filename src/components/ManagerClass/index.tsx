@@ -232,9 +232,10 @@ const ManagerClass = () => {
         }
     }, [listClass, loading, setLoading, handleQueryListClass]);
     useEffect(() => {
-        if (listClass.response && isQueryClassTeacherPoint.current) {
+        if (listClass.success && listClass.response && isQueryClassTeacherPoint.current) {
             isQueryClassTeacherPoint.current = false;
-            listClassTeacherPoint.query(((listClass.response.data as Obj)?.classes as Array<Obj>)?.map((item) => item._id as string))
+            const getListClassId = ((listClass.response.data as Obj)?.classes as Array<Obj>)?.map((item) => item._id as string);
+            listClassTeacherPoint.query(getListClassId)
         }
     }, [listClass]);
     return (

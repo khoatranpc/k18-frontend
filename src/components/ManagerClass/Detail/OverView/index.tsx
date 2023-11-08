@@ -262,9 +262,7 @@ const OverView = () => {
                 },
                 {
                     title: 'Giờ học',
-                    value: [...(dataDetailClass?.data.timeSchedule as Array<Obj>) || []]?.sort((a, b) => {
-                        return getOrderWeekday[a.weekday as Weekday] - getOrderWeekday[b.weekday as Weekday] || 0;
-                    }).map((item, idx) => {
+                    value: [...(dataDetailClass?.data.timeSchedule as Array<Obj>) || []]?.map((item, idx) => {
                         return <PickTimeSchedule
                             value={idx === 0 ? getWeekday(new Date(dataDetailClass?.data.dayRange.start as Date).getDay() || -1) as string : ''}
                             hasFilterByValue={idx === 0}
