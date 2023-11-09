@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Action, BaseInterfaceHookReducer, Obj, State } from "@/global/interface";
 import { AppDispatch, RootState } from "@/store";
@@ -48,6 +48,7 @@ import { clearUpdateMailTemplate, queryUpdateMailTemplate } from "@/store/reduce
 import { clearMailer, queryMailer } from "@/store/reducers/mailer.reducer";
 import { queryCheckCandidateInfo } from "@/store/reducers/candidateOnboard/checkCandidateInfo.reducer";
 import { queryGetRoundCalautid } from "@/store/reducers/candidateOnboard/getRoundClautid.reducer";
+import { clearRegisterClautid, queryRegisterClautid } from "@/store/reducers/candidateOnboard/registerClautid.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -816,6 +817,7 @@ const useUpdateMailTemplate = createHookQueryReducer('updateMailTemplate', query
 const useMailer = createHookQueryReducer('mailer', queryMailer, clearMailer);
 const useGetCandidateOnboard = createHookQueryReducer('checkCandidateInfo', queryCheckCandidateInfo);
 const useGetClautidForCandidateOnboard = createHookQueryReducer('getRoundClautid', queryGetRoundCalautid);
+const useRegisterClautid = createHookQueryReducer('registerClautid', queryRegisterClautid, clearRegisterClautid);
 
 export {
     useGetListClass,
@@ -863,5 +865,6 @@ export {
     useUpdateMailTemplate,
     useMailer,
     useGetCandidateOnboard,
-    useGetClautidForCandidateOnboard
+    useGetClautidForCandidateOnboard,
+    useRegisterClautid
 }
