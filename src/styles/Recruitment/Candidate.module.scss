@@ -84,3 +84,29 @@
 .pickDateRegister {
     z-index: 1105;
 }
+
+.feedbackClautid {
+    .cell {
+        padding: 0.4rem;
+        border-radius: 0.4rem;
+
+        &.completed {
+            background-color: var(--success);
+            color: var(--white);
+        }
+        
+        &.pending {
+            background-color: var(--status-process-processing);
+            color: var(--white);
+        }
+    }
+}
+
+.fillFeedbackClautid {
+    .btnGroup {
+        margin-top: 1.2rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+}

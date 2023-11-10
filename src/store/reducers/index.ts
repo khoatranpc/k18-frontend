@@ -53,6 +53,8 @@ import mailer from './mailer.reducer';
 import checkCandidateInfo from './candidateOnboard/checkCandidateInfo.reducer';
 import getRoundClautid from './candidateOnboard/getRoundClautid.reducer';
 import registerClautid from './candidateOnboard/registerClautid.reducer';
+import createFeedbackClautid from './candidateOnboard/createFeedbackClautid.reducer';
+import getFeedbackClautid from './candidateOnboard/getFeedbackClautid.reducer';
 
 const rootReducer = {
     test: test,
@@ -109,6 +111,8 @@ const rootReducer = {
     mailer,
     checkCandidateInfo,
     getRoundClautid,
-    registerClautid
+    registerClautid,
+    createFeedbackClautid,
+    getFeedbackClautid
 };
 export default rootReducer;
