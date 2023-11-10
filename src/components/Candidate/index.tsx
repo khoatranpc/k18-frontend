@@ -11,7 +11,6 @@ import styles from '@/styles/Recruitment/Candidate.module.scss';
 
 const Candidate = () => {
 
-    const router = useRouter();
     const [email, setEmail] = useState<string>('');
     const message = useHookMessage();
 
@@ -22,7 +21,7 @@ const Candidate = () => {
         candidateInfo.query({
             query: {
                 email,
-                fields: 'roundProcess,fillForm'
+                fields: 'roundProcess,fillForm,email'
             }
         });
     }

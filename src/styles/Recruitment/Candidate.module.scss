@@ -94,7 +94,7 @@
             background-color: var(--success);
             color: var(--white);
         }
-        
+
         &.pending {
             background-color: var(--status-process-processing);
             color: var(--white);
@@ -108,5 +108,17 @@
         display: flex;
         justify-content: flex-end;
         gap: 1.2rem;
+    }
+}
+
+.btnPopup {
+    display: none !important;
+}
+
+.option {
+    text-align: center;
+
+    .btnTime{
+        margin-right: 1.2rem !important;
     }
 }

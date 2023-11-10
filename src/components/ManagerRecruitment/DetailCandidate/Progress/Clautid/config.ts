@@ -1,11 +1,11 @@
 import { ClassForm } from "@/global/enum";
 import { getClassForm } from "@/global/init";
-import { Columns } from "@/global/interface";
+import { Columns, Obj } from "@/global/interface";
 import { formatDatetoString } from "@/utils";
 
-const configColumns = (onPopup?: boolean): Columns => {
+const configColumns = (onPopup?: boolean, currentDataClautid?: Obj): Columns => {
     const configRenderComment = (comment: string) => {
-        if (comment.length > 50) {
+        if (comment && comment.length > 50) {
             return `${(comment).toString().slice(0, 50)}...`
         }
         return comment;
@@ -13,15 +13,16 @@ const configColumns = (onPopup?: boolean): Columns => {
     return [
         {
             title: 'Mã lớp',
-            dataIndex: 'codeClass',
             fixed: 'left',
-            width: 90
+            width: 90,
+            render(_, __, idx) {
+                return !idx ? currentDataClautid?.classIdFirst.codeClass : currentDataClautid?.classIdSecond.codeClass
+            }
         },
         {
             title: 'Ngày dự thính',
-            dataIndex: 'joinDate',
-            render(value) {
-                return formatDatetoString(value, 'dd/MM/yyyy');
+            render(_, __, idx) {
+                return formatDatetoString(idx ? currentDataClautid?.timeSecond : currentDataClautid?.timeFirst, 'dd/MM/yyyy');
             },
             width: !onPopup ? 120 : 'auto',
             fixed: 'left',
@@ -30,13 +31,13 @@ const configColumns = (onPopup?: boolean): Columns => {
             title: 'Hình thức',
             dataIndex: 'form',
             width: !onPopup ? 90 : 'auto',
-            render(value) {
-                return getClassForm[value as ClassForm]
+            render(_, __, idx) {
+                return getClassForm[idx ? currentDataClautid?.formSecond as ClassForm : currentDataClautid?.formFirst as ClassForm]
             }
         },
         {
             title: 'Nội dung buổi học',
-            dataIndex: 'lessonContent',
+            dataIndex: 'contentSession',
             width: 'auto',
             render(value) {
                 return !onPopup ? configRenderComment(value) : value;
@@ -44,7 +45,7 @@ const configColumns = (onPopup?: boolean): Columns => {
         },
         {
             title: 'Nhận xét GV (1,5h đầu)',
-            dataIndex: 'commentST',
+            dataIndex: 'fbST',
             width: 'auto',
             render(value) {
                 return !onPopup ? configRenderComment(value) : value;
@@ -52,7 +53,7 @@ const configColumns = (onPopup?: boolean): Columns => {
         },
         {
             title: 'Nhận xét Mentor (1,5h sau)',
-            dataIndex: 'commentMT',
+            dataIndex: 'fbMT',
             width: 'auto',
             render(value) {
                 return !onPopup ? configRenderComment(value) : value;
@@ -60,7 +61,7 @@ const configColumns = (onPopup?: boolean): Columns => {
         },
         {
             title: 'Góp ý về giáo trình, bài tập',
-            dataIndex: 'commentTextbook',
+            dataIndex: 'fbDoc',
             width: 'auto',
             render(value) {
                 return !onPopup ? configRenderComment(value) : value;

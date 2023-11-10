@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
 import { Obj } from '@/global/interface';
 import { formatDatetoString } from '@/utils';
-import { useCreateFeedbackClautid, useGetCandidateOnboard, useGetFeedbackClautid } from '@/utils/hooks';
+import { useCreateFeedbackClautid, useGetCandidateOnboard, useGetClautidForCandidateOnboard, useGetFeedbackClautid } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
 
@@ -30,7 +30,7 @@ const Feedback = (props: Props) => {
     const candidateInfo = useGetCandidateOnboard();
     const createFeedback = useCreateFeedbackClautid();
     const message = useHookMessage();
-
+    const candidateClautid = useGetClautidForCandidateOnboard();
     const feedbackClautid = useGetFeedbackClautid();
     const getFeedbackClautid = feedbackClautid.data.response?.data as Array<Obj>;
     const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
@@ -62,6 +62,11 @@ const Feedback = (props: Props) => {
                 type: createFeedback.data.success ? 'success' : 'error'
             });
             createFeedback.clear?.();
+            candidateClautid.query({
+                query: {
+                    candidateId: getCandidateInfo._id
+                }
+            });
             message.close();
         }
     }, [createFeedback.data]);

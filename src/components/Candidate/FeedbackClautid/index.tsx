@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Tooltip, Popconfirm } from 'antd';
 import Link from 'next/link';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { formatDatetoString } from '@/utils';
@@ -9,10 +9,12 @@ import Table from '@/components/Table';
 import { ClassForm } from '@/global/enum';
 import ModalCustomize from '@/components/ModalCustomize';
 import Feedback from './Feedback';
+import ModalRegisterClass from '../ListClassRunning/ModalRegisterClass';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
 
 const class1: Obj = {};
 const class2: Obj = {};
+const listClassIdClautid: string[] = [];
 const FeedbackClautid = () => {
     const candidateInfo = useGetCandidateOnboard();
     const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
@@ -26,6 +28,18 @@ const FeedbackClautid = () => {
         data: {},
         countTime: 0,
         isCreate: false
+    });
+
+    const [modalUpdateClassRegister, setModalUpdateClassregister] = useState<{
+        show: boolean,
+        isUpdate: boolean,
+        classRegister?: Obj,
+        countTime?: number
+    }>({
+        show: false,
+        isUpdate: true,
+        classRegister: undefined,
+        countTime: 0
     });
     const candidateClautid = useGetClautidForCandidateOnboard();
     const getCandidateClautid = candidateClautid.data.response?.data as Obj;
@@ -89,7 +103,7 @@ const FeedbackClautid = () => {
                             show: true,
                             data: record,
                             countTime: index,
-                            isCreate: false
+                            isCreate: false,
                         });
                     }
                 }}>{value ? 'Hoàn thành' : 'Chưa có dữ liệu'}</div>
@@ -115,8 +129,31 @@ const FeedbackClautid = () => {
                                 isCreate: true
                             });
                         }}>Thực hiện</Button>
-                        <Button size="small">Cập nhật</Button>
-                    </div>
+                        <Popconfirm
+                            okButtonProps={{
+                                className: styles.btnPopup
+                            }}
+                            cancelButtonProps={{
+                                className: styles.btnPopup
+                            }}
+                            icon={null}
+                            trigger="click"
+                            title={<div className={styles.option}>
+                                <p>Lựa chọn hành động cập nhật</p>
+                                <Button size="small" className={styles.btnTime} onClick={() => {
+                                    setModalUpdateClassregister({
+                                        isUpdate: true,
+                                        show: true,
+                                        classRegister: record,
+                                        countTime: index
+                                    });
+                                }}>Thông tin</Button>
+                                <Button size="small">Đổi lớp</Button>
+                            </div>}
+                        >
+                            <Button size="small">Cập nhật</Button>
+                        </Popconfirm>
+                    </div >
             },
         },
     ];
@@ -129,14 +166,20 @@ const FeedbackClautid = () => {
     }, []);
     useEffect(() => {
         if (candidateClautid.data.response && candidateClautid.data.response) {
+            if (getCandidateClautid.classIdFirst._id) {
+                listClassIdClautid.push(getCandidateClautid.classIdFirst._id as string);
+            }
+            if (getCandidateClautid.classIdSecond._id) {
+                listClassIdClautid.push(getCandidateClautid.classIdSecond._id as string);
+            }
             feedbackClautid.query({
                 query: {
                     listCandidateId: [getCandidateInfo._id].toString(),
-                    listClassId: [getCandidateClautid.classIdFirst._id, getCandidateClautid.classIdSecond._id].toString()
+                    listClassId: listClassIdClautid.toString()
                 }
             });
         }
-    }, [candidateInfo.data.response, candidateClautid.data.response]);
+    }, [candidateInfo.data.response, candidateClautid.data.response, candidateClautid.data.response]);
     return (
         <div className={styles.feedbackClautid}>
             {candidateClautid.data.isLoading || !getCandidateClautid
@@ -176,6 +219,24 @@ const FeedbackClautid = () => {
                         countTime={showModalFeedback.countTime}
                     />
                 </ModalCustomize>
+            }
+            {
+                modalUpdateClassRegister.show &&
+                <ModalRegisterClass
+                    title={<h2>Cập nhật thông tin dự thính</h2>}
+                    showModal={modalUpdateClassRegister.show}
+                    classRegister={modalUpdateClassRegister.classRegister}
+                    isUpdate
+                    handleShowModal={() => {
+                        setModalUpdateClassregister({
+                            show: false,
+                            isUpdate: false,
+                            classRegister: undefined
+                        });
+                    }}
+                    countTime={modalUpdateClassRegister.countTime}
+                    recordRegisterClautidId={getCandidateClautid._id}
+                />
             }
         </div>
     )

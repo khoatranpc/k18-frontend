@@ -55,6 +55,7 @@ import getRoundClautid from './candidateOnboard/getRoundClautid.reducer';
 import registerClautid from './candidateOnboard/registerClautid.reducer';
 import createFeedbackClautid from './candidateOnboard/createFeedbackClautid.reducer';
 import getFeedbackClautid from './candidateOnboard/getFeedbackClautid.reducer';
+import updateClassClautid from './candidateOnboard/updateClassClautid.reducer';
 
 const rootReducer = {
     test: test,
@@ -113,6 +114,7 @@ const rootReducer = {
     getRoundClautid,
     registerClautid,
     createFeedbackClautid,
-    getFeedbackClautid
+    getFeedbackClautid,
+    updateClassClautid
 };
 export default rootReducer;
