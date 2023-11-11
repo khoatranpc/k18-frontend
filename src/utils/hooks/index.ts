@@ -49,6 +49,9 @@ import { clearMailer, queryMailer } from "@/store/reducers/mailer.reducer";
 import { queryCheckCandidateInfo } from "@/store/reducers/candidateOnboard/checkCandidateInfo.reducer";
 import { queryGetRoundCalautid } from "@/store/reducers/candidateOnboard/getRoundClautid.reducer";
 import { clearRegisterClautid, queryRegisterClautid } from "@/store/reducers/candidateOnboard/registerClautid.reducer";
+import { clearCreateFeedbackClautid, queryCreateFeebackClautid } from "@/store/reducers/candidateOnboard/createFeedbackClautid.reducer";
+import { queryGetFeebackClautid } from "@/store/reducers/candidateOnboard/getFeedbackClautid.reducer";
+import { clearQueryUpdateClassClautid, queryUpdateClassClautid } from "@/store/reducers/candidateOnboard/updateClassClautid.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -84,7 +87,7 @@ const useGetLocations = () => {
 }
 const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
     data?: Obj;
-    query?: (params: string | Array<Obj>) => void;
+    query?: (params: string | Array<Obj>, fields?: Array<string>) => void;
     update?: (data: Obj, action: 'PUT' | 'DELETE' | 'UPDATE') => void;
     clear?: () => void;
 } => {
@@ -93,13 +96,13 @@ const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
     const dataAdd = useSelector((state: RootState) => (state.addRequestBookTeacher as State).state);
     switch (action) {
         case 'GET':
-            const queryGet = (params: string | Array<Obj>) => {
+            const queryGet = (params: string | Array<Obj>, fields?: Array<string>) => {
                 const payload: Action = {
                     payload: {
                         query: {
                             params: [params as string],
                             query: {
-                                fields: ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept']
+                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept']
                             }
                         }
                     }
@@ -774,7 +777,7 @@ const useGetDataRoundProcess = () => {
                     query: {
                         listCandidateId: listCandidateId.toString(),
                         round,
-                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName'
+                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName,codeClass,formFirst,formSecond,locationFirst,locationSecond,locationCode,timeFirst,timeSecond,timeFirstDone,timeSecondDone,codeClass'
                     }
                 },
             }
@@ -818,6 +821,9 @@ const useMailer = createHookQueryReducer('mailer', queryMailer, clearMailer);
 const useGetCandidateOnboard = createHookQueryReducer('checkCandidateInfo', queryCheckCandidateInfo);
 const useGetClautidForCandidateOnboard = createHookQueryReducer('getRoundClautid', queryGetRoundCalautid);
 const useRegisterClautid = createHookQueryReducer('registerClautid', queryRegisterClautid, clearRegisterClautid);
+const useCreateFeedbackClautid = createHookQueryReducer('createFeedbackClautid', queryCreateFeebackClautid, clearCreateFeedbackClautid);
+const useGetFeedbackClautid = createHookQueryReducer('getFeedbackClautid', queryGetFeebackClautid);
+const useUpdateClassClautid = createHookQueryReducer('updateClassClautid', queryUpdateClassClautid, clearQueryUpdateClassClautid);
 
 export {
     useGetListClass,
@@ -866,5 +872,8 @@ export {
     useMailer,
     useGetCandidateOnboard,
     useGetClautidForCandidateOnboard,
-    useRegisterClautid
+    useRegisterClautid,
+    useCreateFeedbackClautid,
+    useGetFeedbackClautid,
+    useUpdateClassClautid
 }

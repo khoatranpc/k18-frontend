@@ -551,6 +551,23 @@
                             padding-bottom: 4rem;
                             margin-bottom: 4rem;
                         }
+
+                        .handleStep {
+                            display: flex;
+                            gap: 0.8rem;
+                            justify-content: flex-end;
+
+                            button {
+                                color: var(--white);
+                                border: 0;
+                                border-radius: 0.8rem;
+                                background-color: var(--success);
+
+                                &:first-child {
+                                    background-color: var(--light-red);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -724,5 +741,11 @@
     margin-top: 1.2rem;
     display: flex;
     justify-content: flex-end;
+    gap: 1.2rem;
+}
+
+.inputLoading {
+    display: flex;
+    align-items: center;
     gap: 1.2rem;
 }

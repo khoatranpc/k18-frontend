@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Obj } from '@/global/interface';
 import { useGetCandidateOnboard } from '@/utils/hooks';
+import { RoundProcess } from '@/global/enum';
 import Step from '@/components/Step';
 import FillForm from './FillForm';
-import styles from '@/styles/Recruitment/Candidate.module.scss';
-import { RoundProcess } from '@/global/enum';
 import FeedbackClautid from '../FeedbackClautid';
+import styles from '@/styles/Recruitment/Candidate.module.scss';
 
 const VisualStep = () => {
     const candidateInfo = useGetCandidateOnboard();
@@ -15,7 +15,7 @@ const VisualStep = () => {
         if (getCandidateInfo) {
             if (!getCandidateInfo.fillForm) return 0;
             if (getCandidateInfo.roundProcess === RoundProcess.CLAUTID) return 1;
-
+            if (getCandidateInfo.roundProcess === RoundProcess.TEST) return 2;
         }
         return 0;
     }
