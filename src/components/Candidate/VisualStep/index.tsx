@@ -5,6 +5,7 @@ import { RoundProcess } from '@/global/enum';
 import Step from '@/components/Step';
 import FillForm from './FillForm';
 import FeedbackClautid from '../FeedbackClautid';
+import Test from '../Test';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
 
 const VisualStep = () => {
@@ -21,7 +22,8 @@ const VisualStep = () => {
     }
     const getStepComponent: Record<string, React.ReactElement> = {
         '0': <FillForm />,
-        '1': <FeedbackClautid />
+        '1': <FeedbackClautid />,
+        '2': <Test />
     };
     return (
         <div className={styles.visualizeStep}>

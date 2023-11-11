@@ -13,6 +13,7 @@ import Interview from './Interview';
 import Clautid from './Clautid';
 import Test from './Test';
 import PopupConfirm from './PopupConfirm';
+import Done from './DoneAndClassify';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const getStepByRound: Record<RoundProcess, number> = {
@@ -37,7 +38,7 @@ const listRound = [{
     round: RoundProcess.TEST,
     title: 'Dạy thử'
 }, {
-    round: RoundProcess.CLASSIFY,
+    round: RoundProcess.DONE,
     title: 'Phân loại'
 }];
 const Progress = () => {
@@ -79,7 +80,7 @@ const Progress = () => {
         CLASSIFY: <>Phân loại</>,
         INTERVIEW: <Interview roundId={getDataRound?._id as string} />,
         TEST: <Test roundId={getDataRound?._id as string} />,
-        DONE: <></>
+        DONE: <Done/>
     };
     const queryHandleDataStep = (round: RoundProcess, roundId: string, result?: boolean, linkMeet?: string, time?: Date, doc?: string) => {
         updateDataRoundProcessCandidate.query({
@@ -101,9 +102,7 @@ const Progress = () => {
     useEffect(() => {
         if (!dataRoundProcess.data.isLoading && dataRoundProcess.data.response) {
             setLoading(false);
-            console.log('runn');
             if (getDataRoundProcess?.length !== 0) {
-                console.log('runn');
                 roundComments.query(getDataRound?._id as string, ['roundId', 'teId', '_id', 'teName', 'positionTe', 'courseId', 'content', 'createdAt', 'updatedAt']);
             }
         }

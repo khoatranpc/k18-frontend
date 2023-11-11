@@ -10,16 +10,21 @@ import Dropdown from '@/components/Dropdown';
 import Loading from '@/components/loading';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
-const validationSchema = yup.object({
-    linkMeet: yup.string().required('Chưa có thông tin link meet!'),
-    te: yup.string().required('Chưa có thông tin TE!'),
-    time: yup.string().required('Chưa có thông tin thời gian!'),
-});
+
 interface Props {
     handleSubmit?: (values: Obj) => void;
     handleModal?: () => void;
+    hasDoc?: boolean;
 }
 const CreateCalendar = (props: Props) => {
+    const validationSchema = yup.object({
+        linkMeet: yup.string().required('Chưa có thông tin link meet!'),
+        te: yup.string().required('Chưa có thông tin TE!'),
+        time: yup.string().required('Chưa có thông tin thời gian!'),
+        ...props.hasDoc ? {
+            doc: yup.string().required('Chưa có tài liệu cung cấp!'),
+        } : {}
+    });
     const listTe = useFindGetAllTe();
     const [valueFindTe, setValueFindTe] = useState<string>('');
     const dataRoundProcess = useGetDataRoundProcess();
@@ -43,7 +48,8 @@ const CreateCalendar = (props: Props) => {
         initialValues: {
             linkMeet: getDataRoundProcess?.linkMeet as string || '',
             time: getDataRoundProcess?.time as string || '',
-            te: getDataRoundProcess?.te?._id as string || ''
+            te: getDataRoundProcess?.te?._id as string || '',
+            doc: getDataRoundProcess?.doc as string || '',
         },
         validationSchema,
         onSubmit(values) {
@@ -72,6 +78,16 @@ const CreateCalendar = (props: Props) => {
                 <Input size='small' name="linkMeet" value={values.linkMeet} onChange={handleChange} onBlur={handleBlur} />
                 {errors.linkMeet && touched.linkMeet && <p className="error">{errors.linkMeet}</p>}
             </Form.Group>
+            {
+                props.hasDoc && <Form.Group>
+                    <Form.Label>
+                        Tài liệu <span className="error">*</span>
+                    </Form.Label>
+                    <Input size='small' name="doc" value={values.doc} onChange={handleChange} onBlur={handleBlur} />
+                    {errors.doc && touched.doc && <p className="error">{errors.doc}</p>}
+                </Form.Group>
+            }
+
             <Form.Group>
                 <Form.Label>
                     Thời gian <span className="error">*</span>

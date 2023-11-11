@@ -49,7 +49,7 @@ const Auth = (props: Props) => {
             }
         }
     }, [router, crrUser]);
-    if (isLoading) return <Loading isCenterScreen />;
+    if (isLoading) return <Loading isCenterScreen onFirstLoad/>;
     return props.children;
 };
 

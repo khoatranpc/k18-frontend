@@ -52,6 +52,7 @@ import { clearRegisterClautid, queryRegisterClautid } from "@/store/reducers/can
 import { clearCreateFeedbackClautid, queryCreateFeebackClautid } from "@/store/reducers/candidateOnboard/createFeedbackClautid.reducer";
 import { queryGetFeebackClautid } from "@/store/reducers/candidateOnboard/getFeedbackClautid.reducer";
 import { clearQueryUpdateClassClautid, queryUpdateClassClautid } from "@/store/reducers/candidateOnboard/updateClassClautid.reducer";
+import { queryGetCalendar } from "@/store/reducers/candidateOnboard/getCalendarTest.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -777,7 +778,7 @@ const useGetDataRoundProcess = () => {
                     query: {
                         listCandidateId: listCandidateId.toString(),
                         round,
-                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName,codeClass,formFirst,formSecond,locationFirst,locationSecond,locationCode,timeFirst,timeSecond,timeFirstDone,timeSecondDone,codeClass'
+                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName,codeClass,formFirst,formSecond,locationFirst,locationSecond,locationCode,timeFirst,timeSecond,timeFirstDone,timeSecondDone,codeClass,doc'
                     }
                 },
             }
@@ -824,6 +825,7 @@ const useRegisterClautid = createHookQueryReducer('registerClautid', queryRegist
 const useCreateFeedbackClautid = createHookQueryReducer('createFeedbackClautid', queryCreateFeebackClautid, clearCreateFeedbackClautid);
 const useGetFeedbackClautid = createHookQueryReducer('getFeedbackClautid', queryGetFeebackClautid);
 const useUpdateClassClautid = createHookQueryReducer('updateClassClautid', queryUpdateClassClautid, clearQueryUpdateClassClautid);
+const useGetCalendarTest = createHookQueryReducer('getCalendarTest', queryGetCalendar);
 
 export {
     useGetListClass,
@@ -875,5 +877,6 @@ export {
     useRegisterClautid,
     useCreateFeedbackClautid,
     useGetFeedbackClautid,
-    useUpdateClassClautid
+    useUpdateClassClautid,
+    useGetCalendarTest
 }

@@ -56,6 +56,7 @@ import registerClautid from './candidateOnboard/registerClautid.reducer';
 import createFeedbackClautid from './candidateOnboard/createFeedbackClautid.reducer';
 import getFeedbackClautid from './candidateOnboard/getFeedbackClautid.reducer';
 import updateClassClautid from './candidateOnboard/updateClassClautid.reducer';
+import getCalendarTest from './candidateOnboard/getCalendarTest.reducer';
 
 const rootReducer = {
     test: test,
@@ -115,6 +116,7 @@ const rootReducer = {
     registerClautid,
     createFeedbackClautid,
     getFeedbackClautid,
-    updateClassClautid
+    updateClassClautid,
+    getCalendarTest
 };
 export default rootReducer;
