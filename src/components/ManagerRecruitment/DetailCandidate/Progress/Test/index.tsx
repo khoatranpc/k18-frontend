@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { useRouter } from 'next/router';
 import { Obj } from '@/global/interface';
@@ -9,6 +9,7 @@ import ListComment from '../Comment';
 import CalendarAdd from '@/icons/CalendarAdd';
 import ModalCustomize from '@/components/ModalCustomize';
 import CreateCalendar from '../CreateCalendar';
+import ConfirmContext from '../context';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 interface Props {
@@ -22,6 +23,7 @@ const Test = (props: Props) => {
     const dataRoundProcess = useGetDataRoundProcess();
     const getDataRoundProcess = (dataRoundProcess.data.response?.data as Array<Obj>)?.[0];
     const [modalCalendar, setModalSetCalendar] = useState(false);
+    const confirm = useContext(ConfirmContext);
 
     const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
     useEffect(() => {
@@ -29,12 +31,17 @@ const Test = (props: Props) => {
             setModalSetCalendar(false);
         }
     }, [updateDataRoundProcessCandidate.data]);
+    const handleModal = (pass?: boolean, type?: 'PASS' | 'FAIL') => {
+        const getTitle = (pass ? <h3>Xác nhận <b className="passStep" style={{ fontSize: 'calc(1.3rem + 0.6vw)' }}>Đạt</b>!</h3> : <h3>Xác nhận <b className="failStep" style={{ fontSize: 'calc(1.3rem + 0.6vw)' }}>Trượt</b>!</h3>);
+        confirm.handleModal?.(true, getTitle, type);
+    }
     return (
         <div className={styles.roundTest}>
             <div className={`${styles.handleTest} ${styles.infoRound}`}>
                 <h2>Vòng kiểm tra dạy thử</h2>
                 <div className={styles.infoRoundTest}>
                     <p>Link meet: {getDataRoundProcess?.linkMeet as string ? <a href={getDataRoundProcess.linkMeet || '#'} className="link" target="_blank">{getDataRoundProcess?.linkMeet}</a> : <span className="error">Chưa có link!</span>}</p>
+                    <p>Tài liệu: {getDataRoundProcess?.doc as string ? <a href={getDataRoundProcess.doc || '#'} className="link" target="_blank">{getDataRoundProcess?.doc}</a> : <span className="error">Chưa có tài liệu!</span>}</p>
                     <p>Thời gian: {getDataRoundProcess?.time as string ? formatDatetoString(new Date(getDataRoundProcess.time as string), 'dd/MM/yyyy, HH:mm:a') : <span className="error">Chưa có lịch!</span>}</p>
                     <p>TE: {getDataRoundProcess?.te ? (`${getDataRoundProcess.te.teName}-${getDataRoundProcess.te.positionTe}${getDataRoundProcess.te.courseId ? ` ${getDataRoundProcess.te.courseId.courseName}` : ''}`) : (<span className="error">Chưa có thông tin TE!</span>)}</p>
                 </div>
@@ -48,7 +55,9 @@ const Test = (props: Props) => {
                         <Button className={styles.btnHandleStep}>
                             Trượt
                         </Button>
-                        <Button className={styles.btnHandleStep}>
+                        <Button className={styles.btnHandleStep} onClick={() => {
+                            handleModal(true, 'PASS');
+                        }}>
                             Bước tiếp theo
                         </Button>
                     </div>
@@ -68,6 +77,7 @@ const Test = (props: Props) => {
                 }
             >
                 <CreateCalendar
+                    hasDoc
                     handleSubmit={(values) => {
                         updateDataRoundProcessCandidate.query({
                             params: [props.roundId as string],

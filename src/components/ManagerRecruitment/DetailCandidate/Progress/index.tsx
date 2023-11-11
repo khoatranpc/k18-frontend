@@ -37,7 +37,7 @@ const listRound = [{
     round: RoundProcess.TEST,
     title: 'Dạy thử'
 }, {
-    round: RoundProcess.CLASSIFY,
+    round: RoundProcess.DONE,
     title: 'Phân loại'
 }];
 const Progress = () => {
@@ -101,9 +101,7 @@ const Progress = () => {
     useEffect(() => {
         if (!dataRoundProcess.data.isLoading && dataRoundProcess.data.response) {
             setLoading(false);
-            console.log('runn');
             if (getDataRoundProcess?.length !== 0) {
-                console.log('runn');
                 roundComments.query(getDataRound?._id as string, ['roundId', 'teId', '_id', 'teName', 'positionTe', 'courseId', 'content', 'createdAt', 'updatedAt']);
             }
         }
