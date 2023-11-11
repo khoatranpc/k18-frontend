@@ -1,9 +1,12 @@
 import React from 'react';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
-const DoneAndClassidy = () => {
+const Done = () => {
     return (
-        <div>DoneAndClassidy</div>
+        <div className={styles.doneAndClassify}>
+            Hoàn tất quá trình xử lý ứng viên
+        </div>
     )
 }
 
-export default DoneAndClassidy;
+export default Done;

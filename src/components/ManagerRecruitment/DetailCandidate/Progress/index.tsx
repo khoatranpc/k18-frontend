@@ -13,6 +13,7 @@ import Interview from './Interview';
 import Clautid from './Clautid';
 import Test from './Test';
 import PopupConfirm from './PopupConfirm';
+import Done from './DoneAndClassify';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const getStepByRound: Record<RoundProcess, number> = {
@@ -79,7 +80,7 @@ const Progress = () => {
         CLASSIFY: <>Phân loại</>,
         INTERVIEW: <Interview roundId={getDataRound?._id as string} />,
         TEST: <Test roundId={getDataRound?._id as string} />,
-        DONE: <></>
+        DONE: <Done/>
     };
     const queryHandleDataStep = (round: RoundProcess, roundId: string, result?: boolean, linkMeet?: string, time?: Date, doc?: string) => {
         updateDataRoundProcessCandidate.query({
