@@ -16,7 +16,7 @@ const configColumns = (onPopup?: boolean, currentDataClautid?: Obj): Columns => 
             fixed: 'left',
             width: 90,
             render(_, __, idx) {
-                return !idx ? currentDataClautid?.classIdFirst.codeClass : currentDataClautid?.classIdSecond.codeClass
+                return !idx ? currentDataClautid?.classIdFirst?.codeClass : currentDataClautid?.classIdSecond?.codeClass
             }
         },
         {

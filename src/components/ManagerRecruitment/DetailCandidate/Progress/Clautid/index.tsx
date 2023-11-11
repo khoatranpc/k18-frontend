@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
-import Tick from '@/icons/Tick';
+import { getClassForm } from '@/global/init';
+import { ClassForm } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
 import { useGetDataRoundProcess, useGetFeedbackClautid } from '@/utils/hooks';
 import { configColumns } from './config';
 import UnCheck from '@/icons/UnCheck';
 import Table from '@/components/Table';
 import Expand from '@/icons/Expand';
+import Tick from '@/icons/Tick';
 import ModalCustomize from '@/components/ModalCustomize';
+import ConfirmContext from '../context';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { getClassForm } from '@/global/init';
-import { ClassForm } from '@/global/enum';
 
 const listClassIdClautid: string[] = [];
 
@@ -31,6 +32,11 @@ const Clautid = () => {
         }
     });
     const [modalFeedback, setModalFeedback] = useState<boolean>(false);
+    const confirm = useContext(ConfirmContext);
+    const handleModal = (pass?: boolean, type?: 'PASS' | 'FAIL') => {
+        const getTitle = (pass ? <h3>Xác nhận <b className="passStep" style={{ fontSize: 'calc(1.3rem + 0.6vw)' }}>Đạt</b>!</h3> : <h3>Xác nhận <b className="failStep" style={{ fontSize: 'calc(1.3rem + 0.6vw)' }}>Trượt</b>!</h3>);
+        confirm.handleModal?.(true, getTitle, type);
+    }
     useEffect(() => {
         if (dataRoundProcess.data.response) {
             if (getDataRoundProcess.classIdFirst?._id) {
@@ -84,7 +90,7 @@ const Clautid = () => {
                             // disabled={getDataRoundProcess?.result}
                             className={styles.btnHandleStep}
                             onClick={() => {
-                                // handleModal(true, 'PASS');
+                                handleModal(true, 'PASS');
                             }}
                         >
                             Bước tiếp theo

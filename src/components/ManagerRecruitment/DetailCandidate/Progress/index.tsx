@@ -19,8 +19,8 @@ const getStepByRound: Record<RoundProcess, number> = {
     CV: 0,
     INTERVIEW: 1,
     CLAUTID: 2,
-    CLASSIFY: 3,
-    TEST: 4,
+    TEST: 3,
+    CLASSIFY: 4,
     DONE: 5
 }
 
@@ -56,16 +56,16 @@ const Progress = () => {
 
     const firstMount = useRef(true);
 
-    const message = useHookMessage()
-        ; const [confirmModal, setConfirmModal] = useState<{
-            show?: boolean,
-            title?: React.ReactElement | string;
-            type?: 'PASS' | 'FAIL'
-        }>({
-            show: false,
-            title: "",
-            type: 'FAIL'
-        });
+    const message = useHookMessage();
+    const [confirmModal, setConfirmModal] = useState<{
+        show?: boolean,
+        title?: React.ReactElement | string;
+        type?: 'PASS' | 'FAIL'
+    }>({
+        show: false,
+        title: "",
+        type: 'FAIL'
+    });
     const handleModal = (show?: boolean, title?: React.ReactElement | string, type?: 'PASS' | 'FAIL', callback?: () => void) => {
         setConfirmModal({
             show,
@@ -78,7 +78,7 @@ const Progress = () => {
         CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
         INTERVIEW: <Interview roundId={getDataRound?._id as string} />,
-        TEST: <Test />,
+        TEST: <Test roundId={getDataRound?._id as string} />,
         DONE: <></>
     };
     const queryHandleDataStep = (round: RoundProcess, roundId: string, result?: boolean, linkMeet?: string, time?: Date, doc?: string) => {
@@ -101,7 +101,9 @@ const Progress = () => {
     useEffect(() => {
         if (!dataRoundProcess.data.isLoading && dataRoundProcess.data.response) {
             setLoading(false);
+            console.log('runn');
             if (getDataRoundProcess?.length !== 0) {
+                console.log('runn');
                 roundComments.query(getDataRound?._id as string, ['roundId', 'teId', '_id', 'teName', 'positionTe', 'courseId', 'content', 'createdAt', 'updatedAt']);
             }
         }
