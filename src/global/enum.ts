@@ -11,7 +11,8 @@ export enum ROLE_TEACHER {
 }
 export enum ROLE_USER {
     TE = 'TE',
-    TC = 'TEACHER'
+    TC = 'TEACHER',
+    COMMON = 'COMMON'
 }
 export enum KEY_ICON {
     OV = 'OV',

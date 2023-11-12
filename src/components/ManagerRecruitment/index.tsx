@@ -25,10 +25,10 @@ const ManagerRecruitment = () => {
     return (
         <ContextProvider>
             <div className={styles.containerManagerRecruitment}>
-                <Tabs
+                {/* <Tabs
                     listItemTab={tabs}
                     notAllowContent
-                />
+                /> */}
                 <FilterBar />
                 <Table />
             </div>

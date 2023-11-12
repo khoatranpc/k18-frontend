@@ -117,7 +117,7 @@ const TableRecruitment = () => {
             title: 'TT Mail',
             dataIndex: 'sendMail',
             render(value, record) {
-                return !value ? 'Chưa gửi' : 'Đã gửi'
+                return record.result === ResultInterview.PASS ? 'Đã xong' : (!value ? 'Chưa gửi' : 'Đã gửi')
             },
             width: 80
         },

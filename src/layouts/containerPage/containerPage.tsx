@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Dropdown, MenuProps } from 'antd';
 import Link from 'next/link';
@@ -16,6 +16,7 @@ import { AppDispatch, RootState } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import PageHeader from '@/components/PageHeader';
 import { tabForRole } from './tab';
+import Loading from '@/components/loading';
 import Empty from '@/components/Empty';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/ContainerPage.module.scss';
@@ -25,6 +26,8 @@ interface Props {
 }
 
 const ContainerPage = (props: Props) => {
+    const getRolePage = (props.children.type as Obj).Role as ROLE_USER;
+    const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
     const crrRole = (crrUser.response as Obj)?.data.roleAccount as ROLE_USER;
     const course = useGetListCourse();
@@ -96,6 +99,16 @@ const ContainerPage = (props: Props) => {
             course.queryListCourse();
         }
     }, [course.listCourse]);
+    useEffect(() => {
+        if (crrRole) {
+            if (getRolePage !== ROLE_USER.COMMON && getRolePage !== crrRole) {
+                router.push('/404');
+            } else {
+                setLoadingForCheckRole(false);
+            }
+        }
+    }, [crrUser])
+    if (loadingForCheckRole) return <Loading isCenterScreen onFirstLoad />
     return (
         <div className={styles.containerPage}>
             <div className={`${styles.navTab} ${styles.bgWhite}`}>
