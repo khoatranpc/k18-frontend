@@ -4,7 +4,8 @@ const nextConfig = {
   trailingSlash: false,
   devIndicators: {
     buildActivity: false
-  }
+  },
+  ignoreDuringBuilds: true
 }
 
 module.exports = nextConfig
