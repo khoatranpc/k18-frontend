@@ -5,7 +5,7 @@ import { Obj } from '@/global/interface';
 interface Props {
     handleRowTitleColumn?: (data: string[]) => void;
 }
-const index = (props: Props) => {
+const CSV = (props: Props) => {
     const { CSVReader } = useCSVReader();
     return (
         <CSVReader
@@ -40,4 +40,4 @@ const index = (props: Props) => {
     )
 }
 
-export default index;
+export default CSV;
