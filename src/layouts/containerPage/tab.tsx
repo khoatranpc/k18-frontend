@@ -399,5 +399,6 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       noReplaceTitle: true,
     },
   ],
+  COMMON: []
 };
 export { tabForRole };
