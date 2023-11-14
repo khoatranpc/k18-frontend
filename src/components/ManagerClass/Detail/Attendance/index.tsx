@@ -58,9 +58,6 @@ const Attendace = (props: Props) => {
         {
             title: 'Giáo viên',
             dataIndex: 'classSessionId',
-            render(value, record, index) {
-                return value.bookTeacher.teacherRegister[0] || ''
-            },
         },
         {
             title: 'Vị trí',
@@ -71,10 +68,10 @@ const Attendace = (props: Props) => {
         },
         {
             title: 'Số giờ',
-            dataIndex: 'teachers',
+            dataIndex: 'hours',
             className: 'text-center',
             render(value, record, index) {
-                return value ? <SelectInputNumber className={styles.selectHours} inputClassName={styles.inputSelectHours} step={0.5} size='small' open={false} value={value.timeKeepingHours as number} /> : ''
+                return value ? <SelectInputNumber className={styles.selectHours} inputClassName={styles.inputSelectHours} step={0.5} size='small' open={false} value={value} max={3} /> : ''
             },
         },
         {

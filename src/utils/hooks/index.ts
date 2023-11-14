@@ -323,7 +323,7 @@ const useGetAttendanceTeacher = () => {
                     query: {
                         classId,
                         sessionNumber,
-                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId', 'bookTeacher']
+                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId', 'bookTeacher', 'hours']
                     }
                 }
             }
