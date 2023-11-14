@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
 import { ROLE_TEACHER } from '@/global/enum';
-import { useGetAttendanceTeacher } from '@/utils/hooks';
+import { useGenerateAttendanceTeacher, useGetAttendanceTeacher } from '@/utils/hooks';
 import useGetDataRoute from '@/utils/hooks/getDataRoute';
-import { formatDatetoString, generateRowDataForMergeRowSingleField, uuid } from '@/utils';
+import { formatDatetoString } from '@/utils';
+import { useHookMessage } from '@/utils/hooks/message';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { AppDispatch } from '@/store';
 import Table from '@/components/Table';
@@ -22,62 +24,49 @@ const Attendace = (props: Props) => {
     const [sessionNumber, setSessionNumber] = useState<number>(1);
     const getCrrDataRoute = useGetDataRoute();
     const attendance = useGetAttendanceTeacher();
+    const message = useHookMessage();
     const router = useRouter();
+    const generateAttendance = useGenerateAttendanceTeacher();
     const handleUpdateChecked = (classSessionId: string, teacherId: string) => {
 
     }
     const columns: Columns = [
         {
-            title: 'Buổi',
-            dataIndex: 'classSession',
-            onCell(data) {
-                return {
-                    rowSpan: data.rowSpan as number,
-                }
-            }
-        },
-        {
-            title: 'Ngày',
-            dataIndex: 'date',
-            render(value, record, index) {
-                return value ? formatDatetoString(value as Date, 'dd/MM/yyyy') : '';
-            },
-            onCell(data) {
-                return {
-                    rowSpan: data.rowSpan as number,
-                }
-            }
-        },
-        {
             title: 'Nhóm',
-            dataIndex: 'groupNumber',
+            dataIndex: 'classSessionId',
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,
                 }
+            },
+            render(value) {
+                return value.bookTeacher.groupNumber || ''
             }
         },
         {
             title: 'Cơ sở',
-            dataIndex: 'location',
+            dataIndex: 'classSessionId',
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,
                 }
+            },
+            render(value) {
+                return value.locationId.locationCode || ''
             }
         },
         {
             title: 'Giáo viên',
-            dataIndex: 'teachers',
+            dataIndex: 'classSessionId',
             render(value, record, index) {
-                return value ? value.teacher as string : ''
+                return value.bookTeacher.teacherRegister[0] || ''
             },
         },
         {
             title: 'Vị trí',
-            dataIndex: 'teachers',
+            dataIndex: 'classSessionId',
             render(value) {
-                return value ? <SelectRole size='small' title={mapRoleToString[value.role as ROLE_TEACHER]} /> : ''
+                return value.bookTeacher ? <SelectRole size='small' title={mapRoleToString[value.bookTeacher.teacherRegister[0].roleRegister as ROLE_TEACHER]} /> : ''
             },
         },
         {
@@ -97,20 +86,20 @@ const Attendace = (props: Props) => {
         },
         {
             title: 'Điểm danh',
-            dataIndex: 'teachers',
+            dataIndex: 'checked',
             className: 'text-center',
             render(value, record, index) {
-                return value ? <div className={styles.actionChecked}>
-                    <CheckCircleOutlined className={`${value.checked ? styles.active : styles.deactive} ${styles.iconCheck}`} />
-                    <CloseCircleOutlined className={`${!value.checked ? styles.active : styles.deactive} ${styles.iconCheck}`} />
-                </div> : ''
+                return <div className={styles.actionChecked}>
+                    <CheckCircleOutlined className={`${value ? styles.active : styles.deactive} ${styles.iconCheck}`} />
+                    <CloseCircleOutlined className={`${!value ? styles.active : styles.deactive} ${styles.iconCheck}`} />
+                </div>
             },
         }
     ];
     const rowData: RowData[] = (attendance.data.response?.data as Array<Obj>)?.map((item) => {
-        console.log(item);
         return {
-            key: item._id
+            key: item._id,
+            ...item
         }
     }) || [];
     // const mapData = generateRowDataForMergeRowSingleField(rowData, 'teachers');
@@ -128,9 +117,22 @@ const Attendace = (props: Props) => {
         dispatch(initDataRoute(payloadRoute));
         attendance.queryGetData(router.query.classId as string, sessionNumber)
     }, [sessionNumber]);
+    useEffect(() => {
+        if (generateAttendance.data.response) {
+            message.open({
+                content: generateAttendance.data.response.message as string,
+                type: generateAttendance.data.success ? 'success' : 'error'
+            });
+            generateAttendance.clear?.();
+            message.close();
+            if (generateAttendance.data.success) {
+                attendance.queryGetData(router.query.classId as string, sessionNumber)
+            }
+        }
+    }, [generateAttendance.data]);
     return (
         <div className={styles.attendaceDetailClass}>
-            <div className="listFilterBySession">
+            <div className={`listFilterBySession ${styles.topLevel}`}>
                 <span className={styles.pickSession}>
                     Buổi <SelectInputNumber
                         onHandlerNumber={(type) => {
@@ -153,9 +155,20 @@ const Attendace = (props: Props) => {
                             return `Buổi ${number}`
                         }}
                     />
+                    Ngày: {rowData[rowData.length - 1] ? formatDatetoString(new Date(rowData[rowData.length - 1].classSessionId.date as string), 'dd/MM/yyyy') : ''}
                 </span>
+                <Button
+                    loading={generateAttendance.data.isLoading}
+                    onClick={(() => {
+                        generateAttendance.query({
+                            body: {
+                                classId: router.query.classId as string
+                            }
+                        })
+                    })}>Tạo bản ghi chấm công</Button>
             </div>
             <Table
+                loading={attendance.data.isLoading}
                 bordered
                 disableDefaultPagination
                 columns={columns}

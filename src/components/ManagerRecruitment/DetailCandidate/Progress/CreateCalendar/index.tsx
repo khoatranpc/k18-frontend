@@ -39,7 +39,7 @@ const CreateCalendar = (props: Props) => {
                 query: {
                     fields: '_id,teName,positionTe,courseId,courseName,email',
                     findBy: 'email',
-                    email: valueFindTe
+                    value: valueFindTe
                 }
             });
         }

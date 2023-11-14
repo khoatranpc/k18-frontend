@@ -6,7 +6,7 @@ import { queryGetListCourse } from "@/store/reducers/course/listCourse.reducer";
 import { queryGetLocations } from "@/store/reducers/location/localtion.reducer";
 import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reducers/class/bookTeacher.reducer";
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
-import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
+import { clearDeatailClass, queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
 import { ComponentPage, ROLE_TEACHER, RoundProcess } from "@/global/enum";
 import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
@@ -53,6 +53,7 @@ import { clearCreateFeedbackClautid, queryCreateFeebackClautid } from "@/store/r
 import { queryGetFeebackClautid } from "@/store/reducers/candidateOnboard/getFeedbackClautid.reducer";
 import { clearQueryUpdateClassClautid, queryUpdateClassClautid } from "@/store/reducers/candidateOnboard/updateClassClautid.reducer";
 import { queryGetCalendar } from "@/store/reducers/candidateOnboard/getCalendarTest.reducer";
+import { clearGenerateAttendanceTeacher, queryGenerateAttendanceTeacher } from "@/store/reducers/class/generateAttendanceTeacher.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -87,7 +88,7 @@ const useGetLocations = () => {
     }
 }
 const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
-    data?: Obj;
+    data?: Action;
     query?: (params: string | Array<Obj>, fields?: Array<string>) => void;
     update?: (data: Obj, action: 'PUT' | 'DELETE' | 'UPDATE') => void;
     clear?: () => void;
@@ -159,8 +160,12 @@ const useDetailClass = (action: 'GET' | 'ADD' | 'UPDATE' | 'CLEAR'): BaseInterfa
                 },
             }
     }
+    const clear = () => {
+        dispatch(clearDeatailClass());
+    }
     return {
-        data: detailClass
+        data: detailClass,
+        clear: clear()
     }
 }
 const useHandleTeacherInRCBT = () => {
@@ -318,7 +323,7 @@ const useGetAttendanceTeacher = () => {
                     query: {
                         classId,
                         sessionNumber,
-                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId']
+                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId', 'bookTeacher']
                     }
                 }
             }
@@ -826,6 +831,7 @@ const useCreateFeedbackClautid = createHookQueryReducer('createFeedbackClautid',
 const useGetFeedbackClautid = createHookQueryReducer('getFeedbackClautid', queryGetFeebackClautid);
 const useUpdateClassClautid = createHookQueryReducer('updateClassClautid', queryUpdateClassClautid, clearQueryUpdateClassClautid);
 const useGetCalendarTest = createHookQueryReducer('getCalendarTest', queryGetCalendar);
+const useGenerateAttendanceTeacher = createHookQueryReducer('generateAttendanceTeacher', queryGenerateAttendanceTeacher, clearGenerateAttendanceTeacher);
 
 export {
     useGetListClass,
@@ -878,5 +884,6 @@ export {
     useCreateFeedbackClautid,
     useGetFeedbackClautid,
     useUpdateClassClautid,
-    useGetCalendarTest
+    useGetCalendarTest,
+    useGenerateAttendanceTeacher
 }

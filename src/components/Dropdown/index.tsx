@@ -3,6 +3,7 @@ import { Button, Dropdown as DropdownComponent, MenuProps } from 'antd';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
+import Loading from '../loading';
 
 export interface ClickItem {
     key: string;
@@ -25,6 +26,7 @@ interface Props {
     icon?: boolean;
     onOpenChange?: (open: boolean) => void;
     onClickItem?: (e: ClickItem, keyIndex?: string) => void;
+    loading?: boolean;
 }
 const Dropdown = (props: Props) => {
     const mapListSelect: any = props.listSelect?.map((item) => {
@@ -55,10 +57,9 @@ const Dropdown = (props: Props) => {
                 overlayClassName={props.overlayClassName}
             >
                 {typeof props.title === 'string' ?
-                    (<Button size={props.sizeButton}>{props.title} {props.icon && MapIconKey[KEY_ICON.CHEVROND]}</Button>) :
+                    (<Button loading={props.loading} size={props.sizeButton}>{props.title} {props.icon && MapIconKey[KEY_ICON.CHEVROND]}</Button>) :
                     (props.title)
                 }
-
             </DropdownComponent>
         </div>
     )

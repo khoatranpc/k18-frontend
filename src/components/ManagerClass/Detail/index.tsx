@@ -6,12 +6,12 @@ import { Obj } from '@/global/interface';
 import CombineRoute from '@/global/route';
 import { ComponentPage, STATUS_CLASS } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
-import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { useDetailClass } from '@/utils/hooks';
+import { useHookMessage } from '@/utils/hooks/message';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import Tabs from '@/components/Tabs';
 import OverView from './OverView';
-import Attendace from './Attendance';
+import Attendance from './Attendance';
 import FeedBack from './FeedBack';
 import ManagerGroup from './ManagerGroup';
 import Student from './Student';
@@ -20,12 +20,13 @@ import TextBook from './TextBook';
 import BookTeacher from './BookTeacher';
 import TitleHeader from '../TitleHeader';
 import styles from '@/styles/class/DetailClass.module.scss';
+import Loading from '@/components/loading';
 
 export enum TabDetailClass {
     OVERVIEW = 'OVERVIEW',
     STUDENT = 'STUDENT',
     MANAGER_GROUP = 'MANAGER_GROUP',
-    ATTENDACE = 'ATTENDACE',
+    ATTENDANCE = 'ATTENDANCE',
     TEXTBOOK = 'TEXTBOOK',
     SYLLABUS = 'SYLLABUS',
     FEEDBACK = 'FEEDBACK',
@@ -45,7 +46,7 @@ export const listTab: TabsProps['items'] = [
         label: 'Quản lý nhóm'
     },
     {
-        key: TabDetailClass.ATTENDACE,
+        key: TabDetailClass.ATTENDANCE,
         label: 'Điểm danh'
     },
     {
@@ -72,12 +73,12 @@ interface Props {
 const Detail = (props: Props) => {
     const router = useRouter();
     const dispatch = useDispatch();
-    const stateRoute = useGetDataRoute();
-    const { data, query } = useDetailClass('GET');
+    const message = useHookMessage();
+    const { data, query, clear } = useDetailClass('GET');
     const [currentContent, setCurrentContent] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);
     const getComponent: Record<TabDetailClass, React.ReactElement> = {
         OVERVIEW: <OverView />,
-        ATTENDACE: <Attendace />,
+        ATTENDANCE: <Attendance />,
         FEEDBACK: <FeedBack codeClassId={router.query.classId as string} />,
         MANAGER_GROUP: <ManagerGroup />,
         STUDENT: <Student />,
@@ -86,9 +87,7 @@ const Detail = (props: Props) => {
         BOOK_TEACHER: <BookTeacher classId={router.query.classId as string} />
     }
     useEffect(() => {
-        if (!stateRoute?.replaceTitle && !data.response) {
-            query?.(router.query.classId as string);
-        }
+        query?.(router.query.classId as string);
     }, []);
     useEffect(() => {
         switch (currentContent) {
@@ -120,12 +119,12 @@ const Detail = (props: Props) => {
                     dispatch(initDataRoute(payloadRoute));
                 }
                 break;
-            case TabDetailClass.ATTENDACE:
+            case TabDetailClass.ATTENDANCE:
                 const payloadRoute: PayloadRoute = {
                     payload: {
                         route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
                         title: 'Điểm danh',
-                        replaceTitle: <TitleHeader tabDetail={TabDetailClass.ATTENDACE} title={'Điểm danh'} />,
+                        replaceTitle: <TitleHeader tabDetail={TabDetailClass.ATTENDANCE} title={'Điểm danh'} />,
                         hasBackPage: true,
                         component: ComponentPage.ATTENDANCE_TEACHER_CLASS
                     }
@@ -148,6 +147,16 @@ const Detail = (props: Props) => {
                 break;
         }
     }, [currentContent, data]);
+    useEffect(() => {
+        if (data.response && !data.success) {
+            clear?.();
+            message.open({
+                content: `Không tìm thấy lớp học! ${data.response.message}`,
+                type: 'error'
+            });
+            message.close();
+        }
+    }, [data.response]);
     return (
         <div className={styles.detailClassContainer}>
             <Tabs
@@ -166,7 +175,12 @@ const Detail = (props: Props) => {
             }
 
             <div className={styles.containerMain}>
-                {getComponent[currentContent]}
+                {!data.response ? <Loading /> :
+                    (
+                        !data.response.data ? <h3 style={{ textAlign: 'center' }}>Không thấy thông tin lớp!</h3> :
+                            getComponent[currentContent]
+                    )
+                }
             </div>
         </div>
     )
