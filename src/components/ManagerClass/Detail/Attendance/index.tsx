@@ -6,7 +6,7 @@ import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
 import { ROLE_TEACHER } from '@/global/enum';
-import { useGenerateAttendanceTeacher, useGetAttendanceTeacher } from '@/utils/hooks';
+import { useGenerateAttendanceTeacher, useGetAttendanceTeacher, useListTeacher } from '@/utils/hooks';
 import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { formatDatetoString } from '@/utils';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -15,6 +15,7 @@ import { AppDispatch } from '@/store';
 import Table from '@/components/Table';
 import SelectInputNumber from '@/components/SelectInputNumber';
 import SelectRole from '@/components/SelectRole';
+import { destructureBookTeacher } from './config';
 import styles from '@/styles/class/DetailClass.module.scss'
 
 interface Props {
@@ -22,6 +23,7 @@ interface Props {
 }
 const Attendace = (props: Props) => {
     const [sessionNumber, setSessionNumber] = useState<number>(1);
+    const listTeacher = useListTeacher();
     const getCrrDataRoute = useGetDataRoute();
     const attendance = useGetAttendanceTeacher();
     const message = useHookMessage();
@@ -30,6 +32,7 @@ const Attendace = (props: Props) => {
     const handleUpdateChecked = (classSessionId: string, teacherId: string) => {
 
     }
+    const getListTeacher = (listTeacher.listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>;
     const columns: Columns = [
         {
             title: 'Nhóm',
@@ -57,13 +60,18 @@ const Attendace = (props: Props) => {
         },
         {
             title: 'Giáo viên',
-            dataIndex: 'classSessionId',
+            dataIndex: 'teacherId',
+            render(value, record) {
+                const findCurrentTeacher = getListTeacher?.find((item) => item._id === value);
+                return findCurrentTeacher?.fullName || ''
+            },
         },
         {
             title: 'Vị trí',
-            dataIndex: 'classSessionId',
-            render(value) {
-                return value.bookTeacher ? <SelectRole size='small' title={mapRoleToString[value.bookTeacher.teacherRegister[0].roleRegister as ROLE_TEACHER]} /> : ''
+            dataIndex: 'teacherId',
+            render(value, record) {
+                const findCrrBookTeacher = (record.teacherRegister as Obj[]).find((item) => item.idTeacher === value) as Obj;
+                return findCrrBookTeacher ? <SelectRole size='small' title={mapRoleToString[findCrrBookTeacher.roleRegister as ROLE_TEACHER]} /> : ''
             },
         },
         {
@@ -76,9 +84,12 @@ const Attendace = (props: Props) => {
         },
         {
             title: 'Lương',
-            dataIndex: 'teachers',
-            render(value, record, index) {
-                return value ? Number(value.salary).toLocaleString() : '';
+            dataIndex: 'teacherId',
+            render(value, record) {
+                const findCurrentTeacher = getListTeacher?.find((item) => item._id === value);
+                const getListSalary = findCurrentTeacher?.salaryPH as Obj[];
+                const getSalary = getListSalary[getListSalary.length - 1];
+                return getSalary && getSalary.rank ? `${Number(getSalary.rank).toLocaleString()}/h` : 'Chưa có mức lương'
             },
         },
         {
@@ -93,13 +104,13 @@ const Attendace = (props: Props) => {
             },
         }
     ];
-    const rowData: RowData[] = (attendance.data.response?.data as Array<Obj>)?.map((item) => {
+    const getData = destructureBookTeacher((attendance.data.response?.data as Array<Obj>));
+    const rowData: RowData[] = getData?.map((item, idx) => {
         return {
-            key: item._id,
+            key: idx.toString(),
             ...item
         }
-    }) || [];
-    // const mapData = generateRowDataForMergeRowSingleField(rowData, 'teachers');
+    });
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         const payloadRoute: PayloadRoute = {
@@ -127,6 +138,21 @@ const Attendace = (props: Props) => {
             }
         }
     }, [generateAttendance.data]);
+    useEffect(() => {
+        if (attendance.data.response) {
+            const listId: Obj = {};
+            rowData.forEach((item) => {
+                (item.teacherRegister as Obj[]).forEach((record) => {
+                    listId[record.idTeacher] = record.idTeacher;
+                });
+            });
+            const getListId = Object.keys(listId);
+            listTeacher.query(undefined, undefined, {
+                listTeacherId: getListId,
+                fields: ['_id', 'fullName', 'salaryPH']
+            });
+        }
+    }, [attendance.data.response]);
     return (
         <div className={styles.attendaceDetailClass}>
             <div className={`listFilterBySession ${styles.topLevel}`}>

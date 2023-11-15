@@ -354,7 +354,7 @@ const OverView = () => {
                 data: getDataClassSession.map((item, idx) => {
                     return {
                         title: `Buổi ${item.sessionNumber}: ${getWeekday((new Date(item.date as Date)).getDay())} - ${formatDatetoString(item.date as Date, 'dd/MM')}`,
-                        value: []
+                        value: ['']
                     }
                 })
             }
@@ -439,7 +439,7 @@ const OverView = () => {
                     <div className={styles.link}>{MapIconKey[KEY_ICON.DRIVE]} Link Record lớp</div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
