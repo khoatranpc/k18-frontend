@@ -1,19 +1,20 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
-import { Popover, DatePicker } from 'antd';
+import { Popover, DatePicker, Button } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Action, Obj, Query } from '@/global/interface';
-import { KEY_ICON, ROLE_TEACHER, STATUS_CLASS, Weekday } from '@/global/enum';
+import { KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
-import { getColorFromStatusClass, getOrderWeekday, mapStatusToString } from '@/global/init';
+import { getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { formatDatetoString, getWeekday, uuid } from '@/utils';
-import { useClassSession, useDetailClass, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
+import { useClassSession, useDetailClass, useFindGetAllTe, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import BlockNotifi from './BlockNotifi';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import { configDataClassSession } from './dataConfig';
 import Dropdown from '@/components/Dropdown';
 import SelectCourse from '@/components/SelectCourse';
+import Loading from '@/components/loading';
 import styles from '@/styles/class/DetailClass.module.scss';
 
 export interface ItemOverView {
@@ -29,6 +30,10 @@ const OverView = () => {
     const router = useRouter();
     const bookTeacherRQ = useQueryBookTeacher('GET');
     const detailClass = useDetailClass('GET');
+    const listTe = useFindGetAllTe();
+
+    const getCurrentCourse = (detailClass.data.response?.data as Obj)?.courseId as Obj;
+    const getTe = (listTe.data.response as Obj)?.data as Array<Obj> || [];
     const classSession = useClassSession();
     const updatedClassBasicInfor = useUpdateClassBasicInfor();
 
@@ -123,15 +128,26 @@ const OverView = () => {
             data: [
                 {
                     title: 'Giảng viên',
-                    value: getSt.map((item) => item.fullName as string) as Array<string>
+                    value: !bookTeacherRQ.data?.response || bookTeacherRQ.data?.isLoading ? [<Loading key={uuid()} />] : getSt.map((item) => item.fullName as string) as Array<string>
                 },
                 {
                     title: 'Mentor',
-                    value: getMt.map((item) => item.fullName as string)
+                    value: !bookTeacherRQ.data?.response || bookTeacherRQ.data?.isLoading ? [<Loading key={uuid()} />] : getMt.map((item) => item.fullName as string)
                 },
                 {
                     title: 'Assistant',
-                    value: ['Ngọc Tân', 'Ngọc Tân', 'Ngọc Tân', 'Ngọc Tân', 'Ngọc Tân', 'Ngọc Tân']
+                    value: (!listTe.data.response || listTe.data.isLoading) ? [<Loading key={uuid()} />] : getTe?.map((item) => {
+                        return <span key={uuid()}>
+                            {item.teName as string}
+                            <Popover
+                                content={<span>TE {item.positionTe as string}-{item.courseId?.courseName as string}</span>}
+                            >
+                                <sup className={styles.supI} style={{ cursor: 'pointer', width: '5px', fontSize: '-0.25em', marginLeft: '2px' }}>
+                                    <InfoCircleOutlined style={{ color: '#BB0409' }} />
+                                </sup>
+                            </Popover>
+                        </span>
+                    })
                 },
                 {
                     title: 'Team phụ trách',
@@ -226,7 +242,7 @@ const OverView = () => {
                             activeClass={styles.activeStatus}
                             className={styles.handleStatus}
                             trigger='click'
-                            title={<span className="display-block status" key={uuid()} style={{ backgroundColor: getColorFromStatusClass[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN] }}>{mapStatusToString[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN]}</span>}
+                            title={<Button loading={updatedClassBasicInfor.updated.isLoading} className={`display-block status ${styles.changeStatus}`} key={uuid()} style={{ backgroundColor: getColorFromStatusClass[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN] }}>{mapStatusToString[dataDetailClass?.data?.status as STATUS_CLASS || STATUS_CLASS.PREOPEN]}</Button>}
                             listSelect={
                                 [
                                     {
@@ -338,7 +354,7 @@ const OverView = () => {
                 data: getDataClassSession.map((item, idx) => {
                     return {
                         title: `Buổi ${item.sessionNumber}: ${getWeekday((new Date(item.date as Date)).getDay())} - ${formatDatetoString(item.date as Date, 'dd/MM')}`,
-                        value: []
+                        value: ['']
                     }
                 })
             }
@@ -363,6 +379,17 @@ const OverView = () => {
         }
     }, [updatedClassBasicInfor]);
 
+    useEffect(() => {
+        if (detailClass.data.response && detailClass.data.response.data) {
+            listTe.query({
+                query: {
+                    fields: '_id,teName,positionTe,courseId,courseName,email',
+                    findBy: 'courseId',
+                    value: getCurrentCourse._id as string
+                }
+            })
+        }
+    }, [detailClass.data.response]);
     return (
         <div className={`${styles.overViewDetailClass} ${styles.flex1} overViewDetaiClass`}>
             <div className={`${styles.colLeft} col`}>
@@ -379,9 +406,9 @@ const OverView = () => {
                                         <p className="hover color-base">
                                             {data.title}
                                         </p>
-                                        {data.value.map((value, crrIdxValue) => {
+                                        {data.value.length ? data.value.map((value, crrIdxValue) => {
                                             return <span key={crrIdxValue} className={styles.text}>{value} {item.key !== 'adm' && <br />}</span>
-                                        })}
+                                        }) : 'Chưa có dữ liệu'}
                                     </div>
                                 })}
                             </div>
@@ -412,7 +439,7 @@ const OverView = () => {
                     <div className={styles.link}>{MapIconKey[KEY_ICON.DRIVE]} Link Record lớp</div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 

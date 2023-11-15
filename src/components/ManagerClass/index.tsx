@@ -86,11 +86,11 @@ const ManagerClass = () => {
         let crrST = '';
         (item.recordBookTeacher as Array<Obj>)!.find((rc) => {
             const findST = (rc.teacherRegister as Array<Obj>)?.find((rcTc) => {
-                return (rcTc?.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.ST || rcTc?.accept
+                return (rcTc?.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.ST
             });
             crrST = findST?.idTeacher?.fullName || '';
             return findST;
-        })
+        });
         return {
             key: item._id as string,
             codeClass: item.codeClass,

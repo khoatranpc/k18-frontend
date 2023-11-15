@@ -46,10 +46,10 @@ export interface TabRoute {
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 
 }
-export interface RowData extends Record<string, unknown> {
+export interface RowData extends Record<string, any> {
     key: string;
 }
-export interface BaseInterfaceHookReducer {
+export interface BaseInterfaceHookReducer extends Obj {
     data: Obj | Action;
     query?: (params: string | Array<string> | Obj) => void;
 }

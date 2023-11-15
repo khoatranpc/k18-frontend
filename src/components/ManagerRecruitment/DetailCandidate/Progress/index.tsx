@@ -39,7 +39,7 @@ const listRound = [{
     title: 'Dạy thử'
 }, {
     round: RoundProcess.DONE,
-    title: 'Phân loại'
+    title: 'Kết thúc'
 }];
 const Progress = () => {
     const [loading, setLoading] = useState<boolean>(true);

@@ -57,7 +57,7 @@ import createFeedbackClautid from './candidateOnboard/createFeedbackClautid.redu
 import getFeedbackClautid from './candidateOnboard/getFeedbackClautid.reducer';
 import updateClassClautid from './candidateOnboard/updateClassClautid.reducer';
 import getCalendarTest from './candidateOnboard/getCalendarTest.reducer';
-
+import generateAttendanceTeacher from './class/generateAttendanceTeacher.reducer';
 const rootReducer = {
     test: test,
     message: message,
@@ -117,6 +117,7 @@ const rootReducer = {
     createFeedbackClautid,
     getFeedbackClautid,
     updateClassClautid,
-    getCalendarTest
+    getCalendarTest,
+    generateAttendanceTeacher
 };
 export default rootReducer;
