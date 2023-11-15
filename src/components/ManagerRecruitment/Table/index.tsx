@@ -61,6 +61,7 @@ const TableRecruitment = () => {
             title: 'Bộ môn',
             dataIndex: 'courseApply',
             render(value) {
+                console.log(value.courseName);
                 return <div className={styles.subject} style={{ backgroundColor: getColorByCourseName[value.courseName] }}>
                     {value.courseName}
                 </div> || ''
