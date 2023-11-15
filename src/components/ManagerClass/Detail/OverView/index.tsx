@@ -128,16 +128,16 @@ const OverView = () => {
             data: [
                 {
                     title: 'Giảng viên',
-                    value: !bookTeacherRQ.data?.response || bookTeacherRQ.data?.isLoading ? [<Loading />] : getSt.map((item) => item.fullName as string) as Array<string>
+                    value: !bookTeacherRQ.data?.response || bookTeacherRQ.data?.isLoading ? [<Loading key={uuid()} />] : getSt.map((item) => item.fullName as string) as Array<string>
                 },
                 {
                     title: 'Mentor',
-                    value: !bookTeacherRQ.data?.response || bookTeacherRQ.data?.isLoading ? [<Loading />] : getMt.map((item) => item.fullName as string)
+                    value: !bookTeacherRQ.data?.response || bookTeacherRQ.data?.isLoading ? [<Loading key={uuid()} />] : getMt.map((item) => item.fullName as string)
                 },
                 {
                     title: 'Assistant',
-                    value: (!listTe.data.response || listTe.data.isLoading) ? [<Loading />] : getTe?.map((item) => {
-                        return <span>
+                    value: (!listTe.data.response || listTe.data.isLoading) ? [<Loading key={uuid()} />] : getTe?.map((item) => {
+                        return <span key={uuid()}>
                             {item.teName as string}
                             <Popover
                                 content={<span>TE {item.positionTe as string}-{item.courseId?.courseName as string}</span>}
