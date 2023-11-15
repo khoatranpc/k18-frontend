@@ -71,7 +71,7 @@ const FeedbackClautid = () => {
             title: 'Lớp',
             dataIndex: 'classId',
             render(value, record, index) {
-                return value.codeClass
+                return value?.codeClass || ''
             },
         },
         {
@@ -89,8 +89,8 @@ const FeedbackClautid = () => {
         {
             title: 'Cơ sở',
             dataIndex: 'location',
-            render(value, record) {
-                return record.form === ClassForm.ONLINE ? <a>Zoom</a> : <p>{value.locationCode} <Tooltip title={value.locationDetail}><sup className={styles.sup}>i</sup></Tooltip></p>
+            render(value: Obj, record) {
+                return value ? (record.form === ClassForm.ONLINE ? <a>Zoom</a> : <p>{value.locationCode} <Tooltip title={value.locationDetail}><sup className={styles.sup}>i</sup></Tooltip></p>) : ''
             }
         },
         {
@@ -160,21 +160,21 @@ const FeedbackClautid = () => {
     useEffect(() => {
         candidateClautid.query({
             query: {
-                candidateId: getCandidateInfo._id
+                candidateId: getCandidateInfo?._id
             }
         });
     }, []);
     useEffect(() => {
         if (candidateClautid.data.response && candidateClautid.data.response) {
-            if (getCandidateClautid.classIdFirst._id) {
+            if (getCandidateClautid?.classIdFirst?._id) {
                 listClassIdClautid.push(getCandidateClautid.classIdFirst._id as string);
             }
-            if (getCandidateClautid.classIdSecond._id) {
+            if (getCandidateClautid?.classIdSecond?._id) {
                 listClassIdClautid.push(getCandidateClautid.classIdSecond._id as string);
             }
             feedbackClautid.query({
                 query: {
-                    listCandidateId: [getCandidateInfo._id].toString(),
+                    listCandidateId: [getCandidateInfo?._id].toString(),
                     listClassId: listClassIdClautid.toString()
                 }
             });

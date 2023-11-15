@@ -83,7 +83,7 @@ const ModalRegisterClass = (props: Props) => {
     });
 
     useEffect(() => {
-        if (updateClassClautidInfo.data.response) {
+        if (updateClassClautidInfo.data.response && updateClassClautidInfo.data.success) {
             message.open({
                 content: updateClassClautidInfo.data.response.message as string,
                 type: updateClassClautidInfo.data.success ? 'success' : 'error'
@@ -99,7 +99,7 @@ const ModalRegisterClass = (props: Props) => {
     }, [updateClassClautidInfo.data]);
 
     useEffect(() => {
-        if (registerClautid.data.response) {
+        if (registerClautid.data.response && registerClautid.data.success) {
             message.open({
                 content: registerClautid.data.response.message as string,
                 type: registerClautid.data.success ? 'success' : 'error'
@@ -107,7 +107,7 @@ const ModalRegisterClass = (props: Props) => {
             registerClautid.clear?.();
             candidateClautid.query({
                 query: {
-                    candidateId: getCandidateInfo._id
+                    candidateId: getCandidateInfo?._id
                 }
             });
             message.close();
