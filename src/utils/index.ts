@@ -151,7 +151,7 @@ const createHookQueryReducer = (reducer: keyof RootState, queryThunk: Function, 
     return () => {
         const data = useSelector((state: RootState) => (state[reducer] as State).state);
         const dispatch = useDispatch<AppDispatch>();
-        const query = (query: Query) => {
+        const query = (query?: Query) => {
             const payload: Action = {
                 payload: {
                     query

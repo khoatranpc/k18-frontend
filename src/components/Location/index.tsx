@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tabs from '../Tabs';
 import { TabsProps } from 'antd';
-import { Columns, RowData } from '@/global/interface';
+import { Columns, Obj, RowData } from '@/global/interface';
+import { useGetLocations } from '@/utils/hooks';
 import ToolBar from '../Tabs/ToolBar';
 import ModalCustomize from '../ModalCustomize';
 import Table from '../Table';
 import CreateLocation from './CreateLocation';
 import ManagerLocationContext from './context';
 import styles from '@/styles/class/Class.module.scss';
-
-
 
 
 const area: TabsProps['items'] = [
@@ -56,23 +55,6 @@ const columns: Columns = [
     }
 ];
 
-const dataSource: RowData[] = [
-    {
-        key: 'eeeee',
-        locationCode: 'HĐT',
-        locationName: 'Hoàng Đạo Thuý',
-        locationDetail: 'Tầng 4, Tòa B3.7 Hacinco, Hoàng Đạo Thúy, Quận Thanh Xuân, Hà Nội',
-        locationArea: "Hà Nội"
-    },
-    {
-        key: 'aaaa',
-        locationCode: 'TC',
-        locationName: 'Thành Công',
-        locationDetail: 'Tầng 6, Tòa nhà Chigamex 22C Thành Công, Phường Thành Công, Quận Ba Đình, Hà Nội',
-        locationArea: "Hà Nội"
-    },
-];
-
 
 const Location = () => {
 
@@ -86,9 +68,18 @@ const Location = () => {
         crrKeyTab: area[0].key,
         listFieldFilter: [],
     });
+    const locations = useGetLocations();
 
     const [openModal, setOpenModal] = useState<boolean>(false);
-
+    const rowData: RowData[] = (locations.locations?.data as Obj[])?.map((item) => {
+        return {
+            key: item._id as string,
+            ...item
+        }
+    })
+    useEffect(() => {
+        locations.queryLocations();
+    }, []);
     return (
         <div >
             <Tabs listItemTab={area} activeKey={storeManagerLocation.crrKeyTab} onClickTab={(key) => {
@@ -106,12 +97,13 @@ const Location = () => {
                     setOpenModal(true);
                 }}
                 iconReload
-                enableFilter
+                // enableFilter
             />
             <Table
+                loading={locations.state.isLoading}
                 className={styles.tableMangerClass}
                 columns={columns}
-                rowData={dataSource}
+                rowData={rowData}
                 enableRowSelection
                 disableDefaultPagination
             />

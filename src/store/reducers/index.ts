@@ -58,6 +58,8 @@ import getFeedbackClautid from './candidateOnboard/getFeedbackClautid.reducer';
 import updateClassClautid from './candidateOnboard/updateClassClautid.reducer';
 import getCalendarTest from './candidateOnboard/getCalendarTest.reducer';
 import generateAttendanceTeacher from './class/generateAttendanceTeacher.reducer';
+import area from './location/area.reducer';
+import createArea from './location/createArea.reducer';
 const rootReducer = {
     test: test,
     message: message,
@@ -118,6 +120,8 @@ const rootReducer = {
     getFeedbackClautid,
     updateClassClautid,
     getCalendarTest,
-    generateAttendanceTeacher
+    generateAttendanceTeacher,
+    area,
+    createArea
 };
 export default rootReducer;

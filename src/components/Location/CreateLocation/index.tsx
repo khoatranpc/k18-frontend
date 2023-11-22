@@ -50,13 +50,12 @@ const CreateLocation = (props: Props) => {
                         keyIndex='weekdayTwice'
                         title={area ? area : 'Chọn khu vực'}
                         onClickItem={(e) => {
-                            const label = locationList.find((item)=>item.key === e.key);
+                            const label = locationList.find((item) => item.key === e.key);
                             setArea(label?.label as string);
                         }}
                     />
                 </Form.Group>
-                <Button  htmlType='submit' className={styles.fl_r}>Tạo lớp</Button>
-
+                <Button htmlType='submit' className={styles.fl_r}>Tạo lớp</Button>
             </Form>
         </div >
     )

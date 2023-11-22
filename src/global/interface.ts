@@ -39,7 +39,7 @@ export interface TabRoute {
     disable?: boolean;
     replaceTitle?: React.ReactElement | string;
     noReplaceTitle?: boolean;
-    component: ComponentPage;
+    component?: ComponentPage;
     notRouting?: boolean;
     className?: string;
 }

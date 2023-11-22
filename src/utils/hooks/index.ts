@@ -54,6 +54,8 @@ import { queryGetFeebackClautid } from "@/store/reducers/candidateOnboard/getFee
 import { clearQueryUpdateClassClautid, queryUpdateClassClautid } from "@/store/reducers/candidateOnboard/updateClassClautid.reducer";
 import { queryGetCalendar } from "@/store/reducers/candidateOnboard/getCalendarTest.reducer";
 import { clearGenerateAttendanceTeacher, queryGenerateAttendanceTeacher } from "@/store/reducers/class/generateAttendanceTeacher.reducer";
+import { queryArea } from "@/store/reducers/location/area.reducer";
+import { clearCreateArea, queryCreateArea } from "@/store/reducers/location/createArea.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -84,6 +86,7 @@ const useGetLocations = () => {
     }
     return {
         locations: locations.response as Obj,
+        state: locations,
         queryLocations
     }
 }
@@ -832,6 +835,8 @@ const useGetFeedbackClautid = createHookQueryReducer('getFeedbackClautid', query
 const useUpdateClassClautid = createHookQueryReducer('updateClassClautid', queryUpdateClassClautid, clearQueryUpdateClassClautid);
 const useGetCalendarTest = createHookQueryReducer('getCalendarTest', queryGetCalendar);
 const useGenerateAttendanceTeacher = createHookQueryReducer('generateAttendanceTeacher', queryGenerateAttendanceTeacher, clearGenerateAttendanceTeacher);
+const useGetArea = createHookQueryReducer('area', queryArea);
+const useCreateArea = createHookQueryReducer('createArea', queryCreateArea, clearCreateArea);
 
 export {
     useGetListClass,
@@ -885,5 +890,7 @@ export {
     useGetFeedbackClautid,
     useUpdateClassClautid,
     useGetCalendarTest,
-    useGenerateAttendanceTeacher
+    useGenerateAttendanceTeacher,
+    useGetArea,
+    useCreateArea
 }
