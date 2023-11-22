@@ -3,7 +3,6 @@ import { Button, Dropdown as DropdownComponent, MenuProps } from 'antd';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
-import Loading from '../loading';
 
 export interface ClickItem {
     key: string;

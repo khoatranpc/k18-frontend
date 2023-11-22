@@ -21,6 +21,7 @@ const CombineRoute = {
     SETTING: "/te/setting",
     HELP: "/te/help",
     LOCATION: "/te/location",
+    AREA: "/te/area",
     TIMESCHEDULE: "/te/timeschedule",
   },
   TEACHER: {

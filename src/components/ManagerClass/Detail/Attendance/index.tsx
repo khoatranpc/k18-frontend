@@ -88,7 +88,7 @@ const Attendace = (props: Props) => {
             render(value, record) {
                 const findCurrentTeacher = getListTeacher?.find((item) => item._id === value);
                 const getListSalary = findCurrentTeacher?.salaryPH as Obj[];
-                const getSalary = getListSalary[getListSalary.length - 1];
+                const getSalary = getListSalary?.[getListSalary?.length - 1];
                 return getSalary && getSalary.rank ? `${Number(getSalary.rank).toLocaleString()}/h` : 'Chưa có mức lương'
             },
         },
