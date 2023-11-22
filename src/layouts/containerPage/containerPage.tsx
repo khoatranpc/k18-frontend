@@ -145,7 +145,6 @@ const ContainerPage = (props: Props) => {
                                 ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
                                     :
                                     ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER)
-
                             }
                         </span>
                     </div>
