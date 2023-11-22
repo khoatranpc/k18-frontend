@@ -41,12 +41,14 @@ const Popup = (props: Props) => {
         }
     });
     const handleCreateCourse = (body: Obj) => {
-        createCourse.query(body);
+        createCourse.query({
+            body
+        });
     }
     useEffect(() => {
         if (createCourse.data.response) {
             if (!createCourse.data.success) {
-                createCourse.clear();
+                createCourse.clear?.();
             } else {
                 setStep(true);
             }
@@ -57,7 +59,7 @@ const Popup = (props: Props) => {
             message.close();
         }
         return () => {
-            createCourse.clear();
+            createCourse.clear?.();
         }
     }, [createCourse.data.response]);
     return (

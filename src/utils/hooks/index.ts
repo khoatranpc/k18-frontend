@@ -692,28 +692,7 @@ const useCreateCandidate = () => {
         clear
     }
 }
-const useCreateCourse = () => {
-    const data = useSelector((state: RootState) => (state.createCourse as State).state);
-    const dispatch = useDispatch();
-    const query = (body: Obj) => {
-        const payload: Action = {
-            payload: {
-                query: {
-                    body
-                }
-            }
-        }
-        dispatch(queryCreateCourse(payload));
-    }
-    const clear = () => {
-        dispatch(clearCreateCourse());
-    }
-    return {
-        data,
-        query,
-        clear
-    }
-}
+const useCreateCourse = createHookQueryReducer('createCourse', queryCreateCourse, clearCreateCourse);
 const useGetDetailCourse = () => {
     const data = useSelector((state: RootState) => (state.detailCourse as State).state);
     const dispatch = useDispatch();
