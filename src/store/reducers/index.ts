@@ -11,7 +11,7 @@ import detailCourse from './course/detailCourse.reducer';
 import createLevelCourse from './course/createLevelCourse.reducer';
 import updateLevelCourse from './course/updateLevelCourse.reducer';
 import updateCourse from './course/updateCourse.reducer';
-import timeSchedule from './timeSchedule.reducer';
+import timeSchedule from './timeschedule/timeSchedule.reducer';
 import createClass from './class/createClass.reducer';
 import bookTeacher from './class/bookTeacher.reducer';
 import addRequestBookTeacher from './class/addRequestBookTeacher.reducer';
@@ -129,6 +129,6 @@ const rootReducer = {
     createArea,
     updateArea,
     updateLocation,
-    createLocation
+    createLocation,
 };
 export default rootReducer;

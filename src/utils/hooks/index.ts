@@ -59,15 +59,13 @@ import { clearCreateArea, queryCreateArea } from "@/store/reducers/location/crea
 import { clearUpdateArea, queryUpdateArea } from "@/store/reducers/location/updateArea.reducer";
 import { clearUpdateLocation, queryUpdateLocation } from "@/store/reducers/location/updateLocation.reducer";
 import { clearCreateLocation, queryCreateLocation } from "@/store/reducers/location/createLocation.reducer";
+import { queryGetListTimeSchedule } from "@/store/reducers/timeschedule/timeSchedule.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
     return listClass;
 };
-const useGetTimeSchedule = () => {
-    const listTimeSchedule = useSelector((state: RootState) => (state.timeSchedule as State).state);
-    return listTimeSchedule.response as Obj;
-}
+const useGetTimeSchedule = createHookQueryReducer('timeSchedule', queryGetListTimeSchedule);
 const useGetListCourse = () => {
     const listCourse = useSelector((state: RootState) => (state.listCourse as State).state);
     const dispatch = useDispatch<AppDispatch>();
