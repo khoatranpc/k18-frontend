@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentPage, KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from "./enum";
+import { ComponentPage, KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from "./enum";
 import { TableColumnsType } from "antd";
 import { StatusEvent } from "@/components/Calendar/Note/styles";
 
@@ -40,6 +40,7 @@ export interface TabRoute {
     replaceTitle?: React.ReactElement | string;
     noReplaceTitle?: boolean;
     component?: ComponentPage;
+    positionTE?: PositionTe;
     notRouting?: boolean;
     className?: string;
 }

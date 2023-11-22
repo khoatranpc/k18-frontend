@@ -3,7 +3,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Input } from 'antd';
 import { Form } from 'react-bootstrap';
-import { useCreateLevelCourse, useUpdateLevelCourse } from '@/utils/hooks';
+import { PositionTe } from '@/global/enum';
+import { useComparePositionTE, useCreateLevelCourse, useUpdateLevelCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import ModalCustomize from '@/components/ModalCustomize';
 import styles from '@/styles/course/ManagerCourse.module.scss';
@@ -28,6 +29,7 @@ const validationSchema = yup.object({
 const PopupLevel = (props: Props) => {
     const createLevelCourse = useCreateLevelCourse();
     const updateLevelCourse = useUpdateLevelCourse();
+    const hasRole = useComparePositionTE(PositionTe.LEADER);
     const message = useHookMessage();
     const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {
@@ -40,16 +42,18 @@ const PopupLevel = (props: Props) => {
         },
         validationSchema,
         onSubmit(values) {
-            if (props.isCreate) {
-                createLevelCourse.query(values);
-            } else {
-                const data = {
-                    levelCode: values.levelCode,
-                    textbook: values.textbook,
-                    levelNumber: values.levelNumber,
-                    levelName: values.levelName
+            if (hasRole) {
+                if (props.isCreate) {
+                    createLevelCourse.query(values);
+                } else {
+                    const data = {
+                        levelCode: values.levelCode,
+                        textbook: values.textbook,
+                        levelNumber: values.levelNumber,
+                        levelName: values.levelName
+                    }
+                    updateLevelCourse.query(data, values.levelId);
                 }
-                updateLevelCourse.query(data, values.levelId);
             }
         }
     });
@@ -111,15 +115,18 @@ const PopupLevel = (props: Props) => {
                         <Input type="text" name="textbook" value={values.textbook} placeholder="Giáo trình" size="small" onBlur={handleBlur} onChange={handleChange} className={styles.input} />
                         {errors.textbook && touched.textbook && <p className="error">{errors.textbook}</p>}
                     </Form.Group>
-                    <div className={styles.btn}>
-                        <Button
-                            htmlType="submit"
-                            size="small"
-                            loading={props.isCreate ? createLevelCourse.data.isLoading : (updateLevelCourse.data.isLoading)}
-                        >
-                            {props.isCreate ? 'Lưu' : 'Cập nhật'}
-                        </Button>
-                    </div>
+                    {
+                        hasRole &&
+                        <div className={styles.btn}>
+                            <Button
+                                htmlType="submit"
+                                size="small"
+                                loading={props.isCreate ? createLevelCourse.data.isLoading : (updateLevelCourse.data.isLoading)}
+                            >
+                                {props.isCreate ? 'Lưu' : 'Cập nhật'}
+                            </Button>
+                        </div>
+                    }
                 </Form>
             </div>
         </ModalCustomize>

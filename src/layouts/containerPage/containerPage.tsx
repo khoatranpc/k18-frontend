@@ -29,6 +29,7 @@ const ContainerPage = (props: Props) => {
     const getRolePage = (props.children.type as Obj).Role as ROLE_USER;
     const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
+    const getUser = crrUser.response?.data as Obj;
     const crrRole = (crrUser.response as Obj)?.data.roleAccount as ROLE_USER;
     const course = useGetListCourse();
     const mappingTab = tabForRole[crrRole];
@@ -118,7 +119,7 @@ const ContainerPage = (props: Props) => {
                 <div className={styles.listTabLink}>
                     {
                         mappingTab?.map((item) => {
-                            return !item.disable && <Link
+                            return !item.disable && (item.positionTE ? getUser.position === item.positionTE : true) && <Link
                                 key={item.key}
                                 href={item.route}
                                 className={`${router.route === item.route || router.route.includes(item.route) ? styles.active : ''}`}

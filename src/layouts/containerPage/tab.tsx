@@ -1,4 +1,4 @@
-import { ComponentPage, KEY_ICON, ROLE_USER } from "@/global/enum";
+import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from "@/global/enum";
 import { TabRoute } from "@/global/interface";
 import { MapIconKey } from "@/global/icon";
 import CombineRoute from "@/global/route";
@@ -95,6 +95,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: CombineRoute["TE"]["OVERVIEW"],
       noReplaceTitle: true,
       component: ComponentPage.OVERVIEW,
+      positionTE: PositionTe.LEADER
     },
     {
       title: "Tuyển dụng",
@@ -187,7 +188,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       title: 'Cơ sở',
       noReplaceTitle: true,
       disable: true,
-    }, {
+    },
+    {
       route: CombineRoute["TE"]["AREA"],
       indexRoute: CombineRoute["TE"]["AREA"],
       component: ComponentPage.AREA,
@@ -298,6 +300,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       disable: false,
       component: ComponentPage.TEMPLATE_MAIL,
       noReplaceTitle: true,
+      positionTE: PositionTe.LEADER
     },
   ],
   TEACHER: [

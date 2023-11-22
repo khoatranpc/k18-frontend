@@ -3,14 +3,15 @@ import { Button } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import { Columns, Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
-import { KEY_ICON } from '@/global/enum';
-import { useGetListCourse } from '@/utils/hooks';
+import { KEY_ICON, PositionTe } from '@/global/enum';
+import { useComparePositionTE, useGetListCourse } from '@/utils/hooks';
 import { generateRowDataForMergeRowSingleField } from '@/utils';
 import Table from '@/components/Table';
 import Popup from '../Popup';
 import PopupDetailCourse from '../PopupDetailCourse';
 import PopupLevel from '../PopupLevel';
 import styles from '@/styles/course/ManagerCourse.module.scss';
+import useGetCrrUser from '@/utils/hooks/getUser';
 
 const initModal = {
     show: false,
@@ -24,6 +25,7 @@ const initModalDetail = {
 }
 const List = () => {
     const listCourse = useGetListCourse();
+    const hasRole = useComparePositionTE(PositionTe.LEADER);
     const [modal, setModal] = useState<{
         show: boolean;
         title: string;
@@ -163,7 +165,7 @@ const List = () => {
     }, []);
     return (
         <div className={`${styles.containerTable} tableCourse`}>
-            <div className={styles.reload}>
+            {hasRole && <div className={styles.reload}>
                 <Button
                     size="small"
                     className={`btn-toolbar mr-8`}
@@ -188,6 +190,7 @@ const List = () => {
                     <span>{MapIconKey[KEY_ICON.RELOAD]}</span>
                 </Button>
             </div>
+            }
             <Table
                 loading={listCourse.loading}
                 disableDefaultPagination

@@ -8,7 +8,7 @@ import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reduc
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
 import { clearDeatailClass, queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
-import { ComponentPage, ROLE_TEACHER, RoundProcess } from "@/global/enum";
+import { ComponentPage, PositionTe, ROLE_TEACHER, RoundProcess } from "@/global/enum";
 import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
 import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
 import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
@@ -822,6 +822,10 @@ const useGetDataRoundComments = () => {
         query
     }
 }
+const useComparePositionTE = (positionCompare: PositionTe) => {
+    const data = useSelector((state: RootState) => (state.crrUserInfo as State).state);
+    return (data.response?.data as Obj).position as PositionTe === positionCompare;
+}
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
 const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
@@ -901,5 +905,6 @@ export {
     useCreateArea,
     useUpdateArea,
     useUpdateLocation,
-    useCreateLocation
+    useCreateLocation,
+    useComparePositionTE
 }
