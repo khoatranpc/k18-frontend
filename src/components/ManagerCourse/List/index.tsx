@@ -68,6 +68,7 @@ const List = () => {
             key: 'COURSE',
             title: 'Khối',
             dataIndex: 'courseName',
+            className: `tdCourse`,
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,
