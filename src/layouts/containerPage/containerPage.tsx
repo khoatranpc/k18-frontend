@@ -139,7 +139,7 @@ const ContainerPage = (props: Props) => {
                 <div className={styles.badge}>
                     <Avatar size='large' />
                     <div className={styles.user}>
-                        <p>{(crrUser.response as Obj)?.data?.teName as string}</p>
+                        <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
                         <span className={styles.role}>
                             {
                                 ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
