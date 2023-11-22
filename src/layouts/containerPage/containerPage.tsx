@@ -119,7 +119,7 @@ const ContainerPage = (props: Props) => {
                 <div className={styles.listTabLink}>
                     {
                         mappingTab?.map((item) => {
-                            return !item.disable && (item.positionTE ? getUser.position === item.positionTE : true) && <Link
+                            return !item.disable && (item.positionTE ? getUser.positionTe === item.positionTE : true) && <Link
                                 key={item.key}
                                 href={item.route}
                                 className={`${router.route === item.route || router.route.includes(item.route) ? styles.active : ''}`}
