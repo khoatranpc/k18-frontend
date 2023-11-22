@@ -195,7 +195,7 @@ const BookTeacher = (props: Props) => {
     useEffect(() => {
         if (dataHandle.success && dataHandle.response) {
             query!(router.query.classId as string);
-            clear()
+            clear();
         }
     }, [dataHandle]);
     return (

@@ -8,8 +8,10 @@ import getDataRoute from './global-reducer/route';
 import listClass from './class/listClass.reducer';
 import listCourse from './course/listCourse.reducer';
 import detailCourse from './course/detailCourse.reducer';
-import createCourse from './course/createCourse.reducer';
-import timeSchedule from './timeSchedule.reducer';
+import createLevelCourse from './course/createLevelCourse.reducer';
+import updateLevelCourse from './course/updateLevelCourse.reducer';
+import updateCourse from './course/updateCourse.reducer';
+import timeSchedule from './timeschedule/timeSchedule.reducer';
 import createClass from './class/createClass.reducer';
 import bookTeacher from './class/bookTeacher.reducer';
 import addRequestBookTeacher from './class/addRequestBookTeacher.reducer';
@@ -38,6 +40,29 @@ import listResponseFeedbackForTeacher from './feedback/listResponseFeedbackForTe
 import recruitment from './recruitment/recruitment.reducer';
 import detailCandidate from './recruitment/detailCandidate.reducer';
 import createCandidate from './recruitment/createCandidate.reducer';
+import roundProcess from './recruitment/roundProcessCandidate.reducer';
+import roundComments from './recruitment/roundComment.reducer';
+import createComment from './recruitment/createComment.reducer';
+import updateDataRoundProcessCandidate from './recruitment/updateDataRound.reducer';
+import createDataRoundProcess from './recruitment/createDataRoundProcess.reducer';
+import getAllTe from './te/getTe.reducer';
+import mailTemplate from './mailTemplate/mailTemplate.reducer';
+import createMailTemplate from './mailTemplate/createMailTemplate.reducer';
+import updateMailTemplate from './mailTemplate/updateMailTemplate.reducer';
+import mailer from './mailer.reducer';
+import checkCandidateInfo from './candidateOnboard/checkCandidateInfo.reducer';
+import getRoundClautid from './candidateOnboard/getRoundClautid.reducer';
+import registerClautid from './candidateOnboard/registerClautid.reducer';
+import createFeedbackClautid from './candidateOnboard/createFeedbackClautid.reducer';
+import getFeedbackClautid from './candidateOnboard/getFeedbackClautid.reducer';
+import updateClassClautid from './candidateOnboard/updateClassClautid.reducer';
+import getCalendarTest from './candidateOnboard/getCalendarTest.reducer';
+import generateAttendanceTeacher from './class/generateAttendanceTeacher.reducer';
+import area from './location/area.reducer';
+import createArea from './location/createArea.reducer';
+import updateArea from './location/updateArea.reducer';
+import updateLocation from './location/updateLocation.reducer';
+import createLocation from './location/createLocation.reducer';
 
 const rootReducer = {
     test: test,
@@ -78,7 +103,32 @@ const rootReducer = {
     recruitment,
     detailCandidate,
     createCandidate,
-    createCourse,
-    detailCourse
+    detailCourse,
+    createLevelCourse,
+    updateCourse,
+    updateLevelCourse,
+    roundProcess,
+    roundComments,
+    createComment,
+    updateDataRoundProcessCandidate,
+    createDataRoundProcess,
+    getAllTe,
+    mailTemplate,
+    createMailTemplate,
+    updateMailTemplate,
+    mailer,
+    checkCandidateInfo,
+    getRoundClautid,
+    registerClautid,
+    createFeedbackClautid,
+    getFeedbackClautid,
+    updateClassClautid,
+    getCalendarTest,
+    generateAttendanceTeacher,
+    area,
+    createArea,
+    updateArea,
+    updateLocation,
+    createLocation,
 };
 export default rootReducer;

@@ -1,5 +1,5 @@
-import { clearMessage, openMessage } from "@/store/reducers/global-reducer/message";
 import { useDispatch } from "react-redux";
+import { clearMessage, openMessage } from "@/store/reducers/global-reducer/message";
 
 const useHookMessage = () => {
     const dispatch = useDispatch();

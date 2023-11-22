@@ -7,15 +7,14 @@ import viVN from 'antd/es/date-picker/locale/vi_VN';
 const { RangePicker } = DatePicker;
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useGetTimeSchedule } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch, RootState } from '@/store';
-import { queryGetListTimeSchedule } from '@/store/reducers/timeSchedule.reducer';
 import { clearCreateClass, queryCreateClass } from '@/store/reducers/class/createClass.reducer';
 import { Action, Obj, State } from '@/global/interface';
+import { useGetTimeSchedule } from '@/utils/hooks';
 import SelectCourse from '@/components/SelectCourse';
-import styles from '@/styles/class/CreateClass.module.scss';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
+import styles from '@/styles/class/CreateClass.module.scss';
 
 interface Props {
     onReceive?: (status: boolean) => void;
@@ -70,10 +69,10 @@ const CreateClass = (props: Props) => {
         }
     });
     useEffect(() => {
-        if (!listTimeSchedule) {
-            dispatch(queryGetListTimeSchedule());
+        if (!listTimeSchedule.data.response) {
+            listTimeSchedule.query();
         }
-    }, [listTimeSchedule, dispatch]);
+    }, [listTimeSchedule]);
     useEffect(() => {
         if (createClass && !createClass.isLoading && createClass.response) {
             if (createClass.success) {
@@ -163,7 +162,7 @@ const CreateClass = (props: Props) => {
                             <PickTimeSchedule
                                 className={styles.weekday}
                                 onClickItem={(e) => {
-                                    const findItem = (listTimeSchedule?.data as Array<Obj>)?.find((item) => item._id === e.key);
+                                    const findItem = (listTimeSchedule.data.response?.data as Array<Obj>)?.find((item) => item._id === e.key);
                                     setFieldValue('timeOnce', {
                                         _id: e.key,
                                         label: `${findItem!.weekday}: ${findItem!.start}-${findItem!.end}`
@@ -180,7 +179,7 @@ const CreateClass = (props: Props) => {
                             <PickTimeSchedule
                                 className={styles.weekday}
                                 onClickItem={(e) => {
-                                    const findItem = (listTimeSchedule?.data as Array<Obj>)?.find((item) => item._id === e.key);
+                                    const findItem = (listTimeSchedule.data.response?.data as Array<Obj>)?.find((item) => item._id === e.key);
                                     setFieldValue('timeTwice', {
                                         _id: e.key,
                                         label: `${findItem!.weekday}: ${findItem!.start}-${findItem!.end}`

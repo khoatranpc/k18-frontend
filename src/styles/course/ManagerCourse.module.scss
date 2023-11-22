@@ -30,36 +30,37 @@
         }
     }
 
-    .divFlex {
+    .cellCourseName {
         display: flex;
         align-items: center;
         gap: 0.8rem;
+
+        .icon {
+            color: var(--white);
+        }
     }
 
-    tr {
-        .divFlex {
-            .iconEye {
-                color: var(--white);
-            }
-        }
-
-        &:hover {
-            .divFlex {
-                .iconEye {
-                    color: var(--black);
-                }
+    tbody {
+        td.tdHover {
+            &:hover {
+                color: var(--base);
             }
         }
     }
 }
 
-.divBtn {
-    margin-top: 1.2rem;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+.containerPopupDetailCourse {
+    .btn {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+    }
+}
 
-    button:last-child {
-        margin-left: 0.8rem;
+.containerPopupLevel {
+    .btn {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: flex-end;
     }
 }

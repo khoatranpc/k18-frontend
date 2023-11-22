@@ -1,35 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tabs from '../Tabs';
-import { TabsProps } from 'antd';
-import { Columns, RowData } from '@/global/interface';
+import { Button, TabsProps } from 'antd';
+import { Columns, Obj, RowData } from '@/global/interface';
+import { useGetArea, useGetLocations } from '@/utils/hooks';
 import ToolBar from '../Tabs/ToolBar';
 import ModalCustomize from '../ModalCustomize';
 import Table from '../Table';
-import CreateLocation from './CreateLocation';
+import CreateLocation from './ModalLocation';
 import ManagerLocationContext from './context';
 import styles from '@/styles/class/Class.module.scss';
 
-
-
-
-const area: TabsProps['items'] = [
-    {
-        key: 'ALL_Location',
-        label: 'Tất cả',
-    },
-    {
-        key: 'HN',
-        label: `Hà Nội`,
-    },
-    {
-        key: 'HCM',
-        label: `Hồ Chí Minh`,
-    },
-    {
-        key: 'ĐN',
-        label: `Đà Nẵng`,
-    },
-]
 const columns: Columns = [
     {
         key: 'locationCode',
@@ -50,52 +30,74 @@ const columns: Columns = [
     },
     {
         key: 'locationArea',
-        dataIndex: 'locationArea',
+        dataIndex: 'area',
         title: 'Khu Vực',
-
+        render(value: Obj) {
+            return value ? value.name : ''
+        },
+    },
+    {
+        title: 'Trạng thái',
+        dataIndex: 'active',
+        className: 'text-center',
+        render(value) {
+            return <div className={`${value ? 'bgRunning' : 'bgStop'} ${styles.statusActive}`}>
+                {value ? 'Hoạt động' : 'Ngưng hoạt động'}
+            </div>
+        },
     }
-];
-
-const dataSource: RowData[] = [
-    {
-        key: 'eeeee',
-        locationCode: 'HĐT',
-        locationName: 'Hoàng Đạo Thuý',
-        locationDetail: 'Tầng 4, Tòa B3.7 Hacinco, Hoàng Đạo Thúy, Quận Thanh Xuân, Hà Nội',
-        locationArea: "Hà Nội"
-    },
-    {
-        key: 'aaaa',
-        locationCode: 'TC',
-        locationName: 'Thành Công',
-        locationDetail: 'Tầng 6, Tòa nhà Chigamex 22C Thành Công, Phường Thành Công, Quận Ba Đình, Hà Nội',
-        locationArea: "Hà Nội"
-    },
 ];
 
 
 const Location = () => {
+    const locations = useGetLocations();
+    const listArea = useGetArea();
+    const area: TabsProps['items'] = [
+        {
+            key: 'ALL_Location',
+            label: 'Tất cả',
+        },
+        ...listArea.data.response && listArea.data.response.data ? (listArea.data.response.data as Obj[]).map((item) => {
+            return {
+                key: item._id as string,
+                label: item.name as string
+            }
+        }) : []
+    ]
+    const [location, setLocation] = useState<string>(area[0].key);
 
-    const [storeManagerLocation, setStoreManagerLocation] = useState<{
-        crrKeyTab: string;
-        listFieldFilter: Array<{
-            key: string;
-            value: any;
-        }>
+    const [openModal, setOpenModal] = useState<{
+        isCreate: boolean,
+        show: boolean,
+        data?: Obj
     }>({
-        crrKeyTab: area[0].key,
-        listFieldFilter: [],
+        isCreate: false,
+        show: false,
+        data: undefined
     });
-
-    const [openModal, setOpenModal] = useState<boolean>(false);
-
+    const rowData: RowData[] = (locations.locations?.data as Obj[])?.map((item) => {
+        return {
+            key: item._id as string,
+            ...item
+        }
+    }) || [];
+    const handleFilterDataByArea = () => {
+        if (location === area[0].key) {
+            return rowData
+        } else {
+            return rowData.filter((item) => item.area._id === location)
+        }
+    }
+    useEffect(() => {
+        locations.queryLocations();
+        if (!listArea.data.response) {
+            listArea.query();
+        }
+    }, []);
     return (
         <div >
-            <Tabs listItemTab={area} activeKey={storeManagerLocation.crrKeyTab} onClickTab={(key) => {
-                setStoreManagerLocation({
-                    ...storeManagerLocation,
-                    crrKeyTab: key
-                })
+            <Tabs listItemTab={area} activeKey={location} onClickTab={(key) => {
+                setLocation(key);
             }} />
             <ToolBar
                 context={ManagerLocationContext}
@@ -103,28 +105,53 @@ const Location = () => {
                 createButton
                 exportCSVButton
                 onClickCreateButton={() => {
-                    setOpenModal(true);
+                    setOpenModal({
+                        isCreate: true,
+                        show: true,
+                        data: undefined
+                    });
+                }}
+                onClickReload={() => {
+                    listArea.query();
+                    locations.queryLocations();
                 }}
                 iconReload
-                enableFilter
             />
             <Table
+                loading={locations.state.isLoading}
                 className={styles.tableMangerClass}
                 columns={columns}
-                rowData={dataSource}
+                rowData={handleFilterDataByArea()}
+                hanldeClickRow={(record) => {
+                    setOpenModal({
+                        isCreate: false,
+                        show: true,
+                        data: record
+                    });
+                }}
                 enableRowSelection
                 disableDefaultPagination
             />
             {
-                openModal && <ModalCustomize
-                    show={openModal}
+                openModal.show && <ModalCustomize
+                    show={openModal.show}
                     modalHeader={<h2>Thêm cơ sở</h2>}
                     onHide={() => {
-                        setOpenModal(false);
+                        setOpenModal({
+                            isCreate: false,
+                            show: false,
+                            data: undefined
+                        });
                     }}
                     size='lg'
                 >
-                    <CreateLocation />
+                    <CreateLocation isCreate={openModal.isCreate} data={openModal.data} handleModal={() => {
+                        setOpenModal({
+                            isCreate: false,
+                            show: false,
+                            data: undefined
+                        });
+                    }} />
                 </ModalCustomize>
             }
         </div>

@@ -32,10 +32,7 @@ const ModalCustomize = (props: Props) => {
             >
                 {
                     props.modalHeader && <Modal.Header closeButton={!props.disableCloseButtonHeader}>
-                        <Modal.Title className={styles.modalTitle}>
-                            {props.modalHeader}
-                            {props.loading && <Loading />}
-                        </Modal.Title>
+                        <Modal.Title className={styles.modalHeader}>{props.modalHeader} {props.loading && <Loading className={styles.loading} />}</Modal.Title>
                     </Modal.Header>
                 }
 

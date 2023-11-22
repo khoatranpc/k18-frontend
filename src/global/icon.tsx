@@ -33,7 +33,6 @@ import iconDrive from '@/assets/svgs/icon-drive.svg';
 import iconReload from '@/assets/svgs/icon-reload.svg';
 import iconLocation from '@/assets/svgs/icon-location.svg';
 import iconEdit from '@/assets/svgs/icon-edit.svg';
-import iconClock from '@/assets/svgs/icon-clock.svg';
 import iconTick from '@/assets/svgs/icon-tick.svg';
 import chevronLCa from '@/assets/svgs/chevron-left-calendar.svg';
 import timeSchedule from '@/assets/svgs/icon-time-calendar.svg';
@@ -41,6 +40,8 @@ import iconRole from '@/assets/svgs/icon-role.svg';
 import iconHourClass from '@/assets/svgs/icon-hour-glass.svg';
 import iconTeacherFemale from '@/assets/svgs/icon-teacher-female.svg';
 import iconTeacherMale from '@/assets/svgs/icon-teacer-male.svg';
+import { MailOutlined } from "@ant-design/icons";
+import Clock from "@/icons/Clock";
 
 const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     OV: <Image alt="" src={iconOverView} />,
@@ -75,7 +76,7 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     RELOAD: <Image alt="" src={iconReload} />,
     LOCATION: <Image alt="" src={iconLocation} />,
     EDIT: <Image alt="" src={iconEdit} />,
-    CLOCK: < Image alt="" src={iconClock} />,
+    CLOCK: <Clock/>,
     TICK: < Image alt="" src={iconTick} />,
     CHEVRONLCAL: < Image alt="" src={chevronLCa} />,
     TIMESCHEDULE: < Image alt="" src={timeSchedule} />,
@@ -83,6 +84,7 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     HOURGLASS: < Image alt="" src={iconHourClass} />,
     TEACHER_FEMALE: < Image alt="" src={iconTeacherFemale} />,
     TEACHER_MALE: < Image alt="" src={iconTeacherMale} />,
+    MAIL: <MailOutlined />
 }
 export {
     MapIconKey

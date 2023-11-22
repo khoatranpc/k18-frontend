@@ -18,7 +18,11 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
     return createSlice({
         initialState: initState,
         name: nameState,
-        reducers: reducers || {},
+        reducers: reducers || {
+            clear(state) {
+                state.state = initState.state;
+            }
+        },
         ...asyncThunk ? {
             extraReducers(builder) {
                 builder.addCase(asyncThunk.pending, (state: any, _) => {

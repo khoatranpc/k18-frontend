@@ -1,7 +1,9 @@
 import { v4 as uid } from 'uuid';
 import { format } from 'date-fns';
-import { Obj, RowData } from '@/global/interface';
+import { Action, Obj, Query, RowData, State } from '@/global/interface';
 import { StatusProcessing, Weekday } from '@/global/enum';
+import { AppDispatch, RootState } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 const uuid = () => {
     return uid() as string;
@@ -137,13 +139,58 @@ const getColor3Point = (point: number) => {
 }
 const getColorByCourseName: Obj = {
     'Data': '#6792F4',
-    'Coding': '#DA4646'
+    'Coding': '#DA4646',
+    'UIUX': '#917EF1'
 }
 const getColorByStatusProcess: Record<StatusProcessing, string> = {
     DONE: '#69A84F',
     NOPROCESS: '#E06666',
     PROCESSING: '#F1C233'
 }
+const createHookQueryReducer = (reducer: keyof RootState, queryThunk: Function, clear?: Function) => {
+    return () => {
+        const data = useSelector((state: RootState) => (state[reducer] as State).state);
+        const dispatch = useDispatch<AppDispatch>();
+        const query = (query?: Query) => {
+            const payload: Action = {
+                payload: {
+                    query
+                }
+            }
+            dispatch(queryThunk(payload));
+        }
+        const clearReducer = () => {
+            dispatch(clear?.());
+        }
+        return {
+            data,
+            query,
+            ...clear ? { clear: clearReducer } : {}
+        }
+    }
+}
+const shortenName = (fullName: string) => {
+    const words = fullName?.split(' ');
+    if (words && words.length >= 2) {
+        const initials = words.map(word => word[0]).join('');
+
+        const lastName = words.slice(-1)[0].substring(1);
+        let str = '';
+        for (let i = 0; i < initials.length; i++) {
+            if (i < initials.length - 1) {
+                str += initials[i] + '.'
+            } else {
+                str += initials[i]
+            }
+        }
+        const shortenedName = str + lastName;
+
+        return shortenedName;
+    } else {
+        return fullName;
+    }
+}
+
 export {
     uuid,
     listMonth,
@@ -153,6 +200,8 @@ export {
     generateRowDataForMergeRowSingleField,
     getWeekday,
     getColor3Point,
+    createHookQueryReducer,
+    shortenName,
     getColorByCourseName,
     getColorByStatusProcess
 }

@@ -72,7 +72,7 @@ const TitleHeader = (props: Props) => {
     const mapTabDetailBreadcrumb: Record<TabDetailClass, React.ReactNode> = {
         OVERVIEW: <span>{title}</span>,
         STUDENT: <span>{title}</span>,
-        ATTENDACE: <span>Buổi số: {currentDataRoute.moreData && currentDataRoute.moreData.isAttendance ? `${currentDataRoute.moreData.currentSession}` : '1'}</span>,
+        ATTENDANCE: <span>Buổi số: {currentDataRoute.moreData && currentDataRoute.moreData.isAttendance ? `${currentDataRoute.moreData.currentSession}` : '1'}</span>,
         BOOK_TEACHER: '',
         FEEDBACK: '',
         MANAGER_GROUP: '',

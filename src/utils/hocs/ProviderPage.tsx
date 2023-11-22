@@ -3,10 +3,10 @@ import dynamic from 'next/dynamic';
 import { ROLE_USER } from '@/global/enum';
 import Loading from '@/components/loading';
 
-const CreatePage = (component: string, role: ROLE_USER, layout: (props: any) => JSX.Element) => {
-    const DynamicComponent = dynamic(() => import(`@/components/${component}`), {
+const CreatePage = (componentDirectString: string, role: ROLE_USER, layout: (props: any) => JSX.Element) => {
+    const DynamicComponent = dynamic(() => import(`@/components/${componentDirectString}`), {
         ssr: false,
-        loading: () => <Loading />
+        loading: () => <Loading isCenterScreen/>
     })
     const Page = () => {
         return (

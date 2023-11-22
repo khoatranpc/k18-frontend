@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Action, BaseInterfaceHookReducer, Obj, State } from "@/global/interface";
 import { AppDispatch, RootState } from "@/store";
@@ -6,9 +6,9 @@ import { queryGetListCourse } from "@/store/reducers/course/listCourse.reducer";
 import { queryGetLocations } from "@/store/reducers/location/localtion.reducer";
 import { queryGetCurrentBookTeacher, updateListBookTeacher } from "@/store/reducers/class/bookTeacher.reducer";
 import { clearAddRequest, queryAddRequestBookTeacher } from "@/store/reducers/class/addRequestBookTeacher.reducer";
-import { queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
+import { clearDeatailClass, queryDetailClass } from "@/store/reducers/class/detailClass.reducer";
 import { clearStateHanldeTeacherInRecordBT, queryHandleTeacherInRecordBT } from "@/store/reducers/class/handleTeacherInRecordBT.reducer";
-import { ComponentPage, ROLE_TEACHER } from "@/global/enum";
+import { ComponentPage, PositionTe, ROLE_TEACHER, RoundProcess } from "@/global/enum";
 import { queryClassSession } from "@/store/reducers/class/classSesesion.reducer";
 import { clearUpdatedDataClassBasicInfor, queryUpdateClassBasicInfor } from "@/store/reducers/class/updateClassBasicInfor.reducer";
 import { queryGetListTeacher } from "@/store/reducers/teacher/listTeacher.reducer";
@@ -31,17 +31,41 @@ import { queryClassTeacherPoint } from "@/store/reducers/class/classTeacherPoint
 import { queryGetListDataRecruitment } from "@/store/reducers/recruitment/recruitment.reducer";
 import { queryDetailCandidate } from "@/store/reducers/recruitment/detailCandidate.reducer";
 import { clearCreateCandidate, queryCreateCandidate } from "@/store/reducers/recruitment/createCandidate.reducer";
-import { clearCreateCourse, queryCreateCourse } from "@/store/reducers/course/createCourse.reducer";
 import { queryDetailCourse } from "@/store/reducers/course/detailCourse.reducer";
+import { clearCreateLevelCourse, queryCreateLevelCourse } from "@/store/reducers/course/createLevelCourse.reducer";
+import { clearUpdateCourse, queryUpdateCourse } from "@/store/reducers/course/updateCourse.reducer";
+import { clearUpdateLevelCourse, queryUpdateLevelCourse } from "@/store/reducers/course/updateLevelCourse.reducer";
+import { queryRoundProcessCandidate } from "@/store/reducers/recruitment/roundProcessCandidate.reducer";
+import { queryRoundComments } from "@/store/reducers/recruitment/roundComment.reducer";
+import { createHookQueryReducer } from "..";
+import { clearReducerCreateComment, queryCreateComment } from "@/store/reducers/recruitment/createComment.reducer";
+import { clearQueryUpdateDataRoundProcessCandidate, queryUpdateDataRoundProcessCandidate } from "@/store/reducers/recruitment/updateDataRound.reducer";
+import { queryCreateDataRoundProcess } from "@/store/reducers/recruitment/createDataRoundProcess.reducer";
+import { queryGetAllTe } from "@/store/reducers/te/getTe.reducer";
+import { queryMailTemplate } from "@/store/reducers/mailTemplate/mailTemplate.reducer";
+import { clearCreateMailTemplate, queryCreateMailTemplate } from "@/store/reducers/mailTemplate/createMailTemplate.reducer";
+import { clearUpdateMailTemplate, queryUpdateMailTemplate } from "@/store/reducers/mailTemplate/updateMailTemplate.reducer";
+import { clearMailer, queryMailer } from "@/store/reducers/mailer.reducer";
+import { queryCheckCandidateInfo } from "@/store/reducers/candidateOnboard/checkCandidateInfo.reducer";
+import { queryGetRoundCalautid } from "@/store/reducers/candidateOnboard/getRoundClautid.reducer";
+import { clearRegisterClautid, queryRegisterClautid } from "@/store/reducers/candidateOnboard/registerClautid.reducer";
+import { clearCreateFeedbackClautid, queryCreateFeebackClautid } from "@/store/reducers/candidateOnboard/createFeedbackClautid.reducer";
+import { queryGetFeebackClautid } from "@/store/reducers/candidateOnboard/getFeedbackClautid.reducer";
+import { clearQueryUpdateClassClautid, queryUpdateClassClautid } from "@/store/reducers/candidateOnboard/updateClassClautid.reducer";
+import { queryGetCalendar } from "@/store/reducers/candidateOnboard/getCalendarTest.reducer";
+import { clearGenerateAttendanceTeacher, queryGenerateAttendanceTeacher } from "@/store/reducers/class/generateAttendanceTeacher.reducer";
+import { queryArea } from "@/store/reducers/location/area.reducer";
+import { clearCreateArea, queryCreateArea } from "@/store/reducers/location/createArea.reducer";
+import { clearUpdateArea, queryUpdateArea } from "@/store/reducers/location/updateArea.reducer";
+import { clearUpdateLocation, queryUpdateLocation } from "@/store/reducers/location/updateLocation.reducer";
+import { clearCreateLocation, queryCreateLocation } from "@/store/reducers/location/createLocation.reducer";
+import { queryGetListTimeSchedule } from "@/store/reducers/timeschedule/timeSchedule.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
     return listClass;
 };
-const useGetTimeSchedule = () => {
-    const listTimeSchedule = useSelector((state: RootState) => (state.timeSchedule as State).state);
-    return listTimeSchedule.response as Obj;
-}
+const useGetTimeSchedule = createHookQueryReducer('timeSchedule', queryGetListTimeSchedule);
 const useGetListCourse = () => {
     const listCourse = useSelector((state: RootState) => (state.listCourse as State).state);
     const dispatch = useDispatch<AppDispatch>();
@@ -63,12 +87,13 @@ const useGetLocations = () => {
     }
     return {
         locations: locations.response as Obj,
+        state: locations,
         queryLocations
     }
 }
 const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
-    data?: Obj;
-    query?: (params: string | Array<Obj>) => void;
+    data?: Action;
+    query?: (params: string | Array<Obj>, fields?: Array<string>) => void;
     update?: (data: Obj, action: 'PUT' | 'DELETE' | 'UPDATE') => void;
     clear?: () => void;
 } => {
@@ -77,13 +102,13 @@ const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
     const dataAdd = useSelector((state: RootState) => (state.addRequestBookTeacher as State).state);
     switch (action) {
         case 'GET':
-            const queryGet = (params: string | Array<Obj>) => {
+            const queryGet = (params: string | Array<Obj>, fields?: Array<string>) => {
                 const payload: Action = {
                     payload: {
                         query: {
                             params: [params as string],
                             query: {
-                                fields: ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept']
+                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept']
                             }
                         }
                     }
@@ -139,8 +164,12 @@ const useDetailClass = (action: 'GET' | 'ADD' | 'UPDATE' | 'CLEAR'): BaseInterfa
                 },
             }
     }
+    const clear = () => {
+        dispatch(clearDeatailClass());
+    }
     return {
-        data: detailClass
+        data: detailClass,
+        clear: clear()
     }
 }
 const useHandleTeacherInRCBT = () => {
@@ -298,7 +327,7 @@ const useGetAttendanceTeacher = () => {
                     query: {
                         classId,
                         sessionNumber,
-                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId']
+                        fields: ['checked', 'classSessionId', 'classId', 'date', 'isOH', 'ran', 'sessionNumber', '_id', 'teacherId', 'fullName', 'role', 'checked', 'locationId', 'bookTeacher', 'hours']
                     }
                 }
             }
@@ -662,32 +691,9 @@ const useCreateCandidate = () => {
         clear
     }
 }
-const useCreateCourse = () => {
-    const data = useSelector((state: RootState) => (state.createCourse as State).state);
-    const dispatch = useDispatch();
-    const query = (body: Obj) => {
-        const payload: Action = {
-            payload: {
-                query: {
-                    body
-                }
-            }
-        }
-        dispatch(queryCreateCourse(payload));
-    }
-    const clear = () => {
-        dispatch(clearCreateCourse());
-    }
-    return {
-        data,
-        query,
-        clear
-    }
-}
 const useGetDetailCourse = () => {
     const data = useSelector((state: RootState) => (state.detailCourse as State).state);
     const dispatch = useDispatch();
-
     const query = (courseId: string) => {
         const payload: Action = {
             payload: {
@@ -700,9 +706,146 @@ const useGetDetailCourse = () => {
     }
     return {
         data,
+        query,
+    }
+}
+const useCreateLevelCourse = () => {
+    const data = useSelector((state: RootState) => (state.createLevelCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body
+                }
+            }
+        }
+        dispatch(queryCreateLevelCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearCreateLevelCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
+const useUpdateCourse = () => {
+    const data = useSelector((state: RootState) => (state.updateCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj, courseId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body,
+                    params: [courseId]
+                }
+            }
+        }
+        dispatch(queryUpdateCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearUpdateCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
+const useUpdateLevelCourse = () => {
+    const data = useSelector((state: RootState) => (state.updateLevelCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj, levelId: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body,
+                    params: [levelId]
+                }
+            }
+        }
+        dispatch(queryUpdateLevelCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearUpdateLevelCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
+const useGetDataRoundProcess = () => {
+    const data = useSelector((state: RootState) => (state.roundProcess as State).state);
+    const dispatch = useDispatch();
+    const query = (round: RoundProcess, listCandidateId: Array<string>) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        listCandidateId: listCandidateId.toString(),
+                        round,
+                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName,codeClass,formFirst,formSecond,locationFirst,locationSecond,locationCode,timeFirst,timeSecond,timeFirstDone,timeSecondDone,codeClass,doc'
+                    }
+                },
+            }
+        }
+        dispatch(queryRoundProcessCandidate(payload));
+    }
+    return {
+        data,
         query
     }
 }
+const useGetDataRoundComments = () => {
+    const data = useSelector((state: RootState) => (state.roundComments as State).state);
+    const dispatch = useDispatch();
+    const query = (roundId: string, fields: Array<string>) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        roundId,
+                        fields: fields.toString()
+                    }
+                }
+            }
+        }
+        dispatch(queryRoundComments(payload));
+    }
+    return {
+        data,
+        query
+    }
+}
+const useComparePositionTE = (positionCompare: PositionTe) => {
+    const data = useSelector((state: RootState) => (state.crrUserInfo as State).state);
+    return (data.response?.data as Obj)?.position as PositionTe === positionCompare;
+}
+const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
+const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
+const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
+const useFindGetAllTe = createHookQueryReducer('getAllTe', queryGetAllTe);
+const useGetMailTemplate = createHookQueryReducer('mailTemplate', queryMailTemplate);
+const useCreateMailTemplate = createHookQueryReducer('createMailTemplate', queryCreateMailTemplate, clearCreateMailTemplate);
+const useUpdateMailTemplate = createHookQueryReducer('updateMailTemplate', queryUpdateMailTemplate, clearUpdateMailTemplate);
+const useMailer = createHookQueryReducer('mailer', queryMailer, clearMailer);
+const useGetCandidateOnboard = createHookQueryReducer('checkCandidateInfo', queryCheckCandidateInfo);
+const useGetClautidForCandidateOnboard = createHookQueryReducer('getRoundClautid', queryGetRoundCalautid);
+const useRegisterClautid = createHookQueryReducer('registerClautid', queryRegisterClautid, clearRegisterClautid);
+const useCreateFeedbackClautid = createHookQueryReducer('createFeedbackClautid', queryCreateFeebackClautid, clearCreateFeedbackClautid);
+const useGetFeedbackClautid = createHookQueryReducer('getFeedbackClautid', queryGetFeebackClautid);
+const useUpdateClassClautid = createHookQueryReducer('updateClassClautid', queryUpdateClassClautid, clearQueryUpdateClassClautid);
+const useGetCalendarTest = createHookQueryReducer('getCalendarTest', queryGetCalendar);
+const useGenerateAttendanceTeacher = createHookQueryReducer('generateAttendanceTeacher', queryGenerateAttendanceTeacher, clearGenerateAttendanceTeacher);
+const useGetArea = createHookQueryReducer('area', queryArea);
+const useCreateArea = createHookQueryReducer('createArea', queryCreateArea, clearCreateArea);
+const useUpdateArea = createHookQueryReducer('updateArea', queryUpdateArea, clearUpdateArea);
+const useUpdateLocation = createHookQueryReducer('updateLocation', queryUpdateLocation, clearUpdateLocation);
+const useCreateLocation = createHookQueryReducer('createLocation', queryCreateLocation, clearCreateLocation);
+
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -734,6 +877,32 @@ export {
     useGetListDataRecruitment,
     useGetDetailCandidate,
     useCreateCandidate,
-    useCreateCourse,
-    useGetDetailCourse
+    useGetDetailCourse,
+    useCreateLevelCourse,
+    useUpdateCourse,
+    useUpdateLevelCourse,
+    useGetDataRoundProcess,
+    useGetDataRoundComments,
+    useCreateCommentsRoundProcess,
+    useUpdateDataProcessRoundCandidate,
+    useCreateDataRoundProcess,
+    useFindGetAllTe,
+    useGetMailTemplate,
+    useCreateMailTemplate,
+    useUpdateMailTemplate,
+    useMailer,
+    useGetCandidateOnboard,
+    useGetClautidForCandidateOnboard,
+    useRegisterClautid,
+    useCreateFeedbackClautid,
+    useGetFeedbackClautid,
+    useUpdateClassClautid,
+    useGetCalendarTest,
+    useGenerateAttendanceTeacher,
+    useGetArea,
+    useCreateArea,
+    useUpdateArea,
+    useUpdateLocation,
+    useCreateLocation,
+    useComparePositionTE
 }

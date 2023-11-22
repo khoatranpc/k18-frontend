@@ -11,7 +11,8 @@ export enum ROLE_TEACHER {
 }
 export enum ROLE_USER {
     TE = 'TE',
-    TC = 'TEACHER'
+    TC = 'TEACHER',
+    COMMON = 'COMMON'
 }
 export enum KEY_ICON {
     OV = 'OV',
@@ -54,6 +55,7 @@ export enum KEY_ICON {
     HOURGLASS = 'HOURGLASS',
     TEACHER_MALE = 'TEACHER_MALE',
     TEACHER_FEMALE = 'TEACHER_FEMALE',
+    MAIL = 'MAIL'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',
@@ -70,6 +72,8 @@ export enum ComponentPage {
     CLASS = 'CLASS',
     DETAILCLASS = 'DETAILCLASS',
     RECRUITMENT = 'RECRUITMENT',
+    RECRUITMENT_DETAIL_CANDIDATE = 'RECRUITMENT_DETAIL_CANDIDATE',
+    RECRUITMENT_CREATE_CANDIDATE = 'RECRUITMENT_CREATE_CANDIDATE',
     TEACHERS = 'TEACHERS',
     MANAGER_CLASS = 'MANAGER_CLASS',
     MANAGER_COURSE = 'MANAGER_COURSE',
@@ -83,7 +87,9 @@ export enum ComponentPage {
     TIMESCHEDULE = 'TIMESCHEDULE',
     TEACHER = 'TEACHER',
     TEACHER_DETAIL = 'TEACHER_DETAIL',
-    ATTENDANCE_TEACHER_CLASS = 'ATTENDANCE_TEACHER_CLASS'
+    ATTENDANCE_TEACHER_CLASS = 'ATTENDANCE_TEACHER_CLASS',
+    TEMPLATE_MAIL = 'TEMPLATE_MAIL',
+    AREA = 'AREA'
 }
 
 export enum ClassForm {
@@ -137,10 +143,32 @@ export enum LevelTechnique {
     LEADER = 'LEADER'
 }
 export enum Education {
+    // cử nhân
     BACHELOR = 'BACHELOR',
+    // kỹ sư
     ENGINEER = 'ENGINEER',
     // thạc sĩ
     MASTER = 'MASTER',
     // tiến sĩ
     DOCTOR = 'DOCTOR'
+}
+export enum RoundProcess {
+    CV = 'CV',
+    INTERVIEW = 'INTERVIEW',
+    CLAUTID = 'CLAUTID',
+    TEST = 'TEST',
+    DONE = 'DONE',
+    CLASSIFY = 'CLASSIFY'
+}
+export enum PositionTe {
+    LEADER = 'LEADER',
+    ASSISTANT = 'ASSISTANT',
+    QC = 'QC',
+    HR = 'HR'
+}
+export enum TemplateMail {
+    FAILCV = 'FAILCV',
+    FAILINTERVIEW = 'FAILINTERVIEW',
+    PASSINTERVIEW = 'PASSINTERVIEW',
+    NOCONNECT = 'NOCONNECT'
 }

@@ -86,11 +86,11 @@ const ManagerClass = () => {
         let crrST = '';
         (item.recordBookTeacher as Array<Obj>)!.find((rc) => {
             const findST = (rc.teacherRegister as Array<Obj>)?.find((rcTc) => {
-                return (rcTc?.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.ST || rcTc?.accept
+                return (rcTc?.roleRegister as ROLE_TEACHER) === ROLE_TEACHER.ST
             });
             crrST = findST?.idTeacher?.fullName || '';
             return findST;
-        })
+        });
         return {
             key: item._id as string,
             codeClass: item.codeClass,
@@ -232,9 +232,10 @@ const ManagerClass = () => {
         }
     }, [listClass, loading, setLoading, handleQueryListClass]);
     useEffect(() => {
-        if (listClass.response && isQueryClassTeacherPoint.current) {
+        if (listClass.success && listClass.response && isQueryClassTeacherPoint.current) {
             isQueryClassTeacherPoint.current = false;
-            listClassTeacherPoint.query(((listClass.response.data as Obj)?.classes as Array<Obj>)?.map((item) => item._id as string))
+            const getListClassId = ((listClass.response.data as Obj)?.classes as Array<Obj>)?.map((item) => item._id as string);
+            listClassTeacherPoint.query(getListClassId)
         }
     }, [listClass]);
     return (

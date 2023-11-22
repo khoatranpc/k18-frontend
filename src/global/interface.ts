@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentPage, KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from "./enum";
+import { ComponentPage, KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from "./enum";
 import { TableColumnsType } from "antd";
 import { StatusEvent } from "@/components/Calendar/Note/styles";
 
@@ -25,7 +25,7 @@ export interface Query {
     body?: Obj;
     query?: {
         [k: string]: {} | undefined | any;
-        fields?: Array<string>;
+        fields?: Array<string> | string;
     };
     params?: Array<string>;
 }
@@ -39,17 +39,18 @@ export interface TabRoute {
     disable?: boolean;
     replaceTitle?: React.ReactElement | string;
     noReplaceTitle?: boolean;
-    component: ComponentPage;
+    component?: ComponentPage;
+    positionTE?: PositionTe;
     notRouting?: boolean;
     className?: string;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 
 }
-export interface RowData extends Record<string, unknown> {
+export interface RowData extends Record<string, any> {
     key: string;
 }
-export interface BaseInterfaceHookReducer {
+export interface BaseInterfaceHookReducer extends Obj {
     data: Obj | Action;
     query?: (params: string | Array<string> | Obj) => void;
 }
