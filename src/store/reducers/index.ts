@@ -8,6 +8,7 @@ import getDataRoute from './global-reducer/route';
 import listClass from './class/listClass.reducer';
 import listCourse from './course/listCourse.reducer';
 import detailCourse from './course/detailCourse.reducer';
+import createCourse from './course/createCourse.reducer';
 import createLevelCourse from './course/createLevelCourse.reducer';
 import updateLevelCourse from './course/updateLevelCourse.reducer';
 import updateCourse from './course/updateCourse.reducer';
@@ -103,6 +104,7 @@ const rootReducer = {
     recruitment,
     detailCandidate,
     createCandidate,
+    createCourse,
     detailCourse,
     createLevelCourse,
     updateCourse,

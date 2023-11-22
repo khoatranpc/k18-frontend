@@ -31,6 +31,7 @@ import { queryClassTeacherPoint } from "@/store/reducers/class/classTeacherPoint
 import { queryGetListDataRecruitment } from "@/store/reducers/recruitment/recruitment.reducer";
 import { queryDetailCandidate } from "@/store/reducers/recruitment/detailCandidate.reducer";
 import { clearCreateCandidate, queryCreateCandidate } from "@/store/reducers/recruitment/createCandidate.reducer";
+import { clearCreateCourse, queryCreateCourse } from "@/store/reducers/course/createCourse.reducer";
 import { queryDetailCourse } from "@/store/reducers/course/detailCourse.reducer";
 import { clearCreateLevelCourse, queryCreateLevelCourse } from "@/store/reducers/course/createLevelCourse.reducer";
 import { clearUpdateCourse, queryUpdateCourse } from "@/store/reducers/course/updateCourse.reducer";
@@ -691,6 +692,28 @@ const useCreateCandidate = () => {
         clear
     }
 }
+const useCreateCourse = () => {
+    const data = useSelector((state: RootState) => (state.createCourse as State).state);
+    const dispatch = useDispatch();
+    const query = (body: Obj) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    body
+                }
+            }
+        }
+        dispatch(queryCreateCourse(payload));
+    }
+    const clear = () => {
+        dispatch(clearCreateCourse());
+    }
+    return {
+        data,
+        query,
+        clear
+    }
+}
 const useGetDetailCourse = () => {
     const data = useSelector((state: RootState) => (state.detailCourse as State).state);
     const dispatch = useDispatch();
@@ -706,7 +729,7 @@ const useGetDetailCourse = () => {
     }
     return {
         data,
-        query,
+        query
     }
 }
 const useCreateLevelCourse = () => {
@@ -877,6 +900,7 @@ export {
     useGetListDataRecruitment,
     useGetDetailCandidate,
     useCreateCandidate,
+    useCreateCourse,
     useGetDetailCourse,
     useCreateLevelCourse,
     useUpdateCourse,

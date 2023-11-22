@@ -305,16 +305,6 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
   ],
   TEACHER: [
     {
-      title: "Tổng quan",
-      route: CombineRoute["TEACHER"]["OVERVIEW"],
-      key: "OVER_VIEW",
-      keyIcon: KEY_ICON.OV,
-      showIcon: true,
-      indexRoute: CombineRoute["TEACHER"]["OVERVIEW"],
-      noReplaceTitle: true,
-      component: ComponentPage.OVERVIEW,
-    },
-    {
       title: "Thông tin giáo viên",
       route: CombineRoute["TEACHER"]["TEACHERINFO"],
       key: "TEACHERS_INFO",
@@ -345,16 +335,6 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.MANAGER_COURSE,
     },
     {
-      title: "Lưu trữ",
-      route: CombineRoute["TEACHER"]["MANAGER"]["SAVE"],
-      key: "SAVE",
-      keyIcon: KEY_ICON.FD,
-      showIcon: true,
-      indexRoute: CombineRoute["TEACHER"]["MANAGER"]["SAVE"],
-      noReplaceTitle: true,
-      component: ComponentPage.SAVE,
-    },
-    {
       title: "Cơ sở",
       route: CombineRoute["TEACHER"]["LOCATION"],
       key: "LOCATION",
@@ -364,21 +344,21 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       noReplaceTitle: true,
       component: ComponentPage.LOCATION,
     },
-    {
-      title: (
-        <Collapse
-          panels={panelsFeedback}
-          className={`collapse_tab ${styles.collapseFeedback}`}
-        />
-      ),
-      route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
-      key: "FEED_BACK",
-      showIcon: true,
-      indexRoute: "",
-      component: ComponentPage.MANAGER_FEEDBACK,
-      notRouting: true,
-      className: `${styles.tabFeedback}`,
-    },
+    // {
+    //   title: (
+    //     <Collapse
+    //       panels={panelsFeedback}
+    //       className={`collapse_tab ${styles.collapseFeedback}`}
+    //     />
+    //   ),
+    //   route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
+    //   key: "FEED_BACK",
+    //   showIcon: true,
+    //   indexRoute: "",
+    //   component: ComponentPage.MANAGER_FEEDBACK,
+    //   notRouting: true,
+    //   className: `${styles.tabFeedback}`,
+    // },
     {
       title: "Lịch",
       route: CombineRoute["TE"]["CALENDAR"],
@@ -419,25 +399,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.DETAILCLASS,
     },
     {
-      title: "Danh sách giáo viên",
-      route: CombineRoute["TE"]["MANAGER"]["TEACHER"],
-      key: "TEACHER",
-      indexRoute: CombineRoute["TE"]["MANAGER"]["TEACHER"],
-      disable: true,
-      keyIcon: KEY_ICON.HTS,
-      component: ComponentPage.TEACHER,
-      noReplaceTitle: true,
-    },
-    {
-      title: "Chi tiết",
-      route: CombineRoute["TE"]["MANAGER"]["DETAILTEACHER"],
-      key: "DETAIL_TEACHER",
-      indexRoute: CombineRoute["TE"]["MANAGER"]["DETAILTEACHER"],
-      disable: true,
-      component: ComponentPage.TEACHER_DETAIL,
-    },
-    {
-      title: "Form feedback",
+      title: "Feedback",
       route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
       key: "DETAIL_TEACHER",
       indexRoute: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
