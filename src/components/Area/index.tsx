@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { useCreateArea, useGetArea } from '@/utils/hooks';
+import { useCreateArea, useGetArea, useUpdateArea } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import ModalCustomize from '../ModalCustomize';
 import ModalArea from './ModalArea';
@@ -11,6 +11,7 @@ import styles from '@/styles/Location.module.scss';
 const Area = () => {
     const area = useGetArea();
     const createArea = useCreateArea();
+    const updateArea = useUpdateArea();
     const [modal, setModal] = useState<{
         open: boolean,
         isCreate: boolean,
@@ -76,17 +77,24 @@ const Area = () => {
             ...item
         }
     });
-    const handleCreate = (values: Obj) => {
-        createArea.query({
-            body: values
-        });
+    const handleSubmit = (values: Obj) => {
+        if (modal.isCreate) {
+            createArea.query({
+                body: values
+            });
+        } else {
+            updateArea.query({
+                body: values,
+                params: [modal.data?._id as string]
+            });
+        }
     }
     useEffect(() => {
         area.query();
     }, []);
     useEffect(() => {
-        if (createArea.data.response) {
-            if (createArea.data.success) {
+        if (createArea.data.response || updateArea.data) {
+            if (createArea.data.success || updateArea.data.success) {
                 setModal({
                     open: true,
                     isCreate: true,
@@ -95,13 +103,14 @@ const Area = () => {
                 area.query();
             }
             message.open({
-                content: createArea.data.response.message as string,
-                type: createArea.data.success ? 'success' : 'error'
+                content: createArea.data.response?.message as string || updateArea.data.response?.message as string,
+                type: createArea.data.success || updateArea.data.success ? 'success' : 'error'
             });
             createArea.clear?.();
+            updateArea.clear?.();
             message.close();
         }
-    }, [createArea.data]);
+    }, [createArea.data, updateArea.data]);
     return (
         <div className={styles.area}>
             <div className={styles.btn}>
@@ -132,7 +141,7 @@ const Area = () => {
                         });
                     }}
                 >
-                    <ModalArea data={modal.data} isCreate={modal.isCreate} handleSubmit={handleCreate} loading={createArea.data.isLoading} />
+                    <ModalArea data={modal.data} isCreate={modal.isCreate} handleSubmit={handleSubmit} loading={createArea.data.isLoading} />
                 </ModalCustomize>
             }
         </div>

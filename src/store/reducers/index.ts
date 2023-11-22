@@ -60,6 +60,10 @@ import getCalendarTest from './candidateOnboard/getCalendarTest.reducer';
 import generateAttendanceTeacher from './class/generateAttendanceTeacher.reducer';
 import area from './location/area.reducer';
 import createArea from './location/createArea.reducer';
+import updateArea from './location/updateArea.reducer';
+import updateLocation from './location/updateLocation.reducer';
+import createLocation from './location/createLocation.reducer';
+
 const rootReducer = {
     test: test,
     message: message,
@@ -122,6 +126,9 @@ const rootReducer = {
     getCalendarTest,
     generateAttendanceTeacher,
     area,
-    createArea
+    createArea,
+    updateArea,
+    updateLocation,
+    createLocation
 };
 export default rootReducer;
