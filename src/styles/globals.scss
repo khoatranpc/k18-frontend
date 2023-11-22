@@ -136,6 +136,14 @@ a {
     border-radius: 0.8rem;
 }
 
+.bgRunning {
+    background-color: var(--success);
+}
+
+.bgStop {
+    background-color: var(--status-process-no-process);
+}
+
 .margin-auto {
     margin: auto;
 }

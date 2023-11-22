@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { useCreateArea, useGetArea, useUpdateArea } from '@/utils/hooks';
+import { useCreateArea, useGetArea, useGetLocations, useUpdateArea } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import ModalCustomize from '../ModalCustomize';
 import ModalArea from './ModalArea';
@@ -12,6 +12,7 @@ const Area = () => {
     const area = useGetArea();
     const createArea = useCreateArea();
     const updateArea = useUpdateArea();
+    const locations = useGetLocations();
     const [modal, setModal] = useState<{
         open: boolean,
         isCreate: boolean,
@@ -39,17 +40,33 @@ const Area = () => {
                     title: 'Hoạt động',
                     dataIndex: 'active',
                     className: 'text-center',
-                    render(value) {
-                        return value ?? 0;
+                    render(_, record) {
+                        const getListlocation = (((locations.locations?.data as Obj[]) || []) as Obj[]).filter((item) => {
+                            return item.active && item.area._id === record._id
+                        })
+                        return getListlocation.length;
                     },
+                    onCell() {
+                        return {
+                            className: `${styles.active}`
+                        }
+                    }
                 },
                 {
                     title: 'Ngưng Hoạt động',
                     dataIndex: 'deactive',
                     className: 'text-center',
-                    render(value) {
-                        return value ?? 0;
+                    render(_, record) {
+                        const getListlocation = (((locations.locations?.data as Obj[]) || []) as Obj[]).filter((item) => {
+                            return !item.active && item.area._id === record._id
+                        })
+                        return getListlocation.length;
                     },
+                    onCell() {
+                        return {
+                            className: `${styles.deactive}`
+                        }
+                    }
                 },
             ]
         },
@@ -90,7 +107,12 @@ const Area = () => {
         }
     }
     useEffect(() => {
-        area.query();
+        if (!area.data.response) {
+            area.query();
+        }
+        if (!locations.state.response) {
+            locations.queryLocations();
+        }
     }, []);
     useEffect(() => {
         if (createArea.data.response || updateArea.data) {

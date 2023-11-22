@@ -27,7 +27,8 @@ const CreateLocation = (props: Props) => {
         locationName: props.data?.locationName ? props.data.locationName as string : '',
         locationCode: props.data?.locationCode ? props.data.locationCode as string : '',
         locationDetail: props.data?.locationDetail ? props.data.locationDetail as string : '',
-        area: props.data?.area ? props.data.area._id as string : ''
+        area: props.data?.area ? props.data.area._id as string : '',
+        active: !!props.data?.active
     }
     const listArea = useGetArea();
     const updateLocation = useUpdateLocation();
@@ -88,11 +89,7 @@ const CreateLocation = (props: Props) => {
                     <Input type="text" value={values.locationCode} name="locationCode" placeholder="Mã cơ sở" size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                     {errors.locationCode && touched.locationCode && <p className='error'>{errors.locationCode}</p>}
                 </Form.Group>
-                <Form.Group className={styles.mb_15}>
-                    <Form.Label>Địa chỉ cơ sở<span className="error">*</span>:</Form.Label>
-                    <Input type="text" value={values.locationDetail} name="locationDetail" placeholder="Địa chỉ cơ sở" size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
-                    {errors.locationDetail && touched.locationDetail && <p className='error'>{errors.locationDetail}</p>}
-                </Form.Group>
+
                 <Form.Group className={"w-100"}>
                     <Form.Label>Khu Vực:<span className="error">*</span></Form.Label>
                     <Dropdown
@@ -110,6 +107,26 @@ const CreateLocation = (props: Props) => {
                         }}
                     />
                     {errors.area && touched.area && <p className='error'>{errors.area}</p>}
+                </Form.Group>
+                <Form.Group className={styles.mb_15}>
+                    <Form.Label>Trạng thái hoạt động:</Form.Label>
+                    <Dropdown
+                        trigger='click'
+                        title={<Button>{values.active ? 'Hoạt động' : 'Ngưng hoạt động'}</Button>}
+                        listSelect={[
+                            {
+                                key: 'ACTIVE',
+                                label: 'Hoạt động'
+                            },
+                            {
+                                key: 'DEACTIVE',
+                                label: 'Ngưng hoạt động'
+                            },
+                        ]}
+                        onClickItem={(e) => {
+                            setFieldValue('active', e.key === 'ACTIVE')
+                        }}
+                    />
                 </Form.Group>
                 <Button htmlType='submit' className={styles.fl_r}>{props.isCreate ? 'Tạo lớp' : 'Cập nhật'}</Button>
             </Form>

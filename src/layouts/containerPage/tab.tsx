@@ -165,6 +165,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: "",
       noReplaceTitle: true,
       component: ComponentPage.SAVE,
+      disable: true
     },
     {
       title: <Collapse panels={panelsLocation} className={`collapse_tab ${styles.managerLocation}`} />,
@@ -186,7 +187,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       title: 'Cơ sở',
       noReplaceTitle: true,
       disable: true,
-    },{
+    }, {
       route: CombineRoute["TE"]["AREA"],
       indexRoute: CombineRoute["TE"]["AREA"],
       component: ComponentPage.AREA,
@@ -249,6 +250,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: CombineRoute["TE"]["HELP"],
       noReplaceTitle: true,
       component: ComponentPage.HELP,
+      disable: true
     },
     {
       title: "Chi tiết lớp học",

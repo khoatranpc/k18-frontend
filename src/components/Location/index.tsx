@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Tabs from '../Tabs';
-import { TabsProps } from 'antd';
+import { Button, TabsProps } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { useGetArea, useGetLocations } from '@/utils/hooks';
 import ToolBar from '../Tabs/ToolBar';
@@ -34,6 +34,16 @@ const columns: Columns = [
         title: 'Khu Vực',
         render(value: Obj) {
             return value ? value.name : ''
+        },
+    },
+    {
+        title: 'Trạng thái',
+        dataIndex: 'active',
+        className: 'text-center',
+        render(value) {
+            return <div className={`${value ? 'bgRunning' : 'bgStop'} ${styles.statusActive}`}>
+                {value ? 'Hoạt động' : 'Ngưng hoạt động'}
+            </div>
         },
     }
 ];
