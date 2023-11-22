@@ -824,7 +824,7 @@ const useGetDataRoundComments = () => {
 }
 const useComparePositionTE = (positionCompare: PositionTe) => {
     const data = useSelector((state: RootState) => (state.crrUserInfo as State).state);
-    return (data.response?.data as Obj).position as PositionTe === positionCompare;
+    return (data.response?.data as Obj)?.position as PositionTe === positionCompare;
 }
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
