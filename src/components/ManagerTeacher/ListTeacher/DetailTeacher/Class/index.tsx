@@ -1,23 +1,20 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { getColorFromStatusClass, mapRoleToString, mapStatusToString } from '@/global/init';
 import { ComponentPage, KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
 import { useClassTeacherRegister, useDispatchDataRouter, useGetTimeSchedule } from '@/utils/hooks';
-import { queryGetListTimeSchedule } from '@/store/reducers/timeSchedule.reducer';
+import { formatDatetoString } from '@/utils';
 import Table from '@/components/Table';
 import { getMatchingTimeSchedule } from './config';
-import styles from '@/styles/teacher/DetailTeacher.module.scss';
-import CombineRoute from '@/global/route';
 import TitleHeader from '@/components/ManagerClass/TitleHeader';
 import { TabDetailClass } from '@/components/ManagerClass/Detail';
-import { formatDatetoString } from '@/utils';
+import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 const Class = () => {
     const listClass = useClassTeacherRegister();
-    const dispatch = useDispatch();
     const listTimeSchedule = useGetTimeSchedule();
     const dispatchRouter = useDispatchDataRouter();
     const router = useRouter();
@@ -64,7 +61,7 @@ const Class = () => {
             title: 'Lịch học',
             dataIndex: 'classId',
             render(value) {
-                const getTimeScheduleData = getMatchingTimeSchedule(listTimeSchedule?.data as Array<Obj>, value.timeSchedule as Array<Obj>)
+                const getTimeScheduleData = getMatchingTimeSchedule(listTimeSchedule.data.response?.data as Array<Obj>, value.timeSchedule as Array<Obj>)
                 return getTimeScheduleData.map((item) => {
                     return <p key={item.order as number} style={{ margin: 0 }}>
                         - {item.weekday as string}, {item.start}-{item.end}
@@ -118,8 +115,8 @@ const Class = () => {
     })
     useEffect(() => {
         listClass.query(router.query.teacherId as string, ['_id', 'classId', 'dayRange', 'start', 'end', 'codeClass', 'timeSchedule', 'status', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'roleRegister', 'idTeacher', 'enroll']);
-        if (!listTimeSchedule) {
-            dispatch(queryGetListTimeSchedule());
+        if (!listTimeSchedule.data.response) {
+            listTimeSchedule.query();
         }
     }, []);
     return (

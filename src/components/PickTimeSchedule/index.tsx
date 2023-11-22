@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { MenuProps } from 'antd';
 import { Obj } from '@/global/interface';
 import { useGetTimeSchedule } from '@/utils/hooks';
 import Dropdown, { ClickItem } from '../Dropdown';
-import { queryGetListTimeSchedule } from '@/store/reducers/timeSchedule.reducer';
 import styles from '@/styles/PickTimeSchedule.module.scss'
 
 interface Props {
@@ -18,10 +16,9 @@ interface Props {
 }
 const PickTimeSchedule = (props: Props) => {
     const listTimeSchedule = useGetTimeSchedule();
-    const dispatch = useDispatch();
     const listSelect: MenuProps['items'] =
         ((props.hasFilterByValue && props.value) ?
-            ((listTimeSchedule?.data as Array<Obj>)?.filter((item) => {
+            ((listTimeSchedule.data.response?.data as Array<Obj>)?.filter((item) => {
                 return item.weekday as string === props.value
             })!.map((item) => {
                 return {
@@ -30,7 +27,7 @@ const PickTimeSchedule = (props: Props) => {
                 }
             }))
             :
-            (listTimeSchedule?.data as Array<Obj>)?.map((item) => {
+            (listTimeSchedule.data.response?.data as Array<Obj>)?.map((item) => {
                 return {
                     key: item._id as string,
                     label: <span>{item.weekday as string}: {item.start as string}-{item.end as string}</span>,
@@ -38,10 +35,10 @@ const PickTimeSchedule = (props: Props) => {
             })) || [];
 
     useEffect(() => {
-        if (!listTimeSchedule) {
-            dispatch(queryGetListTimeSchedule());
+        if (!listTimeSchedule.data.response) {
+            listTimeSchedule.query();
         }
-    }, [listTimeSchedule, dispatch]);
+    }, [listTimeSchedule.data]);
     return (
         <Dropdown
             sizeButton={props.size}
