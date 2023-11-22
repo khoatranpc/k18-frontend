@@ -29,6 +29,7 @@ const ContainerPage = (props: Props) => {
     const getRolePage = (props.children.type as Obj).Role as ROLE_USER;
     const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
+    const getUser = crrUser.response?.data as Obj;
     const crrRole = (crrUser.response as Obj)?.data.roleAccount as ROLE_USER;
     const course = useGetListCourse();
     const mappingTab = tabForRole[crrRole];
@@ -118,7 +119,7 @@ const ContainerPage = (props: Props) => {
                 <div className={styles.listTabLink}>
                     {
                         mappingTab?.map((item) => {
-                            return !item.disable && <Link
+                            return !item.disable && (item.positionTE ? getUser.position === item.positionTE : true) && <Link
                                 key={item.key}
                                 href={item.route}
                                 className={`${router.route === item.route || router.route.includes(item.route) ? styles.active : ''}`}
@@ -138,7 +139,7 @@ const ContainerPage = (props: Props) => {
                 <div className={styles.badge}>
                     <Avatar size='large' />
                     <div className={styles.user}>
-                        <p>{(crrUser.response as Obj)?.data?.teName as string}</p>
+                        <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
                         <span className={styles.role}>
                             {
                                 ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`

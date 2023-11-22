@@ -3,8 +3,9 @@ import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { Button, Input } from 'antd';
 import * as yup from 'yup';
+import { PositionTe } from '@/global/enum';
 import { Obj } from '@/global/interface';
-import { useGetDetailCourse, useUpdateCourse } from '@/utils/hooks';
+import { useComparePositionTE, useGetDetailCourse, useUpdateCourse } from '@/utils/hooks';
 import ModalCustomize from '@/components/ModalCustomize';
 import PopupLevel from '../PopupLevel';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -22,6 +23,7 @@ const validationSchema = yup.object({
 const PopupDetailCourse = (props: Props) => {
     const detailCourse = useGetDetailCourse();
     const updateCourse = useUpdateCourse();
+    const hasRole = useComparePositionTE(PositionTe.LEADER);
     const message = useHookMessage();
 
     const [isCreateLevel, setIsCreateLevel] = useState<{
@@ -39,11 +41,13 @@ const PopupDetailCourse = (props: Props) => {
             _id: props.courseId
         }, validationSchema,
         onSubmit(values) {
-            const body = {
-                courseName: values.courseName,
-                syllabus: values.syllabus,
+            if (hasRole) {
+                const body = {
+                    courseName: values.courseName,
+                    syllabus: values.syllabus,
+                }
+                updateCourse.query(body, values._id);
             }
-            updateCourse.query(body, values._id);
         }
     });
     useEffect(() => {
@@ -93,15 +97,17 @@ const PopupDetailCourse = (props: Props) => {
                         <Input type="text" name="syllabus" value={values.syllabus} placeholder="Syllabus" size="small" onBlur={handleBlur} onChange={handleChange} className={styles.input} />
                         {errors.syllabus && touched.syllabus && <p className="error">{errors.syllabus}</p>}
                     </Form.Group>
-                    <div className={styles.btn}>
-                        <Button size="small" onClick={() => {
-                            setIsCreateLevel({
-                                show: true,
-                                courseId: props.courseId
-                            })
-                        }}>Thêm khoá</Button>
-                        <Button htmlType="submit" size="small" loading={updateCourse.data.isLoading}>Lưu</Button>
-                    </div>
+                    {
+                        hasRole && <div className={styles.btn}>
+                            <Button size="small" onClick={() => {
+                                setIsCreateLevel({
+                                    show: true,
+                                    courseId: props.courseId
+                                })
+                            }}>Thêm khoá</Button>
+                            <Button htmlType="submit" size="small" loading={updateCourse.data.isLoading}>Lưu</Button>
+                        </div>
+                    }
                 </Form>
                 {
                     isCreateLevel && <PopupLevel
