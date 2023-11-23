@@ -29,7 +29,7 @@ const validationSchema = yup.object({
 const PopupLevel = (props: Props) => {
     const createLevelCourse = useCreateLevelCourse();
     const updateLevelCourse = useUpdateLevelCourse();
-    const hasRole = useComparePositionTE(PositionTe.LEADER);
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const message = useHookMessage();
     const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {

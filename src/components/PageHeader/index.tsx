@@ -1,19 +1,27 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Avatar, Badge, Input } from 'antd';
-import useGetStateRouter from '@/utils/hooks/stateRouter';
+import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
-import { ComponentPage, KEY_ICON } from '@/global/enum';
+import { ComponentPage, KEY_ICON, ROLE } from '@/global/enum';
 import CombineRoute from '@/global/route';
+import useGetCrrUser from '@/utils/hooks/getUser';
+import useGetStateRouter from '@/utils/hooks/stateRouter';
 import styles from '@/styles/ContainerPage.module.scss';
 
 const PageHeader = () => {
     const stateRouter = useGetStateRouter();
+    const currentUser = useGetCrrUser()?.data as Obj;
+
     const router = useRouter();
     const handlePrevPage = () => {
         switch (stateRouter.component) {
             case ComponentPage.DETAILCLASS:
-                router.push(CombineRoute['TE']['MANAGER']['CLASS']);
+                if (currentUser?.roleAccount === ROLE.TEACHER) {
+                    router.push(CombineRoute['TEACHER']['CLASS']);
+                } else {
+                    router.push(CombineRoute['TE']['MANAGER']['CLASS']);
+                }
                 break;
             case ComponentPage.TEACHER_DETAIL:
                 router.push(CombineRoute['TE']['MANAGER']['TEACHER']);

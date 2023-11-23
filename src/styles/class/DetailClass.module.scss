@@ -323,3 +323,11 @@ div.selectHours {
     align-items: center;
     margin-bottom: 1.2rem;
 }
+
+.showStatus {
+    &:hover {
+        outline: none !important;
+        border-color: #d9d9d9 !important;
+        color: unset !important;
+    }
+}

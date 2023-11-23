@@ -316,21 +316,21 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     },
     {
       title: "Lớp học",
-      route: CombineRoute["TEACHER"]["MANAGER"]["CLASS"],
+      route: CombineRoute["TEACHER"]["CLASS"],
       key: "CLASSES",
       keyIcon: KEY_ICON.HTS,
       showIcon: true,
-      indexRoute: CombineRoute["TEACHER"]["MANAGER"]["CLASS"],
+      indexRoute: CombineRoute["TEACHER"]["CLASS"],
       noReplaceTitle: true,
       component: ComponentPage.MANAGER_CLASS,
     },
     {
       title: "Khoá Học",
-      route: CombineRoute["TEACHER"]["MANAGER"]["COURSE"],
+      route: CombineRoute["TEACHER"]["COURSE"],
       key: "COURSES",
       keyIcon: KEY_ICON.CR,
       showIcon: true,
-      indexRoute: CombineRoute["TEACHER"]["MANAGER"]["COURSE"],
+      indexRoute: CombineRoute["TEACHER"]["COURSE"],
       noReplaceTitle: true,
       component: ComponentPage.MANAGER_COURSE,
     },
@@ -344,21 +344,6 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       noReplaceTitle: true,
       component: ComponentPage.LOCATION,
     },
-    // {
-    //   title: (
-    //     <Collapse
-    //       panels={panelsFeedback}
-    //       className={`collapse_tab ${styles.collapseFeedback}`}
-    //     />
-    //   ),
-    //   route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
-    //   key: "FEED_BACK",
-    //   showIcon: true,
-    //   indexRoute: "",
-    //   component: ComponentPage.MANAGER_FEEDBACK,
-    //   notRouting: true,
-    //   className: `${styles.tabFeedback}`,
-    // },
     {
       title: "Lịch",
       route: CombineRoute["TE"]["CALENDAR"],
@@ -381,9 +366,9 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     },
     {
       title: "Chi tiết lớp học",
-      route: CombineRoute["TE"]["MANAGER"]["DETAILCLASS"],
+      route: CombineRoute["TEACHER"]["DETAILCLASS"],
       key: "DETAIL_CLASS",
-      indexRoute: CombineRoute["TE"]["MANAGER"]["DETAILCLASS"],
+      indexRoute: CombineRoute["TEACHER"]["DETAILCLASS"],
       disable: true,
       keyIcon: KEY_ICON.HTS,
       component: ComponentPage.DETAILCLASS,

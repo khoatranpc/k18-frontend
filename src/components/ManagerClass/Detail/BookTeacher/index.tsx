@@ -5,10 +5,10 @@ import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Columns, Obj, RowData, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
-import { KEY_ICON, ROLE_TEACHER } from '@/global/enum';
+import { KEY_ICON, PositionTe, ROLE_TEACHER } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { generateRowDataForMergeRowSingleField, uuid } from '@/utils';
-import { useHandleTeacherInRCBT, useQueryBookTeacher } from '@/utils/hooks';
+import { useComparePositionTE, useHandleTeacherInRCBT, useQueryBookTeacher } from '@/utils/hooks';
 import { RootState } from '@/store';
 import Table from '@/components/Table';
 import ModalCustomize from '@/components/ModalCustomize';
@@ -30,6 +30,7 @@ const initModalUpdateTeacher = {
 const BookTeacher = (props: Props) => {
     const { query } = useQueryBookTeacher('GET');
     const { dataHandle, clear, update } = useHandleTeacherInRCBT();
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const router = useRouter();
     const handleToggleAcceptStatus = (data: Obj, record?: Obj) => {
         const dataRegiter = data.teacherRegister as Obj;
@@ -62,7 +63,7 @@ const BookTeacher = (props: Props) => {
             className: `${styles.tdGroup}`,
             title: 'Nhóm',
             render(value, record) {
-                return <Popover
+                return hasRole ? <Popover
                     trigger={['hover']}
                     placement='top'
                     content={<div className={styles.popOver}>
@@ -93,7 +94,7 @@ const BookTeacher = (props: Props) => {
                 >
                     <span>{value}</span>
                     <EyeOutlined className={styles.eye} />
-                </Popover>;
+                </Popover> : value;
             },
             onCell(data) {
                 return {
@@ -125,7 +126,7 @@ const BookTeacher = (props: Props) => {
             onCell(data) {
                 return {
                     onClick() {
-                        if ((data.teacherRegister as Array<Obj>).length !== 0) {
+                        if ((data.teacherRegister as Array<Obj>).length !== 0 && hasRole) {
                             handleClickTeacherCell(data);
                         }
                     }
@@ -142,11 +143,12 @@ const BookTeacher = (props: Props) => {
                 </div>
             },
         },
-        {
+        ...hasRole ? [{
             key: 'SALARY',
             title: 'Lương/h',
-            render(value) {
-                return 150000
+            dataIndex: 'salary',
+            render(value?: number) {
+                return value ?? 'Chưa có mức lương'
             },
         },
         {
@@ -154,7 +156,7 @@ const BookTeacher = (props: Props) => {
             dataIndex: 'teacherRegister',
             title: 'Trạng thái duyệt',
             className: `text-center ${styles.tdSwitch}`,
-            render(value, record) {
+            render(value: Obj, record: Obj) {
                 return <div>
                     <Switch
                         onChange={() => {
@@ -167,7 +169,8 @@ const BookTeacher = (props: Props) => {
                     />
                 </div>
             },
-        },
+        },] : [],
+
     ]
     const [modalAddTeacher, setModalAddTeacher] = useState<{
         show: boolean;
@@ -201,14 +204,14 @@ const BookTeacher = (props: Props) => {
     return (
         <div className={styles.bookTeacher}>
             <div className={styles.fnc}>
-                <Button
+                {hasRole && <Button
                     className={styles.btnCreateRequest}
                     onClick={() => {
                         setOpenModal(true);
                     }}>
                     {MapIconKey[KEY_ICON.PLCR]}
                     <span>Thêm nhóm</span>
-                </Button>
+                </Button>}
             </div>
             <ModalCustomize
                 modalHeader={'Thêm nhóm'}

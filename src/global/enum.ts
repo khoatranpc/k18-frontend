@@ -4,6 +4,11 @@ export enum METHOD {
     PUT = 'put',
     DELETE = 'delete'
 }
+export enum ROLE {
+    TEACHER = 'TEACHER',
+    TE = 'TE',
+    CXO = 'CXO'
+}
 export enum ROLE_TEACHER {
     SP = 'SP',
     MT = 'MT',
