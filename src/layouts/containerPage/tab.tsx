@@ -370,16 +370,6 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.CALENDAR,
     },
     {
-      title: "Cài đặt",
-      route: CombineRoute["TE"]["SETTING"],
-      key: "SETTING",
-      keyIcon: KEY_ICON.ST,
-      showIcon: true,
-      indexRoute: CombineRoute["TE"]["SETTING"],
-      noReplaceTitle: true,
-      component: ComponentPage.SETTING,
-    },
-    {
       title: "Trợ giúp",
       route: CombineRoute["TE"]["HELP"],
       key: "HELP",
