@@ -4,9 +4,9 @@ import { Input } from 'antd';
 import { Obj } from '@/global/interface';
 import CombineRoute from '@/global/route';
 import { getColorFromStatusClass, mapStatusToString } from '@/global/init';
-import { KEY_ICON, STATUS_CLASS } from '@/global/enum';
+import { KEY_ICON, PositionTe, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
-import { useDetailClass, useUpdateClassBasicInfor } from '@/utils/hooks';
+import { useComparePositionTE, useDetailClass, useUpdateClassBasicInfor } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { TabDetailClass } from '../Detail';
@@ -49,6 +49,7 @@ interface Props {
 }
 const TitleHeader = (props: Props) => {
     const detailClass = useDetailClass('GET');
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const message = useHookMessage();
     const [title, settitle] = useState<string>('');
     const currentDataRoute = useGetDataRoute();
@@ -85,13 +86,13 @@ const TitleHeader = (props: Props) => {
                 (!isEdit ?
                     <span className={`${styles.title} display-block`} style={{ fontSize: 22 }}>
                         {title}
-                        <sup
+                        {hasRole && <sup
                             className={styles.icon}
                             onClick={() => {
                                 setIsEdit(true)
                             }}
                         >{MapIconKey[KEY_ICON.EDIT]}
-                        </sup>
+                        </sup>}
                     </span>
                     :
                     <>
@@ -143,7 +144,7 @@ const TitleHeader = (props: Props) => {
             <div className={styles.breadCrumb}>
                 <span className={`${styles.dateStart} color-placeholder`}>{props.dateStart}</span>
                 <span>{MapIconKey[KEY_ICON.HTSL]}</span>
-                <Link className="color-placeholder" href={CombineRoute['TE']['MANAGER']['CLASS']}>Lớp học</Link>
+                <Link className="color-placeholder" href={hasRole ? CombineRoute['TE']['MANAGER']['CLASS'] : CombineRoute['TEACHER']['CLASS']}>Lớp học</Link>
                 <span>{MapIconKey[KEY_ICON.CHEVRONRL]}</span>
                 {mapTabDetailBreadcrumb[props.tabDetail]}
             </div>

@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Action, Columns, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
-import { ClassForm, ComponentPage, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { ClassForm, ComponentPage, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, getColorByCourseName, sortByString } from '@/utils';
-import { useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
+import { useComparePositionTE, useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
@@ -68,6 +68,7 @@ const listFilter: ItemFilterField[] = [
     }
 ];
 const ManagerClass = () => {
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const [storeManagerClass, setStoreManagerClass] = useState<{
         crrKeyTab: string;
         listFieldFilter: Array<{
@@ -193,7 +194,7 @@ const ManagerClass = () => {
     const handleClickRow = (record: Obj) => {
         const routePayload: PayloadRoute = {
             payload: {
-                route: CombineRoute['TE']['MANAGER']['DETAILCLASS'],
+                route: hasRole ? CombineRoute['TE']['MANAGER']['DETAILCLASS'] : CombineRoute['TEACHER']['DETAILCLASS'],
                 title: record?.codeClass,
                 replaceTitle: <TitleHeader tabDetail={TabDetailClass.OVERVIEW} editTitle title={record.codeClass as string} dateStart={formatDatetoString(new Date(record.dateStart as Date), 'dd/MM/yyyy')} statusClass={record.status as STATUS_CLASS} />,
                 hasBackPage: true,
@@ -202,7 +203,7 @@ const ManagerClass = () => {
             }
         }
         dispatch(initDataRoute(routePayload));
-        router.push(`/te/manager/class/detail/${record.key}`);
+        router.push(hasRole ? `/te/manager/class/detail/${record.key}` : `/teacher/class/detail/${record.key}`);
     }
     const handleQueryListClass = (currentPage: number, recordOnPage: number) => {
         const payload: Action = {
@@ -256,8 +257,8 @@ const ManagerClass = () => {
                     enableFilter
                     context={ManagerClassContext}
                     listFilter={listFilter}
-                    createButton
-                    exportCSVButton
+                    createButton={hasRole}
+                    exportCSVButton={hasRole}
                     onClickCreateButton={() => {
                         setOpenModal(true);
                     }}

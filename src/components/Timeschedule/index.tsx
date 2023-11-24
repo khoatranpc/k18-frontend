@@ -8,7 +8,7 @@ import styles from '@/styles/Timeschedule.module.scss';
 
 const Timeschedule = () => {
     const listTimeSchedule = useGetTimeSchedule();
-    const hasRole = useComparePositionTE(PositionTe.LEADER);
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const columns: Columns = [
         {
             title: 'STT',

@@ -25,7 +25,7 @@ const initModalDetail = {
 }
 const List = () => {
     const listCourse = useGetListCourse();
-    const hasRole = useComparePositionTE(PositionTe.LEADER);
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const [modal, setModal] = useState<{
         show: boolean;
         title: string;

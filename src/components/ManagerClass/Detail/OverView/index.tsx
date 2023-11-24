@@ -4,11 +4,11 @@ import dayjs from 'dayjs';
 import { Popover, DatePicker, Button } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Action, Obj, Query } from '@/global/interface';
-import { KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { formatDatetoString, getWeekday, uuid } from '@/utils';
-import { useClassSession, useDetailClass, useFindGetAllTe, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
+import { useClassSession, useComparePositionTE, useDetailClass, useFindGetAllTe, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import BlockNotifi from './BlockNotifi';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import { configDataClassSession } from './dataConfig';
@@ -31,6 +31,7 @@ const OverView = () => {
     const bookTeacherRQ = useQueryBookTeacher('GET');
     const detailClass = useDetailClass('GET');
     const listTe = useFindGetAllTe();
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
 
     const getCurrentCourse = (detailClass.data.response?.data as Obj)?.courseId as Obj;
     const getTe = (listTe.data.response as Obj)?.data as Array<Obj> || [];
@@ -165,7 +166,7 @@ const OverView = () => {
             data: [
                 {
                     title: 'Ngày khai giảng',
-                    value: [
+                    value: hasRole ? [
                         <DatePicker
                             key={uuid()}
                             value={dayjs(new Date(detailClass.data.response?.data.dayRange.start as Date))}
@@ -188,7 +189,7 @@ const OverView = () => {
                                 }
                             }}
                         />
-                    ]
+                    ] : [`${formatDatetoString(detailClass.data.response?.data.dayRange.start as string, 'dd/MM/yyyy')}`]
                 },
                 {
                     title: 'Cơ sở',
@@ -235,7 +236,7 @@ const OverView = () => {
                 },
                 {
                     title: 'Trạng thái',
-                    value: [
+                    value: hasRole ? [
                         <Dropdown
                             key={uuid()}
                             activeKey={dataDetailClass?.data?.status as STATUS_CLASS}
@@ -274,12 +275,12 @@ const OverView = () => {
                                 }
                             }}
                         />
-                    ]
+                    ] : [<Button key={uuid()} className={styles.showStatus} style={{ backgroundColor: getColorFromStatusClass[dataDetailClass?.data?.status as STATUS_CLASS] }}>Sắp mở</Button>]
                 },
                 {
                     title: 'Giờ học',
                     value: [...(dataDetailClass?.data.timeSchedule as Array<Obj>) || []]?.map((item, idx) => {
-                        return <PickTimeSchedule
+                        return hasRole ? <PickTimeSchedule
                             value={idx === 0 ? getWeekday(new Date(dataDetailClass?.data.dayRange.start as Date).getDay() || -1) as string : ''}
                             hasFilterByValue={idx === 0}
                             onClickItem={(e) => {
@@ -288,12 +289,12 @@ const OverView = () => {
                             key={idx}
                             className={styles.pickTimeSchedule}
                             title={`${item.weekday}: ${String(item.start).replace(/\s/g, '').slice(0, String(item.start).length - 3)}-${String(item.end).replace(/\s/g, '').slice(0, String(item.end).length - 3)}`}
-                        />
+                        /> : <label key={uuid()}>{`${item.weekday}: ${String(item.start).replace(/\s/g, '').slice(0, String(item.start).length - 3)}-${String(item.end).replace(/\s/g, '').slice(0, String(item.end).length - 3)}`}</label>
                     })
                 },
                 {
                     title: 'Khoá',
-                    value: [
+                    value: hasRole ? [
                         <SelectCourse
                             key={uuid()}
                             shortLabelItem
@@ -312,7 +313,7 @@ const OverView = () => {
                             }}
                             defaultValue={`${dataDetailClass?.data.courseId.courseName}-${dataDetailClass?.data.courseLevelId.levelCode}`}
                         />
-                    ]
+                    ] : [`${dataDetailClass?.data.courseId.courseName}-${dataDetailClass?.data.courseLevelId.levelCode}`]
                 },
                 {
                     title: 'Địa điểm',

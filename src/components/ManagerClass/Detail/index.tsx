@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import { Button, TabsProps } from 'antd';
 import { Obj } from '@/global/interface';
 import CombineRoute from '@/global/route';
-import { ComponentPage, STATUS_CLASS } from '@/global/enum';
+import { ComponentPage, PositionTe, STATUS_CLASS } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
-import { useDetailClass } from '@/utils/hooks';
+import { useComparePositionTE, useDetailClass } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import Tabs from '@/components/Tabs';
@@ -32,31 +32,31 @@ export enum TabDetailClass {
     FEEDBACK = 'FEEDBACK',
     BOOK_TEACHER = 'BOOK_TEACHER'
 }
-export const listTab: TabsProps['items'] = [
+const listTab: TabsProps['items'] = [
     {
         key: TabDetailClass.OVERVIEW,
         label: 'Tổng quan'
     },
-    {
-        key: TabDetailClass.STUDENT,
-        label: 'Học viên'
-    },
-    {
-        key: TabDetailClass.MANAGER_GROUP,
-        label: 'Quản lý nhóm'
-    },
+    // {
+    //     key: TabDetailClass.STUDENT,
+    //     label: 'Học viên'
+    // },
+    // {
+    //     key: TabDetailClass.MANAGER_GROUP,
+    //     label: 'Quản lý nhóm'
+    // },
     {
         key: TabDetailClass.ATTENDANCE,
         label: 'Điểm danh'
     },
-    {
-        key: TabDetailClass.TEXTBOOK,
-        label: 'Học liệu'
-    },
-    {
-        key: TabDetailClass.SYLLABUS,
-        label: 'Chương trình học'
-    },
+    // {
+    //     key: TabDetailClass.TEXTBOOK,
+    //     label: 'Học liệu'
+    // },
+    // {
+    //     key: TabDetailClass.SYLLABUS,
+    //     label: 'Chương trình học'
+    // },
     {
         key: TabDetailClass.FEEDBACK,
         label: 'Phản hồi'
@@ -73,6 +73,7 @@ interface Props {
 const Detail = (props: Props) => {
     const router = useRouter();
     const dispatch = useDispatch();
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const message = useHookMessage();
     const { data, query, clear } = useDetailClass('GET');
     const [currentContent, setCurrentContent] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);
@@ -168,7 +169,7 @@ const Detail = (props: Props) => {
                 }}
             />
             {
-                currentContent === TabDetailClass.OVERVIEW ? (<div className={styles.fncBtn}>
+                hasRole && currentContent === TabDetailClass.OVERVIEW ? (<div className={styles.fncBtn}>
                     <Button className={styles.btn}>Chỉnh sửa</Button>
                     <Button className={styles.btn}>Export</Button>
                 </div>) : (null)

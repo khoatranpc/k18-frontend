@@ -23,7 +23,7 @@ const validationSchema = yup.object({
 const PopupDetailCourse = (props: Props) => {
     const detailCourse = useGetDetailCourse();
     const updateCourse = useUpdateCourse();
-    const hasRole = useComparePositionTE(PositionTe.LEADER);
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const message = useHookMessage();
 
     const [isCreateLevel, setIsCreateLevel] = useState<{

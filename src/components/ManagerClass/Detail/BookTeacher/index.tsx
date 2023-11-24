@@ -5,15 +5,16 @@ import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Columns, Obj, RowData, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
-import { KEY_ICON, ROLE_TEACHER } from '@/global/enum';
+import { KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { generateRowDataForMergeRowSingleField, uuid } from '@/utils';
-import { useHandleTeacherInRCBT, useQueryBookTeacher } from '@/utils/hooks';
+import { useComparePositionTE, useDetailClass, useHandleTeacherInRCBT, useQueryBookTeacher } from '@/utils/hooks';
 import { RootState } from '@/store';
 import Table from '@/components/Table';
 import ModalCustomize from '@/components/ModalCustomize';
 import AddTeacher from './AddTeacher';
 import AddRequestGroup from './AddRequestGroup';
+import TeacherRegister from './TeacherRegister';
 import styles from '@/styles/class/BookTeacher.module.scss';
 
 interface Props {
@@ -30,7 +31,20 @@ const initModalUpdateTeacher = {
 const BookTeacher = (props: Props) => {
     const { query } = useQueryBookTeacher('GET');
     const { dataHandle, clear, update } = useHandleTeacherInRCBT();
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const router = useRouter();
+    const detailClass = useDetailClass('GET').data.response?.data as Obj;
+    const [modalTeacherRegister, setModalTeacherRegister] = useState<{
+        isRegister: boolean,
+        isCancel: boolean,
+        show: boolean,
+        recordBookTeacherId?: String
+    }>({
+        isCancel: false,
+        isRegister: false,
+        show: false,
+        recordBookTeacherId: ''
+    });
     const handleToggleAcceptStatus = (data: Obj, record?: Obj) => {
         const dataRegiter = data.teacherRegister as Obj;
         const teacher = dataRegiter?.idTeacher as Obj;
@@ -62,7 +76,7 @@ const BookTeacher = (props: Props) => {
             className: `${styles.tdGroup}`,
             title: 'Nhóm',
             render(value, record) {
-                return <Popover
+                return hasRole ? <Popover
                     trigger={['hover']}
                     placement='top'
                     content={<div className={styles.popOver}>
@@ -93,7 +107,7 @@ const BookTeacher = (props: Props) => {
                 >
                     <span>{value}</span>
                     <EyeOutlined className={styles.eye} />
-                </Popover>;
+                </Popover> : value;
             },
             onCell(data) {
                 return {
@@ -125,7 +139,7 @@ const BookTeacher = (props: Props) => {
             onCell(data) {
                 return {
                     onClick() {
-                        if ((data.teacherRegister as Array<Obj>).length !== 0) {
+                        if ((data.teacherRegister as Array<Obj>).length !== 0 && hasRole) {
                             handleClickTeacherCell(data);
                         }
                     }
@@ -142,11 +156,12 @@ const BookTeacher = (props: Props) => {
                 </div>
             },
         },
-        {
+        ...hasRole ? [{
             key: 'SALARY',
             title: 'Lương/h',
-            render(value) {
-                return 150000
+            dataIndex: 'salary',
+            render(value?: number) {
+                return value ?? 'Chưa có mức lương'
             },
         },
         {
@@ -154,7 +169,7 @@ const BookTeacher = (props: Props) => {
             dataIndex: 'teacherRegister',
             title: 'Trạng thái duyệt',
             className: `text-center ${styles.tdSwitch}`,
-            render(value, record) {
+            render(value: Obj, record: Obj) {
                 return <div>
                     <Switch
                         onChange={() => {
@@ -167,7 +182,28 @@ const BookTeacher = (props: Props) => {
                     />
                 </div>
             },
-        },
+        },] : (detailClass?.status === STATUS_CLASS.PREOPEN ? [
+            {
+                key: 'REGISTER',
+                title: 'Hành động',
+                render(_: any, record: Obj) {
+                    return <Button
+                        onClick={() => {
+                            console.log(record);
+                            // setModalTeacherRegister({
+                            //     isCancel: false,
+                            //     isRegister: true,
+                            //     show: true,
+                            //     recordBookTeacherId: record._id as string
+                            // })
+                        }}
+                    >
+                        Đăng ký
+                    </Button>
+                }
+            }
+        ] : []),
+
     ]
     const [modalAddTeacher, setModalAddTeacher] = useState<{
         show: boolean;
@@ -200,17 +236,19 @@ const BookTeacher = (props: Props) => {
     }, [dataHandle]);
     return (
         <div className={styles.bookTeacher}>
-            <div className={styles.fnc}>
-                <Button
-                    className={styles.btnCreateRequest}
-                    onClick={() => {
-                        setOpenModal(true);
-                    }}>
-                    {MapIconKey[KEY_ICON.PLCR]}
-                    <span>Thêm nhóm</span>
-                </Button>
-            </div>
-            <ModalCustomize
+            {
+                hasRole && <div className={styles.fnc}>
+                    <Button
+                        className={styles.btnCreateRequest}
+                        onClick={() => {
+                            setOpenModal(true);
+                        }}>
+                        {MapIconKey[KEY_ICON.PLCR]}
+                        <span>Thêm nhóm</span>
+                    </Button>
+                </div>
+            }
+            {openModal && <ModalCustomize
                 modalHeader={'Thêm nhóm'}
                 show={openModal}
                 onHide={() => {
@@ -225,28 +263,28 @@ const BookTeacher = (props: Props) => {
                     }}
                 />
             </ModalCustomize>
-            <ModalCustomize
-                modalHeader={modalAddTeacher.show ? 'Thêm GV' : 'Cập nhật'}
-                show={modalAddTeacher.show || modalUpdateTeacher.show}
+            }
+            {modalTeacherRegister && <ModalCustomize
+                centered
+                show={modalTeacherRegister.show}
+                size="sm"
                 onHide={() => {
-                    if (modalAddTeacher.show) {
-                        setModalAddTeacher({
-                            show: false,
-                            requestId: ''
-                        });
-                    } else {
-                        setModalUpdateTeacher(initModalUpdateTeacher);
-                    }
+                    setModalTeacherRegister({
+                        isCancel: false,
+                        isRegister: false,
+                        show: false
+                    })
                 }}
+                modalHeader={<h2>{modalTeacherRegister.isRegister ? 'Đăng ký giảng dạy' : 'Huỷ lớp'}</h2>}
             >
-                <AddTeacher
-                    isUpdate={modalUpdateTeacher.show}
-                    nameTeacher={modalUpdateTeacher.nameTeacher}
-                    requestId={modalAddTeacher.requestId || modalUpdateTeacher.requestId}
-                    teacherId={modalUpdateTeacher.teacherId}
-                    teacherRole={modalUpdateTeacher.role}
-                    onSuccess={() => {
-                        query!(router.query.classId as string);
+                <TeacherRegister isCancel={modalTeacherRegister.isCancel} isRegister={modalTeacherRegister.isRegister} />
+            </ModalCustomize>
+            }
+            {modalAddTeacher.show &&
+                <ModalCustomize
+                    modalHeader={modalAddTeacher.show ? 'Thêm GV' : 'Cập nhật'}
+                    show={modalAddTeacher.show || modalUpdateTeacher.show}
+                    onHide={() => {
                         if (modalAddTeacher.show) {
                             setModalAddTeacher({
                                 show: false,
@@ -256,9 +294,28 @@ const BookTeacher = (props: Props) => {
                             setModalUpdateTeacher(initModalUpdateTeacher);
                         }
                     }}
+                >
+                    <AddTeacher
+                        isUpdate={modalUpdateTeacher.show}
+                        nameTeacher={modalUpdateTeacher.nameTeacher}
+                        requestId={modalAddTeacher.requestId || modalUpdateTeacher.requestId}
+                        teacherId={modalUpdateTeacher.teacherId}
+                        teacherRole={modalUpdateTeacher.role}
+                        onSuccess={() => {
+                            query!(router.query.classId as string);
+                            if (modalAddTeacher.show) {
+                                setModalAddTeacher({
+                                    show: false,
+                                    requestId: ''
+                                });
+                            } else {
+                                setModalUpdateTeacher(initModalUpdateTeacher);
+                            }
+                        }}
 
-                />
-            </ModalCustomize>
+                    />
+                </ModalCustomize>
+            }
             <Table
                 loading={dataRd.isLoading}
                 className="hasMergeCell"
