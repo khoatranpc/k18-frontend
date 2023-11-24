@@ -12,14 +12,15 @@ const listPanelTeacher: ItemContentPanel[] = [
     title: "Danh sách giáo viên",
     route: CombineRoute["TE"]["MANAGER"]["TEACHER"],
   },
-  {
-    title: "Xếp hạng",
-    route: CombineRoute["TE"]["MANAGER"]["TEACHERRANK"],
-  },
-  {
-    title: "Lương",
-    route: CombineRoute["TE"]["MANAGER"]["TEACHERSALARY"],
-  },
+  // disabled
+  // {
+  //   title: "Xếp hạng",
+  //   route: CombineRoute["TE"]["MANAGER"]["TEACHERRANK"],
+  // },
+  // {
+  //   title: "Lương",
+  //   route: CombineRoute["TE"]["MANAGER"]["TEACHERSALARY"],
+  // },
 ];
 const panelsTeacher: ItemPanels[] = [
   {
@@ -82,7 +83,31 @@ const panelsLocation: ItemPanels[] = [
     content: <ContentPanel listItem={listPanelLocation} />,
     key: "LOCATION"
   }
+];
+
+const listPanelRecruitment: ItemContentPanel[] = [
+  {
+    route: CombineRoute["TE"]["RECRUITMENT"],
+    title: 'Tuyển dụng'
+  },
+  {
+    route: CombineRoute["TE"]["RECRUITMENT_CALENDAR"],
+    title: 'Lịch phỏng vấn'
+  },
+];
+const panelsRecruitment: ItemPanels[] = [
+  {
+    header: <HeaderPanel
+      listChildRoute={[CombineRoute["TE"]["RECRUITMENT"], CombineRoute["TE"]["RECRUITMENT_CALENDAR"]]}
+      className={`${styles.tabPanel} ${styles.parent}`}
+      icon={MapIconKey[KEY_ICON.RCM]}
+      title="Tuyển dụng"
+    />,
+    content: <ContentPanel listItem={listPanelRecruitment} />,
+    key: "RECRUITMENT"
+  }
 ]
+
 
 const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
   TE: [
@@ -98,6 +123,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       positionTE: PositionTe.LEADER
     },
     {
+      title: <Collapse panels={panelsRecruitment} className="collapse_tab" />,
+      route: "/",
+      key: "RECUITMENT",
+      // keyIcon: KEY_ICON.T,
+      indexRoute: "",
+      noReplaceTitle: true,
+      component: ComponentPage.TEACHERS,
+      notRouting: true,
+    },
+    {
       title: "Tuyển dụng",
       route: CombineRoute["TE"]["RECRUITMENT"],
       key: "RECRUITMENT",
@@ -105,6 +140,18 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       showIcon: true,
       indexRoute: CombineRoute["TE"]["RECRUITMENT"],
       noReplaceTitle: true,
+      disable: true,
+      component: ComponentPage.RECRUITMENT,
+    },
+    {
+      title: "Tuyển dụng",
+      route: CombineRoute["TE"]["RECRUITMENT_CALENDAR"],
+      key: "RECRUITMENT_CALENDAR",
+      // keyIcon: KEY_ICON.RCM,
+      // showIcon: true,
+      indexRoute: CombineRoute["TE"]["RECRUITMENT_CALENDAR"],
+      noReplaceTitle: true,
+      disable: true,
       component: ComponentPage.RECRUITMENT,
     },
     {
