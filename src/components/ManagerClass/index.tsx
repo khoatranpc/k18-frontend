@@ -22,21 +22,6 @@ import CreateClass from './CreateClass';
 import { TabDetailClass } from './Detail';
 import styles from '@/styles/class/Class.module.scss';
 
-const items: TabsProps['items'] = [
-    {
-        key: 'ALL_CLASS',
-        label: 'Tất cả lớp',
-    },
-    {
-        key: 'UIUX',
-        label: `UI/UX`,
-    },
-    {
-        key: 'PMBA',
-        label: `PM/BA`,
-    },
-];
-
 const listFilter: ItemFilterField[] = [
     {
         title: 'Môn học',
@@ -67,8 +52,29 @@ const listFilter: ItemFilterField[] = [
         key: fieldFilter.TIME_SCHEDULE
     }
 ];
+enum Tab {
+    ALL_CLASS = 'ALL_CLASS',
+    MY_CLASS = 'MY_CLASS',
+    REGISTER_CLASS = 'REGISTER_CLASS'
+}
 const ManagerClass = () => {
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
+    const items: TabsProps['items'] = [
+        {
+            key: Tab['ALL_CLASS'],
+            label: 'Tất cả lớp',
+        },
+        ...!hasRole ? [
+            {
+                key: Tab['MY_CLASS'],
+                label: 'Lớp của tôi'
+            },
+            {
+                key: Tab['REGISTER_CLASS'],
+                label: 'Lớp đăng ký'
+            }
+        ] : []
+    ];
     const [storeManagerClass, setStoreManagerClass] = useState<{
         crrKeyTab: string;
         listFieldFilter: Array<{
