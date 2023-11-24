@@ -144,7 +144,7 @@ const TitleHeader = (props: Props) => {
             <div className={styles.breadCrumb}>
                 <span className={`${styles.dateStart} color-placeholder`}>{props.dateStart}</span>
                 <span>{MapIconKey[KEY_ICON.HTSL]}</span>
-                <Link className="color-placeholder" href={CombineRoute['TE']['MANAGER']['CLASS']}>Lớp học</Link>
+                <Link className="color-placeholder" href={hasRole ? CombineRoute['TE']['MANAGER']['CLASS'] : CombineRoute['TEACHER']['CLASS']}>Lớp học</Link>
                 <span>{MapIconKey[KEY_ICON.CHEVRONRL]}</span>
                 {mapTabDetailBreadcrumb[props.tabDetail]}
             </div>
