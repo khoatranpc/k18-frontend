@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Popover, Popconfirm, Switch } from 'antd';
+import { Button, Popover, Popconfirm, Switch, Tooltip } from 'antd';
 import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Columns, Obj, RowData, State } from '@/global/interface';
@@ -8,6 +8,7 @@ import { mapRoleToString } from '@/global/init';
 import { KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { generateRowDataForMergeRowSingleField, uuid } from '@/utils';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import { useComparePositionTE, useDetailClass, useHandleTeacherInRCBT, useQueryBookTeacher } from '@/utils/hooks';
 import { RootState } from '@/store';
 import Table from '@/components/Table';
@@ -30,6 +31,7 @@ const initModalUpdateTeacher = {
 }
 const BookTeacher = (props: Props) => {
     const { query } = useQueryBookTeacher('GET');
+    const currentUser = useGetCrrUser()?.data as Obj;
     const { dataHandle, clear, update } = useHandleTeacherInRCBT();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const router = useRouter();
@@ -133,13 +135,17 @@ const BookTeacher = (props: Props) => {
             dataIndex: 'teacherRegister',
             className: `${styles.cellTeacherRegister}`,
             title: 'Giáo viên đăng ký',
-            render(value) {
-                return <div>{value?.idTeacher?.fullName || 'Thiếu'}</div>
+            render(value, record: Obj) {
+                const crrIdTeacher = record.teacherRegister?.idTeacher?._id;
+                const compareUserandTeacher = crrIdTeacher === currentUser?._id
+                return <div>
+                    {value?.idTeacher?.fullName || 'Thiếu'}{compareUserandTeacher && <Tooltip title="Bạn">*</Tooltip>}
+                </div>
             },
             onCell(data) {
                 return {
                     onClick() {
-                        if ((data.teacherRegister as Array<Obj>).length !== 0 && hasRole) {
+                        if (data.teacherRegister && hasRole) {
                             handleClickTeacherCell(data);
                         }
                     }
@@ -187,18 +193,19 @@ const BookTeacher = (props: Props) => {
                 key: 'REGISTER',
                 title: 'Hành động',
                 render(_: any, record: Obj) {
+                    const crrIdTeacher = record.teacherRegister?.idTeacher?._id;
+                    const compareUserandTeacher = crrIdTeacher === currentUser?._id
                     return <Button
                         onClick={() => {
-                            console.log(record);
-                            // setModalTeacherRegister({
-                            //     isCancel: false,
-                            //     isRegister: true,
-                            //     show: true,
-                            //     recordBookTeacherId: record._id as string
-                            // })
+                            setModalTeacherRegister({
+                                isCancel: compareUserandTeacher,
+                                isRegister: !compareUserandTeacher,
+                                show: true,
+                                recordBookTeacherId: record._id as string
+                            })
                         }}
                     >
-                        Đăng ký
+                        {compareUserandTeacher ? 'Huỷ' : 'Đăng ký'}
                     </Button>
                 }
             }
@@ -221,9 +228,7 @@ const BookTeacher = (props: Props) => {
         }
     }) || [];
     useEffect(() => {
-        if (!dataRd.response) {
-            query!(router.query.classId as string);
-        }
+        query!(router.query.classId as string);
         if ((dataRd && dataRd.success && !(((dataRd.response!.data as Array<Obj>)[0]?.classId as string) === router.query.classId as string))) {
             query!(router.query.classId as string);
         }
@@ -272,15 +277,16 @@ const BookTeacher = (props: Props) => {
                     setModalTeacherRegister({
                         isCancel: false,
                         isRegister: false,
-                        show: false
+                        show: false,
+                        recordBookTeacherId: ''
                     })
                 }}
                 modalHeader={<h2>{modalTeacherRegister.isRegister ? 'Đăng ký giảng dạy' : 'Huỷ lớp'}</h2>}
             >
-                <TeacherRegister isCancel={modalTeacherRegister.isCancel} isRegister={modalTeacherRegister.isRegister} />
+                <TeacherRegister recordBookTeacherId={modalTeacherRegister.recordBookTeacherId as string} isCancel={modalTeacherRegister.isCancel} isRegister={modalTeacherRegister.isRegister} />
             </ModalCustomize>
             }
-            {modalAddTeacher.show &&
+            {modalUpdateTeacher.show &&
                 <ModalCustomize
                     modalHeader={modalAddTeacher.show ? 'Thêm GV' : 'Cập nhật'}
                     show={modalAddTeacher.show || modalUpdateTeacher.show}
