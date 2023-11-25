@@ -782,14 +782,15 @@ const useUpdateLevelCourse = () => {
 const useGetDataRoundProcess = () => {
     const data = useSelector((state: RootState) => (state.roundProcess as State).state);
     const dispatch = useDispatch();
-    const query = (round: RoundProcess, listCandidateId: Array<string>) => {
+    const query = (round: RoundProcess, listCandidateId: Array<string>, getAll?: boolean, fields?: string) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
                         listCandidateId: listCandidateId.toString(),
                         round,
-                        fields: 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName,codeClass,formFirst,formSecond,locationFirst,locationSecond,locationCode,timeFirst,timeSecond,timeFirstDone,timeSecondDone,codeClass,doc'
+                        fields: fields ?? 'candidateId,_id,result,processed,linkMeet,time,te,teName,positionTe,courseId,mailInterviewSent,mailResultSent,courseName,codeClass,formFirst,formSecond,locationFirst,locationSecond,locationCode,timeFirst,timeSecond,timeFirstDone,timeSecondDone,codeClass,doc',
+                        getAll
                     }
                 },
             }

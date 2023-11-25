@@ -3,7 +3,7 @@ const CombineRoute = {
   TE: {
     OVERVIEW: "/te/over-view",
     RECRUITMENT: "/te/manager/recruitment",
-    RECRUITMENT_CALENDAR: "/te/manager/recruitment/calendar",
+    CALENDAR_INTERVIEW: "/te/manager/calendar-interview",
     RECRUITMENT_DETAIL_CANDIDATE: "/te/manager/recruitment/[candidateId]",
     RECRUITMENT_CREATE_CANDIDATE: "/te/manager/recruitment/create-candidate",
     MANAGER: {

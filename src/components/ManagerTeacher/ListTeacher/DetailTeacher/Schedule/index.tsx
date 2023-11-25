@@ -10,12 +10,13 @@ const Schedule = () => {
     const timeSchedule = useTeacherTimeSchedule();
     const router = useRouter();
     useEffect(() => {
+        const currentDate = new Date();
         const payload: Action = {
             payload: {
                 query: {
                     query: {
                         year: 2023,
-                        month: 7,
+                        month: currentDate.getMonth(),
                         option: 'MONTH'
                     },
                     params: [router.query.teacherId as string]

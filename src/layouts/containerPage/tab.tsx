@@ -91,14 +91,14 @@ const listPanelRecruitment: ItemContentPanel[] = [
     title: 'Tuyển dụng'
   },
   {
-    route: CombineRoute["TE"]["RECRUITMENT_CALENDAR"],
+    route: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
     title: 'Lịch phỏng vấn'
   },
 ];
 const panelsRecruitment: ItemPanels[] = [
   {
     header: <HeaderPanel
-      listChildRoute={[CombineRoute["TE"]["RECRUITMENT"], CombineRoute["TE"]["RECRUITMENT_CALENDAR"]]}
+      listChildRoute={[CombineRoute["TE"]["RECRUITMENT"], CombineRoute["TE"]["CALENDAR_INTERVIEW"]]}
       className={`${styles.tabPanel} ${styles.parent}`}
       icon={MapIconKey[KEY_ICON.RCM]}
       title="Tuyển dụng"
@@ -123,14 +123,14 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       positionTE: PositionTe.LEADER
     },
     {
-      title: <Collapse panels={panelsRecruitment} className="collapse_tab" />,
+      title: <Collapse panels={panelsRecruitment} className={`collapse_tab ${styles.mangerRecruitment}`} />,
       route: "/",
       key: "RECUITMENT",
-      // keyIcon: KEY_ICON.T,
       indexRoute: "",
       noReplaceTitle: true,
-      component: ComponentPage.TEACHERS,
+      component: ComponentPage.RECRUITMENT,
       notRouting: true,
+      className: `${styles.tabFeedback}`
     },
     {
       title: "Tuyển dụng",
@@ -144,12 +144,12 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.RECRUITMENT,
     },
     {
-      title: "Tuyển dụng",
-      route: CombineRoute["TE"]["RECRUITMENT_CALENDAR"],
-      key: "RECRUITMENT_CALENDAR",
+      title: "Lịch",
+      route: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
+      key: "CALENDAR_INTERVIEW",
       // keyIcon: KEY_ICON.RCM,
       // showIcon: true,
-      indexRoute: CombineRoute["TE"]["RECRUITMENT_CALENDAR"],
+      indexRoute: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
       noReplaceTitle: true,
       disable: true,
       component: ComponentPage.RECRUITMENT,
