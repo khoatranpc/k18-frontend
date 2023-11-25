@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Table from '@/components/Table';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { useGetDataRoundProcess } from '@/utils/hooks';
@@ -6,10 +7,11 @@ import { RoundProcess } from '@/global/enum';
 import { formatDatetoString, getColorByCourseName } from '@/utils';
 import styles from '@/styles/Recruitment/CalendarInterview.module.scss';
 
+
 const TableTab = () => {
     const dataRoundProcess = useGetDataRoundProcess();
     const getDataRoundProcess = (dataRoundProcess.data.response?.data as Array<Obj>);
-    console.log(getDataRoundProcess);
+    const router = useRouter();
     const columns: Columns = [
         {
             title: 'Thời gian',
@@ -23,6 +25,13 @@ const TableTab = () => {
             dataIndex: 'candidateId',
             render(value: Obj) {
                 return value?.fullName
+            },
+            onCell(record: Obj) {
+                return {
+                    onClick() {
+                        router.push(`/te/manager/recruitment/${record?.candidateId?._id as string}`)
+                    }
+                }
             }
         },
         {
@@ -43,7 +52,7 @@ const TableTab = () => {
             title: 'TE',
             dataIndex: 'te',
             render(value: Obj) {
-                return `${value?.teName} - ${value?.positionTe} ${value?.courseId?.courseName ?? ''}`
+                return value ? `${value?.teName} - ${value?.positionTe} ${value?.courseId?.courseName ?? ''}` : 'Chưa có thông tin'
             }
         },
         {
@@ -58,7 +67,7 @@ const TableTab = () => {
             className: 'text-center',
             dataIndex: 'linkMeet',
             render(value) {
-                return value ? <a href={value} target="_blank" className={`${styles.link}`}>Link</a> : 'Chưa có link'
+                return value ? <a href={value} target="_blank" className={`${styles.link}`}>Link</a> : 'Chưa có'
             }
         },
         {
