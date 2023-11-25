@@ -1,5 +1,6 @@
 .tabPanel,
-.managerLocation {
+.managerLocation,
+.mangerRecruitment {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -9,7 +10,8 @@
     }
 }
 
-.tabFeedback {
+.tabFeedback,
+.mangerRecruitment {
     padding: 0 !important;
     background-color: transparent !important;
 
