@@ -31,10 +31,13 @@ const TableRecruitment = () => {
             key: item._id,
             ...item
         }
-    })
+    });
+    const queryListData = (recordOnPage: number, page: number) => {
+        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail']);
+    }
     useEffect(() => {
         // pending logic with pagination
-        listDataRecruitment.query(10, 1, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail']);
+        queryListData(10, 1);
     }, []);
     const columns: Columns = [
         {
@@ -166,6 +169,11 @@ const TableRecruitment = () => {
                 hanldeClickRow={(record) => {
                     handleRedirectDetail(record._id as string);
                 }}
+                onChangeDataPagination={(data) => {
+                    queryListData(data.currentTotalRowOnPage, data.currentPage);
+                }}
+                showSizePage
+                maxPage={(listDataRecruitment.data.response?.data as Obj)?.totalPage as number}
             />
             {
                 modal.config.isShow && <Popup

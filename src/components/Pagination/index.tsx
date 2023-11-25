@@ -33,7 +33,8 @@ const Pagination = (props: Props) => {
         crrDataPagination.crrPage = (type === TypeCount.INCR ?
             (crrDataPagination.crrPage < props.maxPage ?
                 (crrDataPagination.crrPage + 1) :
-                crrDataPagination.crrPage) :
+                crrDataPagination.crrPage)
+            :
             (crrDataPagination.crrPage > 1 ?
                 crrDataPagination.crrPage - 1 :
                 (crrDataPagination.crrPage)));

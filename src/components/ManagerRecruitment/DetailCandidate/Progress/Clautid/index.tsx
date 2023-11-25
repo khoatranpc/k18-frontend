@@ -39,10 +39,10 @@ const Clautid = () => {
     }
     useEffect(() => {
         if (dataRoundProcess.data.response) {
-            if (getDataRoundProcess.classIdFirst?._id) {
+            if (getDataRoundProcess?.classIdFirst?._id) {
                 listClassIdClautid.push(getDataRoundProcess.classIdFirst._id as string);
             }
-            if (getDataRoundProcess.classIdSecond?._id) {
+            if (getDataRoundProcess?.classIdSecond?._id) {
                 listClassIdClautid.push(getDataRoundProcess.classIdSecond._id as string);
             }
             feedbackClautid.query({

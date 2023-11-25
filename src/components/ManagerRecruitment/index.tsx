@@ -4,7 +4,6 @@ import { Obj } from '@/global/interface';
 import { uuid } from '@/utils';
 import { useGetListCourse } from '@/utils/hooks';
 import ContextProvider from './ContextProvider';
-import Tabs from '../Tabs';
 import FilterBar from './FilterBar';
 import Table from './Table';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
