@@ -7,6 +7,7 @@ interface Props {
     rowOnPage?: number;
     crrPage?: number;
     className?: string;
+    showSizePage?: boolean;
     maxPage: number;
     onChangePagination?: (data: {
         currentPage: number,
@@ -88,7 +89,7 @@ const Pagination = (props: Props) => {
             <div className={styles.stepPage}>
                 <span>Trang</span>
                 <div className={styles.page}>
-                    <span>{crrDataPagination.crrPage < 10 ? `0${crrDataPagination.crrPage}` : crrDataPagination.crrPage}</span>
+                    <span>{crrDataPagination.crrPage < 10 ? `0${crrDataPagination.crrPage}` : crrDataPagination.crrPage}{props.showSizePage ? `/${props.maxPage}` : ''}</span>
                     <div className={styles.chevron}>
                         <div className={styles.chevronUp} onClick={() => {
                             handlePage(TypeCount.INCR);

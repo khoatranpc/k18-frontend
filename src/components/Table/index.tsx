@@ -101,6 +101,7 @@ const Table = (props: Props) => {
                 pagination={props.disableDefaultPagination ? !props.disableDefaultPagination : {}}
             />
             {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination
+                showSizePage={props.showSizePage}
                 className={props.classNamePagination}
                 onChangePagination={props.onChangeDataPagination}
                 maxPage={props.enablePaginationAjax ? props.maxPage as number : 100}
