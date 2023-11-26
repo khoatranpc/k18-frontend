@@ -7,7 +7,7 @@ import { getStringByLevelTechnique, getStringObjectTeach, mapRoleToString } from
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
 import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResultInterview, StatusProcessing } from '@/global/enum';
-import { useCreateCandidate, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
+import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
@@ -46,7 +46,7 @@ const validationSchema = yup.object({
     phoneNumber: yup.string().required('Thiếu số điện thoại!'),
     jobPosition: yup.string().required('Thiếu vị trí công việc!'),
     courseApply: yup.string().required('Thiếu khối ứng tuyển!'),
-    currentAddress: yup.string().required('Thiếu địa chỉ hiện tại!'),
+    area: yup.string().required('Thiếu khu vực!'),
     technique: yup.string().required('Thiếu công nghệ sử dụng!'),
     email: yup.string().email('Không đúng định dạng email').required('Thiếu email!'),
 });
@@ -58,12 +58,19 @@ interface Props {
 const FormInfoCandidate = (props: Props) => {
     const createCandidate = useCreateCandidate();
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    const area = useGetArea();
+    const mapListArea: MenuProps['items'] = (area.data.response?.data as Obj[])?.map((item) => {
+        return {
+            key: item._id as string,
+            label: item.name as string
+        }
+    });
     const message = useHookMessage();
     const initValues = {
         fullName: props.isViewInfo ? detailCandidate?.fullName as string : '',
         timeApply: props.isViewInfo ? detailCandidate?.timeApply as string : '',
         courseApply: props.isViewInfo ? detailCandidate?.courseApply?._id as string : '',
-        currentAddress: props.isViewInfo ? detailCandidate?.currentAddress as string : '',
+        area: props.isViewInfo ? detailCandidate?.area as string : '',
         graduatedUniversity: props.isViewInfo ? detailCandidate?.graduatedUniversity as boolean : false,
         education: props.isViewInfo ? detailCandidate?.education as Education : Education.BACHELOR,
         specializedIt: props.isViewInfo ? detailCandidate?.specializedIt as Boolean : false,
@@ -94,6 +101,12 @@ const FormInfoCandidate = (props: Props) => {
             createCandidate.query(values);
         }
     });
+    const getTitleArea = () => {
+        const crrArea = (area.data.response?.data as Obj[])?.find((item) => {
+            return item?._id === values.area
+        });
+        return crrArea?.name as string || 'Chọn'
+    }
     const listCourse = useGetListCourse();
     const getListCourseSelect = (listCourse.listCourse?.data as Array<Obj>)?.map((item) => {
         return {
@@ -110,13 +123,13 @@ const FormInfoCandidate = (props: Props) => {
         }
     };
     const getCrrCourse = (value: string) => {
-        console.log(value);
         const findCourse = (listCourse.listCourse?.data as Array<Obj>)?.find((item) => {
             return item._id === value
         });
         return findCourse
     };
     useEffect(() => {
+        area.query();
         listCourse.queryListCourse();
     }, []);
     useEffect(() => {
@@ -186,9 +199,16 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.dob && touched.dob && <p className="error">{errors.dob}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Địa chỉ <span className="error">*</span></Form.Label>
-                        <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="currentAddress" value={values.currentAddress} onChange={handleChange} onBlur={handleBlur} />
-                        {errors.currentAddress && touched.currentAddress && <p className="error">{errors.currentAddress}</p>}
+                        <Form.Label className="bold">Khu vực <span className="error">*</span></Form.Label>
+                        <Dropdown
+                            onClickItem={(e) => {
+                                setFieldValue('area', e.key);
+                            }}
+                            trigger="click"
+                            listSelect={mapListArea}
+                            title={getTitleArea()}
+                        />
+                        {errors.area && touched.area && <p className="error">{errors.area}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Link facebook</Form.Label>
