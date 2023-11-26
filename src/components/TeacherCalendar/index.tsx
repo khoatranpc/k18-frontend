@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Action } from "@reduxjs/toolkit";
 import useGetCrrUser from "@/utils/hooks/getUser";
 import { EventCalendar, Obj } from "@/global/interface";
+import { STATUS_CLASS } from "@/global/enum";
 
 const TeacherCalendar = () => {
   const timeSchedule = useTeacherTimeSchedule();
