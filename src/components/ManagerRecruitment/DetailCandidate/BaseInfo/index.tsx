@@ -5,8 +5,8 @@ import { KEY_ICON, StatusProcessing } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
 import { useGetDetailCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
-import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import { getStatusProcess } from '../../Table';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
@@ -67,9 +67,11 @@ const BaseInfo = () => {
                 </div>
                 <div className={`${styles.item}`}>
                     <label className={`${styles.label}`}>
-                        <span>Ứng tuyển</span> <span className={styles.timeApplied}>{formatDatetoString(new Date(detailCandidate?.timeApply), 'dd/MM/yyyy')}</span>
+                        <span>Ứng tuyển:</span> <span className={styles.timeApplied}>{formatDatetoString(new Date(detailCandidate?.timeApply), 'dd/MM/yyyy')}</span>
                     </label>
-
+                    <label className={`${styles.label}`}>
+                        <span>Note tuyển dụng:</span> <span className={styles.timeApplied}>{detailCandidate?.note ? detailCandidate?.note : 'Không có'}</span>
+                    </label>
                 </div>
             </div>
         </div>

@@ -6,8 +6,8 @@ import { Button, DatePicker, Input, MenuProps, Radio } from 'antd';
 import { getStringByLevelTechnique, getStringObjectTeach, mapRoleToString } from '@/global/init';
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
-import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, StatusProcessing } from '@/global/enum';
-import { useCreateCandidate, useGetListCourse } from '@/utils/hooks';
+import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResultInterview, StatusProcessing } from '@/global/enum';
+import { useCreateCandidate, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
@@ -50,38 +50,43 @@ const validationSchema = yup.object({
     technique: yup.string().required('Thiếu công nghệ sử dụng!'),
     email: yup.string().email('Không đúng định dạng email').required('Thiếu email!'),
 });
-const initValues = {
-    fullName: '',
-    timeApply: '',
-    courseApply: '',
-    currentAddress: '',
-    graduatedUniversity: false,
-    education: Education.BACHELOR,
-    specializedIt: true,
-    teacherCertification: false,
-    phoneNumber: '',
-    levelTechnique: LevelTechnique.FRESHER,
-    linkFacebook: '',
-    email: '',
-    roleApply: ROLE_TEACHER.MT,
-    dob: '',
-    note: '',
-    resourseApply: ResourseApply.FB,
-    objectExpTeach: ObjectTeach.K18,
-    linkCv: '',
-    expTimeTech: 0,
-    scoreSoftsSkill: 0,
-    technique: '',
-    jobPosition: '',
-    expTimeTeach: 0,
-    statusProcess: StatusProcessing.NOPROCESS,
-    result: ResultInterview.PENDING,
-    createdAt: new Date(),
-    updatedAt: new Date()
+
+interface Props {
+    isViewInfo?: boolean;
+    className?: string;
 }
-const CreateCandidate = () => {
+const FormInfoCandidate = (props: Props) => {
     const createCandidate = useCreateCandidate();
+    const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
     const message = useHookMessage();
+    const initValues = {
+        fullName: props.isViewInfo ? detailCandidate?.fullName as string : '',
+        timeApply: props.isViewInfo ? detailCandidate?.timeApply as string : '',
+        courseApply: props.isViewInfo ? detailCandidate?.courseApply?._id as string : '',
+        currentAddress: props.isViewInfo ? detailCandidate?.currentAddress as string : '',
+        graduatedUniversity: props.isViewInfo ? detailCandidate?.graduatedUniversity as boolean : false,
+        education: props.isViewInfo ? detailCandidate?.education as Education : Education.BACHELOR,
+        specializedIt: props.isViewInfo ? detailCandidate?.specializedIt as Boolean : false,
+        teacherCertification: props.isViewInfo ? detailCandidate?.teacherCertification as Boolean : false,
+        phoneNumber: props.isViewInfo ? detailCandidate?.phoneNumber as string : '',
+        levelTechnique: props.isViewInfo ? detailCandidate?.levelTechnique as LevelTechnique : LevelTechnique.FRESHER,
+        linkFacebook: props.isViewInfo ? detailCandidate?.linkFacebook as string : '',
+        email: props.isViewInfo ? detailCandidate?.email as string : '',
+        roleApply: props.isViewInfo ? detailCandidate?.roleApply as ROLE_TEACHER : ROLE_TEACHER.MT,
+        dob: props.isViewInfo ? detailCandidate?.dob as string : '',
+        note: props.isViewInfo ? detailCandidate?.note as string : '',
+        objectExpTeach: props.isViewInfo ? detailCandidate?.objectExpTeach as ObjectTeach : ObjectTeach.K18,
+        linkCv: props.isViewInfo ? detailCandidate?.linkCv as string : '',
+        expTimeTech: props.isViewInfo ? detailCandidate?.expTimeTech as number : 0,
+        scoreSoftsSkill: props.isViewInfo ? detailCandidate?.scoreSoftsSkill as number : 0,
+        technique: props.isViewInfo ? detailCandidate?.technique as number : '',
+        jobPosition: props.isViewInfo ? detailCandidate?.jobPosition as string : '',
+        expTimeTeach: props.isViewInfo ? detailCandidate?.expTimeTeach as number : 0,
+        statusProcess: props.isViewInfo ? detailCandidate?.statusProcess as StatusProcessing : StatusProcessing.NOPROCESS,
+        result: props.isViewInfo ? detailCandidate?.result as ResultInterview : ResultInterview.PENDING,
+        createdAt: props.isViewInfo ? detailCandidate?.createdAt as Date : new Date(),
+        updatedAt: props.isViewInfo ? detailCandidate?.updatedAt as Date : new Date(),
+    }
     const { values, errors, touched, setValues, setFieldValue, setTouched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
         initialValues: initValues,
         validationSchema,
@@ -105,6 +110,7 @@ const CreateCandidate = () => {
         }
     };
     const getCrrCourse = (value: string) => {
+        console.log(value);
         const findCourse = (listCourse.listCourse?.data as Array<Obj>)?.find((item) => {
             return item._id === value
         });
@@ -127,12 +133,12 @@ const CreateCandidate = () => {
         }
     }, [createCandidate]);
     return (
-        <div className={styles.createCandidate}>
+        <div className={`${styles.createCandidate} ${props.className}`}>
             <Form onSubmit={handleSubmit} className={styles.flex}>
                 <div className={styles.itemColumn}>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Họ tên <span className="error">*</span></Form.Label>
-                        <Input type="text" name="fullName" placeholder="Họ tên" value={values.fullName} size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="text" name="fullName" placeholder="Họ tên" value={values.fullName} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.fullName && touched.fullName && <p className="error">{errors.fullName}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
@@ -140,7 +146,7 @@ const CreateCandidate = () => {
                         <br />
                         <DatePicker
                             onBlur={handleBlur}
-                            size="middle"
+                            size={props.isViewInfo ? 'small' : 'middle'}
                             name='timeApply'
                             value={values.timeApply ? dayjs(new Date(values.timeApply)) : null}
                             onChange={(value: any) => {
@@ -153,12 +159,12 @@ const CreateCandidate = () => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Số ĐT <span className="error">*</span></Form.Label>
-                        <Input type="text" name="phoneNumber" placeholder="Số điện thoại" value={values.phoneNumber} size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="text" name="phoneNumber" placeholder="Số điện thoại" value={values.phoneNumber} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Email <span className="error">*</span></Form.Label>
-                        <Input type="email" name="email" placeholder="example@gmail.com" value={values.email} size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="email" name="email" placeholder="example@gmail.com" value={values.email} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.email && touched.email && <p className="error">{errors.email}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
@@ -167,7 +173,7 @@ const CreateCandidate = () => {
                         <DatePicker
                             placeholder="Ngày tháng năm sinh"
                             onBlur={handleBlur}
-                            size="middle"
+                            size={props.isViewInfo ? 'small' : 'middle'}
                             name='dob'
                             value={values.dob ? dayjs(new Date(values.dob)) : null}
                             onChange={(value: any) => {
@@ -181,16 +187,16 @@ const CreateCandidate = () => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Địa chỉ <span className="error">*</span></Form.Label>
-                        <Input type="text" size="middle" name="currentAddress" value={values.currentAddress} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="currentAddress" value={values.currentAddress} onChange={handleChange} onBlur={handleBlur} />
                         {errors.currentAddress && touched.currentAddress && <p className="error">{errors.currentAddress}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Link facebook</Form.Label>
-                        <Input type="text" size="middle" name="linkFacebook" value={values.linkFacebook} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkFacebook" value={values.linkFacebook} onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Link CV <span className="error">*</span></Form.Label>
-                        <Input type="text" size="middle" name="linkCv" value={values.linkCv} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkCv" value={values.linkCv} onChange={handleChange} onBlur={handleBlur} />
                         {errors.linkCv && touched.linkCv && <p className="error">{errors.linkCv}</p>}
                     </Form.Group>
                 </div>
@@ -293,12 +299,12 @@ const CreateCandidate = () => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Công nghệ sử dụng <span className="field_required">*</span></Form.Label>
-                        <Input value={values.technique} size="middle" name="technique" onChange={handleChange} onBlur={handleBlur} />
+                        <Input value={values.technique} size={props.isViewInfo ? 'small' : 'middle'} name="technique" onChange={handleChange} onBlur={handleBlur} />
                         {errors.technique && touched.technique && <p className="error">{errors.technique}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Vị trí công việc <span className="field_required">*</span></Form.Label>
-                        <Input value={values.jobPosition} size="middle" name="jobPosition" onChange={handleChange} onBlur={handleBlur} />
+                        <Input value={values.jobPosition} size={props.isViewInfo ? 'small' : 'middle'} name="jobPosition" onChange={handleChange} onBlur={handleBlur} />
                         {errors.jobPosition && touched.jobPosition && <p className="error">{errors.jobPosition}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
@@ -344,11 +350,11 @@ const CreateCandidate = () => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Ghi chú</Form.Label>
-                        <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size="middle" name="note" onChange={handleChange} onBlur={handleBlur} />
+                        <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size={props.isViewInfo ? 'small' : 'middle'} name="note" onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
                     <div className={styles.btn}>
-                        <Button size="small" htmlType="submit" loading={createCandidate.data.isLoading}>Tạo</Button>
-                        <Button size="small" disabled={createCandidate.data.isLoading}>Cancel</Button>
+                        <Button size="small" htmlType="submit" loading={createCandidate.data.isLoading}>{props.isViewInfo ? 'Cập nhật' : 'Tạo'}</Button>
+                        <Button size="small" disabled={createCandidate.data.isLoading} onClick={handleReset}>Reset</Button>
                     </div>
                 </div>
             </Form>
@@ -356,4 +362,4 @@ const CreateCandidate = () => {
     )
 }
 
-export default CreateCandidate;
+export default FormInfoCandidate;
