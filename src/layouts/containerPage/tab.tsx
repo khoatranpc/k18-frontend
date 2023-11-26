@@ -65,49 +65,58 @@ const panelsFeedback: ItemPanels[] = [
 const listPanelLocation: ItemContentPanel[] = [
   {
     route: CombineRoute["TE"]["LOCATION"],
-    title: 'Cơ sở'
+    title: "Cơ sở",
   },
   {
     route: CombineRoute["TE"]["AREA"],
-    title: 'Khu vực'
-  }
+    title: "Khu vực",
+  },
 ];
 const panelsLocation: ItemPanels[] = [
   {
-    header: <HeaderPanel
-      listChildRoute={[CombineRoute["TE"]["LOCATION"], CombineRoute["TE"]["AREA"]]}
-      className={`${styles.tabPanel} ${styles.parent}`}
-      icon={MapIconKey[KEY_ICON.LOCATION]}
-      title="Cơ sở"
-    />,
+    header: (
+      <HeaderPanel
+        listChildRoute={[
+          CombineRoute["TE"]["LOCATION"],
+          CombineRoute["TE"]["AREA"],
+        ]}
+        className={`${styles.tabPanel} ${styles.parent}`}
+        icon={MapIconKey[KEY_ICON.LOCATION]}
+        title="Cơ sở"
+      />
+    ),
     content: <ContentPanel listItem={listPanelLocation} />,
-    key: "LOCATION"
-  }
+    key: "LOCATION",
+  },
 ];
 
 const listPanelRecruitment: ItemContentPanel[] = [
   {
     route: CombineRoute["TE"]["RECRUITMENT"],
-    title: 'Tuyển dụng'
+    title: "Tuyển dụng",
   },
   {
     route: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
-    title: 'Lịch phỏng vấn'
+    title: "Lịch phỏng vấn",
   },
 ];
 const panelsRecruitment: ItemPanels[] = [
   {
-    header: <HeaderPanel
-      listChildRoute={[CombineRoute["TE"]["RECRUITMENT"], CombineRoute["TE"]["CALENDAR_INTERVIEW"]]}
-      className={`${styles.tabPanel} ${styles.parent}`}
-      icon={MapIconKey[KEY_ICON.RCM]}
-      title="Tuyển dụng"
-    />,
+    header: (
+      <HeaderPanel
+        listChildRoute={[
+          CombineRoute["TE"]["RECRUITMENT"],
+          CombineRoute["TE"]["CALENDAR_INTERVIEW"],
+        ]}
+        className={`${styles.tabPanel} ${styles.parent}`}
+        icon={MapIconKey[KEY_ICON.RCM]}
+        title="Tuyển dụng"
+      />
+    ),
     content: <ContentPanel listItem={listPanelRecruitment} />,
-    key: "RECRUITMENT"
-  }
-]
-
+    key: "RECRUITMENT",
+  },
+];
 
 const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
   TE: [
@@ -120,17 +129,22 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: CombineRoute["TE"]["OVERVIEW"],
       noReplaceTitle: true,
       component: ComponentPage.OVERVIEW,
-      positionTE: PositionTe.LEADER
+      positionTE: PositionTe.LEADER,
     },
     {
-      title: <Collapse panels={panelsRecruitment} className={`collapse_tab ${styles.mangerRecruitment}`} />,
+      title: (
+        <Collapse
+          panels={panelsRecruitment}
+          className={`collapse_tab ${styles.mangerRecruitment}`}
+        />
+      ),
       route: "/",
       key: "RECUITMENT",
       indexRoute: "",
       noReplaceTitle: true,
       component: ComponentPage.RECRUITMENT,
       notRouting: true,
-      className: `${styles.tabFeedback}`
+      className: `${styles.tabFeedback}`,
     },
     {
       title: "Tuyển dụng",
@@ -213,16 +227,21 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: "",
       noReplaceTitle: true,
       component: ComponentPage.SAVE,
-      disable: true
+      disable: true,
     },
     {
-      title: <Collapse panels={panelsLocation} className={`collapse_tab ${styles.managerLocation}`} />,
+      title: (
+        <Collapse
+          panels={panelsLocation}
+          className={`collapse_tab ${styles.managerLocation}`}
+        />
+      ),
       route: CombineRoute["TE"]["LOCATION"],
       key: "MG_LOCATION",
       // keyIcon: KEY_ICON.LOCATION,
       notRouting: true,
       showIcon: true,
-      indexRoute: '',
+      indexRoute: "",
       noReplaceTitle: true,
       component: ComponentPage.LOCATION,
       className: `${styles.tabFeedback}`,
@@ -231,8 +250,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       route: CombineRoute["TE"]["LOCATION"],
       indexRoute: CombineRoute["TE"]["LOCATION"],
       component: ComponentPage.LOCATION,
-      key: 'LOCATION',
-      title: 'Cơ sở',
+      key: "LOCATION",
+      title: "Cơ sở",
       noReplaceTitle: true,
       disable: true,
     },
@@ -240,8 +259,8 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       route: CombineRoute["TE"]["AREA"],
       indexRoute: CombineRoute["TE"]["AREA"],
       component: ComponentPage.AREA,
-      key: 'AREA',
-      title: 'Khu vực',
+      key: "AREA",
+      title: "Khu vực",
       disable: true,
       noReplaceTitle: true,
     },
@@ -299,7 +318,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: CombineRoute["TE"]["HELP"],
       noReplaceTitle: true,
       component: ComponentPage.HELP,
-      disable: true
+      disable: true,
     },
     {
       title: "Chi tiết lớp học",
@@ -347,7 +366,7 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       disable: false,
       component: ComponentPage.TEMPLATE_MAIL,
       noReplaceTitle: true,
-      positionTE: PositionTe.LEADER
+      positionTE: PositionTe.LEADER,
     },
   ],
   TEACHER: [
@@ -393,11 +412,11 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     },
     {
       title: "Lịch",
-      route: CombineRoute["TE"]["CALENDAR"],
+      route: CombineRoute["TEACHER"]["CALENDAR"],
       key: "CALENDAR",
       keyIcon: KEY_ICON.CL,
       showIcon: true,
-      indexRoute: "",
+      indexRoute: CombineRoute["TEACHER"]["CALENDAR"],
       noReplaceTitle: true,
       component: ComponentPage.CALENDAR,
     },
@@ -430,6 +449,6 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       noReplaceTitle: true,
     },
   ],
-  COMMON: []
+  COMMON: [],
 };
 export { tabForRole };
