@@ -40,6 +40,7 @@ import listResponseFeedback from './feedback/listResponseFeedback.reducer';
 import listResponseFeedbackForTeacher from './feedback/listResponseFeedbackForTeacher.reducer';
 import recruitment from './recruitment/recruitment.reducer';
 import detailCandidate from './recruitment/detailCandidate.reducer';
+import updateCandidate from './recruitment/updateCandidate.reducer';
 import createCandidate from './recruitment/createCandidate.reducer';
 import roundProcess from './recruitment/roundProcessCandidate.reducer';
 import roundComments from './recruitment/roundComment.reducer';
@@ -132,5 +133,6 @@ const rootReducer = {
     updateArea,
     updateLocation,
     createLocation,
+    updateCandidate
 };
 export default rootReducer;

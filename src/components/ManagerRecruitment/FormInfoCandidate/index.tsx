@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -7,7 +7,7 @@ import { getStringByLevelTechnique, getStringObjectTeach, getStringResourseApply
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
 import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, StatusProcessing } from '@/global/enum';
-import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
+import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse, useUpdateCandidate } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
@@ -58,7 +58,9 @@ interface Props {
 }
 const FormInfoCandidate = (props: Props) => {
     const createCandidate = useCreateCandidate();
-    const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    const candidate = useGetDetailCandidate();
+    const detailCandidate = candidate.data.response?.data as Obj;
+    const updateCandidate = useUpdateCandidate();
     const area = useGetArea();
     const mapListArea: MenuProps['items'] = (area.data.response?.data as Obj[])?.map((item) => {
         return {
@@ -100,9 +102,17 @@ const FormInfoCandidate = (props: Props) => {
         initialValues: initValues,
         validationSchema,
         onSubmit(values) {
-            createCandidate.query(values);
+            if (!props.isViewInfo) {
+                createCandidate.query(values);
+            } else {
+                updateCandidate.query({
+                    body: values,
+                    params: [detailCandidate?._id as string]
+                });
+            }
         }
     });
+    const refData = useRef(values);
     const getTitleArea = () => {
         const crrArea = (area.data.response?.data as Obj[])?.find((item) => {
             return item?._id === values.area
@@ -139,23 +149,31 @@ const FormInfoCandidate = (props: Props) => {
         });
         return findCourse
     };
+    console.log(detailCandidate);
+    console.log(values);
+    // console.log(JSON.stringify(detailCandidate) === JSON.stringify(values));
     useEffect(() => {
         area.query();
         listCourse.queryListCourse();
     }, []);
     useEffect(() => {
-        if (createCandidate.data.response) {
+        if (createCandidate.data.response || updateCandidate.data.response) {
+
             message.open({
-                type: createCandidate.data.success ? 'success' : 'error',
-                content: createCandidate.data.success ? 'Thêm ứng viên thành công!' : createCandidate.data.response.message as string
+                type: (createCandidate.data.success || updateCandidate.data.response) ? 'success' : 'error',
+                content: (createCandidate.data.success || updateCandidate.data.success) ? 'Thành công!' : (createCandidate.data.response?.message as string || updateCandidate.data.response?.message as string)
             });
+            if (updateCandidate.data.response) {
+                candidate.query([String(detailCandidate?._id as string)]);
+                updateCandidate.clear?.();
+            }
             createCandidate.clear();
-            if (createCandidate.data.success) {
+            if (createCandidate.data.success && !props.isViewInfo) {
                 handleReset(null);
             }
             message.close(undefined);
         }
-    }, [createCandidate]);
+    }, [createCandidate.data.response, updateCandidate.data.response]);
     return (
         <div className={`${styles.createCandidate} ${props.className}`}>
             <Form onSubmit={handleSubmit} className={styles.flex}>
@@ -398,7 +416,14 @@ const FormInfoCandidate = (props: Props) => {
                         <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size={props.isViewInfo ? 'small' : 'middle'} name="note" onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
                     <div className={styles.btn}>
-                        <Button size="small" htmlType="submit" loading={createCandidate.data.isLoading}>{props.isViewInfo ? 'Cập nhật' : 'Tạo'}</Button>
+                        <Button
+                            size="small"
+                            htmlType="submit"
+                            loading={createCandidate.data.isLoading || updateCandidate.data.isLoading}
+                            disabled={JSON.stringify(refData.current) === JSON.stringify(values)}
+                        >
+                            {props.isViewInfo ? 'Cập nhật' : 'Tạo'}
+                        </Button>
                         <Button size="small" disabled={createCandidate.data.isLoading} onClick={handleReset}>Reset</Button>
                     </div>
                 </div>
