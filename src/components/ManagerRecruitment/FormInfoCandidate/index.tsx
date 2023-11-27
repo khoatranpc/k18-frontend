@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
 import { Button, DatePicker, Input, MenuProps, Radio } from 'antd';
-import { getStringByLevelTechnique, getStringObjectTeach, mapRoleToString } from '@/global/init';
+import { getStringByLevelTechnique, getStringObjectTeach, getStringResourseApply, mapRoleToString } from '@/global/init';
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
-import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResultInterview, StatusProcessing } from '@/global/enum';
-import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
+import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, StatusProcessing } from '@/global/enum';
+import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse, useUpdateCandidate } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
@@ -45,6 +45,7 @@ const validationSchema = yup.object({
     fullName: yup.string().required('Thiếu họ và tên ứng viên!'),
     phoneNumber: yup.string().required('Thiếu số điện thoại!'),
     jobPosition: yup.string().required('Thiếu vị trí công việc!'),
+    resourseApply: yup.string().required('Chưa có nguồn ứng tuyển'),
     courseApply: yup.string().required('Thiếu khối ứng tuyển!'),
     area: yup.string().required('Thiếu khu vực!'),
     technique: yup.string().required('Thiếu công nghệ sử dụng!'),
@@ -57,7 +58,9 @@ interface Props {
 }
 const FormInfoCandidate = (props: Props) => {
     const createCandidate = useCreateCandidate();
-    const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    const candidate = useGetDetailCandidate();
+    const detailCandidate = candidate.data.response?.data as Obj;
+    const updateCandidate = useUpdateCandidate();
     const area = useGetArea();
     const mapListArea: MenuProps['items'] = (area.data.response?.data as Obj[])?.map((item) => {
         return {
@@ -93,14 +96,23 @@ const FormInfoCandidate = (props: Props) => {
         result: props.isViewInfo ? detailCandidate?.result as ResultInterview : ResultInterview.PENDING,
         createdAt: props.isViewInfo ? detailCandidate?.createdAt as Date : new Date(),
         updatedAt: props.isViewInfo ? detailCandidate?.updatedAt as Date : new Date(),
+        resourseApply: props.isViewInfo ? detailCandidate?.resourseApply as ResourseApply : ResourseApply.AN,
     }
     const { values, errors, touched, setValues, setFieldValue, setTouched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
         initialValues: initValues,
         validationSchema,
         onSubmit(values) {
-            createCandidate.query(values);
+            if (!props.isViewInfo) {
+                createCandidate.query(values);
+            } else {
+                updateCandidate.query({
+                    body: values,
+                    params: [detailCandidate?._id as string]
+                });
+            }
         }
     });
+    const refData = useRef(values);
     const getTitleArea = () => {
         const crrArea = (area.data.response?.data as Obj[])?.find((item) => {
             return item?._id === values.area
@@ -114,6 +126,15 @@ const FormInfoCandidate = (props: Props) => {
             label: item.courseName
         }
     });
+    const listResourseApply: () => MenuProps['items'] = () => {
+        const list = Object.keys(ResourseApply);
+        return list.map((item) => {
+            return {
+                key: item,
+                label: getStringResourseApply[item as ResourseApply]
+            }
+        })
+    }
     const handleBlurDropdown = (open: boolean, field: keyof typeof values) => {
         if (!open && !touched[field]) {
             setTouched({
@@ -128,23 +149,31 @@ const FormInfoCandidate = (props: Props) => {
         });
         return findCourse
     };
+    console.log(detailCandidate);
+    console.log(values);
+    // console.log(JSON.stringify(detailCandidate) === JSON.stringify(values));
     useEffect(() => {
         area.query();
         listCourse.queryListCourse();
     }, []);
     useEffect(() => {
-        if (createCandidate.data.response) {
+        if (createCandidate.data.response || updateCandidate.data.response) {
+
             message.open({
-                type: createCandidate.data.success ? 'success' : 'error',
-                content: createCandidate.data.success ? 'Thêm ứng viên thành công!' : createCandidate.data.response.message as string
+                type: (createCandidate.data.success || updateCandidate.data.response) ? 'success' : 'error',
+                content: (createCandidate.data.success || updateCandidate.data.success) ? 'Thành công!' : (createCandidate.data.response?.message as string || updateCandidate.data.response?.message as string)
             });
+            if (updateCandidate.data.response) {
+                candidate.query([String(detailCandidate?._id as string)]);
+                updateCandidate.clear?.();
+            }
             createCandidate.clear();
-            if (createCandidate.data.success) {
+            if (createCandidate.data.success && !props.isViewInfo) {
                 handleReset(null);
             }
             message.close(undefined);
         }
-    }, [createCandidate]);
+    }, [createCandidate.data.response, updateCandidate.data.response]);
     return (
         <div className={`${styles.createCandidate} ${props.className}`}>
             <Form onSubmit={handleSubmit} className={styles.flex}>
@@ -283,6 +312,20 @@ const FormInfoCandidate = (props: Props) => {
                             <Radio value={false}>Chưa có</Radio>
                         </Radio.Group>
                     </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label className="bold">Nguồn tuyển dụng<span className="field_required">*</span></Form.Label>
+                        <Dropdown
+                            className={styles.selectResourse}
+                            trigger="click"
+                            listSelect={listResourseApply()}
+                            sizeButton="small"
+                            title={getStringResourseApply[values.resourseApply as ResourseApply]}
+                            icon
+                            onClickItem={(e) => {
+                                setFieldValue('resourseApply', e.key as string);
+                            }}
+                        />
+                    </Form.Group>
                 </div>
                 <div className={styles.itemColumn}>
                     <Form.Group className={styles.mb_24}>
@@ -373,7 +416,14 @@ const FormInfoCandidate = (props: Props) => {
                         <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size={props.isViewInfo ? 'small' : 'middle'} name="note" onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
                     <div className={styles.btn}>
-                        <Button size="small" htmlType="submit" loading={createCandidate.data.isLoading}>{props.isViewInfo ? 'Cập nhật' : 'Tạo'}</Button>
+                        <Button
+                            size="small"
+                            htmlType="submit"
+                            loading={createCandidate.data.isLoading || updateCandidate.data.isLoading}
+                            disabled={JSON.stringify(refData.current) === JSON.stringify(values)}
+                        >
+                            {props.isViewInfo ? 'Cập nhật' : 'Tạo'}
+                        </Button>
                         <Button size="small" disabled={createCandidate.data.isLoading} onClick={handleReset}>Reset</Button>
                     </div>
                 </div>
