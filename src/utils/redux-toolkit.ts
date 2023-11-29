@@ -1,5 +1,5 @@
 import { AsyncThunk, PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Action } from "@/global/interface";
+import { Action, State } from "@/global/interface";
 import { METHOD } from "@/global/enum";
 import { initState } from "@/global/init-data";
 import actionRequest from "./restApi";
@@ -25,30 +25,33 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
         },
         ...asyncThunk ? {
             extraReducers(builder) {
-                builder.addCase(asyncThunk.pending, (state: any, _) => {
-                    state.state = {
-                        ...state.state,
+                builder.addCase(asyncThunk.pending, (state, _) => {
+                    (state as State).state = {
+                        ...(state as State).state,
                         isLoading: true,
                     }
                 })
-                builder.addCase(asyncThunk.fulfilled, (state: any, action) => {
-                    state.state = {
+                builder.addCase(asyncThunk.fulfilled, (state, action) => {
+                    (state as State).state = {
                         isLoading: false,
                         response: {
                             ...action.payload,
                         },
-                        success: action.payload.status
+                        success: action.payload.status,
+                        payload: {
+                            query: action.payload.query
+                        }
                     }
                 })
-                builder.addCase(asyncThunk.rejected, (state: any, _) => {
-                    state.state = {
+                builder.addCase(asyncThunk.rejected, (state, _) => {
+                    (state as State).state = {
                         isLoading: false,
                         response: {
                             data: null,
                             message: 'Có lỗi xảy ra!',
                             status: false
                         },
-                        success: false
+                        success: false,
                     }
                 })
             },
