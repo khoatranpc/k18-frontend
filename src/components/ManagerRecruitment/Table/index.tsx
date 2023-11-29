@@ -22,7 +22,8 @@ export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
     PROCESSING: <Processing />
 }
 const TableRecruitment = () => {
-    const { modal } = useContext(ContextRecruitment);
+    const { modal, pagination } = useContext(ContextRecruitment);
+    const getDataPagination = pagination.data;
     const router = useRouter();
     const dispatch = useDispatch();
     const listDataRecruitment = useGetListDataRecruitment();
@@ -37,8 +38,8 @@ const TableRecruitment = () => {
     }
     useEffect(() => {
         // pending logic with pagination
-        queryListData(10, 1);
-    }, []);
+        queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
+    }, [pagination.data]);
     const columns: Columns = [
         {
             key: 'TIME',
@@ -170,7 +171,7 @@ const TableRecruitment = () => {
                     handleRedirectDetail(record._id as string);
                 }}
                 onChangeDataPagination={(data) => {
-                    queryListData(data.currentTotalRowOnPage, data.currentPage);
+                    pagination.setDataPagination(data);
                 }}
                 showSizePage
                 maxPage={(listDataRecruitment.data.response?.data as Obj)?.totalPage as number}

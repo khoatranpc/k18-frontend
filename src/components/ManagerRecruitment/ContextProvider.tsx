@@ -14,6 +14,13 @@ const ContextProvider = (props: Props) => {
         isCreate: false,
         title: 'Thông tin'
     });
+    const [dataPaginationPage, setDataPaginationPage] = useState<{
+        currentPage: number,
+        currentTotalRowOnPage: number
+    }>({
+        currentPage: 1,
+        currentTotalRowOnPage: 10
+    });
     const handleSetConfigModal = ({ isShow, isCreate, title }: {
         isShow: boolean;
         isCreate: boolean;
@@ -32,6 +39,12 @@ const ContextProvider = (props: Props) => {
                     ...configModal
                 },
                 update: handleSetConfigModal,
+            },
+            pagination: {
+                data: dataPaginationPage,
+                setDataPagination(data) {
+                    setDataPaginationPage(data)
+                },
             }
         }}>
             {props.children}

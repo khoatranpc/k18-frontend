@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
+import { getLabelRegion } from '@/global/init';
 import { Columns, Obj, RowData } from '@/global/interface';
+import { Region } from '@/global/enum';
 import { useCreateArea, useGetArea, useGetLocations, useUpdateArea } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import ModalCustomize from '../ModalCustomize';
@@ -24,6 +26,13 @@ const Area = () => {
     });
     const message = useHookMessage();
     const columns: Columns = [
+        {
+            title: 'Miền',
+            dataIndex: 'region',
+            render(value) {
+                return getLabelRegion[value as Region] || 'Chưa có'
+            }
+        },
         {
             title: 'Mã khu vực',
             dataIndex: 'code'
@@ -118,7 +127,7 @@ const Area = () => {
         if (createArea.data.response || updateArea.data) {
             if (createArea.data.success || updateArea.data.success) {
                 setModal({
-                    open: true,
+                    open: false,
                     isCreate: true,
                     data: undefined
                 });

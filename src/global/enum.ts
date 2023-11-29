@@ -128,7 +128,7 @@ export enum StatusProcessing {
     // DONE
     DONE = 'DONE'
 }
-export enum ResourseApply {
+export enum ResourceApply {
     FB = 'FB',
     LKD = 'LKD',
     RF = 'RF',
@@ -176,4 +176,10 @@ export enum TemplateMail {
     FAILINTERVIEW = 'FAILINTERVIEW',
     PASSINTERVIEW = 'PASSINTERVIEW',
     NOCONNECT = 'NOCONNECT'
+}
+export enum Region {
+    MB = 'MB',
+    MT = 'MT',
+    MN = 'MN',
+    ONL = 'ONL'
 }

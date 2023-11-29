@@ -1,4 +1,4 @@
-import { ClassForm, Gender, LevelTechnique, ObjectTeach, PositionTe, ROLE_TEACHER, ResourseApply, ResultInterview, RoundProcess, STATUS_CLASS, StatusProcessing, TemplateMail, Weekday } from "./enum";
+import { ClassForm, Gender, LevelTechnique, ObjectTeach, PositionTe, ROLE_TEACHER, Region, ResourceApply, ResultInterview, RoundProcess, STATUS_CLASS, StatusProcessing, TemplateMail, Weekday } from "./enum";
 
 const statusClass: Record<STATUS_CLASS, STATUS_CLASS> = {
     RUNNING: STATUS_CLASS.RUNNING,
@@ -69,7 +69,7 @@ const getStringStatusProcess: Record<StatusProcessing, string> = {
     NOPROCESS: 'Chưa xử lý',
     PROCESSING: 'Đang xử lý'
 }
-const getStringResourseApply: Record<ResourseApply, string> = {
+const getStringResourceApply: Record<ResourceApply, string> = {
     AN: 'Khác',
     FB: "Facebook",
     LKD: "Linkedin",
@@ -113,6 +113,12 @@ const getLabelMailTemplate: Record<TemplateMail, string> = {
     NOCONNECT: 'Không liên hệ được',
     PASSINTERVIEW: 'Pass PV'
 }
+const getLabelRegion: Record<Region, string> = {
+    MB: 'Miền Bắc',
+    MT: 'Miền Trung',
+    MN: 'Miền Nam',
+    ONL: 'Online'
+}
 export {
     statusClass,
     fieldFilter,
@@ -124,12 +130,13 @@ export {
     getStringGender,
     getStringObjectTeach,
     getStringStatusProcess,
-    getStringResourseApply,
+    getStringResourceApply,
     getStringResultInterview,
     getColorByResultInterview,
     getStringByLevelTechnique,
     getLabelRoundProcess,
     getLabelPositionTe,
     getLabelMailTemplate,
-    getColorTeacherPoint
+    getColorTeacherPoint,
+    getLabelRegion
 }

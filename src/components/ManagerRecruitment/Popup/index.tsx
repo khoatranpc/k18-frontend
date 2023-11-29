@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { Button, DatePicker, Input, MenuProps, TabsProps, Radio } from 'antd';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
-import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourseApply, ResultInterview, StatusProcessing } from '@/global/enum';
-import { getStringByLevelTechnique, getStringObjectTeach, getStringResourseApply, getStringResultInterview, getStringStatusProcess, mapRoleToString } from '@/global/init';
+import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing } from '@/global/enum';
+import { getStringByLevelTechnique, getStringObjectTeach, getStringResourceApply, getStringResultInterview, getStringStatusProcess, mapRoleToString } from '@/global/init';
 import { Obj } from '@/global/interface';
 import { useCreateCandidate, useGetDetailCandidate, useGetListCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -25,20 +25,20 @@ interface Props {
 
 const listSelectResourse: MenuProps['items'] = [
     {
-        key: ResourseApply.FB,
-        label: getStringResourseApply[ResourseApply.FB],
+        key: ResourceApply.FB,
+        label: getStringResourceApply[ResourceApply.FB],
     },
     {
-        key: ResourseApply.LKD,
-        label: getStringResourseApply[ResourseApply.LKD],
+        key: ResourceApply.LKD,
+        label: getStringResourceApply[ResourceApply.LKD],
     },
     {
-        key: ResourseApply.RF,
-        label: getStringResourseApply[ResourseApply.RF],
+        key: ResourceApply.RF,
+        label: getStringResourceApply[ResourceApply.RF],
     },
     {
-        key: ResourseApply.AN,
-        label: getStringResourseApply[ResourseApply.AN]
+        key: ResourceApply.AN,
+        label: getStringResourceApply[ResourceApply.AN]
     }
 ];
 const statusProcessing: MenuProps['items'] = [
@@ -131,7 +131,7 @@ const Popup = (props: Props) => {
             roleApply: ROLE_TEACHER.MT,
             dob: '',
             note: '',
-            resourseApply: ResourseApply.FB,
+            resourceApply: ResourceApply.FB,
             objectExpTeach: ObjectTeach.K18,
             linkCv: '',
             expTimeTech: 0,
@@ -221,10 +221,10 @@ const Popup = (props: Props) => {
                             trigger="click"
                             listSelect={listSelectResourse}
                             onClickItem={(e) => {
-                                setFieldValue('resourseApply', e.key as string);
+                                setFieldValue('resourceApply', e.key as string);
                             }}
                             sizeButton="small"
-                            title={getStringResourseApply[values.resourseApply as ResourseApply]}
+                            title={getStringResourceApply[values.resourceApply as ResourceApply]}
                             icon
                         />
                     </Form.Group>

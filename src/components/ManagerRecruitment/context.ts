@@ -1,3 +1,4 @@
+import { Obj } from "@/global/interface";
 import { createContext } from "react";
 
 const ContextRecruitment = createContext<{
@@ -16,6 +17,16 @@ const ContextRecruitment = createContext<{
             isCreate: boolean;
             title?: string;
         }) => void;
+    },
+    pagination: {
+        data: {
+            currentPage: number,
+            currentTotalRowOnPage: number
+        },
+        setDataPagination: (data: {
+            currentPage: number,
+            currentTotalRowOnPage: number
+        }) => void;
     }
 }>({
     modal: {
@@ -27,6 +38,15 @@ const ContextRecruitment = createContext<{
         update({ isShow,
             isCreate,
             title }) { }
+    },
+    pagination: {
+        data: {
+            currentPage: 1,
+            currentTotalRowOnPage: 10
+        },
+        setDataPagination(data) {
+
+        },
     }
 });
 export {
