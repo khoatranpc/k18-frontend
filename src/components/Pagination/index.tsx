@@ -17,7 +17,7 @@ interface Props {
 const Pagination = (props: Props) => {
     const [crrDataPagination, setCrrDataPagination] = useState({
         rowOnPage: props.rowOnPage || 10,
-        crrPage: 1,
+        crrPage: props.crrPage || 1,
         stepPage: 1
     });
     const handleRowOnPage = (type: TypeCount) => {

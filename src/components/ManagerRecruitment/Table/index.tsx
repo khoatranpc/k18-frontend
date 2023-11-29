@@ -37,9 +37,11 @@ const TableRecruitment = () => {
         listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail']);
     }
     useEffect(() => {
-        // pending logic with pagination
-        queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
-    }, [pagination.data]);
+        const getPayloadQuery = listDataRecruitment.data.payload;
+        if (!listDataRecruitment.data.response || (Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage || Number(getPayloadQuery?.query?.query?.currentPage) !== getDataPagination.currentPage)) {
+            queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
+        }
+    }, [pagination.data, listDataRecruitment.data.payload]);
     const columns: Columns = [
         {
             key: 'TIME',
@@ -173,6 +175,8 @@ const TableRecruitment = () => {
                 onChangeDataPagination={(data) => {
                     pagination.setDataPagination(data);
                 }}
+                crrPage={pagination.data.currentPage}
+                rowOnPage={pagination.data.currentTotalRowOnPage}
                 showSizePage
                 maxPage={(listDataRecruitment.data.response?.data as Obj)?.totalPage as number}
             />

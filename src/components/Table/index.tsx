@@ -24,6 +24,8 @@ interface Props {
     classNamePagination?: string;
     enablePaginationAjax?: boolean;
     maxPage?: number;
+    crrPage?: number;
+    rowOnPage?: number;
     bordered?: boolean;
     hasFixedColumn?: boolean;
     size?: "small" | "middle" | "large";
@@ -101,8 +103,10 @@ const Table = (props: Props) => {
                 pagination={props.disableDefaultPagination ? !props.disableDefaultPagination : {}}
             />
             {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination
+                rowOnPage={props.rowOnPage}
                 showSizePage={props.showSizePage}
                 className={props.classNamePagination}
+                crrPage={props.crrPage}
                 onChangePagination={props.onChangeDataPagination}
                 maxPage={props.enablePaginationAjax ? props.maxPage as number : 100}
             />}

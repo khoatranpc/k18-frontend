@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useGetListDataRecruitment } from '@/utils/hooks';
 import { ContextRecruitment } from './context';
 
 interface Props {
@@ -14,12 +15,13 @@ const ContextProvider = (props: Props) => {
         isCreate: false,
         title: 'Thông tin'
     });
+    const listDataRecruitment = useGetListDataRecruitment();
     const [dataPaginationPage, setDataPaginationPage] = useState<{
         currentPage: number,
         currentTotalRowOnPage: number
     }>({
-        currentPage: 1,
-        currentTotalRowOnPage: 10
+        currentPage: Number(listDataRecruitment.data.payload?.query?.query?.currentPage) || 1,
+        currentTotalRowOnPage: Number(listDataRecruitment.data.payload?.query?.query?.recordOnPage) || 10
     });
     const handleSetConfigModal = ({ isShow, isCreate, title }: {
         isShow: boolean;
