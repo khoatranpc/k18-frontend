@@ -754,8 +754,26 @@
 
 .doneAndClassify {
     width: 100%;
-    display: flex;
-    justify-content: center;
+
+    h2 {
+        text-align: center;
+    }
+
+    .selectCourse {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        img {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-left: 0.4rem;
+        }
+
+        b {
+            font-size: 2.4rem;
+        }
+    }
 }
 
 .viewInfo {

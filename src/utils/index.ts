@@ -139,7 +139,7 @@ const getColor3Point = (point: number) => {
 }
 const getColorByCourseName: Obj = {
     'Data': '#6792F4',
-    'Coding': '#DA4646',
+    'Web': '#DA4646',
     'UIUX': '#917EF1'
 }
 const getColorByStatusProcess: Record<StatusProcessing, string> = {

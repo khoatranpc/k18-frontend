@@ -57,7 +57,7 @@ const Dropdown = (props: Props) => {
             >
                 {typeof props.title === 'string' ?
                     (<Button loading={props.loading} size={props.sizeButton}>{props.title} {props.icon && MapIconKey[KEY_ICON.CHEVROND]}</Button>) :
-                    (props.title)
+                    (props.title || <Button></Button>)
                 }
             </DropdownComponent>
         </div>
