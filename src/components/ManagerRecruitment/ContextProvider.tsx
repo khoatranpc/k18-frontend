@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { ContextRecruitment } from './context';
+import { Obj } from '@/global/interface';
 
 interface Props {
     children?: React.ReactElement;
@@ -16,6 +17,7 @@ const ContextProvider = (props: Props) => {
         title: 'Thông tin'
     });
     const listDataRecruitment = useGetListDataRecruitment();
+    const queryParams = listDataRecruitment.data.payload?.query?.query as Obj;
     const [dataPaginationPage, setDataPaginationPage] = useState<{
         currentPage: number,
         currentTotalRowOnPage: number
@@ -34,6 +36,12 @@ const ContextProvider = (props: Props) => {
             title
         });
     }
+    const [condition, setCondition] = useState<Obj>({
+        area: queryParams?.area ?? 'ALL',
+        sort: queryParams?.sort ?? 'ASC',
+        status: queryParams?.status ?? 'ALL',
+        resourceHunt: queryParams?.resourceHunt ?? 'ALL'
+    });
     return (
         <ContextRecruitment.Provider value={{
             modal: {
@@ -46,6 +54,12 @@ const ContextProvider = (props: Props) => {
                 data: dataPaginationPage,
                 setDataPagination(data) {
                     setDataPaginationPage(data)
+                },
+            },
+            conditionFilter: {
+                condition,
+                setCondition(condition) {
+                    setCondition(condition);
                 },
             }
         }}>

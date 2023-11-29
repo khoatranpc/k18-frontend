@@ -22,7 +22,7 @@ export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
     PROCESSING: <Processing />
 }
 const TableRecruitment = () => {
-    const { modal, pagination } = useContext(ContextRecruitment);
+    const { modal, pagination, conditionFilter } = useContext(ContextRecruitment);
     const getDataPagination = pagination.data;
     const router = useRouter();
     const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const TableRecruitment = () => {
         }
     });
     const queryListData = (recordOnPage: number, page: number) => {
-        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail']);
+        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail'], conditionFilter.condition);
     }
     useEffect(() => {
         const getPayloadQuery = listDataRecruitment.data.payload;

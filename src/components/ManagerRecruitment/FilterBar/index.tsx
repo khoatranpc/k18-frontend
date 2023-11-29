@@ -20,7 +20,7 @@ interface Props {
 const FilterBar = (props: Props) => {
     const router = useRouter();
     const area = useGetArea();
-    const { pagination } = useContext(ContextRecruitment);
+    const { pagination, conditionFilter } = useContext(ContextRecruitment);
     const listDataRecruitment = useGetListDataRecruitment();
     const getAreas = area.data.response?.data as Obj[];
     const listStatus = Object.keys(StatusProcessing).map((item) => {
@@ -89,28 +89,21 @@ const FilterBar = (props: Props) => {
             ]
         }
     ];
-    const [condition, setCondition] = useState<Obj>({
-        area: 'ALL',
-        sort: 'ASC',
-        status: 'ALL',
-        resourceHunt: 'ALL'
-    });
-    const getIndexToField: Record<string, keyof typeof condition> = {
+    const getIndexToField: Record<string, keyof typeof conditionFilter.condition> = {
         '0': 'area',
         '1': 'sort',
         '2': 'status',
         '3': 'resourceHunt'
     }
-    const handleChangeConditionFilter = (field: keyof typeof condition, value: any) => {
-        setCondition({
-            ...condition,
+    const handleChangeConditionFilter = (field: keyof typeof conditionFilter.condition, value: any) => {
+        conditionFilter.setCondition({
+            ...conditionFilter.condition,
             [field]: value
         });
     }
     const dispatchRouter = useDispatchDataRouter();
     const handleQueryFilterWithConditional = () => {
-        // console.log(condition);
-        listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, condition)
+        listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, conditionFilter.condition)
     }
     useEffect(() => {
         if (!area.data.response) {
@@ -124,7 +117,7 @@ const FilterBar = (props: Props) => {
                     listFieldFilter.map((item, idx) => {
                         const getCurrentListValue = item.value;
                         const findMatchingValueWCondition = getCurrentListValue.find((value) => {
-                            return condition[item.field] === value.value;
+                            return conditionFilter.condition[item.field] === value.value;
                         });
                         return <div className={styles.itemFilter} key={idx}>
                             <label>

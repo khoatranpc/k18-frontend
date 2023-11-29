@@ -27,6 +27,10 @@ const ContextRecruitment = createContext<{
             currentPage: number,
             currentTotalRowOnPage: number
         }) => void;
+    },
+    conditionFilter: {
+        condition: Obj,
+        setCondition: (condition: Obj) => void;
     }
 }>({
     modal: {
@@ -45,6 +49,12 @@ const ContextRecruitment = createContext<{
             currentTotalRowOnPage: 10
         },
         setDataPagination(data) {
+
+        },
+    },
+    conditionFilter: {
+        condition: {},
+        setCondition(condition) {
 
         },
     }
