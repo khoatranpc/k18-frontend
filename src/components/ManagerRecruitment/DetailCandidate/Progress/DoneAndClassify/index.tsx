@@ -11,7 +11,6 @@ const Done = () => {
     const crrCourse = useGetDetailCourse();
     const getCourse = crrCourse.data.response?.data as Obj;
     const updateCandidate = useUpdateCandidate();
-    console.log(getDataCandidate);
     const [levelClassify, setLevelClassify] = useState<string>(getDataCandidate?.classifyLevel || '');
     const getListLevel: MenuProps['items'] = (getCourse?.courseLevel as Obj[])?.map((item) => {
         return {
