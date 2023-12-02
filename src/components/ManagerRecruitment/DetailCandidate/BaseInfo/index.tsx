@@ -1,15 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON, StatusProcessing } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
-import { useGetDetailCandidate } from '@/utils/hooks';
+import { useGetDetailCandidate, usePredictCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
 import { getStatusProcess } from '../../Table';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { Button } from 'antd';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    const predictCandidate = usePredictCandidate();
+    const getPredict = predictCandidate.data.response?.data as Obj;
+
+    const handlePredictCandidate = () => {
+        predictCandidate.query({
+            params: [detailCandidate?._id as string]
+        });
+    }
+    useEffect(() => {
+        if (detailCandidate) {
+            predictCandidate.query({
+                params: [detailCandidate?._id as string]
+            });
+            return () => {
+                predictCandidate.clear?.()
+            }
+        }
+    }, [detailCandidate]);
     return (
         <div className={styles.containerBaseInfo}>
             <div className={styles.candidate}>
@@ -72,6 +91,15 @@ const BaseInfo = () => {
                     <label className={`${styles.label}`}>
                         <span>Note tuyển dụng:</span> <span className={styles.timeApplied}>{detailCandidate?.note ? detailCandidate?.note : 'Không có'}</span>
                     </label>
+                </div>
+            </div>
+            <div>
+                <h2>Đánh giá</h2>
+                <div className={styles.predict}>
+                    <p>Chính xác: {Number(Number(getPredict?.accuracy as number || 0) * 100).toFixed(2)}%</p>
+                    <p>Vị trí giảng dạy: </p>
+                    <p>Cấp độ: {getPredict?.predict?.result as string}</p>
+                    <Button loading={predictCandidate.data.isLoading} onClick={handlePredictCandidate}>Đánh giá</Button>
                 </div>
             </div>
         </div>

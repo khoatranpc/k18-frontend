@@ -62,6 +62,7 @@ import { clearUpdateLocation, queryUpdateLocation } from "@/store/reducers/locat
 import { clearCreateLocation, queryCreateLocation } from "@/store/reducers/location/createLocation.reducer";
 import { queryGetListTimeSchedule } from "@/store/reducers/timeschedule/timeSchedule.reducer";
 import { clearUpdateCandidate, queryUpdateCandidate } from "@/store/reducers/recruitment/updateCandidate.reducer";
+import { clearPredictCandidate, queryPredictCandidate } from "@/store/reducers/recruitment/predictcandidate.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -851,6 +852,7 @@ const useUpdateArea = createHookQueryReducer('updateArea', queryUpdateArea, clea
 const useUpdateLocation = createHookQueryReducer('updateLocation', queryUpdateLocation, clearUpdateLocation);
 const useCreateLocation = createHookQueryReducer('createLocation', queryCreateLocation, clearCreateLocation);
 const useUpdateCandidate = createHookQueryReducer('updateCandidate', queryUpdateCandidate, clearUpdateCandidate);
+const usePredictCandidate = createHookQueryReducer('predictCandidate', queryPredictCandidate, clearPredictCandidate);
 
 export {
     useGetListClass,
@@ -912,5 +914,6 @@ export {
     useUpdateLocation,
     useCreateLocation,
     useComparePositionTE,
-    useUpdateCandidate
+    useUpdateCandidate,
+    usePredictCandidate
 }

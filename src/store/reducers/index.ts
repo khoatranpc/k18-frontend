@@ -65,6 +65,7 @@ import createArea from './location/createArea.reducer';
 import updateArea from './location/updateArea.reducer';
 import updateLocation from './location/updateLocation.reducer';
 import createLocation from './location/createLocation.reducer';
+import predictCandidate from './recruitment/predictcandidate.reducer'
 
 const rootReducer = {
     test: test,
@@ -133,6 +134,7 @@ const rootReducer = {
     updateArea,
     updateLocation,
     createLocation,
-    updateCandidate
+    updateCandidate,
+    predictCandidate
 };
 export default rootReducer;
