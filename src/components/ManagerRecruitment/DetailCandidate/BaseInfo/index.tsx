@@ -96,9 +96,8 @@ const BaseInfo = () => {
             <div>
                 <h2>Đánh giá</h2>
                 <div className={styles.predict}>
-                    <p>Chính xác: {Number(Number(getPredict?.accuracy as number || 0) * 100).toFixed(2)}%</p>
-                    <p>Vị trí giảng dạy: </p>
-                    <p>Cấp độ: {getPredict?.predict?.result as string}</p>
+                    <p>Vị trí giảng dạy: {getPredict?.classifyRole?.predict?.result as string} <sup>{Number(Number(getPredict?.classifyRole?.accuracy as number || 0) * 100).toFixed(2)}%</sup></p>
+                    <p>Cấp độ: {getPredict?.classifyLevel?.predict?.result as string} <sup>{Number(Number(getPredict?.classifyLevel?.accuracy as number || 0) * 100).toFixed(2)}%</sup></p>
                     <Button loading={predictCandidate.data.isLoading} onClick={handlePredictCandidate}>Đánh giá</Button>
                 </div>
             </div>
