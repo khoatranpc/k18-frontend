@@ -116,17 +116,13 @@ const FilterBar = (props: Props) => {
         }
     }, [area.data.response]);
     useEffect(() => {
-        if (searchCandidate) {
-            setIsSearch(true);
-            listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
-                ...conditionFilter.condition,
-                ...searchCandidate ? {
-                    email: searchCandidate
-                } : {}
-            })
-        } else {
-            setIsSearch(false);
-        }
+        setIsSearch(!!searchCandidate);
+        listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
+            ...conditionFilter.condition,
+            ...searchCandidate ? {
+                email: searchCandidate
+            } : {}
+        })
     }, [searchCandidate]);
     return (
         <div className={styles.filterBar}>
