@@ -38,7 +38,7 @@ const TableRecruitment = () => {
     }
     useEffect(() => {
         const getPayloadQuery = listDataRecruitment.data.payload;
-        if (!listDataRecruitment.data.response || (Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage || Number(getPayloadQuery?.query?.query?.currentPage) !== getDataPagination.currentPage)) {
+        if (!listDataRecruitment.data.response || (getPayloadQuery && (Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage || Number(getPayloadQuery?.query?.query?.currentPage)) !== getDataPagination.currentPage)) {
             queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
         }
     }, [pagination.data, listDataRecruitment.data.payload]);
