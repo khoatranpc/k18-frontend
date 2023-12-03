@@ -22,7 +22,7 @@ export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
     PROCESSING: <Processing />
 }
 const TableRecruitment = () => {
-    const { modal, pagination, conditionFilter } = useContext(ContextRecruitment);
+    const { modal, pagination, conditionFilter, isSearch } = useContext(ContextRecruitment);
     const getDataPagination = pagination.data;
     const router = useRouter();
     const dispatch = useDispatch();
@@ -168,7 +168,7 @@ const TableRecruitment = () => {
                 disableDefaultPagination
                 columns={columns}
                 rowData={rowData}
-                enablePaginationAjax
+                enablePaginationAjax={!isSearch}
                 loading={listDataRecruitment.data.isLoading}
                 hanldeClickRow={(record) => {
                     handleRedirectDetail(record._id as string);

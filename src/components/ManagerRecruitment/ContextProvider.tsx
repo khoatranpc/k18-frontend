@@ -36,6 +36,7 @@ const ContextProvider = (props: Props) => {
             title
         });
     }
+    const [isSearch, setIsSearch] = useState<boolean>(false);
     const [condition, setCondition] = useState<Obj>({
         area: queryParams?.area ?? 'ALL',
         sort: queryParams?.sort ?? 'ASC',
@@ -61,7 +62,9 @@ const ContextProvider = (props: Props) => {
                 setCondition(condition) {
                     setCondition(condition);
                 },
-            }
+            },
+            isSearch: isSearch,
+            setIsSearch
         }}>
             {props.children}
         </ContextRecruitment.Provider>

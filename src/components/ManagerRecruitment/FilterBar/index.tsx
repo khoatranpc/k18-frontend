@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Input } from 'antd';
 import { useRouter } from 'next/router';
-import { SearchOutlined } from '@ant-design/icons';
+import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { getStringResourceApply, getStringStatusProcess } from '@/global/init';
 import { ComponentPage, KEY_ICON, ResourceApply, StatusProcessing } from '@/global/enum';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import CombineRoute from '@/global/route';
-import { useDispatchDataRouter, useGetArea, useGetListDataRecruitment } from '@/utils/hooks';
+import { useDebounce, useDispatchDataRouter, useGetArea, useGetListDataRecruitment } from '@/utils/hooks';
 import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import { ContextRecruitment } from '../context';
@@ -20,9 +20,14 @@ interface Props {
 const FilterBar = (props: Props) => {
     const router = useRouter();
     const area = useGetArea();
-    const { pagination, conditionFilter } = useContext(ContextRecruitment);
+    const { pagination, conditionFilter, setIsSearch } = useContext(ContextRecruitment);
     const listDataRecruitment = useGetListDataRecruitment();
     const getAreas = area.data.response?.data as Obj[];
+    const candidate = useGetListDataRecruitment();
+
+    const [searchEmail, setSearchEmail] = useState<string>('');
+
+    const searchCandidate = useDebounce(searchEmail, 500);
     const listStatus = Object.keys(StatusProcessing).map((item) => {
         return {
             label: getStringStatusProcess[item as StatusProcessing],
@@ -110,6 +115,15 @@ const FilterBar = (props: Props) => {
             area.query();
         }
     }, [area.data.response]);
+    useEffect(() => {
+        setIsSearch(!!searchCandidate);
+        listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
+            ...conditionFilter.condition,
+            ...searchCandidate ? {
+                email: searchCandidate
+            } : {}
+        })
+    }, [searchCandidate]);
     return (
         <div className={styles.filterBar}>
             <div className={styles.listFilter}>
@@ -157,11 +171,16 @@ const FilterBar = (props: Props) => {
                     </Button>
                 </div>
                 <div className={styles.rightFnc}>
-                    <Input placeholder="Tìm kiếm" prefix={<SearchOutlined />} />
+                    <Input
+                        placeholder="Tìm kiếm"
+                        prefix={candidate.data.isLoading ? <LoadingOutlined /> : <SearchOutlined />}
+                        onChange={(e) => {
+                            setSearchEmail(e.target.value);
+                        }}
+                    />
                     <Button
                         className={`btn-toolbar ${styles.btnReload}`}
-                        onClick={() => {
-                        }}
+                        onClick={handleQueryFilterWithConditional}
                     >
                         <span className={styles.reload}>{MapIconKey[KEY_ICON.RELOAD]}</span>
                     </Button>

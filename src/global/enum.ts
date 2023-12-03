@@ -60,7 +60,8 @@ export enum KEY_ICON {
     HOURGLASS = 'HOURGLASS',
     TEACHER_MALE = 'TEACHER_MALE',
     TEACHER_FEMALE = 'TEACHER_FEMALE',
-    MAIL = 'MAIL'
+    MAIL = 'MAIL',
+    EMPLOYEE = 'EMPLOYEE'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',
@@ -94,7 +95,8 @@ export enum ComponentPage {
     TEACHER_DETAIL = 'TEACHER_DETAIL',
     ATTENDANCE_TEACHER_CLASS = 'ATTENDANCE_TEACHER_CLASS',
     TEMPLATE_MAIL = 'TEMPLATE_MAIL',
-    AREA = 'AREA'
+    AREA = 'AREA',
+    TE_STAFF = 'TE_STAFF'
 }
 
 export enum ClassForm {
