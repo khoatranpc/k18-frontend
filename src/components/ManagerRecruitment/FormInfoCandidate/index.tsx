@@ -49,6 +49,8 @@ const validationSchema = yup.object({
     courseApply: yup.string().required('Thiếu khối ứng tuyển!'),
     area: yup.string().required('Thiếu khu vực!'),
     technique: yup.string().required('Thiếu công nghệ sử dụng!'),
+    scoreTechnique: yup.string().required('Chưa chấm điểm độ thành thạo công nghệ!'),
+    scoreJobPosition: yup.string().required('Chưa chấm điểm vị trí việc làm!'),
     email: yup.string().email('Không đúng định dạng email').required('Thiếu email!'),
 });
 
@@ -97,6 +99,8 @@ const FormInfoCandidate = (props: Props) => {
         createdAt: props.isViewInfo ? detailCandidate?.createdAt as Date : new Date(),
         updatedAt: props.isViewInfo ? detailCandidate?.updatedAt as Date : new Date(),
         resourceApply: props.isViewInfo ? (detailCandidate?.resourceApply ? detailCandidate?.resourceApply as ResourceApply : ResourceApply.AN) : ResourceApply.AN,
+        scoreTechnique: props.isViewInfo ? detailCandidate?.scoreTechnique as number : 0,
+        scoreJobPosition: props.isViewInfo ? detailCandidate?.scoreJobPosition as number : 0
     }
     const { values, errors, touched, setValues, setFieldValue, setTouched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
         initialValues: initValues,
@@ -363,9 +367,39 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.technique && touched.technique && <p className="error">{errors.technique}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
+                        <Form.Label className="bold">Thành thạo công nghệ <span className="field_required">*</span></Form.Label>
+                        <SelectInputNumber
+                            min={0}
+                            className={styles.selectExp}
+                            value={Number(values.scoreTechnique)}
+                            onSelect={(e) => {
+                                setFieldValue('scoreTechnique', Number(e.key));
+                            }}
+                            onChange={(number) => {
+                                setFieldValue('scoreTechnique', number);
+                            }}
+                        />
+                        {errors.scoreTechnique && touched.scoreTechnique && <p className="error">{errors.scoreTechnique}</p>}
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Vị trí công việc <span className="field_required">*</span></Form.Label>
                         <Input value={values.jobPosition} size={props.isViewInfo ? 'small' : 'middle'} name="jobPosition" onChange={handleChange} onBlur={handleBlur} />
                         {errors.jobPosition && touched.jobPosition && <p className="error">{errors.jobPosition}</p>}
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label className="bold">Chấm điểm vị trí việc làm <span className="field_required">*</span></Form.Label>
+                        <SelectInputNumber
+                            min={0}
+                            className={styles.selectExp}
+                            value={Number(values.scoreJobPosition)}
+                            onSelect={(e) => {
+                                setFieldValue('scoreJobPosition', Number(e.key));
+                            }}
+                            onChange={(number) => {
+                                setFieldValue('scoreJobPosition', number);
+                            }}
+                        />
+                        {errors.scoreJobPosition && touched.scoreJobPosition && <p className="error">{errors.scoreJobPosition}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Trình độ <span className="field_required">*</span></Form.Label>
