@@ -180,8 +180,7 @@ const FilterBar = (props: Props) => {
                     />
                     <Button
                         className={`btn-toolbar ${styles.btnReload}`}
-                        onClick={() => {
-                        }}
+                        onClick={handleQueryFilterWithConditional}
                     >
                         <span className={styles.reload}>{MapIconKey[KEY_ICON.RELOAD]}</span>
                     </Button>
