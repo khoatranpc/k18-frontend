@@ -31,7 +31,9 @@ const ContextRecruitment = createContext<{
     conditionFilter: {
         condition: Obj,
         setCondition: (condition: Obj) => void;
-    }
+    },
+    isSearch: Boolean;
+    setIsSearch: (search: boolean) => void
 }>({
     modal: {
         config: {
@@ -57,7 +59,11 @@ const ContextRecruitment = createContext<{
         setCondition(condition) {
 
         },
-    }
+    },
+    isSearch: false,
+    setIsSearch(search) {
+
+    },
 });
 export {
     ContextRecruitment
