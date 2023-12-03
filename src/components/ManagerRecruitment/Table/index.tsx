@@ -163,6 +163,7 @@ const TableRecruitment = () => {
     return (
         <div className={styles.tableView}>
             <Table
+                heightToScroll={600}
                 hasFixedColumn
                 disableDefaultPagination
                 columns={columns}
