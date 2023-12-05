@@ -4,7 +4,7 @@ import { QUERY_MAILER } from "./actions";
 import { initState } from "@/global/init-data";
 import { createAction } from "@reduxjs/toolkit";
 
-export const queryMailer = createRequest(QUERY_MAILER, 'http://localhost:8000/api/v1/mail', METHOD.POST);
+export const queryMailer = createRequest(QUERY_MAILER, '/api/v1/mail', METHOD.POST);
 const mailer = createSliceReducer('mailer', queryMailer, {
     clear(state) {
         state.state = initState.state
