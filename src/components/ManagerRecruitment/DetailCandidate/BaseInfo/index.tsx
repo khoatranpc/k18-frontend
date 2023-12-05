@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Button } from 'antd';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON, StatusProcessing } from '@/global/enum';
@@ -7,22 +9,22 @@ import { useGetDetailCandidate, usePredictCandidate } from '@/utils/hooks';
 import IconArrowView from '@/icons/IconArrowView';
 import { getStatusProcess } from '../../Table';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { Button } from 'antd';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    const router = useRouter();
     const predictCandidate = usePredictCandidate();
     const getPredict = predictCandidate.data.response?.data as Obj;
 
     const handlePredictCandidate = () => {
         predictCandidate.query({
-            params: [detailCandidate?._id as string]
+            params: [detailCandidate?._id as string || router.query.candidateId as string]
         });
     }
     useEffect(() => {
         if (detailCandidate) {
             predictCandidate.query({
-                params: [detailCandidate?._id as string]
+                params: [detailCandidate?._id as string || router.query.candidateId as string]
             });
             return () => {
                 predictCandidate.clear?.()
