@@ -56,7 +56,7 @@ const CollectionAnswer = () => {
         }
     }, []);
     useEffect(() => {
-        console.log(filter);
+        listResponseFeedback.query(10, 1, filter)
     }, [filter]);
     useEffect(() => {
         if (!listCourse.listCourse) {
@@ -83,8 +83,8 @@ const CollectionAnswer = () => {
                 return <DatePicker size={'middle'} picker="month" placeholder="Tháng" onChange={((day) => {
                     handleFilter(true, {
                         ...filter.query,
-                        month: String((day as Obj).$M),
-                        year: String((day as Obj).$y)
+                        month: String((day as Obj)?.$M) || null,
+                        year: String((day as Obj)?.$y) || null
                     });
                 })} />
             },
