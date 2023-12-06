@@ -48,6 +48,7 @@ const Dropdown = (props: Props) => {
                 }}
                 trigger={[props.trigger]}
                 className={`dropdownCustomize ${props.className}`}
+                rootClassName='open-dropdown-custommize'
                 dropdownRender={(origin) => {
                     const getArrayItems = ((origin as unknown as Obj)?.props as Obj)?.items as Array<Obj>;
                     if (getArrayItems.length === 0) return <span style={{ backgroundColor: 'white', padding: '4px' }}>Ôi, không có gì để chọn hết!</span>
