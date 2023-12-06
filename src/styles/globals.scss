@@ -1032,3 +1032,7 @@ div.ant-message {
 span.jodit-toolbar-button_about.jodit-ui-group__about {
     display: none !important;
 }
+
+:where(.css-zjzpde).ant-switch.ant-switch-checked {
+    background: var(--base) !important;
+}
