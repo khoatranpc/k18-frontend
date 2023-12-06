@@ -60,7 +60,7 @@ const Feedback = () => {
             dataIndex: 'groupNumber',
             title: 'Nhóm',
             render(value) {
-                const mapLocation = (listLocation.locations.data as Array<Obj>)?.find((item) => item._id === value.locationId as string);
+                const mapLocation = (listLocation.locations?.data as Array<Obj>)?.find((item) => item._id === value.locationId as string);
                 return `Nhóm ${value.groupNumber}-${mapLocation?.locationCode}` || ''
             }
         },
@@ -118,7 +118,7 @@ const Feedback = () => {
         }
     });
     const getDataExport = rowData?.map((item: Obj) => {
-        const mapLocation = (listLocation.locations.data as Array<Obj>)?.find((location) => {
+        const mapLocation = (listLocation.locations?.data as Array<Obj>)?.find((location) => {
             return location._id === item.groupNumber?.locationId;
         });
         return {
