@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Input } from 'antd';
 import { useRouter } from 'next/router';
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
@@ -7,10 +7,10 @@ import { ComponentPage, KEY_ICON, ResourceApply, StatusProcessing } from '@/glob
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import CombineRoute from '@/global/route';
-import { useDispatchDataRouter, useGetArea, useGetListDataRecruitment } from '@/utils/hooks';
+import { useDebounce, useDispatchDataRouter, useGetArea, useGetListDataRecruitment } from '@/utils/hooks';
 import Dropdown from '@/components/Dropdown';
-import { ContextRecruitment } from '../context';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { ContextRecruitment } from '../context';
 
 interface Props {
     onImport?: () => void;
@@ -24,7 +24,11 @@ const FilterBar = (props: Props) => {
     const listDataRecruitment = useGetListDataRecruitment();
     const getAreas = area.data.response?.data as Obj[];
     const candidate = useGetListDataRecruitment();
+    const firstRender = useRef<boolean>(true);
 
+    const [searchEmail, setSearchEmail] = useState<string>('');
+
+    const searchCandidate = useDebounce(searchEmail, 500);
     const listStatus = Object.keys(StatusProcessing).map((item) => {
         return {
             label: getStringStatusProcess[item as StatusProcessing],
@@ -112,6 +116,17 @@ const FilterBar = (props: Props) => {
             area.query();
         }
     }, [area.data.response]);
+    useEffect(() => {
+        if (!firstRender.current) {
+            setIsSearch(!!searchCandidate);
+            listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
+                ...conditionFilter.condition,
+                ...searchCandidate ? {
+                    email: searchCandidate
+                } : {}
+            })
+        }
+    }, [searchCandidate]);
     return (
         <div className={styles.filterBar}>
             <div className={styles.listFilter}>
@@ -163,12 +178,8 @@ const FilterBar = (props: Props) => {
                         placeholder="Tìm kiếm theo email"
                         prefix={candidate.data.isLoading ? <LoadingOutlined /> : <SearchOutlined />}
                         onChange={(e) => {
-                            listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
-                                ...conditionFilter.condition,
-                                ...e.target.value ? {
-                                    email: e.target.value
-                                } : {}
-                            })
+                            firstRender.current = false;
+                            setSearchEmail(e.target.value);
                         }}
                     />
                     <Button
