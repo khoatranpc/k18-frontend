@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Tabs from '../Tabs';
 import { Button, TabsProps } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { useGetArea, useGetLocations } from '@/utils/hooks';
+import { PositionTe } from '@/global/enum';
+import { useComparePositionTE, useGetArea, useGetLocations } from '@/utils/hooks';
 import ToolBar from '../Tabs/ToolBar';
 import ModalCustomize from '../ModalCustomize';
 import Table from '../Table';
@@ -52,6 +53,7 @@ const columns: Columns = [
 const Location = () => {
     const locations = useGetLocations();
     const listArea = useGetArea();
+    const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const area: TabsProps['items'] = [
         {
             key: 'ALL_Location',
@@ -99,24 +101,26 @@ const Location = () => {
             <Tabs listItemTab={area} activeKey={location} onClickTab={(key) => {
                 setLocation(key);
             }} />
-            <ToolBar
-                context={ManagerLocationContext}
-                listFilter={[]}
-                createButton
-                exportCSVButton
-                onClickCreateButton={() => {
-                    setOpenModal({
-                        isCreate: true,
-                        show: true,
-                        data: undefined
-                    });
-                }}
-                onClickReload={() => {
-                    listArea.query();
-                    locations.queryLocations();
-                }}
-                iconReload
-            />
+            {hasRole &&
+                <ToolBar
+                    context={ManagerLocationContext}
+                    listFilter={[]}
+                    createButton
+                    exportCSVButton
+                    onClickCreateButton={() => {
+                        setOpenModal({
+                            isCreate: true,
+                            show: true,
+                            data: undefined
+                        });
+                    }}
+                    onClickReload={() => {
+                        listArea.query();
+                        locations.queryLocations();
+                    }}
+                    iconReload
+                />
+            }
             <Table
                 loading={locations.state.isLoading}
                 className={styles.tableMangerClass}

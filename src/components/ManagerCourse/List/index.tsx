@@ -52,15 +52,17 @@ const List = () => {
         level: {}
     });
     const handleClickCellLevelCourse = (record: Obj) => {
-        if (record.courseLevel._id) {
-            setModalLevelCourse({
-                show: true,
-                courseId: record._id as string,
-                levelId: record.courseLevel._id as string,
-                level: {
-                    ...record.courseLevel as Obj
-                }
-            })
+        if (hasRole) {
+            if (record.courseLevel._id) {
+                setModalLevelCourse({
+                    show: true,
+                    courseId: record._id as string,
+                    levelId: record.courseLevel._id as string,
+                    level: {
+                        ...record.courseLevel as Obj
+                    }
+                })
+            }
         }
     }
     const columns: Columns = [
@@ -80,10 +82,12 @@ const List = () => {
                     <EyeOutlined
                         className={`${styles.icon} iconEyeCourse`}
                         onClick={function (e) {
-                            setModalDetail({
-                                show: true,
-                                courseId: record._id as string
-                            });
+                            if (hasRole) {
+                                setModalDetail({
+                                    show: true,
+                                    courseId: record._id as string
+                                });
+                            }
                         }}
                     />
                 </div>
@@ -126,7 +130,9 @@ const List = () => {
                     onCell(record: Obj) {
                         return {
                             onClick() {
-                                handleClickCellLevelCourse(record);
+                                if (hasRole) {
+                                    handleClickCellLevelCourse(record);
+                                }
                             }
                         }
                     }
@@ -142,7 +148,9 @@ const List = () => {
                     onCell(record: Obj) {
                         return {
                             onClick() {
-                                handleClickCellLevelCourse(record);
+                                if (hasRole) {
+                                    handleClickCellLevelCourse(record);
+                                }
                             }
                         }
                     }
