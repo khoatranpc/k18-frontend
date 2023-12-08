@@ -43,7 +43,7 @@ const getOrderWeekday: Record<Weekday, number> = {
 }
 const mapRoleToString: Record<ROLE_TEACHER, string> = {
     MT: 'Mentor',
-    SP: 'Suppoter',
+    SP: 'Supporter',
     ST: 'Super Teacher'
 }
 const getStringGender: Record<Gender, string> = {
