@@ -134,7 +134,8 @@ export enum ResourceApply {
     FB = 'FB',
     LKD = 'LKD',
     RF = 'RF',
-    AN = 'AN'
+    AN = 'AN',
+    TCV = 'TCV'
 }
 export enum ResultInterview {
     PASS = 'PASS',

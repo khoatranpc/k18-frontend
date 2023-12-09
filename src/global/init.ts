@@ -73,7 +73,8 @@ const getStringResourceApply: Record<ResourceApply, string> = {
     AN: 'Khác',
     FB: "Facebook",
     LKD: "Linkedin",
-    RF: 'Gợi ý (tham khảo)'
+    RF: 'Gợi ý (tham khảo)',
+    TCV: 'Top CV'
 }
 const getStringResultInterview: Record<ResultInterview, string> = {
     NOTPASS: 'Trượt',

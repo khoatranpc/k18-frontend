@@ -27,6 +27,7 @@ const SelectBaseCourse = (props: Props) => {
             onChange={props.onChange}
             popupClassName={styles.popupSelect}
             size="small"
+            value={options?.[0]?.value}
             className={`${styles.selectBaseCourse} ${props.className}`}
             options={[
                 ...options ? [{
