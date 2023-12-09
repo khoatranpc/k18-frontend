@@ -28,7 +28,7 @@ const Columns = () => {
             }
         },
         legend: {
-            enabled: false
+            enabled: true
         },
         tooltip: {
             headerFormat: '<b>{point.x}</b><br/>',
