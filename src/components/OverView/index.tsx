@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import IndexOverViewBlock, { TypeOverView } from './IndexOverviewBlock';
 import OverViewRecruitment from './Recruitment';
 import TeacherStatistic from './TeacherStatistic';
 import styles from '@/styles/Overview.module.scss';
+import ModalCustomize from '../ModalCustomize';
 
+export enum ExpandContent {
+    RECRUITMENT = 'RECRUITMENT',
+    TEACHER = 'TEACHER'
+}
 const OverView = () => {
+    const [openExpand, setOpenExpand] = useState<{
+        open: boolean;
+        content: ExpandContent
+    }>({
+        open: false,
+        content: ExpandContent.RECRUITMENT
+    });
+    const handleExpand = (open: boolean, type: ExpandContent) => {
+        setOpenExpand({
+            open: open,
+            content: type
+        });
+    }
+    const content: Record<ExpandContent, React.ReactElement> = {
+        RECRUITMENT: <OverViewRecruitment isOnExpand={openExpand.open} setOpenExpand={handleExpand} />,
+        TEACHER: <TeacherStatistic isOnExpand={openExpand.open} setOpenExpand={handleExpand} />
+    }
     return (
         <div className={styles.containerOverView}>
             <div className={styles.listIndexOverview}>
@@ -14,10 +36,25 @@ const OverView = () => {
                 <IndexOverViewBlock title="Rank lương" type={TypeOverView.RANKSALARY} />
             </div>
             <div className={styles.general}>
-                <OverViewRecruitment />
-                <TeacherStatistic />
+                <OverViewRecruitment isOnExpand={openExpand.open} setOpenExpand={handleExpand} />
+                <TeacherStatistic isOnExpand={openExpand.open} setOpenExpand={handleExpand} />
             </div>
-        </div>
+            {
+                openExpand.open && <ModalCustomize
+                    dialogClassName={styles.dialogModalDashboard}
+                    show={openExpand.open}
+                    onHide={() => {
+                        setOpenExpand({
+                            ...openExpand,
+                            open: false
+                        });
+                    }}
+                    size="xl"
+                >
+                    {content[openExpand.content]}
+                </ModalCustomize>
+            }
+        </div >
     )
 }
 

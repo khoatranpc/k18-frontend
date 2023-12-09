@@ -34,6 +34,7 @@ const TeacherPoint = () => {
         <div className={styles.teacherPointTable}>
             <h3>TeacherPoint</h3>
             <Table
+                bordered
                 disableDefaultPagination
                 columns={columns}
                 rowData={rowData}

@@ -78,6 +78,7 @@ const TableOverViewTotalTeacher = () => {
     return (
         <div className={styles.tableOverViewTotalTeacher}>
             <Table
+                bordered
                 disableDefaultPagination
                 columns={columns}
                 rowData={rowData}

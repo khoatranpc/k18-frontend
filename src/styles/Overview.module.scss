@@ -9,6 +9,19 @@
         gap: 1.2rem;
         display: flex;
     }
+
+}
+
+h2:has(.expandIcon) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .expandIcon {
+        width: 2rem;
+        cursor: pointer;
+        margin-left: auto;
+    }
 }
 
 .indexOverviewBlock {
@@ -71,11 +84,40 @@
 }
 
 .overViewRecruitment {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     height: 100%;
     padding: 1.2rem;
     border: 1px solid var(--grey);
     border-radius: 0.4rem;
+
+    &.recruitmentOnExpand {
+        display: flex;
+
+        .tableIndex {
+            display: flex;
+            gap: 1.2rem;
+
+            .tableTotal,
+            .table {
+                max-height: 100%;
+                flex: 1;
+                margin-top: 0;
+            }
+        }
+    }
+
+    .chart {
+        display: flex;
+        gap: 1.2rem;
+
+        .pi3D,
+        .courseColumn {
+            flex: 1;
+            border: 1px solid var(--grey);
+        }
+    }
 
     .pickDate {
         display: flex;
@@ -183,7 +225,28 @@
     border-radius: 0.4rem;
     flex: 1;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     padding: 1.2rem;
+
+    .item {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+
+        .teacherStatisticPiChart,
+        .columnsStatistic,
+        .tableOverViewTotalTeacher,
+        .teacherPointTable {
+            flex: 1;
+        }
+    }
+
+    &.teacherAnalysticOnExpand {
+        .item {
+            flex-direction: row;
+        }
+    }
 
     .filter {
         display: flex;

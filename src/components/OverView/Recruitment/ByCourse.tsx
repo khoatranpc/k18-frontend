@@ -61,7 +61,7 @@ const ByCourse = () => {
         ]
     }
     return (
-        <div>
+        <div className={styles.courseColumn}>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

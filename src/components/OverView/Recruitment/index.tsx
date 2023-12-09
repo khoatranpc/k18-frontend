@@ -5,15 +5,20 @@ import { KEY_ICON } from '@/global/enum';
 import TableIndex from './TableIndex';
 import PiResourceApply from './PiResourceApply';
 import ByCourse from './ByCourse';
+import Expand from '@/icons/Expand';
+import { ExpandContent } from '..';
 import styles from '@/styles/Overview.module.scss';
 
 interface Props {
-    setOpenExpand?: () => void;
+    setOpenExpand?: (open: boolean, type: ExpandContent) => void;
+    isOnExpand?: boolean;
 }
 const OverViewRecruitment = (props: Props) => {
     return (
-        <div className={`${styles.overViewRecruitment}`}>
-            <h2>Tuyển dụng</h2>
+        <div className={`${styles.overViewRecruitment} ${props.isOnExpand ? styles.recruitmentOnExpand : ''}`}>
+            <h2>Tuyển dụng <Expand className={styles.expandIcon} onClick={() => {
+                props.setOpenExpand?.(!props.isOnExpand, ExpandContent.RECRUITMENT)
+            }} /></h2>
             <div className={`${styles.pickDate}`}>
                 Lọc: <DatePicker size="small" placeholder="Từ ngày" format="DD/MM/YYYY" />
                 <span className={styles.arrow}>{MapIconKey[KEY_ICON.ARROWL]}</span>
@@ -21,8 +26,10 @@ const OverViewRecruitment = (props: Props) => {
             </div>
             <div className={styles.chartTable}>
                 <TableIndex />
-                <PiResourceApply />
-                <ByCourse />
+                <div className={styles.chart}>
+                    <PiResourceApply />
+                    <ByCourse />
+                </div>
             </div>
         </div>
     )
