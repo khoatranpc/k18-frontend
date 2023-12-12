@@ -110,6 +110,7 @@ h2:has(.expandIcon) {
 
     .chart {
         display: flex;
+        flex-direction: column;
         gap: 1.2rem;
 
         .pi3D,
