@@ -190,7 +190,18 @@ const shortenName = (fullName: string) => {
         return fullName;
     }
 }
+function calculateAge(dob: Date) {
+    const today = new Date();
+    const birthDate = new Date(dob);
 
+    // Chuyển đổi thành timestamp bằng cách lấy giây từ Epoch
+    const todayTimestamp = today.getTime();
+    const birthDateTimestamp = birthDate.getTime();
+
+    // Tính toán tuổi
+    const age = Math.floor((todayTimestamp - birthDateTimestamp) / (1000 * 60 * 60 * 24 * 365.25));
+    return age;
+}
 export {
     uuid,
     listMonth,
@@ -203,5 +214,6 @@ export {
     createHookQueryReducer,
     shortenName,
     getColorByCourseName,
-    getColorByStatusProcess
+    getColorByStatusProcess,
+    calculateAge
 }

@@ -3,9 +3,21 @@ import Highcharts from 'highcharts';
 import Highcharts3D from 'highcharts/highcharts-3d';
 Highcharts3D(Highcharts);
 import { HighchartsReact } from 'highcharts-react-official';
+import { Obj } from '@/global/interface';
+import { RoundProcess } from '@/global/enum';
+import { useGetListDataRecruitment } from '@/utils/hooks';
 import styles from '@/styles/Overview.module.scss';
 
 const ByCourse = () => {
+    const listCandidate = useGetListDataRecruitment();
+    const getDataListCandidate = ((listCandidate.data.response?.data as Obj)?.listData as Obj[]) || [];
+    const mapDataByCourse: Obj = {};
+    getDataListCandidate.forEach((item) => {
+        mapDataByCourse[item.courseApply.courseName as string] = mapDataByCourse[item.courseApply.courseName as string] ? mapDataByCourse[item.courseApply.courseName as string] + 1 : 1;
+        if (item.roundProcess !== RoundProcess.CV) {
+            mapDataByCourse[`${item.courseApply.courseName as string}Pass`] = mapDataByCourse[`${item.courseApply.courseName as string}Pass`] ? mapDataByCourse[`${item.courseApply.courseName as string}Pass`] + 1 : 1;
+        }
+    });
     const options: Highcharts.Options = {
         chart: {
             type: 'column',
@@ -51,12 +63,12 @@ const ByCourse = () => {
             {
                 type: 'column',
                 name: 'Tổng',
-                data: [406292, 260000, 107000]
+                data: [mapDataByCourse['Web'], mapDataByCourse['Data'], mapDataByCourse['UIUX']]
             },
             {
                 type: 'column',
                 name: 'Pass',
-                data: [51086, 136000, 5500]
+                data: [mapDataByCourse['WebPass'], mapDataByCourse['DataPass'], mapDataByCourse['UIUXPass']]
             }
         ]
     }

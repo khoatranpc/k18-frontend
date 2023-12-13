@@ -47,8 +47,8 @@ const mapRoleToString: Record<ROLE_TEACHER, string> = {
     ST: 'Super Teacher'
 }
 const getStringGender: Record<Gender, string> = {
-    M: 'Nam',
-    FM: 'Nữ',
+    MALE: 'Nam',
+    FEMALE: 'Nữ',
     NA: 'Khác'
 }
 const getColorTeacherPoint = (teacherPoint: number) => {

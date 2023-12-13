@@ -114,8 +114,8 @@ export enum Weekday {
     CNB = 'CN',
 }
 export enum Gender {
-    M = 'M',
-    FM = 'FM',
+    M = 'MALE',
+    FM = 'FEMALE',
     NA = 'NA'
 }
 export enum ObjectTeach {
