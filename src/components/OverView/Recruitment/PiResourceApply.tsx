@@ -3,9 +3,24 @@ import { HighchartsReact } from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import Highcharts3D from 'highcharts/highcharts-3d';
 Highcharts3D(Highcharts);
+import { Obj } from '@/global/interface';
+import { ResourceApply } from '@/global/enum';
+import { useGetListDataRecruitment } from '@/utils/hooks';
 import styles from '@/styles/Overview.module.scss';
 
 const PiResourceApply = () => {
+    const listCandidate = useGetListDataRecruitment();
+    const getDataListCandidate = (listCandidate.data.response?.data as Obj)?.listData as Obj[] || [];
+    const getDataResourceApply: Record<ResourceApply, number> = {
+        AN: 0,
+        FB: 0,
+        LKD: 0,
+        RF: 0,
+        TCV: 0
+    }
+    getDataListCandidate.forEach((item) => {
+        getDataResourceApply[item.resourceApply as ResourceApply]++
+    });
     const options: Highcharts.Options = {
         chart: {
             type: 'pie',
@@ -45,14 +60,13 @@ const PiResourceApply = () => {
         },
         series: [{
             type: 'pie',
-            name: 'Share',
+            name: 'Tỉ lệ',
             data: [
-                ['Khác', 23],
-                ['TopCV', 18],
-                ['Facebook', 9],
-                ['Refer', 8],
-                ['Khác', 30],
-                ['Linkedin', 30]
+                ['Khác', getDataResourceApply.AN],
+                ['TopCV', getDataResourceApply.TCV],
+                ['Facebook', getDataResourceApply.FB],
+                ['Refer', getDataResourceApply.RF],
+                ['Linkedin', getDataResourceApply.LKD]
             ]
         }]
     }

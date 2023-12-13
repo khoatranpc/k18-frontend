@@ -632,7 +632,7 @@ const useGetClassTeacherPonit = () => {
 const useGetListDataRecruitment = () => {
     const data = useSelector((state: RootState) => (state.recruitment as State).state);
     const dispatch = useDispatch();
-    const query = (recordOnPage: number, currentPage: number, fields?: string[], condition?: Obj) => {
+    const query = (recordOnPage?: number, currentPage?: number, fields?: string[], condition?: Obj) => {
         const payload: Action = {
             payload: {
                 query: {

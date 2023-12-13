@@ -6,7 +6,7 @@ import { Button, DatePicker, Input, MenuProps, Radio } from 'antd';
 import { getStringByLevelTechnique, getStringObjectTeach, getStringResourceApply, mapRoleToString } from '@/global/init';
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
-import { Education, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing } from '@/global/enum';
+import { Education, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing } from '@/global/enum';
 import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse, useUpdateCandidate } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
@@ -100,7 +100,8 @@ const FormInfoCandidate = (props: Props) => {
         updatedAt: props.isViewInfo ? detailCandidate?.updatedAt as Date : new Date(),
         resourceApply: props.isViewInfo ? (detailCandidate?.resourceApply ? detailCandidate?.resourceApply as ResourceApply : ResourceApply.AN) : ResourceApply.AN,
         scoreTechnique: props.isViewInfo ? detailCandidate?.scoreTechnique as number : 0,
-        scoreJobPosition: props.isViewInfo ? detailCandidate?.scoreJobPosition as number : 0
+        scoreJobPosition: props.isViewInfo ? detailCandidate?.scoreJobPosition as number : 0,
+        gender: props.isViewInfo ? detailCandidate?.gender as Gender : Gender.NA,
     }
     const { values, errors, touched, setValues, setFieldValue, setTouched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
         initialValues: initValues,
@@ -209,6 +210,16 @@ const FormInfoCandidate = (props: Props) => {
                         <Form.Label className="bold">Email <span className="error">*</span></Form.Label>
                         <Input type="email" name="email" placeholder="example@gmail.com" value={values.email} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.email && touched.email && <p className="error">{errors.email}</p>}
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className={styles.fs_12}>
+                            <span>Giới tính <span className="field_required">*</span></span>
+                        </Form.Label>
+                        <Radio.Group onChange={handleChange} name="gender" onBlur={handleBlur} value={values.gender}>
+                            <Radio value={Gender.M}>Nam</Radio>
+                            <Radio value={Gender.FM}>Nữ</Radio>
+                            <Radio value={Gender.NA}>Khác</Radio>
+                        </Radio.Group>
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Năm sinh <span className="field_required">*</span></Form.Label>

@@ -108,7 +108,6 @@ const Progress = () => {
         }
     }, [dataRoundProcess.data]);
     useEffect(() => {
-        // pending handle mapping step
         if (updateDataRoundProcessCandidate.data.response && updateDataRoundProcessCandidate.data.success) {
             crrCandidate.query([String(getCandidateId.candidateId)]);
             message.open({
