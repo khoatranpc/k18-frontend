@@ -202,7 +202,7 @@ function calculateAge(dob: Date) {
     const age = Math.floor((todayTimestamp - birthDateTimestamp) / (1000 * 60 * 60 * 24 * 365.25));
     return age;
 }
-const getComponentIdByReducer = (reducer: keyof RootState) => {
+const useGetComponentIdByReducer = (reducer: keyof RootState) => {
     const data = useSelector((state: RootState) => (state[reducer] as State).state);
     return data.payload?.query?.query?.componentId as string
 }
@@ -220,5 +220,5 @@ export {
     getColorByCourseName,
     getColorByStatusProcess,
     calculateAge,
-    getComponentIdByReducer
+    useGetComponentIdByReducer
 }
