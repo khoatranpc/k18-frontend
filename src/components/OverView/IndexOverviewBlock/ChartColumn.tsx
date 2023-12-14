@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { HighchartsReact } from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import { Obj } from '@/global/interface';
@@ -114,4 +114,6 @@ const ChartColumn = (props: Props) => {
     )
 }
 
-export default ChartColumn;
+export default memo(ChartColumn, (prevProps, nextProps) => {
+    return !(JSON.stringify(prevProps) !== JSON.stringify(nextProps));
+});
