@@ -28,7 +28,8 @@ h2:has(.expandIcon) {
     flex: 1;
     padding: 1.2rem;
     border-radius: 0.4rem;
-    border: 1px solid var(--grey);
+    // border: 1px solid var(--grey);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
     .title {
         display: flex;
@@ -89,7 +90,7 @@ h2:has(.expandIcon) {
     flex: 1;
     height: 100%;
     padding: 1.2rem;
-    border: 1px solid var(--grey);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 0.4rem;
 
     &.recruitmentOnExpand {
@@ -222,7 +223,7 @@ h2:has(.expandIcon) {
 }
 
 .teacherAnalystic {
-    border: 1px solid var(--grey);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 0.4rem;
     flex: 1;
     height: 100%;
