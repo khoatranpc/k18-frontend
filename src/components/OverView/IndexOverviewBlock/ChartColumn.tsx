@@ -1,8 +1,15 @@
 import React from 'react';
 import { HighchartsReact } from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import { Obj } from '@/global/interface';
 import { TypeOverView } from '.';
 
+const mapKeyForStatusClass: Obj = {
+    R: 'Mở',
+    D: 'Huỷ',
+    P: 'Đợi',
+    F: 'Kết thúc'
+};
 interface Props {
     color?: string;
     data?: (number | [string | number, number | null] | Highcharts.PointOptionsObject | null)[] | undefined;
@@ -83,16 +90,17 @@ const ChartColumn = (props: Props) => {
         },
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+            pointFormat: `<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>`,
+            pointFormatter() {
+                return `<span style="color:${this.color}">${mapKeyForStatusClass[this.name] ?? this.name}</span>: <b>${this.y?.toLocaleString()}</b><br/>`
+            }
         },
         series: [
             {
                 name: `${mapTitleToolTip[props.type as TypeOverView]}`,
                 type: 'column',
                 colorByPoint: true,
-                data: [
-                    ...getData,
-                ]
+                data: getData,
             }
         ]
     }

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Obj } from '@/global/interface';
-import { ROLE_TEACHER } from '@/global/enum';
-import { useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
+import { ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { useListClass, useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import ChartColumn from './ChartColumn';
 import IconArrowView from '@/icons/IconArrowView';
 import { getListTeacherIdOfCourse } from './config';
 import styles from '@/styles/Overview.module.scss';
+import { getColorFromStatusClass } from '@/global/init';
 
 export enum TypeOverView {
     'TEACHER' = 'TEACHER',
@@ -78,6 +79,34 @@ const IndexOverViewBlock = (props: Props) => {
             }
         }
     }
+    const listClass = useListClass();
+    const getListClass = (listClass.data.response?.data as Obj)?.classes as Obj[] || [];
+    const listStatusClass: Record<STATUS_CLASS, number> = {
+        DROP: 0,
+        FINISH: 0,
+        PREOPEN: 0,
+        RUNNING: 0
+    }
+    const listClassStatistic = [];
+    if (props.type === TypeOverView.CLASS) {
+        getListClass.map((item) => {
+            listStatusClass[item.status as STATUS_CLASS]++;
+        });
+        const getSortStatus: Record<STATUS_CLASS, string> = {
+            DROP: 'D',
+            FINISH: 'F',
+            PREOPEN: 'P',
+            RUNNING: 'R'
+        }
+        for (const key in listStatusClass) {
+            const newRecord = {
+                name: getSortStatus[key as STATUS_CLASS],
+                y: listStatusClass[key as STATUS_CLASS],
+                color: getColorFromStatusClass[key as STATUS_CLASS]
+            };
+            listClassStatistic.push(newRecord);
+        }
+    }
     const evulate = {
         totalTeacherpoint: 0,
         countTeacherpoint: 0,
@@ -119,21 +148,28 @@ const IndexOverViewBlock = (props: Props) => {
         },
     ];
     const dataColumn: Record<TypeOverView, Obj[]> = {
-        CLASS: [],
+        CLASS: listClassStatistic,
         RANKSALARY: listTeacherStatistic,
         TEACHER: listTotalTeacher,
         TEACHERPOINT: listTeacherStatistic
     }
     const mapGetTotal: Record<TypeOverView, number | string> = {
-        CLASS: 0,
-        RANKSALARY: Number(evulate.totalSalary / evulate.countHasSalary).toLocaleString() || 0,
+        CLASS: getListClass.length || 0,
+        RANKSALARY: Number((evulate.totalSalary / evulate.countHasSalary) || 0).toLocaleString(),
         TEACHER: getListTeacher.length.toLocaleString(),
-        TEACHERPOINT: Number(evulate.totalTeacherpoint / evulate.countTeacherpoint).toFixed(2) || 0
+        TEACHERPOINT: Number((evulate.totalTeacherpoint / evulate.countTeacherpoint) || 0).toFixed(2)
     }
     useEffect(() => {
         if (props.type === TypeOverView.TEACHER) {
             listTeacher.query?.(undefined, undefined, {
                 fields: ['_id', 'roleIsMT', 'roleIsST', 'roleIsSP', 'teacherPoint', 'salaryPH', 'area']
+            });
+        }
+        if (props.type === TypeOverView.CLASS) {
+            listClass.query({
+                query: {
+                    fields: ['_id', 'courseId', 'courseName', 'status', 'classForm', 'dayRange']
+                }
             });
         }
     }, []);
