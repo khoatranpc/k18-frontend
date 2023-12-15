@@ -8,6 +8,8 @@ import styles from '@/styles/SelectBaseCourse.module.scss'
 interface Props {
     onChange?: (value: any) => void;
     className?: string;
+    value?: string;
+    disabledAll?: boolean;
 }
 const SelectBaseCourse = (props: Props) => {
     const { listCourse, queryListCourse } = useGetListCourse();
@@ -27,13 +29,15 @@ const SelectBaseCourse = (props: Props) => {
             onChange={props.onChange}
             popupClassName={styles.popupSelect}
             size="small"
-            value={options?.[0]?.value}
+            value={props.value ?? options?.[0]?.value}
             className={`${styles.selectBaseCourse} ${props.className}`}
             options={[
-                ...options ? [{
-                    label: 'Tất cả',
-                    value: ''
-                }, ...options] : [],
+                ...options ? [
+                    ...!props.disabledAll ? [{
+                        label: 'Tất cả',
+                        value: ''
+                    }] : []
+                    , ...options] : [],
             ]}
         />
     )

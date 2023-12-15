@@ -36,8 +36,8 @@ const OverView = () => {
                 <IndexOverViewBlock title="Rank lương" type={TypeOverView.RANKSALARY} />
             </div>
             <div className={styles.general}>
-                <OverViewRecruitment isOnExpand={openExpand.open} setOpenExpand={handleExpand} />
-                <TeacherStatistic isOnExpand={openExpand.open} setOpenExpand={handleExpand} />
+                <OverViewRecruitment setOpenExpand={handleExpand} />
+                <TeacherStatistic setOpenExpand={handleExpand} />
             </div>
             {
                 openExpand.open && <ModalCustomize
