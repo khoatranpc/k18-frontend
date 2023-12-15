@@ -57,7 +57,6 @@ const getStatisticTeacher = (listCourse?: Obj[], getListCourseApply?: Obj[], get
                 }
             }
         }
-        console.log(countTeacherByLevelHandle);
         const listTeacherWithCourse = filterTeacherWithCourse(getListCourseApply, getListTeacher, item._id);
         let getCount: Record<ROLE_TEACHER, number> = {
             MT: 0,

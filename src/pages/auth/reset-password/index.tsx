@@ -25,7 +25,7 @@ const ResetPassword = () => {
     });
 
     useEffect(() => {
-        console.log(router);
+        // console.log(router);
     }, [router])
 
     return (

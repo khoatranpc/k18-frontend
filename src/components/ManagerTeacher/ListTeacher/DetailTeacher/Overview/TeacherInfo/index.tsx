@@ -28,7 +28,6 @@ const TeacherInfo = (props: Props) => {
             setValues((currentTeacher.data.response.data as Obj));
         }
     }, [currentTeacher.data]);
-    console.log(values);
     return (
         <div className={styles.overViewTeacherInfo}>
             <Form className={styles.formInfo}>
