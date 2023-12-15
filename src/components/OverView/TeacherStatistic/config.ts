@@ -65,13 +65,13 @@ const getStatisticTeacher = (listCourse?: Obj[], getListCourseApply?: Obj[], get
             ST: 0
         };
         listTeacherWithCourse?.forEach((tc) => {
-            if (tc.roleIsMT) {
+            if (tc?.roleIsMT) {
                 getCount['MT']++;
             }
-            if (tc.roleIsST) {
+            if (tc?.roleIsST) {
                 getCount['ST']++;
             }
-            if (tc.roleIsSP) {
+            if (tc?.roleIsSP) {
                 getCount['SP']++;
             }
         });

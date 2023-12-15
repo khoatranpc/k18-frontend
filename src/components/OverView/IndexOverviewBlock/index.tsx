@@ -113,19 +113,19 @@ const IndexOverViewBlock = (props: Props) => {
         totalSalary: 0,
         countHasSalary: 0
     }
-    getListTeacher.forEach((item) => {
-        if (item.roleIsMT) {
+    getListTeacher?.forEach((item) => {
+        if (item?.roleIsMT) {
             countTeacher['MT']++;
         }
-        if (item.roleIsST) {
+        if (item?.roleIsST) {
             countTeacher['ST']++;
         }
-        if (item.roleIsSP) {
+        if (item?.roleIsSP) {
             countTeacher['SP']++;
         }
-        const listSalary = (item.salaryPH as Obj[]) || [];
-        if (item.teacherPoint) {
-            evulate['totalTeacherpoint'] += (item.teacherPoint);
+        const listSalary = (item?.salaryPH as Obj[]) || [];
+        if (item?.teacherPoint) {
+            evulate['totalTeacherpoint'] += (item?.teacherPoint);
             evulate['countTeacherpoint']++;
         }
         if (((listSalary)[listSalary.length - 1]?.rank)) {

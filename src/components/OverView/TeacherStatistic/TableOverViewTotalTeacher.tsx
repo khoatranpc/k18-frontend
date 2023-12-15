@@ -57,13 +57,12 @@ const TableOverViewTotalTeacher = () => {
             key: item.id as string,
             course: item.name,
             total: listTeacherByCourse?.length || 0,
-            st: listTeacherByCourse?.filter(tc => tc.roleIsST).length || 0,
-            mt: listTeacherByCourse?.filter(tc => tc.roleIsMT).length || 0,
-            sp: listTeacherByCourse?.filter(tc => tc.roleIsSP).length || 0,
+            st: listTeacherByCourse?.filter(tc => tc?.roleIsST).length || 0,
+            mt: listTeacherByCourse?.filter(tc => tc?.roleIsMT).length || 0,
+            sp: listTeacherByCourse?.filter(tc => tc?.roleIsSP).length || 0,
             ...item.getTotalTeacherByCourse[item.id]
         }
     }) || [];
-    console.log(rowData);
     return (
         <div className={styles.tableOverViewTotalTeacher}>
             <Table

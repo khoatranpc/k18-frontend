@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import IndexOverViewBlock, { TypeOverView } from './IndexOverviewBlock';
 import OverViewRecruitment from './Recruitment';
 import TeacherStatistic from './TeacherStatistic';
-import styles from '@/styles/Overview.module.scss';
 import ModalCustomize from '../ModalCustomize';
+import styles from '@/styles/Overview.module.scss';
 
 export enum ExpandContent {
     RECRUITMENT = 'RECRUITMENT',
