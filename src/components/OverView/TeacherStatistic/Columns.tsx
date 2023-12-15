@@ -1,22 +1,33 @@
 import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { Obj } from '@/global/interface';
+import { ROLE_TEACHER } from '@/global/enum';
+import { useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
+import { filterTeacherWithCourse, getStatisticTeacher } from './config';
 import styles from '@/styles/Overview.module.scss';
 
 const Columns = () => {
+    const listTeacher = useListTeacher() as Obj;
+    const getListTeacher = listTeacher.listTeacher?.response?.data?.listTeacher as Obj[] || [];
+    const { listCourse } = useGetListCourse();
+    const getListCourse = listCourse?.data as Obj[];
+    const courseApply = useTeacherRegisterCourse();
+    const getListCourseApplyData = courseApply.listData.response?.data as Obj[];
+    const listCourseMapName = getStatisticTeacher(getListCourse, getListCourseApplyData, getListTeacher);
     const options: Highcharts.Options = {
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Số lượng Giảng viên, Mentor, Supporter',
+            text: 'Số lượng đảm nhiệm Giảng viên, Mentor, Supporter',
             align: 'left'
         },
         subtitle: {
             text: ''
         },
         xAxis: {
-            categories: ['Data', 'UI/UX', 'Web']
+            categories: listCourseMapName.categories?.map(item => item.name) ?? []
         },
         yAxis: {
             min: 0,
@@ -32,7 +43,6 @@ const Columns = () => {
         },
         tooltip: {
             headerFormat: '<b>{point.x}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
         },
         plotOptions: {
             column: {
@@ -46,7 +56,7 @@ const Columns = () => {
             name: 'Giáo viên',
             type: 'column',
             color: '#DA4646',
-            data: [15, 20, 1],
+            data: listCourseMapName.data.ST,
             dataLabels: {
                 enabled: false
             }
@@ -54,14 +64,14 @@ const Columns = () => {
             name: 'Mentor',
             type: 'column',
             color: '#6792F4',
-            data: [30, 25, 8],
+            data: listCourseMapName.data.MT,
             dataLabels: {
                 enabled: false
             }
         }, {
             name: 'Supporter',
             type: 'column',
-            data: [50, 30, 6],
+            data: listCourseMapName.data.SP,
             dataLabels: {
                 enabled: false
             }

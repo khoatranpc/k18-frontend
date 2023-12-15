@@ -44,7 +44,7 @@ const OverViewRecruitment = (props: Props) => {
         });
     }, [conditionDate]);
     return (
-        <div className={`${styles.overViewRecruitment} ${props.isOnExpand ? styles.recruitmentOnExpand : ''}`}>
+        <div className={`${props.isOnExpand ? styles.recruitmentOnExpand : styles.overViewRecruitment}`}>
             <h2>Tuyển dụng <Expand className={styles.expandIcon} onClick={() => {
                 props.setOpenExpand?.(!props.isOnExpand, ExpandContent.RECRUITMENT)
             }} /></h2>

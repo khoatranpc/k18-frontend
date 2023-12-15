@@ -1,10 +1,18 @@
 import React from 'react';
-import { Columns, RowData } from '@/global/interface';
+import { Columns, Obj, RowData } from '@/global/interface';
+import { useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import Table from '@/components/Table';
+import { filterTeacherWithCourse, getStatisticTeacher } from './config';
 import styles from '@/styles/Overview.module.scss';
-import { uuid } from '@/utils';
 
 const TableOverViewTotalTeacher = () => {
+    const listTeacher = useListTeacher() as Obj;
+    const getListTeacher = listTeacher.listTeacher?.response?.data?.listTeacher as Obj[] || [];
+    const { listCourse } = useGetListCourse();
+    const getListCourse = listCourse?.data as Obj[];
+    const courseApply = useTeacherRegisterCourse();
+    const getListCourseApplyData = courseApply.listData.response?.data as Obj[];
+    const listCourseMapData = getStatisticTeacher(getListCourse, getListCourseApplyData, getListTeacher);
     const columns: Columns = [
         {
             title: 'Bộ môn',
@@ -28,53 +36,34 @@ const TableOverViewTotalTeacher = () => {
         },
         {
             title: 'Lv1',
-            dataIndex: 'countLv'
+            dataIndex: 'lv1'
         },
         {
             title: 'Lv2',
-            dataIndex: 'countLv'
+            dataIndex: 'lv2'
         },
         {
             title: 'Lv3',
-            dataIndex: 'countLv'
+            dataIndex: 'lv3'
         },
         {
             title: 'Lv4',
-            dataIndex: 'countLv'
+            dataIndex: 'lv4'
         },
     ]
-    const rowData: RowData[] = [
-        {
-            key: uuid(),
-            course: 'Data',
-            teacher: 123,
-            st: 100,
-            mt: 100,
-            sp: 100,
-            countLv: 50,
-            total: 1000
-        },
-        {
-            key: uuid(),
-            course: 'Web',
-            teacher: 123,
-            st: 100,
-            mt: 100,
-            sp: 100,
-            countLv: 50,
-            total: 1000
-        },
-        {
-            key: uuid(),
-            course: 'UI/UX',
-            teacher: 123,
-            st: 100,
-            mt: 100,
-            sp: 100,
-            countLv: 50,
-            total: 1000
-        },
-    ]
+    const rowData: RowData[] = listCourseMapData.categories?.map((item) => {
+        const listTeacherByCourse = filterTeacherWithCourse(getListCourseApplyData, getListTeacher, item?.id);
+        return {
+            key: item.id as string,
+            course: item.name,
+            total: listTeacherByCourse?.length || 0,
+            st: listTeacherByCourse?.filter(tc => tc.roleIsST).length || 0,
+            mt: listTeacherByCourse?.filter(tc => tc.roleIsMT).length || 0,
+            sp: listTeacherByCourse?.filter(tc => tc.roleIsSP).length || 0,
+            ...item.getTotalTeacherByCourse[item.id]
+        }
+    }) || [];
+    console.log(rowData);
     return (
         <div className={styles.tableOverViewTotalTeacher}>
             <Table

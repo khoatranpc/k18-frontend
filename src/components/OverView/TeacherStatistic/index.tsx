@@ -2,7 +2,6 @@ import React from 'react';
 import PiStatistic from './PiStatistic';
 import Columns from './Columns';
 import TableOverViewTotalTeacher from './TableOverViewTotalTeacher';
-import TeacherPoint from './TeacherPoint';
 import Expand from '@/icons/Expand';
 import { ExpandContent } from '..';
 import styles from '@/styles/Overview.module.scss';
@@ -24,7 +23,6 @@ const TeacherStatistic = (props: Props) => {
                 </div>
                 <div className={styles.item}>
                     <TableOverViewTotalTeacher />
-                    <TeacherPoint />
                 </div>
             </div>
         </div>
