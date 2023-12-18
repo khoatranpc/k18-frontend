@@ -109,8 +109,14 @@
         }
 
         .roleRegister {
+            justify-content: flex-start;
+            flex-direction: column;
             display: flex;
             gap: 0.4rem;
+
+            * {
+                margin: 0;
+            }
         }
 
         .titleRole {
@@ -168,5 +174,29 @@
 
     .paginationAjax {
         background-color: transparent !important;
+    }
+}
+
+.btnAction {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+
+    &.fromFormInfo {
+        justify-content: flex-end;
+    }
+}
+
+.salary {
+
+    >div.btnAction {
+        justify-content: flex-end;
+    }
+}
+
+.formSalary {
+    .btnAction {
+        margin-top: 1.2rem;
+        justify-content: flex-end;
     }
 }

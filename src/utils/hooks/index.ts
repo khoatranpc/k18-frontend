@@ -64,6 +64,7 @@ import { queryGetListTimeSchedule } from "@/store/reducers/timeschedule/timeSche
 import { clearUpdateCandidate, queryUpdateCandidate } from "@/store/reducers/recruitment/updateCandidate.reducer";
 import { clearPredictCandidate, queryPredictCandidate } from "@/store/reducers/recruitment/predictcandidate.reducer";
 import { queryGetListClass } from "@/store/reducers/class/listClass.reducer";
+import { clearUpdateTeacher, queryUpdateTeacher } from "@/store/reducers/teacher/updateTeacher.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -112,7 +113,7 @@ const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
                         query: {
                             params: [params as string],
                             query: {
-                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept']
+                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept', 'salaryPH']
                             }
                         }
                     }
@@ -855,6 +856,7 @@ const useCreateLocation = createHookQueryReducer('createLocation', queryCreateLo
 const useUpdateCandidate = createHookQueryReducer('updateCandidate', queryUpdateCandidate, clearUpdateCandidate);
 const usePredictCandidate = createHookQueryReducer('predictCandidate', queryPredictCandidate, clearPredictCandidate);
 const useListClass = createHookQueryReducer('listClass', queryGetListClass);
+const useUpdateDetailTeacher = createHookQueryReducer('updateTeacher', queryUpdateTeacher, clearUpdateTeacher);
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -917,5 +919,6 @@ export {
     useComparePositionTE,
     useUpdateCandidate,
     usePredictCandidate,
-    useListClass
+    useListClass,
+    useUpdateDetailTeacher
 }

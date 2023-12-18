@@ -4,7 +4,7 @@ import { getColorTeacherPoint, getStringGender } from "@/global/init";
 import { formatDatetoString, generateRowDataForMergeRowSingleField } from "@/utils";
 import Loading from "@/components/loading";
 
-const getColums = (styles?: Obj): Columns => {
+const getColums = (styles?: Obj, area?: Obj[]): Columns => {
     return [
         {
             key: 'DATE',
@@ -172,6 +172,15 @@ const getColums = (styles?: Obj): Columns => {
             className: 'header-border',
             width: 120,
             dataIndex: 'area',
+            render(value) {
+                const getTitleArea = () => {
+                    const crrArea = area?.find((item) => {
+                        return item?._id === value
+                    });
+                    return crrArea?.name as string ?? ''
+                }
+                return getTitleArea();
+            },
             onCell(data) {
                 return {
                     rowSpan: data.rowSpan as number,

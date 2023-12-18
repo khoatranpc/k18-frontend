@@ -10,7 +10,7 @@ function DefaultLayout(props: Props) {
             <Head>
                 <title>MindX</title>
                 <link rel="icon" type="image/x-icon" href="/static/logo.png" />
-                <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+                <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
             </Head>
             {props.children}
         </div>

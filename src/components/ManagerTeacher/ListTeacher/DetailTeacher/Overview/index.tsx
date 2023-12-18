@@ -11,10 +11,12 @@ import Tabs from '@/components/Tabs';
 import Feedback from './Feedback';
 import TeacherInfo from './TeacherInfo';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
+import Salary from './Salary';
 
 enum TabOverView {
     INFOR = 'INFOR',
-    FEEDBACK = 'FEEDBACK'
+    FEEDBACK = 'FEEDBACK',
+    SALARY = 'SALARY'
 }
 
 const Overview = () => {
@@ -38,7 +40,8 @@ const Overview = () => {
     });
     const ComponentTabOverview: Record<TabOverView, React.ReactElement> = {
         FEEDBACK: <Feedback />,
-        INFOR: <TeacherInfo countRole={count} />
+        INFOR: <TeacherInfo countRole={count} />,
+        SALARY: <Salary />
     }
     useEffect(() => {
         currentTeacher.query(router.query.teacherId as string, []);
@@ -72,7 +75,7 @@ const Overview = () => {
                                                 item && idx === 0 ? 'Giảng viên'
                                                     :
                                                     (item && idx === 1 ? 'Mentor' :
-                                                        'Suppoter'
+                                                        'Supporter'
                                                     )
 
                                             }
@@ -130,6 +133,11 @@ const Overview = () => {
                         key: TabOverView.FEEDBACK,
                         label: 'Phản hồi'
                     },
+                    {
+                        key: TabOverView.SALARY,
+                        label: 'Lương'
+                    },
+
                 ]}
             />
             <div className={styles.contentTabOverview}>

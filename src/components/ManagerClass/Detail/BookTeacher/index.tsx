@@ -165,9 +165,11 @@ const BookTeacher = (props: Props) => {
         ...hasRole ? [{
             key: 'SALARY',
             title: 'Lương/h',
-            dataIndex: 'salary',
-            render(value?: number) {
-                return value ?? 'Chưa có mức lương'
+            dataIndex: 'teacherRegister',
+            render(value?: Obj) {
+                const getListSalary = value?.idTeacher.salaryPH as Obj[] || [];
+                const getSalary = Number(getListSalary[getListSalary.length - 1]?.rank || 0);
+                return Boolean(getSalary) ? getSalary.toLocaleString() : 'Chưa có mức lương'
             },
         },
         {
