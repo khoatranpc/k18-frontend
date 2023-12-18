@@ -22,8 +22,8 @@ const filterTeacherWithArea = (listRecordCourseApply?: Obj[], listDataTeacher?: 
         dataLocationTotal[item.area] += 1;
     });
     const listLocation = listArea?.map((item) => {
-        const getNameArea = item.name;
-        const getCountTeacher = dataLocationTotal[item.code] ?? 0;
+        const getNameArea = item.name; 
+        const getCountTeacher = dataLocationTotal[item._id] ?? 0;
         return [getNameArea, getCountTeacher]
     });
     return listLocation

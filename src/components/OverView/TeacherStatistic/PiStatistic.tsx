@@ -16,7 +16,7 @@ const PiChart = memo((props: { options: Highcharts.Options }) => {
 }, (prevProps, nextProps) => {
     return (JSON.stringify(prevProps) === JSON.stringify(nextProps));
 });
-PiChart.displayName='PiChart';
+PiChart.displayName = 'PiChart';
 const PiStatistic = () => {
     const listTeacher = useListTeacher() as Obj;
     const getListTeacher = listTeacher.listTeacher?.response?.data?.listTeacher as Obj[] || [];
