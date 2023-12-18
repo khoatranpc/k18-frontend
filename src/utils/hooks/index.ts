@@ -65,6 +65,7 @@ import { clearUpdateCandidate, queryUpdateCandidate } from "@/store/reducers/rec
 import { clearPredictCandidate, queryPredictCandidate } from "@/store/reducers/recruitment/predictcandidate.reducer";
 import { queryGetListClass } from "@/store/reducers/class/listClass.reducer";
 import { clearUpdateTeacher, queryUpdateTeacher } from "@/store/reducers/teacher/updateTeacher.reducer";
+import { clearUpdateTeacherRegisterCourse, queryUpdateTeacherRegisterCourse } from "@/store/reducers/teacher/updateTeacherRegisterCourse.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -857,6 +858,7 @@ const useUpdateCandidate = createHookQueryReducer('updateCandidate', queryUpdate
 const usePredictCandidate = createHookQueryReducer('predictCandidate', queryPredictCandidate, clearPredictCandidate);
 const useListClass = createHookQueryReducer('listClass', queryGetListClass);
 const useUpdateDetailTeacher = createHookQueryReducer('updateTeacher', queryUpdateTeacher, clearUpdateTeacher);
+const useUpdateTeacherRegisterCourse = createHookQueryReducer('updateTeacherRegisterCourse', queryUpdateTeacherRegisterCourse, clearUpdateTeacherRegisterCourse);
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -920,5 +922,6 @@ export {
     useUpdateCandidate,
     usePredictCandidate,
     useListClass,
-    useUpdateDetailTeacher
+    useUpdateDetailTeacher,
+    useUpdateTeacherRegisterCourse
 }
