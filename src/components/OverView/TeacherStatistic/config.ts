@@ -22,8 +22,8 @@ const filterTeacherWithArea = (listRecordCourseApply?: Obj[], listDataTeacher?: 
         dataLocationTotal[item.area] += 1;
     });
     const listLocation = listArea?.map((item) => {
-        const getNameArea = item.name;
-        const getCountTeacher = dataLocationTotal[item.code] ?? 0;
+        const getNameArea = item.name; 
+        const getCountTeacher = dataLocationTotal[item._id] ?? 0;
         return [getNameArea, getCountTeacher]
     });
     return listLocation
@@ -57,7 +57,6 @@ const getStatisticTeacher = (listCourse?: Obj[], getListCourseApply?: Obj[], get
                 }
             }
         }
-        console.log(countTeacherByLevelHandle);
         const listTeacherWithCourse = filterTeacherWithCourse(getListCourseApply, getListTeacher, item._id);
         let getCount: Record<ROLE_TEACHER, number> = {
             MT: 0,
@@ -65,13 +64,13 @@ const getStatisticTeacher = (listCourse?: Obj[], getListCourseApply?: Obj[], get
             ST: 0
         };
         listTeacherWithCourse?.forEach((tc) => {
-            if (tc.roleIsMT) {
+            if (tc?.roleIsMT) {
                 getCount['MT']++;
             }
-            if (tc.roleIsST) {
+            if (tc?.roleIsST) {
                 getCount['ST']++;
             }
-            if (tc.roleIsSP) {
+            if (tc?.roleIsSP) {
                 getCount['SP']++;
             }
         });

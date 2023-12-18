@@ -2,9 +2,8 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Obj } from '@/global/interface';
-import { ROLE_TEACHER } from '@/global/enum';
 import { useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
-import { filterTeacherWithCourse, getStatisticTeacher } from './config';
+import { getStatisticTeacher } from './config';
 import styles from '@/styles/Overview.module.scss';
 
 const Columns = () => {

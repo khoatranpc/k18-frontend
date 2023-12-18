@@ -152,7 +152,6 @@ const ModalRegisterClass = (props: Props) => {
                         onBlur={handleBlur}
                         onChange={(value) => {
                             const date = (value as Obj)?.$d;
-                            console.log(date);
                             setFieldValue('date', date);
                         }}
                         popupClassName={styles.pickDateRegister}
