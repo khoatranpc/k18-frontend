@@ -161,6 +161,11 @@ a {
     border: 1px solid var(--base);
 }
 
+.ant-checkbox-checked.ant-checkbox-inne {
+    background-color: var(--base) !important;
+    border-color: var(--base);
+}
+
 .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled):after {
     border: none;
 }
