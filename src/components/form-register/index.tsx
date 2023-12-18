@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckboxOptionType, CheckboxValueType } from 'antd/es/checkbox/Group';
-import { Input, DatePicker, Radio, Button, Checkbox } from 'antd';
+import { Input, DatePicker, Radio, Button, Checkbox, MenuProps } from 'antd';
 import { Obj, State } from '@/global/interface';
 import { ROLE_TEACHER } from '@/global/enum';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -18,6 +18,8 @@ import AuthLayout from '@/layouts/auth';
 import Loading from '../loading';
 import iconArrowLeft from '@/assets/svgs/icon-arrow-left.svg';
 import styles from '@/styles/auth/FormRegister.module.scss';
+import { useGetArea } from '@/utils/hooks';
+import Dropdown from '../Dropdown';
 
 const crrCourseRegister: {
     idCourse: string,
@@ -73,6 +75,19 @@ const validationSchema = yup.object({
 });
 const FormRegister = () => {
     const [step, setStep] = useState<number>(1);
+    const area = useGetArea();
+    const mapListArea: MenuProps['items'] = (area.data.response?.data as Obj[])?.map((item) => {
+        return {
+            key: item._id as string,
+            label: item.name as string
+        }
+    });
+    const getTitleArea = () => {
+        const crrArea = (area.data.response?.data as Obj[])?.find((item) => {
+            return item?._id === values?.area
+        });
+        return crrArea?.name as string ?? 'Chọn'
+    }
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const listCourse = useSelector((state: RootState) => (state.courses as State).state);
@@ -132,6 +147,9 @@ const FormRegister = () => {
             }
         },
     });
+    useEffect(() => {
+        area.query();
+    }, []);
     useEffect(() => {
         if (step === 5 && !listCourse.response && !listCourse.isLoading) {
             dispatch(getCourses());
@@ -268,12 +286,15 @@ const FormRegister = () => {
                                     <Form.Label className={styles.fs_12}>
                                         <span>Khu vực sống <span className="field_required">*</span></span>
                                     </Form.Label>
-                                    <Radio.Group className={styles.ant_radios} name="area" value={values.area} onChange={handleChange} onBlur={handleBlur}>
-                                        <Radio value={"HN"}>Hà Nội</Radio>
-                                        <Radio value={"DN"}>Đà Nẵng</Radio>
-                                        <Radio value={"HCM"}>Hồ Chí Minh</Radio>
-                                        <Radio value={"AN"}>Khác</Radio>
-                                    </Radio.Group>
+                                    <Dropdown
+                                        sizeButton="small"
+                                        onClickItem={(e) => {
+                                            setFieldValue('area', e.key);
+                                        }}
+                                        trigger="click"
+                                        listSelect={mapListArea}
+                                        title={getTitleArea()}
+                                    />
                                     {errors.area && touched.area && <p className="error">{errors.area}</p>}
                                 </Form.Group>
                             </> : (
