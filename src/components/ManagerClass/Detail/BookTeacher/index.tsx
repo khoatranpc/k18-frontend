@@ -288,7 +288,7 @@ const BookTeacher = (props: Props) => {
                 <TeacherRegister recordBookTeacherId={modalTeacherRegister.recordBookTeacherId as string} isCancel={modalTeacherRegister.isCancel} isRegister={modalTeacherRegister.isRegister} />
             </ModalCustomize>
             }
-            {modalUpdateTeacher.show &&
+            {(modalUpdateTeacher.show || modalAddTeacher.show) &&
                 <ModalCustomize
                     modalHeader={modalAddTeacher.show ? 'Thêm GV' : 'Cập nhật'}
                     show={modalAddTeacher.show || modalUpdateTeacher.show}

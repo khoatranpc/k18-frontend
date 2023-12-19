@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Tabs from '../Tabs';
-import { Button, TabsProps } from 'antd';
+import { TabsProps } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { PositionTe } from '@/global/enum';
 import { useComparePositionTE, useGetArea, useGetLocations } from '@/utils/hooks';

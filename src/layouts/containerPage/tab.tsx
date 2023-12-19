@@ -368,17 +368,17 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       noReplaceTitle: true,
       positionTE: PositionTe.LEADER,
     },
-    // {
-    //   title: "Danh sách TE",
-    //   route: CombineRoute["TE"]["MANAGER"]["STAFF"],
-    //   key: "STAFF",
-    //   showIcon: true,
-    //   keyIcon: KEY_ICON.EMPLOYEE,
-    //   indexRoute: CombineRoute["TE"]["MANAGER"]["STAFF"],
-    //   component: ComponentPage.TE_STAFF,
-    //   noReplaceTitle: true,
-    //   positionTE: PositionTe.LEADER
-    // },
+    {
+      title: "Danh sách TE",
+      route: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      key: "STAFF",
+      showIcon: true,
+      keyIcon: KEY_ICON.EMPLOYEE,
+      indexRoute: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      component: ComponentPage.TE_STAFF,
+      noReplaceTitle: true,
+      positionTE: PositionTe.LEADER
+    },
   ],
   TEACHER: [
     {
