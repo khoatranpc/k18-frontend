@@ -66,6 +66,8 @@ import { clearPredictCandidate, queryPredictCandidate } from "@/store/reducers/r
 import { queryGetListClass } from "@/store/reducers/class/listClass.reducer";
 import { clearUpdateTeacher, queryUpdateTeacher } from "@/store/reducers/teacher/updateTeacher.reducer";
 import { clearUpdateTeacherRegisterCourse, queryUpdateTeacherRegisterCourse } from "@/store/reducers/teacher/updateTeacherRegisterCourse.reducer";
+import { clearRequestOtpRQ, queryRequestOtp } from "@/store/reducers/account/requestOtpResetpassword.reducer";
+import { clearResetPassword, queryResetPassword } from "@/store/reducers/account/resetPassword.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -859,6 +861,9 @@ const usePredictCandidate = createHookQueryReducer('predictCandidate', queryPred
 const useListClass = createHookQueryReducer('listClass', queryGetListClass);
 const useUpdateDetailTeacher = createHookQueryReducer('updateTeacher', queryUpdateTeacher, clearUpdateTeacher);
 const useUpdateTeacherRegisterCourse = createHookQueryReducer('updateTeacherRegisterCourse', queryUpdateTeacherRegisterCourse, clearUpdateTeacherRegisterCourse);
+const useRequestOtpRP = createHookQueryReducer('requestOtpRP', queryRequestOtp, clearRequestOtpRQ);
+const useResetPassword = createHookQueryReducer('resetPassword', queryResetPassword, clearResetPassword);
+
 export {
     useGetListClass,
     useGetTimeSchedule,
@@ -923,5 +928,7 @@ export {
     usePredictCandidate,
     useListClass,
     useUpdateDetailTeacher,
-    useUpdateTeacherRegisterCourse
+    useUpdateTeacherRegisterCourse,
+    useRequestOtpRP,
+    useResetPassword
 }
