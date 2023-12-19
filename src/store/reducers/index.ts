@@ -68,6 +68,8 @@ import createLocation from './location/createLocation.reducer';
 import predictCandidate from './recruitment/predictcandidate.reducer';
 import updateTeacher from './teacher/updateTeacher.reducer';
 import updateTeacherRegisterCourse from './teacher/updateTeacherRegisterCourse.reducer';
+import resetPassword from './account/resetPassword.reducer';
+import requestOtpRP from './account/requestOtpResetpassword.reducer';
 
 const rootReducer = {
     test: test,
@@ -139,6 +141,8 @@ const rootReducer = {
     updateCandidate,
     predictCandidate,
     updateTeacher,
-    updateTeacherRegisterCourse
+    updateTeacherRegisterCourse,
+    resetPassword,
+    requestOtpRP
 };
 export default rootReducer;

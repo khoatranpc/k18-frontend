@@ -4,6 +4,8 @@ import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { Button, Input } from 'antd';
 import * as yup from 'yup';
+import { useHookMessage } from '@/utils/hooks/message';
+import { useResetPassword } from '@/utils/hooks';
 import AuthLayout from '@/layouts/auth';
 import styles from '@/styles/auth/ResetPassword.module.scss';
 
@@ -13,6 +15,8 @@ const validationSchema = yup.object({
 })
 const ResetPassword = () => {
     const router = useRouter();
+    const message = useHookMessage();
+    const resetPassword = useResetPassword();
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {
             password: '',
@@ -20,18 +24,34 @@ const ResetPassword = () => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log(values);
+            resetPassword.query({
+                body: {
+                    type: "FORGOT_PASSWORD",
+                    otp: router.query.otp as string,
+                    password: values.password
+                },
+                params: [router.query?.id as string]
+            })
         },
     });
-
     useEffect(() => {
-        // console.log(router);
-    }, [router])
+        if (resetPassword.data.response) {
+            message.open({
+                content: resetPassword.data.response.message as string,
+                type: resetPassword.data.success ? 'success' : 'error'
+            });
+            if (resetPassword.data.success) {
+                router.push('/auth/login');
+                message.close();
+            }
+            resetPassword.clear?.();
+        }
+    }, [resetPassword.data])
 
     return (
         <div className={styles.container_reset_password}>
             {
-                !router.query.token || !router.query.id ? <h5>Không hợp lệ</h5> :
+                !router.query.otp || !router.query.id ? <h5>Không hợp lệ</h5> :
                     <div>
                         <h5>Đổi mật khẩu</h5>
                         <p>Hãy tạo mật khẩu mới và đừng quên bạn nhé</p>
@@ -51,6 +71,7 @@ const ResetPassword = () => {
                                 {errors.confirmPassword && touched.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
                             </Form.Group>
                             <Button
+                                loading={resetPassword.data.isLoading}
                                 htmlType="submit"
                                 className="btn_base"
                             >
