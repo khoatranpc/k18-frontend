@@ -9,7 +9,6 @@ const CombineRoute = {
     MANAGER: {
       CLASS: "/te/manager/class",
       DETAILCLASS: "/te/manager/class/detail/[classId]",
-      COURSE: "/te/manager/course",
       SAVE: "/te/manager/save",
       FEEDBACK: "/te/manager/feedback",
       TEACHER: "/te/manager/teacher",
@@ -18,7 +17,11 @@ const CombineRoute = {
       DETAILTEACHER: "/te/manager/teacher/detail/[teacherId]",
       TEMPLATE_MAIL: "/te/manager/template-mail",
       STAFF: '/te/manager/staff',
-      REPORT: '/te/manager/staff/report'
+      REPORT: '/te/manager/staff/report',
+      STORAGE: {
+        DOCUMENT: '/te/manager/storage/document',
+        COURSE: "/te/manager/storage/course",
+      }
     },
     CALENDAR: "/te/calendar",
     SETTING: "/te/setting",
