@@ -64,3 +64,73 @@
         justify-content: flex-end;
     }
 }
+
+.listCourse {
+    padding: 1.8rem;
+    display: flex;
+    flex-wrap: wrap;
+
+    .blockCourse {
+        padding: 0.8rem;
+        width: 33.33333%;
+
+        .content {
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+            .imageCourse {
+                height: 45%;
+                max-width: 100%;
+                text-align: center;
+
+                .image {
+                    border-top-right-radius: 0.8rem;
+                    border-top-left-radius: 0.8rem;
+                    max-height: 100%;
+                    max-width: 100%;
+                }
+            }
+
+            .course {
+                padding: 0.8rem 1.6rem;
+                background-color: var(--white);
+
+                .title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .courseName {
+                        font-size: 1.8rem;
+                        cursor: pointer;
+                        font-weight: 500;
+                        transition: 0.3s;
+
+                        &:hover {
+                            color: var(--deep-blue);
+                        }
+                    }
+                }
+
+                .description {
+                    color: var(--description);
+                }
+
+                .info,
+                .info span {
+                    display: flex;
+                    gap: 0.8rem;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .totalTeacher {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.listDetail {
+    color: var(--black);
+}
