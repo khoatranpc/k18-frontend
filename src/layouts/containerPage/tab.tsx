@@ -118,6 +118,31 @@ const panelsRecruitment: ItemPanels[] = [
   },
 ];
 
+const listPanelTe: ItemContentPanel[] = [
+  {
+    route: CombineRoute['TE']['MANAGER']['REPORT'],
+    title: 'Báo cáo'
+  },
+  {
+    route: CombineRoute['TE']['MANAGER']['STAFF'],
+    title: 'Danh sách TE'
+  },
+];
+const panelsTE: ItemPanels[] = [
+  {
+    content: <ContentPanel listItem={listPanelTe} />,
+    key: 'LIST_TE',
+    header: <HeaderPanel
+      listChildRoute={[
+        CombineRoute["TE"]["MANAGER"]["STAFF"],
+        CombineRoute["TE"]["MANAGER"]["REPORT"],
+      ]}
+      className={`${styles.tabPanel} ${styles.parent}`}
+      icon={MapIconKey[KEY_ICON.EMPLOYEE]}
+      title="Quản lý TE"
+    />
+  }
+]
 const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
   TE: [
     {
@@ -369,15 +394,38 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       positionTE: PositionTe.LEADER,
     },
     {
-      title: "Danh sách TE",
-      route: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      title: <Collapse panels={panelsTE} className="collapse_tab" />,
+      route: "",
       key: "STAFF",
-      showIcon: true,
-      keyIcon: KEY_ICON.EMPLOYEE,
-      indexRoute: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      showIcon: false,
+      indexRoute: "",
       component: ComponentPage.TE_STAFF,
       noReplaceTitle: true,
-      positionTE: PositionTe.LEADER
+      positionTE: PositionTe.LEADER,
+      notRouting: true,
+      className: `${styles.tabFeedback}`,
+    },
+    {
+      title: "Danh sách TE",
+      route: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      key: "LIST_TE",
+      showIcon: false,
+      indexRoute: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      disable: true,
+      component: ComponentPage.TE_STAFF,
+      noReplaceTitle: true,
+      positionTE: PositionTe.LEADER,
+    },
+    {
+      title: "Báo cáo",
+      route: CombineRoute["TE"]["MANAGER"]["REPORT"],
+      key: "REPORT",
+      showIcon: false,
+      indexRoute: CombineRoute["TE"]["MANAGER"]["REPORT"],
+      disable: true,
+      component: ComponentPage.TE_STAFF,
+      noReplaceTitle: true,
+      positionTE: PositionTe.LEADER,
     },
   ],
   TEACHER: [
