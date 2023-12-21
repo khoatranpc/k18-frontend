@@ -96,7 +96,9 @@ export enum ComponentPage {
     ATTENDANCE_TEACHER_CLASS = 'ATTENDANCE_TEACHER_CLASS',
     TEMPLATE_MAIL = 'TEMPLATE_MAIL',
     AREA = 'AREA',
-    TE_STAFF = 'TE_STAFF'
+    TE_STAFF = 'TE_STAFF',
+    DOCUMENT = 'DOCUMENT',
+    COURSE_DETAIL = 'COURSE_DETAIL'
 }
 
 export enum ClassForm {

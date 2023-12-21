@@ -1,11 +1,11 @@
 import React from 'react';
-import List from './List';
+import NewListCourse from './NewList';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 
 const ManagerCourse = () => {
     return (
         <div className={styles.managerCourse}>
-            <List />
+            <NewListCourse />
         </div>
     )
 }

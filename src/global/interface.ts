@@ -36,7 +36,7 @@ export interface TabRoute {
     keyIcon?: KEY_ICON;
     showIcon?: boolean;
     indexRoute: string;
-    disable?: boolean;
+    hide?: boolean;
     replaceTitle?: React.ReactElement | string;
     noReplaceTitle?: boolean;
     component?: ComponentPage;

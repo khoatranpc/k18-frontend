@@ -120,6 +120,25 @@ const getLabelRegion: Record<Region, string> = {
     MN: 'Miền Nam',
     ONL: 'Online'
 }
+const mapLevelToLabel: Record<number, string> = {
+    1: 'Beginner',
+    2: 'Intermediate',
+    3: 'Advanced',
+    4: 'Expert'
+}
+const mapLevelToColor: Record<number, string> = {
+    1: '#3498db',
+    2: '#2ecc71',
+    3: '#f39c12',
+    4: '#e74c3c'
+}
+
+const mapLevelToColor2: Record<number, string> = {
+    1: '#ecf0f1',
+    2: '#d1f2eb',
+    3: '#fef5d9',
+    4: '#f4d3c5'
+}
 export {
     statusClass,
     fieldFilter,
@@ -139,5 +158,8 @@ export {
     getLabelPositionTe,
     getLabelMailTemplate,
     getColorTeacherPoint,
-    getLabelRegion
+    getLabelRegion,
+    mapLevelToLabel,
+    mapLevelToColor,
+    mapLevelToColor2
 }
