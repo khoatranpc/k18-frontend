@@ -94,6 +94,12 @@ const CourseLevelDetail = (props: Props) => {
                     </Form.Label>
                     <Input size="small" name='textbook' value={values.textbook} onChange={handleChange} onBlur={handleBlur} />
                 </Form.Group>
+                <Form.Group>
+                    <Form.Label>
+                        Record tham khảo:
+                    </Form.Label>
+                    <Input size="small" name='record' value={values.record} onChange={handleChange} onBlur={handleBlur} />
+                </Form.Group>
                 <div className={styles.btnAction}>
                     <Button onClick={handleReset} disabled={updateCourseLevel.data.isLoading}>Reset</Button>
                     <Button htmlType="submit" loading={updateCourseLevel.data.isLoading} disabled={JSON.stringify(refData.current) === JSON.stringify(values)}>Cập nhật</Button>

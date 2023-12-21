@@ -513,6 +513,15 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.MANAGER_COURSE,
     },
     {
+      title: "Chi tiết",
+      route:  CombineRoute["TEACHER"]["COURSE_DETAIL"],
+      key: "COURSE_DETAIL",
+      indexRoute:  CombineRoute["TEACHER"]["COURSE_DETAIL"],
+      noReplaceTitle: false,
+      component: ComponentPage.COURSE_DETAIL,
+      hide: true,
+    },
+    {
       title: "Cơ sở",
       route: CombineRoute["TEACHER"]["LOCATION"],
       key: "LOCATION",

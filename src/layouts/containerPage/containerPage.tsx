@@ -96,7 +96,7 @@ const ContainerPage = (props: Props) => {
         dispatch(initDataRoute(refRoute.current));
     }, [router.route]);
     useEffect(() => {
-        if (!course.listCourse) {
+        if (!course.listCourse && getRolePage === ROLE_USER.TE) {
             course.queryListCourse();
         }
     }, [course.listCourse]);
