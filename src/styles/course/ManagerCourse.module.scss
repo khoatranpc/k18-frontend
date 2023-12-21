@@ -75,10 +75,11 @@
         width: 33.33333%;
 
         .content {
+            padding-top: 0.8rem;
             height: 100%;
             display: flex;
             flex-direction: column;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            box-shadow: var(--pink) 0px 2px 12px;
 
             .imageCourse {
                 height: 45%;
@@ -265,14 +266,13 @@
 
 .contentUdpateCourse {
     .form {
-        .btnAction {
-            margin-top: 1.2rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
         .itemForm {
             margin-bottom: 0.8rem;
         }
     }
+}
+.btnAction {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: space-between;
 }

@@ -1,16 +1,20 @@
 import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { Obj } from '@/global/interface';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 
-const ChartColumn = () => {
+interface Props {
+    data?: Obj;
+}
+const ChartColumn = (props: Props) => {
     const options: Highcharts.Options = {
         chart: {
             type: 'column',
             height: '20%'
         },
         title: {
-            text: '',
+            text: 'Lớp học',
             align: 'left'
         },
         subtitle: {

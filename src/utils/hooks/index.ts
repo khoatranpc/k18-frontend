@@ -69,6 +69,7 @@ import { clearUpdateTeacherRegisterCourse, queryUpdateTeacherRegisterCourse } fr
 import { clearRequestOtpRQ, queryRequestOtp } from "@/store/reducers/account/requestOtpResetpassword.reducer";
 import { clearResetPassword, queryResetPassword } from "@/store/reducers/account/resetPassword.reducer";
 import { OpenDrawer, closeDrawer, openDrawer } from "@/store/reducers/global-reducer/drawer";
+import { clearPropsRoute, setPropsRoute } from "@/store/reducers/global-reducer/propsRoute";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -296,7 +297,7 @@ const useListTeacher = () => {
 const useTeacherRegisterCourse = () => {
     const listData = useSelector((state: RootState) => (state.teacherRegisterCourse as State).state);
     const dispatch = useDispatch();
-    const query = (listTeacherId: Array<string>) => {
+    const query = (listTeacherId?: Array<string>) => {
         const payload: Action = {
             payload: {
                 query: {
@@ -851,6 +852,22 @@ const useHandleDrawer = () => {
         close
     }
 }
+const usePropsPassRoute = () => {
+    const propsPassRoute = useSelector((state: RootState) => (state.propsPassRoute as State).state);
+    const dispatch = useDispatch<AppDispatch>();
+    const query = (payload: Obj) => {
+        dispatch(setPropsRoute(payload));
+    }
+    const clear = () => {
+        dispatch(clearPropsRoute());
+    }
+    return {
+        data: propsPassRoute,
+        query,
+        clear
+    }
+}
+
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
 const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
@@ -947,5 +964,6 @@ export {
     useUpdateTeacherRegisterCourse,
     useRequestOtpRP,
     useResetPassword,
-    useHandleDrawer
+    useHandleDrawer,
+    usePropsPassRoute
 }

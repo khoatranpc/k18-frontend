@@ -71,6 +71,7 @@ import updateTeacherRegisterCourse from './teacher/updateTeacherRegisterCourse.r
 import resetPassword from './account/resetPassword.reducer';
 import requestOtpRP from './account/requestOtpResetpassword.reducer';
 import drawer from './global-reducer/drawer';
+import propsPassRoute from './global-reducer/propsRoute';
 
 const rootReducer = {
     test: test,
@@ -145,6 +146,7 @@ const rootReducer = {
     updateTeacherRegisterCourse,
     resetPassword,
     requestOtpRP,
-    drawer
+    drawer,
+    propsPassRoute
 };
 export default rootReducer;

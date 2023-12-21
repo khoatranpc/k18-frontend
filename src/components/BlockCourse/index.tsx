@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Checkbox, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { ROLE } from '@/global/enum';
-import { useHandleDrawer } from '@/utils/hooks';
-import { mapLevelToColor, mapLevelToColor2, mapLevelToLabel } from '@/global/init';
+import { useHandleDrawer, usePropsPassRoute, useTeacherRegisterCourse } from '@/utils/hooks';
+import { mapLevelToColor, mapLevelToColor2 } from '@/global/init';
 import useGetCrrUser from '@/utils/hooks/getUser';
 import Bookmark from '@/icons/Bookmark';
 import Cell from '@/icons/Cell';
+import { getTotalTeacher } from './config';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 
 interface Props {
@@ -15,36 +16,51 @@ interface Props {
     data?: Obj;
     level?: number;
     isLevel?: boolean;
+    dataStatistic?: Obj;
+    listRole?: Obj[];
 }
 const BlockCourse = (props: Props) => {
     const router = useRouter();
     const drawer = useHandleDrawer();
     const crrUser = useGetCrrUser() as Obj;
+    const passDataRoute = usePropsPassRoute();
+    const listTeacherRegisterCourse = useTeacherRegisterCourse();
+    const getCourseId = props.data?._id as string;
+    const getListRecordRegisterCourse = listTeacherRegisterCourse.listData.response?.data as Obj[];
+    const getCalcTeacher = getTotalTeacher(getCourseId, getListRecordRegisterCourse);
 
-    const handleClickToDetail = (courseId?: string) => {
+    const handleClickToDetail = (id?: string) => {
         if (props.isLevel) {
             drawer.open({
                 open: true,
-                title: courseId,
-                componentDirection: 'BlockCourse/DetailInDrawer',
-                size: 'large'
-            })
+                title: props.data?.levelName,
+                componentDirection: 'CourseLevelDetail',
+                size: 'default',
+                props: {
+                    data: props.data
+                }
+            });
         }
         else if (crrUser.data.roleAccount === ROLE.TE) {
             if (!props.isLevel) {
-                router.push(`/te/manager/storage/course/${courseId}`);
+                router.push(`/te/manager/storage/course/${id}`);
             } else {
 
             }
         } else {
 
         }
-    }
+    };
+    useEffect(() => {
+        if (!getListRecordRegisterCourse) {
+            listTeacherRegisterCourse.query();
+        }
+    }, []);
     return (
         <div className={`${styles.blockCourse} ${props.className}`}>
             <div className={`${styles.content} ${props.isLevel ? styles.levelCourse : ''}`}>
                 <div className={styles.imageCourse}>
-                    <img alt="" src={!props.isLevel ? (props.data?.courseImage) : (props.data?.courseLevelImage) ?? '/static/ci.jpeg'} className={styles.image} />
+                    <img alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? '/static/ci.jpeg')} className={styles.image} />
                 </div>
                 <div className={styles.course}>
                     <div className={styles.title}>
@@ -55,17 +71,24 @@ const BlockCourse = (props: Props) => {
                             }}
                             onClick={() => {
                                 handleClickToDetail(props.data?._id as string);
+                                if (!props.isLevel) {
+                                    passDataRoute.query({
+                                        getCalcTeacher,
+                                        dataStatistic: props.dataStatistic,
+                                    });
+                                }
                             }}
                         >
-                            {props.isLevel ? mapLevelToLabel[props.level as number] : props.data?.courseTitle as string}
+                            {props.isLevel ? props.data?.levelCode : props.data?.courseTitle as string}
                         </span>
                         <span className={styles.action}>
                             <Checkbox checked={props.data?.active}>Active</Checkbox>
                         </span>
                     </div>
                     <div className={styles.combineDescription}>
-                        <p className={styles.description}>
-                            {props.data ? (!props.isLevel ? props.data.courseDescription : props.data.courseLevelDescription) : ''}
+                        <p className={`${!props.level ? styles.description : ''}`}>
+                            {props.data ? (!props.isLevel ? props.data.courseDescription : (`${props.data.levelCode} - ${props.data.levelName}`)) : ''}
+                            {props.isLevel && <span><br />{props.data?.levelDescription}</span>}
                         </p>
                         <p>
                             Copyright © MindX Technology School
@@ -75,13 +98,17 @@ const BlockCourse = (props: Props) => {
                     <div className={styles.info}>
                         <span><Bookmark />{!props.level ? `${(props.data?.courseLevel as Obj[])?.length} Khoá học` : '16/16 Lesson'}</span>
                         <span className={styles.totalTeacher}>
-                            <Tooltip color="white" title={<ul className={styles.listDetail}>
-                                <li>ST: 10</li>
-                                <li>MT: 10</li>
-                                <li>SP: 10</li>
-                            </ul>}>
-                                <Cell />30 GV
-                            </Tooltip>
+                            {!props.level ? <Tooltip
+                                color="white"
+                                title={<ul className={styles.listDetail}>
+                                    {props.listRole?.map((item) => {
+                                        return <li key={item.role}>{item.role}: {item.total}</li>
+                                    })}
+                                </ul>}>
+                                <Cell />{getCalcTeacher.data.total} GV
+                            </Tooltip> :
+                                <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>
+                            }
                         </span>
                     </div>
                 </div>
