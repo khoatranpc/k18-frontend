@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Checkbox, Tooltip } from 'antd';
+import { Checkbox, Image, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { ROLE } from '@/global/enum';
 import { useHandleDrawer, usePropsPassRoute, useTeacherRegisterCourse } from '@/utils/hooks';
@@ -27,40 +27,34 @@ const BlockCourse = (props: Props) => {
     const listTeacherRegisterCourse = useTeacherRegisterCourse();
     const getCourseId = props.data?._id as string;
     const getListRecordRegisterCourse = listTeacherRegisterCourse.listData.response?.data as Obj[];
-    const getCalcTeacher = getTotalTeacher(getCourseId, getListRecordRegisterCourse);
+    const getCalcTeacher = (crrUser.data.roleAccount === ROLE.TE ? getTotalTeacher(getCourseId, getListRecordRegisterCourse) : {}) as Obj;
 
     const handleClickToDetail = (id?: string) => {
-        if (props.isLevel) {
-            drawer.open({
-                open: true,
-                title: props.data?.levelName,
-                componentDirection: 'CourseLevelDetail',
-                size: 'default',
-                props: {
-                    data: props.data
-                }
-            });
-        }
-        else if (crrUser.data.roleAccount === ROLE.TE) {
+        if (crrUser.data.roleAccount === ROLE.TE) {
             if (!props.isLevel) {
                 router.push(`/te/manager/storage/course/${id}`);
             } else {
-
+                drawer.open({
+                    open: true,
+                    title: props.data?.levelName,
+                    componentDirection: 'CourseLevelDetail',
+                    size: 'default',
+                    props: {
+                        data: props.data
+                    }
+                });
             }
         } else {
-
+            if (!props.isLevel) {
+                router.push(`/teacher/course/${id}`);
+            }
         }
     };
-    useEffect(() => {
-        if (!getListRecordRegisterCourse) {
-            listTeacherRegisterCourse.query();
-        }
-    }, []);
     return (
         <div className={`${styles.blockCourse} ${props.className}`}>
             <div className={`${styles.content} ${props.isLevel ? styles.levelCourse : ''}`}>
                 <div className={styles.imageCourse}>
-                    <img alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? '/static/ci.jpeg')} className={styles.image} />
+                    <Image width={"100%"} height={"100%"} alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? '/static/ci.jpeg')} className={styles.image} />
                 </div>
                 <div className={styles.course}>
                     <div className={styles.title}>
@@ -87,12 +81,23 @@ const BlockCourse = (props: Props) => {
                     </div>
                     <div className={styles.combineDescription}>
                         <p className={`${!props.level ? styles.description : ''}`}>
-                            {props.data ? (!props.isLevel ? props.data.courseDescription : (`${props.data.levelCode} - ${props.data.levelName}`)) : ''}
+                            {props.data ? (!props.isLevel ? props.data.courseDescription : (`${props.data.levelName}`)) : ''}
                             {props.isLevel && <span><br />{props.data?.levelDescription}</span>}
                         </p>
-                        <p>
-                            Copyright © MindX Technology School
-                        </p>
+                        <div className={styles.info}>
+                            {props.data && (!props.isLevel ?
+                                <div className={styles.infoCourseOverview}>
+                                    <p>Khoá học: {props.data.courseName}</p>
+                                    <p> Syllabus: {props.data.syllabus ? <a target="_blank" href={props.data.syllabus}>Link</a> : 'Đang cập nhật'}</p>
+                                </div> :
+                                <div className={styles.infoCourseOverview}>
+                                    <p>Mã: {props.data.levelCode}</p>
+                                    <p>Tài liệu: {props.data.textbook ? <a target="_blank" href={props.data.textbook}>Link</a> : 'Đang cập nhật'}</p>
+                                    <p>Record tham khảo: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : 'Đang cập nhật'}</p>
+                                </div>
+                            )}
+                            <p>Copyright © MindX Technology School</p>
+                        </div>
                     </div>
                     <hr />
                     <div className={styles.info}>
@@ -105,15 +110,15 @@ const BlockCourse = (props: Props) => {
                                         return <li key={item.role}>{item.role}: {item.total}</li>
                                     })}
                                 </ul>}>
-                                <Cell />{getCalcTeacher.data.total} GV
+                                {crrUser.data.roleAccount === ROLE.TE && <><Cell />{getCalcTeacher.data.total} GV</>}
                             </Tooltip> :
-                                <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>
+                                (crrUser.data.roleAccount === ROLE.TE && <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>)
                             }
                         </span>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

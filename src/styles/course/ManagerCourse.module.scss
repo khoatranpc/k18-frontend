@@ -74,8 +74,15 @@
         padding: 0.8rem;
         width: 33.33333%;
 
+        .infoCourseOverview {
+            p {
+                margin: 0;
+            }
+        }
+
         .content {
-            padding-top: 0.8rem;
+            border-top-right-radius: 0.8rem;
+            border-top-left-radius: 0.8rem;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -123,7 +130,10 @@
                     display: flex;
                     flex-direction: column;
 
-                    p:last-child {
+                    div.info {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
                         margin-top: auto;
                     }
                 }
@@ -271,6 +281,7 @@
         }
     }
 }
+
 .btnAction {
     margin-top: 1.2rem;
     display: flex;

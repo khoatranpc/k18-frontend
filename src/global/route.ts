@@ -39,6 +39,7 @@ const CombineRoute = {
     RECRUITMENT_CREATE_CANDIDATE: "/te/manager/recruitment/create-candidate",
     CLASS: "/teacher/class",
     COURSE: "/teacher/course",
+    COURSE_DETAIL: "/teacher/course/[courseId]",
     DETAILCLASS: "/teacher/class/detail/[classId]",
     CALENDAR: "/teacher/calendar",
     SETTING: "/te/setting",
