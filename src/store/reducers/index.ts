@@ -70,6 +70,7 @@ import updateTeacher from './teacher/updateTeacher.reducer';
 import updateTeacherRegisterCourse from './teacher/updateTeacherRegisterCourse.reducer';
 import resetPassword from './account/resetPassword.reducer';
 import requestOtpRP from './account/requestOtpResetpassword.reducer';
+import drawer from './global-reducer/drawer';
 
 const rootReducer = {
     test: test,
@@ -143,6 +144,7 @@ const rootReducer = {
     updateTeacher,
     updateTeacherRegisterCourse,
     resetPassword,
-    requestOtpRP
+    requestOtpRP,
+    drawer
 };
 export default rootReducer;

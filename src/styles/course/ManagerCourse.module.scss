@@ -75,6 +75,9 @@
         width: 33.33333%;
 
         .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
             .imageCourse {
@@ -91,6 +94,9 @@
             }
 
             .course {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
                 padding: 0.8rem 1.6rem;
                 background-color: var(--white);
 
@@ -108,6 +114,16 @@
                         &:hover {
                             color: var(--deep-blue);
                         }
+                    }
+                }
+
+                .combineDescription {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+
+                    p:last-child {
+                        margin-top: auto;
                     }
                 }
 
@@ -133,4 +149,130 @@
 
 .listDetail {
     color: var(--black);
+}
+
+.courseDetail {
+    padding: 1.8rem;
+
+    .iconEdit {
+        cursor: pointer;
+
+        &:hover {
+            path {
+
+                stroke: var(--base);
+            }
+        }
+    }
+
+    .header {
+        display: flex;
+        gap: 0.8rem;
+
+        img,
+        .groupInfo {
+            max-width: 100%;
+            border-radius: 0.8rem;
+        }
+
+        .leftHeader {
+            flex: 0.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rightHeader {
+            flex: 0.6;
+            position: relative;
+
+            .title {
+                font-size: 2.6rem;
+                font-weight: 500;
+            }
+
+            .groupInfo {
+                width: 100%;
+                padding: 2.4rem;
+                border: 1px solid var(--grey);
+                display: flex;
+                align-items: center;
+
+                .infoOverview {
+                    flex: 1;
+                    display: flex;
+                    justify-content: space-around;
+
+                    * {
+                        font-size: 1.6rem;
+                    }
+
+                    .left,
+                    .right {
+
+                        .attachLink {
+                            display: flex;
+                            margin-bottom: 0.4rem;
+                            gap: 0.4rem;
+                        }
+                    }
+                }
+
+                .icon {
+                    width: 2rem;
+                    // fill: var( --deep-blue);
+
+                    // path {
+                    //     fill: var(--deep-blue);
+                    // }
+                }
+
+                .iconBookmark {
+                    path {
+                        fill: var(--black);
+                        stroke: var(--black);
+                    }
+                }
+
+                .attachLink {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            .chartOverviewLevel {
+                width: 100%;
+            }
+        }
+    }
+
+    .levelCourse {
+        .title {
+            span.courseName {
+                display: inline-block;
+                font-size: 1, 6rem !important;
+                padding: 0 0.8rem;
+                border-radius: 0.4rem;
+            }
+        }
+    }
+}
+
+.titleCourseDetailDrawer {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.contentUdpateCourse {
+    .form {
+        .btnAction {
+            margin-top: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .itemForm {
+            margin-bottom: 0.8rem;
+        }
+    }
 }

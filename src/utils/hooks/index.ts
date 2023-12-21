@@ -68,6 +68,7 @@ import { clearUpdateTeacher, queryUpdateTeacher } from "@/store/reducers/teacher
 import { clearUpdateTeacherRegisterCourse, queryUpdateTeacherRegisterCourse } from "@/store/reducers/teacher/updateTeacherRegisterCourse.reducer";
 import { clearRequestOtpRQ, queryRequestOtp } from "@/store/reducers/account/requestOtpResetpassword.reducer";
 import { clearResetPassword, queryResetPassword } from "@/store/reducers/account/resetPassword.reducer";
+import { OpenDrawer, closeDrawer, openDrawer } from "@/store/reducers/global-reducer/drawer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -835,6 +836,21 @@ const useComparePositionTE = (...positionCompare: PositionTe[]) => {
     const data = useSelector((state: RootState) => (state.crrUserInfo as State).state);
     return positionCompare.includes((data.response?.data as Obj)?.position as PositionTe);
 }
+const useHandleDrawer = () => {
+    const data = useSelector((state: RootState) => (state.drawer as State).state);
+    const dispatch = useDispatch<AppDispatch>();
+    const open = (props: OpenDrawer) => {
+        dispatch(openDrawer(props));
+    }
+    const close = () => {
+        dispatch(closeDrawer());
+    }
+    return {
+        data,
+        open,
+        close
+    }
+}
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
 const useCreateDataRoundProcess = createHookQueryReducer('createDataRoundProcess', queryCreateDataRoundProcess);
@@ -930,5 +946,6 @@ export {
     useUpdateDetailTeacher,
     useUpdateTeacherRegisterCourse,
     useRequestOtpRP,
-    useResetPassword
+    useResetPassword,
+    useHandleDrawer
 }
