@@ -81,7 +81,7 @@ const PiStatistic = () => {
     }, []);
     useEffect(() => {
         if (getListTeacher?.length !== 0 && getListCourse?.length !== 0 && getListArea) {
-            const defaultCourse = getListCourse[0];
+            const defaultCourse = getListCourse?.[0];
             if (defaultCourse && !valueCourse) {
                 setValueCourse(defaultCourse?._id);
             }
