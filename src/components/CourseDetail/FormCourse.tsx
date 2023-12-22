@@ -12,6 +12,7 @@ const validationSchema = yup.object({
     courseTitle: yup.string().required('Bạn cần cung cấp tiêu đề khoá học!'),
     courseDescription: yup.string().required('Bạn cần mô tả khoá học!'),
     courseName: yup.string().required('Bạn cần cung cấp tên khoá học!'),
+    color: yup.string().required('Bạn cần tạo màu chủ đạo cho khoá học!')
 });
 interface Props {
     currentCourse?: Obj;
@@ -91,6 +92,12 @@ const UpdateCourse = (props: Props) => {
                     <Form.Label>Tên khoá học<span className='error'>*</span>:</Form.Label>
                     <Input size="small" name="courseName" value={values.courseName} onChange={handleChange} onBlur={handleBlur} />
                     {touched.courseName && errors.courseName && <p className="error">{errors.courseName as string}</p>}
+                </Form.Group>
+                <Form.Group className={styles.itemForm}>
+                    <Form.Label>Màu chủ đạo<span className='error'>*</span>:</Form.Label>
+                    <br />
+                    <Input size="small" type="color" style={{ width: '5rem' }} name="color" value={values.color} onChange={handleChange} onBlur={handleBlur} />
+                    {touched.color && errors.color && <p className="error">{errors.color as string}</p>}
                 </Form.Group>
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Syllabus:</Form.Label>

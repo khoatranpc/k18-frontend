@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Obj } from '@/global/interface';
 import { ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { getColorFromStatusClass } from '@/global/init';
 import { useListClass, useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import ChartColumn from './ChartColumn';
 import IconArrowView from '@/icons/IconArrowView';
 import { getListTeacherIdOfCourse } from './config';
 import styles from '@/styles/Overview.module.scss';
-import { getColorFromStatusClass } from '@/global/init';
 
 export enum TypeOverView {
     'TEACHER' = 'TEACHER',
@@ -72,7 +72,8 @@ const IndexOverViewBlock = (props: Props) => {
                 if (getCrrCourse) {
                     const newRecordColumn = {
                         name: getCrrCourse.courseName,
-                        y: Number(Number(teacherByCourse[key] / teacherByCourse[`count${key}`] || 0).toFixed(2))
+                        y: Number(Number(teacherByCourse[key] / teacherByCourse[`count${key}`] || 0).toFixed(2)),
+                        color: getCrrCourse.color
                     };
                     listTeacherStatistic.push(newRecordColumn);
                 }
@@ -136,15 +137,18 @@ const IndexOverViewBlock = (props: Props) => {
     const listTotalTeacher = [
         {
             name: ROLE_TEACHER.ST,
-            y: countTeacher.ST
+            y: countTeacher.ST,
+            color: '#DA4646'
         },
         {
             name: ROLE_TEACHER.MT,
-            y: countTeacher.MT
+            y: countTeacher.MT,
+            color: '#80ABFF'
         },
         {
             name: ROLE_TEACHER.SP,
-            y: countTeacher.SP
+            y: countTeacher.SP,
+            color: '#2CAFFD'
         },
     ];
     const dataColumn: Record<TypeOverView, Obj[]> = {

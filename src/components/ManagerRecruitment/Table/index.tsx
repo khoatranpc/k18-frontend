@@ -34,7 +34,7 @@ const TableRecruitment = () => {
         }
     });
     const queryListData = (recordOnPage: number, page: number) => {
-        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail'], conditionFilter.condition);
+        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail', 'color'], conditionFilter.condition);
     }
     useEffect(() => {
         const getPayloadQuery = listDataRecruitment.data.payload;
@@ -67,7 +67,7 @@ const TableRecruitment = () => {
             title: 'Bộ môn',
             dataIndex: 'courseApply',
             render(value) {
-                return value ? <div className={styles.subject} style={{ backgroundColor: getColorByCourseName[value.courseName] }}>
+                return value ? <div className={styles.subject} style={{ backgroundColor: value.color }}>
                     {value.courseName}
                 </div> : ''
             },

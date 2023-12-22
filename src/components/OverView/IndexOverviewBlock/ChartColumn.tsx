@@ -69,7 +69,10 @@ const ChartColumn = (props: Props) => {
             }
         },
         xAxis: {
-            type: 'category'
+            type: 'category',
+            labels: {
+                enabled: false,
+            }
         },
         yAxis: {
             title: {
@@ -99,7 +102,7 @@ const ChartColumn = (props: Props) => {
             {
                 name: `${mapTitleToolTip[props.type as TypeOverView]}`,
                 type: 'column',
-                colorByPoint: true,
+                // colorByPoint: true,
                 data: getData,
             }
         ]

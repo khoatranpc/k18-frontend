@@ -173,7 +173,7 @@ a {
     border: 1px solid var(--base);
 }
 
-.ant-checkbox-checked.ant-checkbox-inner {
+.ant-checkbox-checked .ant-checkbox-inner {
     background-color: var(--base) !important;
     border-color: var(--base);
 }

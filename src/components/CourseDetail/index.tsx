@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react';
 import { ClockCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { Button, Image } from 'antd';
 import { Obj } from '@/global/interface';
+import { ROLE } from '@/global/enum';
 import { useGetListCourse, useHandleDrawer, useListTeacher, usePropsPassRoute, useTeacherRegisterCourse } from '@/utils/hooks';
 import { formatDatetoString } from '@/utils';
 import useGetCrrUser from '@/utils/hooks/getUser';
 import AttachDocument from '@/icons/AttachDocument';
 import Bookmark from '@/icons/Bookmark';
-import Employee from '@/icons/Employee';
 import IconEdit2 from '@/icons/IconEdit2';
 import ChartColumn from './ChartColumn';
 import BlockCourse from '../BlockCourse';
 import Loading from '../loading';
 import { filterTeacherWithCourse, getStatisticTeacher } from '../OverView/TeacherStatistic/config';
-import styles from '@/styles/course/ManagerCourse.module.scss';
-import { ROLE } from '@/global/enum';
-import { Button, Image } from 'antd';
 import Empty from '../Empty';
+import styles from '@/styles/course/ManagerCourse.module.scss';
 
 const CourseDetail = () => {
     const crrUser = useGetCrrUser() as Obj;
@@ -33,7 +32,7 @@ const CourseDetail = () => {
     const getCurrentCourse = (currentCourse?.courseLevel ?? currentCourse?.levelHandle) as Obj[];
     const listTeacher = useListTeacher();
     const getListTeacher = (listTeacher.listTeacher?.response?.data as Obj)?.listTeacher as Obj[] || [];
-    const listCourseMapName = (passDataRoute.data.response as Obj)?.dataStatistic ?? (crrUser.data.roleAccount === ROLE.TE ? getStatisticTeacher(listValueCourse, getListCourseApplyData as Obj[], getListTeacher) : {});
+    const listCourseMapName = (passDataRoute.data.response as Obj)?.dataStatistic ?? (crrUser?.data?.roleAccount === ROLE.TE ? getStatisticTeacher(listValueCourse, getListCourseApplyData as Obj[], getListTeacher) : {});
 
     const getDataStatistic = ((listCourseMapName.categories as Obj[])?.map((item) => {
         const listTeacherByCourse = filterTeacherWithCourse(getListCourseApplyData as Obj[], getListTeacher, item?.id);
@@ -90,7 +89,7 @@ const CourseDetail = () => {
                         </div>
                         <div className={styles.rightHeader}>
                             <div className={styles.combineTop}>
-                                <p className={`${styles.title}`}>{currentCourse.courseTitle ?? currentCourse?.idCourse?.courseTitle} {crrUser.data.roleAccount === ROLE.TE && <IconEdit2 className={styles.iconEdit} onClick={handleOpenDrawerCourseDetail} />}</p>
+                                <p className={`${styles.title}`}>{currentCourse.courseTitle ?? currentCourse?.idCourse?.courseTitle} {crrUser?.data?.roleAccount === ROLE.TE && <IconEdit2 className={styles.iconEdit} onClick={handleOpenDrawerCourseDetail} />}</p>
                                 <div className={styles.groupInfo}>
                                     <div className={styles.infoOverview}>
                                         <div className={styles.left}>

@@ -106,7 +106,8 @@ const ManagerClass = () => {
             dateStart: item.dayRange.start,
             status: item.status,
             timeSchedule: item.timeSchedule,
-            classForm: getClassForm[item.classForm as ClassForm]
+            classForm: getClassForm[item.classForm as ClassForm],
+            color: item.courseId.color
         }
     }) || [];
     const dispatch = useDispatch<AppDispatch>();
@@ -144,8 +145,8 @@ const ManagerClass = () => {
             sorter: (a, b) => {
                 return sortByString(a.subject as string, b.subject as string)
             },
-            render(value) {
-                return <div className={styles.subject} style={{ backgroundColor: getColorByCourseName[value] }}>
+            render(value, record) {
+                return <div className={styles.subject} style={{ backgroundColor: record.color as string }}>
                     {value}
                 </div>
             },
