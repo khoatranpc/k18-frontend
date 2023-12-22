@@ -28,7 +28,7 @@ const NewListCourse = () => {
     }, []);
     useEffect(() => {
         if (!courseApply.listData.response && !courseApply.listData.isLoading) {
-            courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser.data?._id as string]);
+            courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser?.data?._id as string]);
         }
     }, []);
     return (

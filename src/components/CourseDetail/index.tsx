@@ -74,7 +74,7 @@ const CourseDetail = () => {
     }, []);
     useEffect(() => {
         if (!courseApply.listData.response && !courseApply.listData.isLoading) {
-            courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser.data?._id as string]);
+            courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser?.data?._id as string]);
         }
     }, []);
     return (
@@ -84,7 +84,7 @@ const CourseDetail = () => {
                     <div className={styles.header}>
                         <div className={styles.leftHeader}>
                             <div className={styles.courseImage}>
-                                <Image alt="" src={currentCourse?.courseImage ?? currentCourse?.idCourse?.courseImage ?? '/static/ci.jpeg'} className={styles.image} />
+                                <Image alt="" height={200} src={currentCourse?.courseImage ?? currentCourse?.idCourse?.courseImage ?? '/static/ci.jpeg'} className={styles.image} />
                             </div>
                         </div>
                         <div className={styles.rightHeader}>
