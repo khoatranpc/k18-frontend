@@ -1,15 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { Button, Checkbox, Input } from 'antd';
+import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
-import { useUpdateLevelCourse } from '@/utils/hooks';
+import { useCreateLevelCourse, useUpdateLevelCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 
 interface Props {
     data?: Obj;
+    isCreate?: boolean;
 }
 const validationSchema = yup.object({
     levelName: yup.string().required('Thiếu tên cấp độ!'),
@@ -18,28 +20,42 @@ const validationSchema = yup.object({
 const CourseLevelDetail = (props: Props) => {
     const message = useHookMessage();
     const updateCourseLevel = useUpdateLevelCourse();
+    const createCourseLevel = useCreateLevelCourse();
+    const router = useRouter();
     const refData = useRef<Obj | null>(null);
     const { values, touched, errors, handleBlur, handleChange, handleReset, handleSubmit, setValues, setFieldValue } = useFormik({
         initialValues: props.data ?? {},
         validationSchema,
         onSubmit(values) {
-            const newValues = {
-                ...values
+            if (!props.isCreate) {
+                const newValues = {
+                    ...values
+                }
+                delete newValues._id;
+                updateCourseLevel.query(newValues, values._id);
+            } else {
+                createCourseLevel.query({
+                    ...values,
+                    courseId: router.query.courseId as string
+                })
             }
-            delete newValues._id;
-            updateCourseLevel.query(newValues, values._id);
         }
     });
     useEffect(() => {
-        if (updateCourseLevel.data.response) {
+        if (updateCourseLevel.data.response || createCourseLevel.data.response) {
             message.open({
-                content: updateCourseLevel.data.response.message as string,
-                type: updateCourseLevel.data.success ? 'success' : 'error'
+                content: updateCourseLevel.data.response?.message as string ?? createCourseLevel.data.response?.message as string,
+                type: (updateCourseLevel.data.success || createCourseLevel.data.success) ? 'success' : 'error'
             });
-            updateCourseLevel.clear?.();
+            if (createCourseLevel.data.response) {
+                createCourseLevel.clear?.();
+            }
+            if (updateCourseLevel.data.response) {
+                updateCourseLevel.clear?.();
+            }
             message.close();
         }
-    }, [updateCourseLevel.data]);
+    }, [updateCourseLevel.data, createCourseLevel.data]);
     useEffect(() => {
         if (!refData.current) {
             refData.current = values;
@@ -101,8 +117,8 @@ const CourseLevelDetail = (props: Props) => {
                     <Input size="small" name='record' value={values.record} onChange={handleChange} onBlur={handleBlur} />
                 </Form.Group>
                 <div className={styles.btnAction}>
-                    <Button onClick={handleReset} disabled={updateCourseLevel.data.isLoading}>Reset</Button>
-                    <Button htmlType="submit" loading={updateCourseLevel.data.isLoading} disabled={JSON.stringify(refData.current) === JSON.stringify(values)}>Cập nhật</Button>
+                    <Button onClick={handleReset} disabled={updateCourseLevel.data.isLoading || createCourseLevel.data.isLoading}>Reset</Button>
+                    <Button htmlType="submit" loading={updateCourseLevel.data.isLoading || createCourseLevel.data.isLoading} disabled={JSON.stringify(refData.current) === JSON.stringify(values)}>{!props.isCreate ? 'Cập nhật' : 'Tạo'}</Button>
                 </div>
             </Form>
         </div>
