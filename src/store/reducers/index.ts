@@ -72,6 +72,7 @@ import resetPassword from './account/resetPassword.reducer';
 import requestOtpRP from './account/requestOtpResetpassword.reducer';
 import drawer from './global-reducer/drawer';
 import propsPassRoute from './global-reducer/propsRoute';
+import getListDocument from './document/getListDocument.reducer';
 
 const rootReducer = {
     test: test,
@@ -147,6 +148,7 @@ const rootReducer = {
     resetPassword,
     requestOtpRP,
     drawer,
-    propsPassRoute
+    propsPassRoute,
+    getListDocument
 };
 export default rootReducer;

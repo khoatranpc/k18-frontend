@@ -148,7 +148,7 @@ const panelsTE: ItemPanels[] = [
 const listPanelDocument: ItemContentPanel[] = [
   {
     route: CombineRoute['TE']['MANAGER']["STORAGE"]['DOCUMENT'],
-    title: 'Tài liệu'
+    title: 'Thông tin chung'
   },
   {
     route: CombineRoute['TE']['MANAGER']["STORAGE"]['COURSE'],
@@ -305,6 +305,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       indexRoute: "",
       noReplaceTitle: true,
       component: ComponentPage.SAVE,
+      hide: true,
+    },
+    {
+      title: "Thông tin chung",
+      route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["DOCUMENT"],
+      key: "DOCUMENT",
+      showIcon: false,
+      indexRoute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["DOCUMENT"],
+      noReplaceTitle: true,
+      component: ComponentPage.DOCUMENT,
       hide: true,
     },
     {
@@ -514,9 +524,9 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     },
     {
       title: "Chi tiết",
-      route:  CombineRoute["TEACHER"]["COURSE_DETAIL"],
+      route: CombineRoute["TEACHER"]["COURSE_DETAIL"],
       key: "COURSE_DETAIL",
-      indexRoute:  CombineRoute["TEACHER"]["COURSE_DETAIL"],
+      indexRoute: CombineRoute["TEACHER"]["COURSE_DETAIL"],
       noReplaceTitle: false,
       component: ComponentPage.COURSE_DETAIL,
       hide: true,
