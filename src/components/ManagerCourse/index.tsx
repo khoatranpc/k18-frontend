@@ -22,7 +22,7 @@ const ManagerCourse = () => {
                 }}>
                     <ReloadOutlined />
                 </Button>
-                {crrUser.data?.roleAccount === ROLE.TE && <Button onClick={() => {
+                {crrUser?.data?.roleAccount === ROLE.TE && <Button onClick={() => {
                     drawer.open({
                         componentDirection: 'CourseDetail/FormCourse',
                         props: {

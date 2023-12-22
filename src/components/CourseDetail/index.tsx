@@ -27,7 +27,7 @@ const CourseDetail = () => {
     const router = useRouter();
     const passDataRoute = usePropsPassRoute();
     const listValueCourse = (listCourse.listCourse?.data as Array<Obj>);
-    const currentCourse = crrUser.data?.roleAccount === ROLE.TE ? listValueCourse?.find((item) => {
+    const currentCourse = crrUser?.data?.roleAccount === ROLE.TE ? listValueCourse?.find((item) => {
         return item._id === router.query.courseId as string;
     }) : ((getListCourseApplyData as Obj)?.coursesRegister as Obj[])?.find(item => item.idCourse._id === router.query.courseId as string);
     const getCurrentCourse = (currentCourse?.courseLevel ?? currentCourse?.levelHandle) as Obj[];
@@ -62,20 +62,20 @@ const CourseDetail = () => {
     }
 
     useEffect(() => {
-        if (!listTeacher.listTeacher.response && crrUser.data?.roleAccount === ROLE.TE) {
+        if (!listTeacher.listTeacher.response && crrUser?.data?.roleAccount === ROLE.TE) {
             listTeacher.query(undefined, undefined, {
                 fields: ['_id', 'roleIsMT', 'roleIsST', 'roleIsSP']
             })
         }
     }, []);
     useEffect(() => {
-        if (!listValueCourse && crrUser.data?.roleAccount === ROLE.TE) {
+        if (!listValueCourse && crrUser?.data?.roleAccount === ROLE.TE) {
             listCourse.queryListCourse();
         }
     }, []);
     useEffect(() => {
         if (!courseApply.listData.response && !courseApply.listData.isLoading) {
-            courseApply.query(crrUser.data?.roleAccount === ROLE.TE ? undefined : [crrUser.data?._id as string]);
+            courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser.data?._id as string]);
         }
     }, []);
     return (
@@ -123,14 +123,14 @@ const CourseDetail = () => {
                                     </div>
                                 </div>
                             </div>
-                            {crrUser.data?.roleAccount === ROLE.TE && <div className={styles.chartOverviewLevel}>
+                            {crrUser?.data?.roleAccount === ROLE.TE && <div className={styles.chartOverviewLevel}>
                                 <ChartColumn />
                             </div>}
                         </div>
                     </div>
                     <hr />
                     <div className={styles.listCourse}>
-                        {crrUser.data?.roleAccount === ROLE.TE && <Button className={styles.btnCreateCourseLevel} onClick={() => {
+                        {crrUser?.data?.roleAccount === ROLE.TE && <Button className={styles.btnCreateCourseLevel} onClick={() => {
                             drawer.open({
                                 open: true,
                                 componentDirection: 'CourseLevelDetail',

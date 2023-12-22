@@ -28,10 +28,10 @@ const BlockCourse = (props: Props) => {
     const listTeacherRegisterCourse = useTeacherRegisterCourse();
     const getCourseId = props.data?._id as string;
     const getListRecordRegisterCourse = listTeacherRegisterCourse.listData.response?.data as Obj[];
-    const getCalcTeacher = (crrUser.data?.roleAccount === ROLE.TE ? getTotalTeacher(getCourseId, getListRecordRegisterCourse) : {}) as Obj;
+    const getCalcTeacher = (crrUser?.data?.roleAccount === ROLE.TE ? getTotalTeacher(getCourseId, getListRecordRegisterCourse) : {}) as Obj;
 
     const handleClickToDetail = (id?: string) => {
-        if (crrUser.data?.roleAccount === ROLE.TE) {
+        if (crrUser?.data?.roleAccount === ROLE.TE) {
             if (!props.isLevel) {
                 router.push(`/te/manager/storage/course/${id}`);
             } else {
@@ -111,9 +111,9 @@ const BlockCourse = (props: Props) => {
                                         return <li key={item.role}>{item.role}: {item.total}</li>
                                     })}
                                 </ul>}>
-                                {crrUser.data?.roleAccount === ROLE.TE && <><Cell />{getCalcTeacher.data.total} GV</>}
+                                {crrUser?.data?.roleAccount === ROLE.TE && <><Cell />{getCalcTeacher.data.total} GV</>}
                             </Tooltip> :
-                                (crrUser.data?.roleAccount === ROLE.TE && <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>)
+                                (crrUser?.data?.roleAccount === ROLE.TE && <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>)
                             }
                         </span>
                     </div>
