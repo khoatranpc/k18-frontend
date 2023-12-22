@@ -70,6 +70,10 @@ import { clearRequestOtpRQ, queryRequestOtp } from "@/store/reducers/account/req
 import { clearResetPassword, queryResetPassword } from "@/store/reducers/account/resetPassword.reducer";
 import { OpenDrawer, closeDrawer, openDrawer } from "@/store/reducers/global-reducer/drawer";
 import { clearPropsRoute, setPropsRoute } from "@/store/reducers/global-reducer/propsRoute";
+import { queryListDocument } from "@/store/reducers/document/getListDocument.reducer";
+import { clearCreateDocument, queryCreateDocument } from "@/store/reducers/document/createDocument.reducer";
+import { clearDeleteDocument, queryDeleteDocument } from "@/store/reducers/document/deleteDocument.reducer";
+import { clearUpdateDocument, queryUpdateDocument } from "@/store/reducers/document/updateDocument.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -896,6 +900,10 @@ const useUpdateDetailTeacher = createHookQueryReducer('updateTeacher', queryUpda
 const useUpdateTeacherRegisterCourse = createHookQueryReducer('updateTeacherRegisterCourse', queryUpdateTeacherRegisterCourse, clearUpdateTeacherRegisterCourse);
 const useRequestOtpRP = createHookQueryReducer('requestOtpRP', queryRequestOtp, clearRequestOtpRQ);
 const useResetPassword = createHookQueryReducer('resetPassword', queryResetPassword, clearResetPassword);
+const useGetListDocument = createHookQueryReducer('getListDocument', queryListDocument);
+const useCreateDocument = createHookQueryReducer('createDocument', queryCreateDocument, clearCreateDocument);
+const useDeleteDocument = createHookQueryReducer('deleteDocument', queryDeleteDocument, clearDeleteDocument);
+const useUpdateDocument = createHookQueryReducer('updateDocument', queryUpdateDocument, clearUpdateDocument);
 
 export {
     useGetListClass,
@@ -965,5 +973,9 @@ export {
     useRequestOtpRP,
     useResetPassword,
     useHandleDrawer,
-    usePropsPassRoute
+    usePropsPassRoute,
+    useGetListDocument,
+    useCreateDocument,
+    useDeleteDocument,
+    useUpdateDocument
 }
