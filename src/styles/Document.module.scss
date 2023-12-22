@@ -116,3 +116,19 @@
         flex-direction: column;
     }
 }
+
+.btnAction {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.2rem;
+}
+
+.titleDrawerUpdate {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+
+    .iconDelete {
+        cursor: pointer;
+    }
+}

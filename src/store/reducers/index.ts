@@ -73,6 +73,9 @@ import requestOtpRP from './account/requestOtpResetpassword.reducer';
 import drawer from './global-reducer/drawer';
 import propsPassRoute from './global-reducer/propsRoute';
 import getListDocument from './document/getListDocument.reducer';
+import createDocument from './document/createDocument.reducer';
+import deleteDocument from './document/deleteDocument.reducer';
+import updateDocument from './document/updateDocument.reducer';
 
 const rootReducer = {
     test: test,
@@ -149,6 +152,9 @@ const rootReducer = {
     requestOtpRP,
     drawer,
     propsPassRoute,
-    getListDocument
+    getListDocument,
+    createDocument,
+    deleteDocument,
+    updateDocument
 };
 export default rootReducer;

@@ -46,6 +46,7 @@ const CombineRoute = {
     HELP: "/te/help",
     LOCATION: "/teacher/location",
     TIMESCHEDULE: "/te/timeschedule",
+    GENERAL_DOCUMENT: '/teacher/general-document'
   },
 };
 export default CombineRoute;

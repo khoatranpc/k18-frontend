@@ -579,6 +579,16 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.MANAGER_FEEDBACK,
       noReplaceTitle: true,
     },
+    {
+      title: "Thông tin chung",
+      route: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
+      key: "GENERAL_DOCUMENT",
+      keyIcon: KEY_ICON.IF,
+      showIcon: true,
+      indexRoute: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
+      component: ComponentPage.DOCUMENT,
+      noReplaceTitle: true,
+    },
   ],
   COMMON: [],
 };

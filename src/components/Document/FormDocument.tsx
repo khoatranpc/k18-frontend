@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
 import { Button, Checkbox, Input } from 'antd';
 import { Obj } from '@/global/interface';
+import { useCreateDocument, useUpdateDocument } from '@/utils/hooks';
+import { useHookMessage } from '@/utils/hooks/message';
 import styles from '@/styles/Document.module.scss';
 
 interface Props {
@@ -15,7 +17,10 @@ const validationSchema = yup.object({
     docDescribe: yup.string().required('Thiếu mô tả tài liệu!'),
 });
 const FormDocument = (props: Props) => {
-    const { values, touched, errors, setValues, handleBlur, handleChange, handleReset, handleSubmit, setFieldValue } = useFormik({
+    const message = useHookMessage();
+    const createDocument = useCreateDocument();
+    const updateDocument = useUpdateDocument();
+    const { values, touched, errors, handleBlur, handleChange, handleReset, handleSubmit, setFieldValue } = useFormik({
         initialValues: props.doc ?? {},
         validationSchema,
         onSubmit(values) {
@@ -24,10 +29,32 @@ const FormDocument = (props: Props) => {
                     ...values
                 }
                 delete mapValues._id;
+                updateDocument.query({
+                    body: mapValues,
+                    params: [props.doc?._id as string]
+                })
             } else {
+                createDocument.query({
+                    body: values
+                });
             }
         }
     });
+    useEffect(() => {
+        if (createDocument.data.response || updateDocument.data.response) {
+            message.open({
+                content: createDocument.data.response?.message as string ?? updateDocument.data.response?.message as string,
+                type: (createDocument.data.success || updateDocument.data.success) ? 'success' : 'error'
+            });
+            if (updateDocument.data.response) {
+                updateDocument.clear?.();
+            }
+            if (createDocument.data.response) {
+                createDocument.clear?.();
+            }
+            message.close();
+        }
+    }, [createDocument.data, updateDocument.data]);
     return (
         <Form className={styles.form} onSubmit={handleSubmit}>
             <Form.Group className={styles.itemForm}>
@@ -53,8 +80,8 @@ const FormDocument = (props: Props) => {
                 <Input size="small" name="linkDoc" value={values.linkDoc} onChange={handleChange} onBlur={handleBlur} />
             </Form.Group>
             <div className={styles.btnAction}>
-                <Button onClick={handleReset} >Reset</Button>
-                <Button htmlType="submit" >{!props.isCreate ? 'Cập nhật' : 'Tạo'}</Button>
+                <Button onClick={handleReset} disabled={createDocument.data.isLoading}>Reset</Button>
+                <Button htmlType="submit" loading={createDocument.data.isLoading}>{!props.isCreate ? 'Cập nhật' : 'Tạo'}</Button>
             </div>
         </Form>
     )

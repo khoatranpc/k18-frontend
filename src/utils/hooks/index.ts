@@ -71,6 +71,9 @@ import { clearResetPassword, queryResetPassword } from "@/store/reducers/account
 import { OpenDrawer, closeDrawer, openDrawer } from "@/store/reducers/global-reducer/drawer";
 import { clearPropsRoute, setPropsRoute } from "@/store/reducers/global-reducer/propsRoute";
 import { queryListDocument } from "@/store/reducers/document/getListDocument.reducer";
+import { clearCreateDocument, queryCreateDocument } from "@/store/reducers/document/createDocument.reducer";
+import { clearDeleteDocument, queryDeleteDocument } from "@/store/reducers/document/deleteDocument.reducer";
+import { clearUpdateDocument, queryUpdateDocument } from "@/store/reducers/document/updateDocument.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -898,6 +901,9 @@ const useUpdateTeacherRegisterCourse = createHookQueryReducer('updateTeacherRegi
 const useRequestOtpRP = createHookQueryReducer('requestOtpRP', queryRequestOtp, clearRequestOtpRQ);
 const useResetPassword = createHookQueryReducer('resetPassword', queryResetPassword, clearResetPassword);
 const useGetListDocument = createHookQueryReducer('getListDocument', queryListDocument);
+const useCreateDocument = createHookQueryReducer('createDocument', queryCreateDocument, clearCreateDocument);
+const useDeleteDocument = createHookQueryReducer('deleteDocument', queryDeleteDocument, clearDeleteDocument);
+const useUpdateDocument = createHookQueryReducer('updateDocument', queryUpdateDocument, clearUpdateDocument);
 
 export {
     useGetListClass,
@@ -968,5 +974,8 @@ export {
     useResetPassword,
     useHandleDrawer,
     usePropsPassRoute,
-    useGetListDocument
+    useGetListDocument,
+    useCreateDocument,
+    useDeleteDocument,
+    useUpdateDocument
 }
