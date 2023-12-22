@@ -9,17 +9,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CheckboxOptionType, CheckboxValueType } from 'antd/es/checkbox/Group';
 import { Input, DatePicker, Radio, Button, Checkbox, MenuProps } from 'antd';
 import { Obj, State } from '@/global/interface';
-import { ROLE_TEACHER } from '@/global/enum';
+import { Gender, ROLE_TEACHER } from '@/global/enum';
 import { useHookMessage } from '@/utils/hooks/message';
+import { useGetArea } from '@/utils/hooks';
 import { getCourses } from '@/store/reducers/course.reducer';
 import { AppDispatch, RootState } from '@/store';
 import { clean, queryRegisterPreTeacher } from '@/store/reducers/registerPreTeacher.reducer';
 import AuthLayout from '@/layouts/auth';
 import Loading from '../loading';
 import iconArrowLeft from '@/assets/svgs/icon-arrow-left.svg';
-import styles from '@/styles/auth/FormRegister.module.scss';
-import { useGetArea } from '@/utils/hooks';
 import Dropdown from '../Dropdown';
+import styles from '@/styles/auth/FormRegister.module.scss';
 
 const crrCourseRegister: {
     idCourse: string,
@@ -251,9 +251,9 @@ const FormRegister = () => {
                                     <span>Giới tính <span className="field_required">*</span></span>
                                 </Form.Label>
                                 <Radio.Group onChange={handleChange} name="gender" onBlur={handleBlur} value={values.gender}>
-                                    <Radio value={"M"}>Nam</Radio>
-                                    <Radio value={"FM"}>Nữ</Radio>
-                                    <Radio value={"AN"}>Khác</Radio>
+                                    <Radio value={Gender.M}>Nam</Radio>
+                                    <Radio value={Gender.FM}>Nữ</Radio>
+                                    <Radio value={Gender.NA}>Khác</Radio>
                                 </Radio.Group>
                                 {errors.gender && touched.gender && <p className="error">{errors.gender}</p>}
                             </Form.Group>

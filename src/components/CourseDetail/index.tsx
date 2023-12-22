@@ -15,7 +15,8 @@ import Loading from '../loading';
 import { filterTeacherWithCourse, getStatisticTeacher } from '../OverView/TeacherStatistic/config';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 import { ROLE } from '@/global/enum';
-import { Image } from 'antd';
+import { Button, Image } from 'antd';
+import Empty from '../Empty';
 
 const CourseDetail = () => {
     const crrUser = useGetCrrUser() as Obj;
@@ -26,12 +27,14 @@ const CourseDetail = () => {
     const router = useRouter();
     const passDataRoute = usePropsPassRoute();
     const listValueCourse = (listCourse.listCourse?.data as Array<Obj>);
-    const currentCourse = crrUser.data.roleAccount === ROLE.TE ? listValueCourse?.find((item) => {
+    const currentCourse = crrUser.data?.roleAccount === ROLE.TE ? listValueCourse?.find((item) => {
         return item._id === router.query.courseId as string;
     }) : ((getListCourseApplyData as Obj)?.coursesRegister as Obj[])?.find(item => item.idCourse._id === router.query.courseId as string);
+    const getCurrentCourse = (currentCourse?.courseLevel ?? currentCourse?.levelHandle) as Obj[];
     const listTeacher = useListTeacher();
     const getListTeacher = (listTeacher.listTeacher?.response?.data as Obj)?.listTeacher as Obj[] || [];
     const listCourseMapName = (passDataRoute.data.response as Obj)?.dataStatistic ?? (crrUser.data.roleAccount === ROLE.TE ? getStatisticTeacher(listValueCourse, getListCourseApplyData as Obj[], getListTeacher) : {});
+
     const getDataStatistic = ((listCourseMapName.categories as Obj[])?.map((item) => {
         const listTeacherByCourse = filterTeacherWithCourse(getListCourseApplyData as Obj[], getListTeacher, item?.id);
         return {
@@ -49,9 +52,9 @@ const CourseDetail = () => {
     const handleOpenDrawerCourseDetail = () => {
         drawer.open({
             open: true,
-            componentDirection: 'CourseDetail/UpdateCourse',
+            componentDirection: 'CourseDetail/FormCourse',
             size: "default",
-            title: <div className={styles.titleCourseDetailDrawer}>{currentCourse?.courseTitle ?? currentCourse?.idCourse.courseTitle}</div>,
+            title: <div className={styles.titleCourseDetailDrawer}>{currentCourse?.courseTitle ?? currentCourse?.idCourse?.courseTitle}</div>,
             props: {
                 currentCourse
             }
@@ -59,20 +62,20 @@ const CourseDetail = () => {
     }
 
     useEffect(() => {
-        if (!listTeacher.listTeacher.response && crrUser.data.roleAccount === ROLE.TE) {
+        if (!listTeacher.listTeacher.response && crrUser.data?.roleAccount === ROLE.TE) {
             listTeacher.query(undefined, undefined, {
                 fields: ['_id', 'roleIsMT', 'roleIsST', 'roleIsSP']
             })
         }
     }, []);
     useEffect(() => {
-        if (!listValueCourse && crrUser.data.roleAccount === ROLE.TE) {
+        if (!listValueCourse && crrUser.data?.roleAccount === ROLE.TE) {
             listCourse.queryListCourse();
         }
     }, []);
     useEffect(() => {
         if (!courseApply.listData.response && !courseApply.listData.isLoading) {
-            courseApply.query(crrUser.data.roleAccount === ROLE.TE ? undefined : [crrUser.data._id as string]);
+            courseApply.query(crrUser.data?.roleAccount === ROLE.TE ? undefined : [crrUser.data?._id as string]);
         }
     }, []);
     return (
@@ -82,57 +85,68 @@ const CourseDetail = () => {
                     <div className={styles.header}>
                         <div className={styles.leftHeader}>
                             <div className={styles.courseImage}>
-                                <Image alt="" src={currentCourse?.courseImage ?? currentCourse?.idCourse.courseImage ?? '/static/ci.jpeg'} className={styles.image} />
+                                <Image alt="" src={currentCourse?.courseImage ?? currentCourse?.idCourse?.courseImage ?? '/static/ci.jpeg'} className={styles.image} />
                             </div>
                         </div>
                         <div className={styles.rightHeader}>
                             <div className={styles.combineTop}>
-                                <p className={`${styles.title}`}>{currentCourse.courseTitle ?? currentCourse?.idCourse.courseTitle} {crrUser.data.roleAccount === ROLE.TE && <IconEdit2 className={styles.iconEdit} onClick={handleOpenDrawerCourseDetail} />}</p>
+                                <p className={`${styles.title}`}>{currentCourse.courseTitle ?? currentCourse?.idCourse?.courseTitle} {crrUser.data.roleAccount === ROLE.TE && <IconEdit2 className={styles.iconEdit} onClick={handleOpenDrawerCourseDetail} />}</p>
                                 <div className={styles.groupInfo}>
                                     <div className={styles.infoOverview}>
                                         <div className={styles.left}>
                                             <span className={styles.attachLink}>
                                                 <AttachDocument className={styles.icon} />
-                                                <span><b>Tên khoá</b>: {currentCourse.courseName ?? currentCourse?.idCourse.courseName}</span>
+                                                <span><b>Tên khoá</b>: {currentCourse.courseName ?? currentCourse?.idCourse?.courseName}</span>
                                             </span>
                                             <span className={styles.attachLink}>
                                                 <AttachDocument className={styles.icon} />
-                                                <span><b>Syllabus</b>: {(currentCourse.syllabus || currentCourse?.idCourse.syllabus) ? <a href={`${currentCourse.syllabus ?? currentCourse?.idCourse.syllabus}`} target="_blank">Link</a> : 'Chưa có'}</span>
+                                                <span><b>Syllabus</b>: {(currentCourse.syllabus || currentCourse?.idCourse?.syllabus) ? <a href={`${currentCourse.syllabus ?? currentCourse?.idCourse?.syllabus}`} target="_blank">Link</a> : 'Chưa có'}</span>
                                             </span>
                                             <span className={styles.attachLink}>
-                                                <Bookmark className={styles.iconBookmark} /><span><b>Số khoá học</b>: {((currentCourse.courseLevel ?? currentCourse?.idCourse.courseLevel) as Obj[])?.length}</span>
-                                            </span>
-                                            <span className={styles.attachLink}>
-                                                <InfoCircleOutlined className={styles.icon} /><span><b>Teacherpoint</b>: 4</span>
+                                                <Bookmark className={styles.iconBookmark} /><span><b>Số khoá học</b>: {((currentCourse.courseLevel ?? currentCourse?.idCourse?.courseLevel) as Obj[])?.length}</span>
                                             </span>
                                         </div>
                                         <div className={styles.right}>
                                             <span className={styles.attachLink}>
-                                                <InfoCircleOutlined className={styles.icon} /><span><b>Trạng thái</b>: {(currentCourse.active || currentCourse?.idCourse.active) ? 'Hoạt động' : 'Ngừng hoạt động'}</span>
+                                                <InfoCircleOutlined className={styles.icon} /><span><b>Trạng thái</b>: {(currentCourse.active || currentCourse?.idCourse?.active) ? 'Hoạt động' : 'Ngừng hoạt động'}</span>
                                             </span>
-                                            <span className={styles.attachLink}>
+                                            {/* <span className={styles.attachLink}>
                                                 <Employee className={styles.icon} /><span><b>TE QC</b>: Trần Đăng khoa</span>
-                                            </span>
+                                            </span> */}
                                             <span className={styles.attachLink}>
-                                                <ClockCircleOutlined className={styles.icon} /><span><b>Cập nhật lúc</b>: {formatDatetoString((currentCourse.updatedAt ?? currentCourse?.idCourse.updatedAt) as string ?? new Date(), 'HH:mm, dd/MM/yyyy')}</span>
+                                                <ClockCircleOutlined className={styles.icon} /><span><b>Cập nhật lúc</b>: {formatDatetoString((currentCourse.updatedAt ?? currentCourse?.idCourse?.updatedAt) as string ?? new Date(), 'HH:mm, dd/MM/yyyy')}</span>
                                             </span>
-                                            <span className={styles.attachLink}>
-                                                {currentCourse.courseDescription ?? currentCourse?.idCourse.courseDescription}
+                                            <span className={`${styles.attachLink} ${styles.des}`}>
+                                                {currentCourse.courseDescription ?? currentCourse?.idCourse?.courseDescription}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {crrUser.data.roleAccount === ROLE.TE && <div className={styles.chartOverviewLevel}>
+                            {crrUser.data?.roleAccount === ROLE.TE && <div className={styles.chartOverviewLevel}>
                                 <ChartColumn />
                             </div>}
                         </div>
                     </div>
                     <hr />
                     <div className={styles.listCourse}>
-                        {((currentCourse.courseLevel ?? currentCourse.levelHandle) as Obj[])?.map((item, idx) => {
-                            return <BlockCourse key={item._id ?? idx} dataStatistic={getDataStatistic} data={item} level={item.levelNumber} isLevel className={styles.itemCourse} />
-                        })}
+                        {crrUser.data?.roleAccount === ROLE.TE && <Button className={styles.btnCreateCourseLevel} onClick={() => {
+                            drawer.open({
+                                open: true,
+                                componentDirection: 'CourseLevelDetail',
+                                props: {
+                                    isCreate: true
+                                }
+                            })
+                        }}>Tạo cấp độ</Button>
+                        }
+                        {
+                            getCurrentCourse ?
+                                (getCurrentCourse.length !== 0 ? getCurrentCourse?.map((item, idx) => {
+                                    return <BlockCourse key={item._id ?? idx} dataStatistic={getDataStatistic} data={item} level={item.levelNumber} isLevel className={styles.itemCourse} />
+                                }) : <Empty />) :
+                                (<Empty />)
+                        }
                     </div>
                 </> : <div>Không tồn tại khoá học</div>)
             }

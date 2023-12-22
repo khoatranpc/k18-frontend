@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
-import { useUpdateCourse } from '@/utils/hooks';
+import { useCreateCourse, useUpdateCourse } from '@/utils/hooks';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 import { useHookMessage } from '@/utils/hooks/message';
 
@@ -14,23 +14,32 @@ const validationSchema = yup.object({
     courseName: yup.string().required('Bạn cần cung cấp tên khoá học!'),
 });
 interface Props {
-    currentCourse?: Obj
+    currentCourse?: Obj;
+    isCreate?: boolean;
 }
 const UpdateCourse = (props: Props) => {
     const updateCourse = useUpdateCourse();
+    const createCourse = useCreateCourse();
     const currentCourse = props.currentCourse;
     const message = useHookMessage();
     const { values, touched, errors, setValues, handleBlur, handleChange, handleReset, handleSubmit, setFieldValue } = useFormik({
         initialValues: currentCourse ?? {},
         validationSchema,
         onSubmit(values) {
-            const mapValues = {
-                ...values
+            if (!props.isCreate) {
+                const mapValues = {
+                    ...values
+                }
+                delete mapValues._id;
+                updateCourse.query(mapValues, currentCourse?._id as string);
+            } else {
+                createCourse.query({
+                    body: values
+                })
             }
-            delete mapValues._id;
-            updateCourse.query(mapValues, currentCourse?._id as string);
         }
     });
+
     useEffect(() => {
         if (Object.keys(values).length === 0) {
             if (currentCourse) {
@@ -39,15 +48,20 @@ const UpdateCourse = (props: Props) => {
         }
     }, []);
     useEffect(() => {
-        if (updateCourse.data.response) {
+        if (updateCourse.data.response || createCourse.data.response) {
             message.open({
-                content: updateCourse.data.response.message as string,
-                type: updateCourse.data.success ? 'success' : 'error'
+                content: updateCourse.data.response?.message as string ?? createCourse.data.response?.message as string,
+                type: (updateCourse.data.success || createCourse.data.success) ? 'success' : 'error'
             });
-            updateCourse.clear?.();
+            if (updateCourse.data.response) {
+                updateCourse.clear?.();
+            }
+            if (createCourse.data.response) {
+                createCourse.clear?.();
+            }
             message.close();
         }
-    }, [updateCourse.data]);
+    }, [updateCourse.data, createCourse.data]);
     return (
         <div className={styles.contentUdpateCourse}>
             <Form className={styles.form} onSubmit={handleSubmit}>
@@ -83,8 +97,8 @@ const UpdateCourse = (props: Props) => {
                     <Input size="small" name="syllabus" value={values.syllabus} onChange={handleChange} onBlur={handleBlur} />
                 </Form.Group>
                 <div className={styles.btnAction}>
-                    <Button onClick={handleReset} disabled={updateCourse.data.isLoading}>Reset</Button>
-                    <Button htmlType="submit" loading={updateCourse.data.isLoading}>Cập nhật</Button>
+                    <Button onClick={handleReset} disabled={updateCourse.data.isLoading || createCourse.data.isLoading}>Reset</Button>
+                    <Button htmlType="submit" loading={updateCourse.data.isLoading || createCourse.data.isLoading}>{!props.isCreate ? 'Cập nhật' : 'Tạo'}</Button>
                 </div>
             </Form>
         </div>

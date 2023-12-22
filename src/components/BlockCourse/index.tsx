@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { Checkbox, Image, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { ROLE } from '@/global/enum';
+import logo from '@/assets/imgs/logo.png';
 import { useHandleDrawer, usePropsPassRoute, useTeacherRegisterCourse } from '@/utils/hooks';
 import { mapLevelToColor, mapLevelToColor2 } from '@/global/init';
 import useGetCrrUser from '@/utils/hooks/getUser';
@@ -27,10 +28,10 @@ const BlockCourse = (props: Props) => {
     const listTeacherRegisterCourse = useTeacherRegisterCourse();
     const getCourseId = props.data?._id as string;
     const getListRecordRegisterCourse = listTeacherRegisterCourse.listData.response?.data as Obj[];
-    const getCalcTeacher = (crrUser.data.roleAccount === ROLE.TE ? getTotalTeacher(getCourseId, getListRecordRegisterCourse) : {}) as Obj;
+    const getCalcTeacher = (crrUser.data?.roleAccount === ROLE.TE ? getTotalTeacher(getCourseId, getListRecordRegisterCourse) : {}) as Obj;
 
     const handleClickToDetail = (id?: string) => {
-        if (crrUser.data.roleAccount === ROLE.TE) {
+        if (crrUser.data?.roleAccount === ROLE.TE) {
             if (!props.isLevel) {
                 router.push(`/te/manager/storage/course/${id}`);
             } else {
@@ -54,7 +55,7 @@ const BlockCourse = (props: Props) => {
         <div className={`${styles.blockCourse} ${props.className}`}>
             <div className={`${styles.content} ${props.isLevel ? styles.levelCourse : ''}`}>
                 <div className={styles.imageCourse}>
-                    <Image width={"100%"} height={"100%"} alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? '/static/ci.jpeg')} className={styles.image} />
+                    <Image width={"100%"} height={"100%"} alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? logo)} className={styles.image} />
                 </div>
                 <div className={styles.course}>
                     <div className={styles.title}>
@@ -110,9 +111,9 @@ const BlockCourse = (props: Props) => {
                                         return <li key={item.role}>{item.role}: {item.total}</li>
                                     })}
                                 </ul>}>
-                                {crrUser.data.roleAccount === ROLE.TE && <><Cell />{getCalcTeacher.data.total} GV</>}
+                                {crrUser.data?.roleAccount === ROLE.TE && <><Cell />{getCalcTeacher.data.total} GV</>}
                             </Tooltip> :
-                                (crrUser.data.roleAccount === ROLE.TE && <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>)
+                                (crrUser.data?.roleAccount === ROLE.TE && <><Cell />{props.dataStatistic?.[`lv${props.level}`]} GV</>)
                             }
                         </span>
                     </div>

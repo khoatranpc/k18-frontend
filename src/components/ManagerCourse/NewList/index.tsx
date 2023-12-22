@@ -15,9 +15,9 @@ const NewListCourse = () => {
     const getListTeacher = (listTeacher.listTeacher?.response?.data as Obj)?.listTeacher as Obj[] || [];
     const courseApply = useTeacherRegisterCourse();
     const getListCourseApplyData = courseApply.listData.response?.data as Obj[] | Obj;
-    const listCourseMapName = (crrUser.data.roleAccount === ROLE.TE ? getStatisticTeacher(listValueCourse, getListCourseApplyData as Obj[], getListTeacher) : {}) as Obj;
+    const listCourseMapName = (crrUser.data?.roleAccount === ROLE.TE ? getStatisticTeacher(listValueCourse, getListCourseApplyData as Obj[], getListTeacher) : {}) as Obj;
     useEffect(() => {
-        if (crrUser.data.roleAccount === ROLE.TE) {
+        if (crrUser.data?.roleAccount === ROLE.TE) {
             if (!listValueCourse) {
                 listCourse.queryListCourse();
             }
@@ -28,14 +28,14 @@ const NewListCourse = () => {
     }, []);
     useEffect(() => {
         if (!courseApply.listData.response && !courseApply.listData.isLoading) {
-            courseApply.query(crrUser.data.roleAccount === ROLE.TE ? undefined : [crrUser.data._id as string]);
+            courseApply.query(crrUser.data?.roleAccount === ROLE.TE ? undefined : [crrUser.data?._id as string]);
         }
     }, []);
     return (
         <div className={styles.listCourse}>
-            {crrUser.data.roleAccount === ROLE.TE ? listValueCourse?.map((item, index) => {
+            {crrUser.data?.roleAccount === ROLE.TE ? listValueCourse?.map((item, index) => {
                 const getListRole: Obj[] = [];
-                if (crrUser.data.roleAccount === ROLE.TE) {
+                if (crrUser.data?.roleAccount === ROLE.TE) {
                     for (const key in listCourseMapName.data) {
                         const newRole = {
                             role: key,
