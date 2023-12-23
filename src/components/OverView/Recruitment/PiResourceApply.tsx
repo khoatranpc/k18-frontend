@@ -67,7 +67,12 @@ const PiResourceApply = () => {
                 ['Facebook', getDataResourceApply.FB],
                 ['Refer', getDataResourceApply.RF],
                 ['Linkedin', getDataResourceApply.LKD]
-            ]
+            ],
+            dataLabels: {
+                style: {
+                    textOutline: 'none'
+                }
+            }
         }]
     }
     return (

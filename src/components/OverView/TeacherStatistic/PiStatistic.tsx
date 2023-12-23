@@ -73,7 +73,12 @@ const PiStatistic = () => {
         series: [{
             type: 'pie',
             name: 'Tỉ lệ',
-            data: data
+            data: data,
+            dataLabels: {
+                style: {
+                    textOutline: 'none'
+                }
+            }
         }]
     }
     useEffect(() => {

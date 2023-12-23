@@ -126,7 +126,7 @@ const listPanelTe: ItemContentPanel[] = [
   },
   {
     route: CombineRoute['TE']['MANAGER']['STAFF'],
-    title: 'Danh sách TE'
+    title: 'Danh sách'
   },
 ];
 const panelsTE: ItemPanels[] = [
@@ -470,10 +470,10 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
     },
     {
       title: "Danh sách TE",
-      route: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      route: CombineRoute['TE']['MANAGER']['STAFF'],
       key: "LIST_TE",
       showIcon: false,
-      indexRoute: CombineRoute["TE"]["MANAGER"]["STAFF"],
+      indexRoute: CombineRoute['TE']['MANAGER']['STAFF'],
       hide: true,
       component: ComponentPage.TE_STAFF,
       noReplaceTitle: true,

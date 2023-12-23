@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Button } from 'antd';
 import { Form } from 'react-bootstrap';
 import TextArea from 'antd/es/input/TextArea';
