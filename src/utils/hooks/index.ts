@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { MutableRefObject, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Action, BaseInterfaceHookReducer, Obj, State } from "@/global/interface";
 import { AppDispatch, RootState } from "@/store";
@@ -871,6 +871,31 @@ const usePropsPassRoute = () => {
         clear
     }
 }
+const useComponentSize = (ref: MutableRefObject<any>) => {
+    const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
+
+    useEffect(() => {
+        const getComponentSize = () => {
+            if (ref.current) {
+                const width = ref.current.offsetWidth;
+                const height = ref.current.offsetHeight;
+                setComponentSize({ width, height });
+            }
+        };
+        getComponentSize();
+        const handleResize = () => {
+            getComponentSize();
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [ref]);
+
+    return componentSize;
+};
+
 
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
@@ -977,5 +1002,6 @@ export {
     useGetListDocument,
     useCreateDocument,
     useDeleteDocument,
-    useUpdateDocument
+    useUpdateDocument,
+    useComponentSize
 }
