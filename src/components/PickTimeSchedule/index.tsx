@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MenuProps } from 'antd';
 import { Obj } from '@/global/interface';
 import { useGetTimeSchedule } from '@/utils/hooks';
@@ -35,10 +35,10 @@ const PickTimeSchedule = (props: Props) => {
             })) || [];
 
     useEffect(() => {
-        if (!listTimeSchedule.data.response) {
+        if (!listTimeSchedule.data.response && !listTimeSchedule.data.isLoading) {
             listTimeSchedule.query();
         }
-    }, [listTimeSchedule.data]);
+    }, []);
     return (
         <Dropdown
             sizeButton={props.size}

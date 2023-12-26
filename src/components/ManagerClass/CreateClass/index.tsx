@@ -69,11 +69,6 @@ const CreateClass = (props: Props) => {
         }
     });
     useEffect(() => {
-        if (!listTimeSchedule.data.response) {
-            listTimeSchedule.query();
-        }
-    }, [listTimeSchedule]);
-    useEffect(() => {
         if (createClass && !createClass.isLoading && createClass.response) {
             if (createClass.success) {
                 message.open({

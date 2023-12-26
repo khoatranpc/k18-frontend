@@ -28,22 +28,25 @@ const UpdateCourse = (props: Props) => {
         initialValues: currentCourse ?? {},
         validationSchema,
         onSubmit(values) {
+            const mapValues = {
+                ...values
+            }
+            delete mapValues._id;
+            const formData = new FormData();
+            for (const key in mapValues) {
+                if (key === "courseLevel") {
+                    mapValues[key] = JSON.stringify(mapValues[key]);
+                }
+                formData.append(`${key}`, mapValues[key]);
+            }
             if (!props.isCreate) {
-                const mapValues = {
-                    ...values
-                }
-                delete mapValues._id;
-                const formData = new FormData();
-                for (const key in mapValues) {
-                    if (key === "courseLevel") {
-                        mapValues[key] = JSON.stringify(mapValues[key]);
-                    }
-                    formData.append(`${key}`, mapValues[key]);
-                }
                 updateCourse.query(formData, currentCourse?._id as string);
             } else {
                 createCourse.query({
-                    body: values
+                    body: formData,
+                    headers:{
+                        "Content-Type":"mutilpart/form-data"
+                    }
                 });
             }
         }

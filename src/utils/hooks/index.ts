@@ -782,7 +782,10 @@ const useUpdateLevelCourse = () => {
             payload: {
                 query: {
                     body,
-                    params: [levelId]
+                    params: [levelId],
+                    headers: {
+                        "Content-Type": "mutilpart/form-data"
+                    }
                 }
             }
         }

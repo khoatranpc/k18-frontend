@@ -8,6 +8,7 @@ import { Obj } from '@/global/interface';
 import { useCreateLevelCourse, useUpdateLevelCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import styles from '@/styles/course/ManagerCourse.module.scss';
+import CropImage from '../CropImage';
 
 interface Props {
     data?: Obj;
@@ -27,12 +28,19 @@ const CourseLevelDetail = (props: Props) => {
         initialValues: props.data ?? {},
         validationSchema,
         onSubmit(values) {
-            if (!props.isCreate) {
-                const newValues = {
-                    ...values
+            const newValues = {
+                ...values
+            }
+            delete newValues._id;
+            const formData = new FormData();
+            for (const key in newValues) {
+                if (key === "techRequirements") {
+                    newValues[key] = JSON.stringify(newValues[key]);
                 }
-                delete newValues._id;
-                updateCourseLevel.query(newValues, values._id);
+                formData.append(`${key}`, newValues[key]);
+            }
+            if (!props.isCreate) {
+                updateCourseLevel.query(formData, values._id);
             } else {
                 createCourseLevel.query({
                     ...values,
@@ -68,7 +76,10 @@ const CourseLevelDetail = (props: Props) => {
                     <Form.Label>
                         Hình ảnh:
                     </Form.Label>
-                    <Input size="small" name='levelImage' value={values.levelImage} onChange={handleChange} onBlur={handleBlur} />
+                    {/* <Input size="small" name='levelImage' value={values.levelImage} onChange={handleChange} onBlur={handleBlur} /> */}
+                    <CropImage src={values.levelImage as string} onCropped={(blobFile) => {
+                        setFieldValue("fileImage", blobFile);
+                    }} />
                 </Form.Group>
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Trạng thái:</Form.Label>
