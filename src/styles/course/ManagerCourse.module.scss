@@ -87,7 +87,8 @@
 
     .blockCourse {
         padding: 0.8rem;
-        width: 33.33333%;
+        width: 25%;
+        // max-height: 50%;
 
         .infoCourseOverview {
             p {
@@ -111,8 +112,10 @@
                 .image {
                     border-top-right-radius: 0.8rem;
                     border-top-left-radius: 0.8rem;
-                    max-height: 100%;
-                    max-width: 100%;
+                    height: 100%;
+                    width: 100%;
+                    max-width: 30rem;
+                    max-height: 30rem;
                 }
             }
 
@@ -126,7 +129,7 @@
                 .title {
                     display: flex;
                     justify-content: space-between;
-                    align-items: center;
+                    align-items: flex-start;
 
                     .courseName {
                         font-size: 1.8rem;

@@ -97,7 +97,6 @@ const BlockCourse = (props: Props) => {
                                     <p>Record tham khảo: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : 'Đang cập nhật'}</p>
                                 </div>
                             )}
-                            <p>Copyright © MindX Technology School</p>
                         </div>
                     </div>
                     <hr />
