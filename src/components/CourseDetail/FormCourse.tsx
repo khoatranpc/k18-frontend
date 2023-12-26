@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Obj } from '@/global/interface';
 import { useCreateCourse, useUpdateCourse } from '@/utils/hooks';
 import styles from '@/styles/course/ManagerCourse.module.scss';
+import CropImage from '../CropImage';
 import { useHookMessage } from '@/utils/hooks/message';
 
 const validationSchema = yup.object({
@@ -68,7 +69,8 @@ const UpdateCourse = (props: Props) => {
             <Form className={styles.form} onSubmit={handleSubmit}>
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Link ảnh:</Form.Label>
-                    <Input size="small" maxLength={100} name="courseImage" value={values.courseImage} onChange={handleChange} onBlur={handleBlur} />
+                    {/* <Input size="small" maxLength={100} name="courseImage" value={values.courseImage} onChange={handleChange} onBlur={handleBlur} /> */}
+                    <CropImage src={values.courseImage as string}/>
                 </Form.Group>
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Trạng thái:</Form.Label>
