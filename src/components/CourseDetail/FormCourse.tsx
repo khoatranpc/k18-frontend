@@ -5,9 +5,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
 import { useCreateCourse, useUpdateCourse } from '@/utils/hooks';
-import styles from '@/styles/course/ManagerCourse.module.scss';
-import CropImage from '../CropImage';
 import { useHookMessage } from '@/utils/hooks/message';
+import CropImage from '../CropImage';
+import styles from '@/styles/course/ManagerCourse.module.scss';
 
 const validationSchema = yup.object({
     courseTitle: yup.string().required('Bạn cần cung cấp tiêu đề khoá học!'),
@@ -33,11 +33,18 @@ const UpdateCourse = (props: Props) => {
                     ...values
                 }
                 delete mapValues._id;
-                updateCourse.query(mapValues, currentCourse?._id as string);
+                const formData = new FormData();
+                for (const key in mapValues) {
+                    if (key === "courseLevel") {
+                        mapValues[key] = JSON.stringify(mapValues[key]);
+                    }
+                    formData.append(`${key}`, mapValues[key]);
+                }
+                updateCourse.query(formData, currentCourse?._id as string);
             } else {
                 createCourse.query({
                     body: values
-                })
+                });
             }
         }
     });
@@ -70,7 +77,9 @@ const UpdateCourse = (props: Props) => {
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Link ảnh:</Form.Label>
                     {/* <Input size="small" maxLength={100} name="courseImage" value={values.courseImage} onChange={handleChange} onBlur={handleBlur} /> */}
-                    <CropImage src={values.courseImage as string}/>
+                    <CropImage src={values.courseImage as string} onCropped={(blobFile) => {
+                        setFieldValue("fileImage", blobFile);
+                    }} />
                 </Form.Group>
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Trạng thái:</Form.Label>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Checkbox, Image, Tooltip } from 'antd';
+import { Button, Checkbox, Image, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { ROLE } from '@/global/enum';
 import logo from '@/assets/imgs/logo.png';
@@ -55,7 +55,7 @@ const BlockCourse = (props: Props) => {
         <div className={`${styles.blockCourse} ${props.className}`}>
             <div className={`${styles.content} ${props.isLevel ? styles.levelCourse : ''}`}>
                 <div className={styles.imageCourse}>
-                    <Image width={"100%"} height={"100%"} alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? logo)} className={styles.image} />
+                    <Image height={"100%"} alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? logo)} className={styles.image} />
                 </div>
                 <div className={styles.course}>
                     <div className={styles.title}>

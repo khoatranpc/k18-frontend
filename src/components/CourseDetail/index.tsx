@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { ClockCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef } from 'react';
+import { ClockCircleOutlined, InfoCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { Button, Image } from 'antd';
 import { Obj } from '@/global/interface';
@@ -25,6 +25,7 @@ const CourseDetail = () => {
     const drawer = useHandleDrawer();
     const router = useRouter();
     const passDataRoute = usePropsPassRoute();
+    const fistMounted = useRef(true);
     const listValueCourse = (listCourse.listCourse?.data as Array<Obj>);
     const currentCourse = crrUser?.data?.roleAccount === ROLE.TE ? listValueCourse?.find((item) => {
         return item._id === router.query.courseId as string;
@@ -71,7 +72,10 @@ const CourseDetail = () => {
         if (!listValueCourse && crrUser?.data?.roleAccount === ROLE.TE) {
             listCourse.queryListCourse();
         }
-    }, []);
+        if (listValueCourse) {
+            fistMounted.current = false;
+        }
+    }, [listCourse.listCourse]);
     useEffect(() => {
         if (!courseApply.listData.response && !courseApply.listData.isLoading) {
             courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser?.data?._id as string]);
@@ -79,7 +83,7 @@ const CourseDetail = () => {
     }, []);
     return (
         <div className={styles.courseDetail}>
-            {(listCourse.loading || courseApply.listData.isLoading) ? <Loading isCenterScreen /> :
+            {((listCourse.loading || courseApply.listData.isLoading) && fistMounted.current) ? <Loading isCenterScreen /> :
                 (currentCourse ? <>
                     <div className={styles.header}>
                         <div className={styles.leftHeader}>
@@ -88,6 +92,14 @@ const CourseDetail = () => {
                             </div>
                         </div>
                         <div className={styles.rightHeader}>
+                            <div style={{ float: "right", display: "flex", gap: "0.8rem" }}>
+                                {listCourse.loading && <Loading />}
+                                <Button onClick={() => {
+                                    listCourse.queryListCourse();
+                                }}>
+                                    <ReloadOutlined />
+                                </Button>
+                            </div>
                             <div className={styles.combineTop}>
                                 <p className={`${styles.title}`}>{currentCourse.courseTitle ?? currentCourse?.idCourse?.courseTitle} {crrUser?.data?.roleAccount === ROLE.TE && <IconEdit2 className={styles.iconEdit} onClick={handleOpenDrawerCourseDetail} />}</p>
                                 <div className={styles.groupInfo}>

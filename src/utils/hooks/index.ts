@@ -756,8 +756,11 @@ const useUpdateCourse = () => {
             payload: {
                 query: {
                     body,
-                    params: [courseId]
-                }
+                    params: [courseId],
+                    headers: {
+                        "Content-Type": "mutilpart/form-data"
+                    }
+                },
             }
         }
         dispatch(queryUpdateCourse(payload));

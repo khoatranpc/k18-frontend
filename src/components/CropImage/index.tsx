@@ -6,17 +6,16 @@ import styles from '@/styles/CropImage.module.scss';
 
 interface Props {
     src: string;
-    getFile?: (file: Blob) => void;
+    onCropped?: (file: Blob) => void;
     width?: number;
     height?: number;
     className?: string;
 };
 const CropImage = (props: Props) => {
     const [image, setImage] = useState(props.src ?? "");
-    console.log(image);
     const cropperRef = useRef<ReactCropperElement>();
     const [imagePreview, setImagePreview] = useState<string>(props.src ?? "");
-    const [acceptImage, setAcceptImage] = useState(true);
+    const [acceptImage, setAcceptImage] = useState(!!props.src);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const onChange = (e: any) => {
@@ -50,10 +49,10 @@ const CropImage = (props: Props) => {
         if (typeof cropperRef.current?.cropper !== "undefined") {
             const getCanvas = cropperRef.current?.cropper.getCroppedCanvas();
             if (getCanvas) {
-                setImage(getCanvas?.toDataURL("image/webp"));
+                setImagePreview(getCanvas?.toDataURL("image/webp"));
                 (getCanvas.toBlob((blob) => {
                     if (blob) {
-                        props.getFile?.(blob);
+                        props.onCropped?.(blob);
                     }
                 }, "image/webp", 0.95));
             }
@@ -61,8 +60,8 @@ const CropImage = (props: Props) => {
     };
     return (
         <div className={`${styles.cropImage} ${props.className ?? ''}`}>
-            {(imagePreview) ?
-                <Image className={styles.image} src={imagePreview ?? image} width={props.width ?? 200} height={props.height ?? 200} style={{ borderRadius: "50%" }} /> :
+            {(acceptImage) ?
+                <Image className={styles.image} src={imagePreview} width={props.width ?? 200} height={props.height ?? 200} style={{ borderRadius: "50%" }} /> :
                 (<div className={styles.cropping}>
                     <input style={{ display: "none" }} ref={inputRef} type="file" onChange={onChange} />
                     <Button icon={<UploadOutlined />} size="small" onClick={() => {
@@ -75,7 +74,7 @@ const CropImage = (props: Props) => {
                         style={{ height: 200 }}
                         zoomTo={0}
                         aspectRatio={1}
-                        src={image as string}
+                        src={image}
                         viewMode={2}
                         minCropBoxHeight={5}
                         minCropBoxWidth={5}
@@ -91,9 +90,8 @@ const CropImage = (props: Props) => {
             {/* {(!acceptImage) && 
             } */}
             <Button className={styles.btnHandle} onClick={() => {
-                getCropData();
-                if (acceptImage) {
-                    setImagePreview("");
+                if (!acceptImage) {
+                    getCropData();
                 }
                 setAcceptImage(!acceptImage);
             }}>{!acceptImage ? "Duyệt" : "Đổi"}</Button>
