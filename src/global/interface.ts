@@ -1,8 +1,12 @@
 import React from "react";
-import { ComponentPage, KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from "./enum";
+import { AxiosHeaders, Method, RawAxiosRequestHeaders } from "axios";
 import { TableColumnsType } from "antd";
+import { ComponentPage, KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from "./enum";
 import { StatusEvent } from "@/components/Calendar/Note/styles";
 
+type MethodsHeaders = Partial<{
+    [Key in Method as Lowercase<Key>]: AxiosHeaders;
+  } & {common: AxiosHeaders}>;
 export interface Action {
     type?: string;
     isLoading?: boolean;
@@ -28,6 +32,7 @@ export interface Query {
         fields?: Array<string> | string;
     };
     params?: Array<string>;
+    headers?:(RawAxiosRequestHeaders & MethodsHeaders) | AxiosHeaders;
 }
 export interface TabRoute {
     route: string;

@@ -206,6 +206,21 @@ const useGetComponentIdByReducer = (reducer: keyof RootState) => {
     const data = useSelector((state: RootState) => (state[reducer] as State).state);
     return data.payload?.query?.query?.componentId as string
 }
+
+function getFileInfoFromBase64(base64String: string) {
+    const fileInfo = base64String.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,/);
+
+    if (fileInfo && fileInfo[1]) {
+        const fileType = fileInfo[1];
+        const fileExtension = fileType.split('/')[1];
+        const fileName = "file." + fileExtension;
+
+        return { fileName, fileType };
+    }
+
+    return null;
+}
+
 export {
     uuid,
     listMonth,
@@ -220,5 +235,5 @@ export {
     getColorByCourseName,
     getColorByStatusProcess,
     calculateAge,
-    useGetComponentIdByReducer
+    getFileInfoFromBase64
 }

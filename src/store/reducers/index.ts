@@ -76,6 +76,7 @@ import getListDocument from './document/getListDocument.reducer';
 import createDocument from './document/createDocument.reducer';
 import deleteDocument from './document/deleteDocument.reducer';
 import updateDocument from './document/updateDocument.reducer';
+import uploadFile from './file/uploadFile.reducer';
 
 const rootReducer = {
     test: test,
@@ -155,6 +156,7 @@ const rootReducer = {
     getListDocument,
     createDocument,
     deleteDocument,
-    updateDocument
+    updateDocument,
+    uploadFile
 };
 export default rootReducer;

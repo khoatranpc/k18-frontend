@@ -27,7 +27,7 @@ export default async function actionRequest(uri: string, method: METHOD, request
                 );
                 break;
             case METHOD.POST:
-                response = httpClient.post(parseUri as string, request?.payload?.query?.body, { params: request?.payload?.query?.query }).then(
+                response = httpClient.post(parseUri as string, request?.payload?.query?.body, { params: request?.payload?.query?.query, ...request?.payload?.query?.headers ? { headers: request?.payload?.query?.headers } : {} }).then(
                     (response) => {
                         return response;
                     },
@@ -37,7 +37,7 @@ export default async function actionRequest(uri: string, method: METHOD, request
                 );
                 break;
             case METHOD.PUT:
-                response = httpClient.put(parseUri as string, request?.payload?.query?.body, { params: request?.payload?.query?.query }).then(
+                response = httpClient.put(parseUri as string, request?.payload?.query?.body, { params: request?.payload?.query?.query, ...request?.payload?.query?.headers ? { headers: request?.payload?.query?.headers } : {} }).then(
                     (response) => {
                         return response;
                     },

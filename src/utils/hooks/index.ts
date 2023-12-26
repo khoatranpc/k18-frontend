@@ -74,6 +74,7 @@ import { queryListDocument } from "@/store/reducers/document/getListDocument.red
 import { clearCreateDocument, queryCreateDocument } from "@/store/reducers/document/createDocument.reducer";
 import { clearDeleteDocument, queryDeleteDocument } from "@/store/reducers/document/deleteDocument.reducer";
 import { clearUpdateDocument, queryUpdateDocument } from "@/store/reducers/document/updateDocument.reducer";
+import { queryUploadFile } from "@/store/reducers/file/uploadFile.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -755,8 +756,11 @@ const useUpdateCourse = () => {
             payload: {
                 query: {
                     body,
-                    params: [courseId]
-                }
+                    params: [courseId],
+                    headers: {
+                        "Content-Type": "mutilpart/form-data"
+                    }
+                },
             }
         }
         dispatch(queryUpdateCourse(payload));
@@ -929,6 +933,7 @@ const useGetListDocument = createHookQueryReducer('getListDocument', queryListDo
 const useCreateDocument = createHookQueryReducer('createDocument', queryCreateDocument, clearCreateDocument);
 const useDeleteDocument = createHookQueryReducer('deleteDocument', queryDeleteDocument, clearDeleteDocument);
 const useUpdateDocument = createHookQueryReducer('updateDocument', queryUpdateDocument, clearUpdateDocument);
+const useUploadFile = createHookQueryReducer('uploadFile', queryUploadFile);
 
 export {
     useGetListClass,
@@ -1003,5 +1008,6 @@ export {
     useCreateDocument,
     useDeleteDocument,
     useUpdateDocument,
-    useComponentSize
+    useComponentSize,
+    useUploadFile
 }
