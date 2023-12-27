@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Obj } from '@/global/interface';
 import { ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { getColorFromStatusClass } from '@/global/init';
@@ -34,6 +34,7 @@ const IndexOverViewBlock = (props: Props) => {
         SP: 0,
         ST: 0
     }
+    const firstMounted = useRef(true);
     const listCourse = useGetListCourse();
     const teacherApplyCourse = useTeacherRegisterCourse();
     const getListTeacherApplyCourse = teacherApplyCourse.listData.response?.data as Obj[] || [];
@@ -177,14 +178,6 @@ const IndexOverViewBlock = (props: Props) => {
             });
         }
     }, []);
-    useEffect(() => {
-        if (!teacherApplyCourse.listData.response && !teacherApplyCourse.listData.isLoading) {
-            if (getListTeacher.length !== 0) {
-                const getListTeacherId = getListTeacher.map((item) => item._id as string);
-                teacherApplyCourse.query(getListTeacherId);
-            }
-        }
-    }, [teacherApplyCourse.listData.response, getListTeacher]);
     return (
         <div className={styles.indexOverviewBlock}>
             <div className={styles.title}>
