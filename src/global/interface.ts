@@ -6,7 +6,7 @@ import { StatusEvent } from "@/components/Calendar/Note/styles";
 
 type MethodsHeaders = Partial<{
     [Key in Method as Lowercase<Key>]: AxiosHeaders;
-  } & {common: AxiosHeaders}>;
+} & { common: AxiosHeaders }>;
 export interface Action {
     type?: string;
     isLoading?: boolean;
@@ -32,7 +32,7 @@ export interface Query {
         fields?: Array<string> | string;
     };
     params?: Array<string>;
-    headers?:(RawAxiosRequestHeaders & MethodsHeaders) | AxiosHeaders;
+    headers?: (RawAxiosRequestHeaders & MethodsHeaders) | AxiosHeaders;
 }
 export interface TabRoute {
     route: string;
@@ -48,6 +48,7 @@ export interface TabRoute {
     positionTE?: PositionTe;
     notRouting?: boolean;
     className?: string;
+    hasBackPage?: boolean;
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

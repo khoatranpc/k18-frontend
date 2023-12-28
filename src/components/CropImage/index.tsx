@@ -10,6 +10,7 @@ interface Props {
     width?: number;
     height?: number;
     className?: string;
+    classNameImgPreview?: string;
 };
 const CropImage = (props: Props) => {
     const [image, setImage] = useState(props.src ?? "");
@@ -61,7 +62,7 @@ const CropImage = (props: Props) => {
     return (
         <div className={`${styles.cropImage} ${props.className ?? ''}`}>
             {(acceptImage) ?
-                <Image className={styles.image} src={imagePreview} width={props.width ?? 200} height={props.height ?? 200} style={{ borderRadius: "50%" }} /> :
+                <Image className={`${styles.image} ${props.classNameImgPreview}`} src={imagePreview} width={props.width ?? 200} height={props.height ?? 200} style={{ borderRadius: "50%" }} /> :
                 (<div className={styles.cropping}>
                     <input style={{ display: "none" }} ref={inputRef} type="file" onChange={onChange} />
                     <Button icon={<UploadOutlined />} size="small" onClick={() => {

@@ -480,6 +480,19 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       positionTE: PositionTe.LEADER,
     },
     {
+      title: "Thông tin TE",
+      route: CombineRoute['TE']['MANAGER']['STAFF_INFO'],
+      key: "DETAIL_TE",
+      showIcon: false,
+      indexRoute: CombineRoute['TE']['MANAGER']['STAFF_INFO'],
+      hide: true,
+      component: ComponentPage.TE_STAFF,
+      noReplaceTitle: true,
+      positionTE: PositionTe.LEADER,
+      replaceTitle: "Thông tin TE",
+      hasBackPage: true
+    },
+    {
       title: "Báo cáo",
       route: CombineRoute["TE"]["MANAGER"]["REPORT"],
       key: "REPORT",

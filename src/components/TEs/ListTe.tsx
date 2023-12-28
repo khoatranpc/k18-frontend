@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { useFindGetAllTe } from '@/utils/hooks';
 import useGetCrrUser from '@/utils/hooks/getUser';
@@ -7,6 +8,7 @@ import styles from '@/styles/employee/TE.module.scss';
 
 const ListTE = () => {
     const listTe = useFindGetAllTe();
+    const router = useRouter();
     const getListTe = listTe.data.response?.data as Obj[];
     const crrUser = useGetCrrUser();
     const columns: Columns = [
@@ -68,6 +70,9 @@ const ListTE = () => {
                 columns={columns}
                 rowData={rowData}
                 disableDefaultPagination
+                hanldeClickRow={(record) => {
+                    router.push(`/te/manager/staff/${record._id}`)
+                }}
             />
         </div>
     )
