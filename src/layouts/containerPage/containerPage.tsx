@@ -77,7 +77,7 @@ const ContainerPage = (props: Props) => {
                         icon: findTabRoute.keyIcon,
                         replaceTitle: findTabRoute.noReplaceTitle ?
                             findTabRoute.title as React.ReactElement : routeStore?.replaceTitle as React.ReactElement,
-                        hasBackPage: findTabRoute.noReplaceTitle ? false : true,
+                        hasBackPage: findTabRoute.hasBackPage ?? (findTabRoute.noReplaceTitle ? false : true),
                         moreData: findTabRoute.noReplaceTitle ? undefined : routeStore?.moreData,
                         component: findTabRoute.component
                     }

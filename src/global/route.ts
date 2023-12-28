@@ -17,6 +17,7 @@ const CombineRoute = {
       DETAILTEACHER: "/te/manager/teacher/detail/[teacherId]",
       TEMPLATE_MAIL: "/te/manager/template-mail",
       STAFF: '/te/manager/staff',
+      STAFF_INFO: '/te/manager/staff/[teId]',
       REPORT: '/te/manager/staff/report',
       STORAGE: {
         DOCUMENT: '/te/manager/storage/document',

@@ -167,7 +167,7 @@ const BookTeacher = (props: Props) => {
             title: 'Lương/h',
             dataIndex: 'teacherRegister',
             render(value?: Obj) {
-                const getListSalary = value?.idTeacher.salaryPH as Obj[] || [];
+                const getListSalary = value?.idTeacher?.salaryPH as Obj[] || [];
                 const getSalary = Number(getListSalary[getListSalary.length - 1]?.rank || 0);
                 return Boolean(getSalary) ? getSalary.toLocaleString() : 'Chưa có mức lương'
             },

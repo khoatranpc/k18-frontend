@@ -75,6 +75,7 @@ import { clearCreateDocument, queryCreateDocument } from "@/store/reducers/docum
 import { clearDeleteDocument, queryDeleteDocument } from "@/store/reducers/document/deleteDocument.reducer";
 import { clearUpdateDocument, queryUpdateDocument } from "@/store/reducers/document/updateDocument.reducer";
 import { queryUploadFile } from "@/store/reducers/file/uploadFile.reducer";
+import { queryGetTeById } from "@/store/reducers/te/getTeById.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -937,6 +938,7 @@ const useCreateDocument = createHookQueryReducer('createDocument', queryCreateDo
 const useDeleteDocument = createHookQueryReducer('deleteDocument', queryDeleteDocument, clearDeleteDocument);
 const useUpdateDocument = createHookQueryReducer('updateDocument', queryUpdateDocument, clearUpdateDocument);
 const useUploadFile = createHookQueryReducer('uploadFile', queryUploadFile);
+const useGetTeById = createHookQueryReducer('getTeById', queryGetTeById);
 
 export {
     useGetListClass,
@@ -1012,5 +1014,6 @@ export {
     useDeleteDocument,
     useUpdateDocument,
     useComponentSize,
-    useUploadFile
+    useUploadFile,
+    useGetTeById
 }
