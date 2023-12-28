@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TabsProps } from 'antd';
-import CropImage from '../CropImage';
-import Tabs from '../Tabs';
-import styles from '@/styles/employee/TE.module.scss';
+import { Image, TabsProps } from 'antd';
+import { useGetTeById } from '@/utils/hooks';
+import Tabs from '../../Tabs';
 import OverView from './OverView';
+import PersonalInfo from './PersonalInfo';
+import styles from '@/styles/employee/TE.module.scss';
 
 enum Tab {
     OVER_VIEW = 'OVER_VIEW',
@@ -30,10 +31,11 @@ const TeInfo = () => {
             label: "Lịch"
         }
     ];
+    const currentTe = useGetTeById();
     const [tab, setTab] = useState<Tab>(Tab.OVER_VIEW);
     const contentTab: Record<Tab, React.ReactNode> = {
         OVER_VIEW: <OverView />,
-        PERSONAL_INFO: <></>,
+        PERSONAL_INFO: <PersonalInfo />,
         REPORT: <></>,
         SCHEDULE: <></>
     }
@@ -41,7 +43,7 @@ const TeInfo = () => {
         <div className={styles.teInfo}>
             <div className={styles.leftInfo}>
                 <div className={styles.shortInfo}>
-                    <CropImage className={styles.cropImage} classNameImgPreview={styles.imageStaff} src="https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png" />
+                    <Image className={styles.imageStaff} width={200} height={200} src="https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png" />
                     <p className={styles.teName}>Trần Đăng Khoa</p>
                     <p>QC-Web</p>
                     <p>khoatranpc603@gmail.com</p>
@@ -51,6 +53,9 @@ const TeInfo = () => {
             <div className={styles.rightInfo}>
                 <Tabs
                     listItemTab={listTabs}
+                    onClickTab={(key) => {
+                        setTab(key as Tab);
+                    }}
                     notAllowContent
                 />
                 <div className={styles.contentTab}>
