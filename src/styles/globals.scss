@@ -741,6 +741,10 @@ div.ant-dropdown.css-dev-only-do-not-override-zjzpde.ant-dropdown-placement-bott
     z-index: 1056 !important;
 }
 
+div.ant-dropdown {
+    z-index: 1056 !important;
+}
+
 div.ant-dropdown li.ant-dropdown-menu-item {
     &:hover {
         color: var(--base) !important;

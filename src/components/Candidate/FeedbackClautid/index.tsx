@@ -122,12 +122,14 @@ const FeedbackClautid = () => {
                 return value ? <div className={`${styles.cell} ${styles.completed}`}>Hoàn thành</div> :
                     <div>
                         <Button size="small" onClick={() => {
-                            setShowModalFeedback({
-                                show: true,
-                                data: record,
-                                countTime: index,
-                                isCreate: true
-                            });
+                            if (value) {
+                                setShowModalFeedback({
+                                    show: true,
+                                    data: record,
+                                    countTime: index,
+                                    isCreate: true
+                                });
+                            }
                         }}>Thực hiện</Button>
                         <Popconfirm
                             okButtonProps={{
@@ -141,12 +143,14 @@ const FeedbackClautid = () => {
                             title={<div className={styles.option}>
                                 <p>Lựa chọn hành động cập nhật</p>
                                 <Button size="small" className={styles.btnTime} onClick={() => {
-                                    setModalUpdateClassregister({
-                                        isUpdate: true,
-                                        show: true,
-                                        classRegister: record,
-                                        countTime: index
-                                    });
+                                    if (value) {
+                                        setModalUpdateClassregister({
+                                            isUpdate: true,
+                                            show: true,
+                                            classRegister: record,
+                                            countTime: index
+                                        });
+                                    }
                                 }}>Thông tin</Button>
                                 <Button size="small">Đổi lớp</Button>
                             </div>}
