@@ -4,8 +4,8 @@ import Tabs from '@/components/Tabs';
 import Overview from './Overview';
 import Schedule from './Schedule';
 import TimeKeeping from './TimeKeeping';
-import styles from '@/styles/teacher/DetailTeacher.module.scss';
 import Class from './Class';
+import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 enum Content {
     OVERVIEW = 'OVERVIEW',

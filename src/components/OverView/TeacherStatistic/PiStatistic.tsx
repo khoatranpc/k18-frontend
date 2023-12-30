@@ -45,7 +45,7 @@ const PiStatistic = () => {
         title: {
             text: 'Phân bổ giáo viên',
             align: 'left',
-            y: 50
+            y: 10
         },
         subtitle: {
             text: '',

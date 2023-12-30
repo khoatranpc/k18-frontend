@@ -59,7 +59,7 @@ const TableTab = () => {
             title: 'Bộ môn',
             dataIndex: 'candidateId',
             render(value: Obj) {
-                return <div className={`${styles.courseName}`} style={{ backgroundColor: getColorByCourseName[value?.courseApply?.courseName] }}>{value?.courseApply?.courseName}</div>
+                return <div className={`${styles.courseName}`} style={{ backgroundColor: value?.courseApply?.color }} > {value?.courseApply?.courseName}</ div>
             }
         },
         {
@@ -88,7 +88,7 @@ const TableTab = () => {
         }
     });
     useEffect(() => {
-        dataRoundProcess.query(RoundProcess.INTERVIEW, [], true, 'candidateId,linkMeet,processed,result,teName,positionTe,time,_id,courseId,courseName,fullName,linkCv,email,linkCv');
+        dataRoundProcess.query(RoundProcess.INTERVIEW, [], true, 'candidateId,linkMeet,processed,result,teName,positionTe,time,_id,courseId,courseName,fullName,linkCv,email,linkCv,color');
     }, []);
     return (
         <Table

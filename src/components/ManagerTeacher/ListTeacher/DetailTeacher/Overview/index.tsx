@@ -13,12 +13,14 @@ import TeacherInfo from './TeacherInfo';
 import Salary from './Salary';
 import Course from './Course';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
+import Account from './Account';
 
 enum TabOverView {
     INFOR = 'INFOR',
     FEEDBACK = 'FEEDBACK',
     SALARY = 'SALARY',
-    COURSE = 'COURSE'
+    COURSE = 'COURSE',
+    ACCOUNT = 'ACCOUNT'
 }
 
 const Overview = () => {
@@ -44,7 +46,8 @@ const Overview = () => {
         FEEDBACK: <Feedback />,
         INFOR: <TeacherInfo countRole={count} />,
         SALARY: <Salary />,
-        COURSE: <Course />
+        COURSE: <Course />,
+        ACCOUNT: <Account />
     }
     useEffect(() => {
         currentTeacher.query(router.query.teacherId as string, []);
@@ -143,6 +146,10 @@ const Overview = () => {
                     {
                         key: TabOverView.COURSE,
                         label: 'Bộ môn'
+                    },
+                    {
+                        key: TabOverView.ACCOUNT,
+                        label: 'Tài khoản'
                     },
                 ]}
             />

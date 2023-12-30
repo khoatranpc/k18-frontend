@@ -33,7 +33,7 @@ const PiResourceApply = () => {
         title: {
             text: 'Thống kê theo nguồn',
             align: 'left',
-            y: 50
+            y: 10
         },
         subtitle: {
             text: '',
