@@ -60,7 +60,7 @@ const OverView = () => {
         classSession.queryGetClassSession(crrClassId);
     }, []);
     const dataOverView: Array<ItemOverView> = useMemo(() => {
-        const dtSt: { teacherId: string; fullName: string; groupNumber: number }[] = [];
+        const dtSt: { teacherId: string; fullName: string; groupNumber: number, role: ROLE_TEACHER }[] = [];
         const listMT: Obj[] = [];
         const dtMt: {
             teacherId: string;
@@ -112,12 +112,14 @@ const OverView = () => {
                 dtSt.push({
                     teacherId: tc.idTeacher._id as string,
                     fullName: tc.idTeacher.fullName as string,
-                    groupNumber: item.groupNumber as number
+                    groupNumber: item.groupNumber as number,
+                    role: tc.roleRegister
                 })
             });
         });
         const getSt = dtSt.filter((item, index) => {
-            return dtSt.findIndex((el) => el.teacherId === item.teacherId) === index;
+            const crrTc = dtSt.findIndex((el) => el.teacherId === item.teacherId);
+            return dtSt[crrTc].role === ROLE_TEACHER.ST;
         });
         const getMt = dtMt.filter((item, index) => {
             return dtMt.findIndex((el) => el.teacherId === item.teacherId) === index;
