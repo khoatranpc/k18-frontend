@@ -493,6 +493,15 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       hasBackPage: true
     },
     {
+      title: "Thông tin cá nhân",
+      route: CombineRoute['TE']['MY_INFO'],
+      key: "DETAIL_MY_INFO_TE",
+      showIcon: false,
+      indexRoute: CombineRoute['TE']['MY_INFO'],
+      hide: true,
+      noReplaceTitle: true,
+    },
+    {
       title: "Báo cáo",
       route: CombineRoute["TE"]["MANAGER"]["REPORT"],
       key: "REPORT",

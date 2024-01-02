@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, TabsProps } from 'antd';
+import { useRouter } from 'next/router';
+import { Obj } from '@/global/interface';
 import { useGetTeById } from '@/utils/hooks';
 import Tabs from '../../Tabs';
 import OverView from './OverView';
 import PersonalInfo from './PersonalInfo';
+import Loading from '@/components/loading';
+import Empty from '@/components/Empty';
 import styles from '@/styles/employee/TE.module.scss';
 
 enum Tab {
@@ -31,7 +35,9 @@ const TeInfo = () => {
             label: "Lịch"
         }
     ];
+    const router = useRouter();
     const currentTe = useGetTeById();
+    const getCurrentTe = (currentTe.data.response as Obj)?.data as Obj;
     const [tab, setTab] = useState<Tab>(Tab.OVER_VIEW);
     const contentTab: Record<Tab, React.ReactNode> = {
         OVER_VIEW: <OverView />,
@@ -39,30 +45,42 @@ const TeInfo = () => {
         REPORT: <></>,
         SCHEDULE: <></>
     }
+    useEffect(() => {
+        if ((!currentTe.data.response || (currentTe.data.response && (currentTe.data.response as Obj).data?._id !== router.query.teId)) && !currentTe.data.isLoading) {
+            currentTe.query({
+                params: [router.query.teId as string],
+                query:{
+                    fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook'
+                }
+            });
+        }
+    }, [currentTe.data.response]);
     return (
-        <div className={styles.teInfo}>
-            <div className={styles.leftInfo}>
-                <div className={styles.shortInfo}>
-                    <Image className={styles.imageStaff} width={200} height={200} src="https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png" />
-                    <p className={styles.teName}>Trần Đăng Khoa</p>
-                    <p>QC-Web</p>
-                    <p>khoatranpc603@gmail.com</p>
-                    <p>0353923603</p>
+        ((currentTe.data.isLoading || !currentTe.data.response) ? <Loading isCenterScreen /> :
+            !currentTe.data.success ? <Empty /> : (<div className={styles.teInfo}>
+                <div className={styles.leftInfo}>
+                    <div className={styles.shortInfo}>
+                        <Image className={styles.imageStaff} width={200} height={200} src={getCurrentTe?.img ?? 'https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png'} />
+                        <p className={styles.teName}>{getCurrentTe?.teName}</p>
+                        <p>{getCurrentTe?.positionTe}{`${getCurrentTe?.courseId?`-${getCurrentTe?.courseId?.courseName}`:''}`}</p>
+                        <p>{getCurrentTe?.email}</p>
+                        <p>{getCurrentTe?.phoneNumber}</p>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.rightInfo}>
-                <Tabs
-                    listItemTab={listTabs}
-                    onClickTab={(key) => {
-                        setTab(key as Tab);
-                    }}
-                    notAllowContent
-                />
-                <div className={styles.contentTab}>
-                    {contentTab[tab]}
+                <div className={styles.rightInfo}>
+                    <Tabs
+                        listItemTab={listTabs}
+                        onClickTab={(key) => {
+                            setTab(key as Tab);
+                        }}
+                        notAllowContent
+                    />
+                    <div className={styles.contentTab}>
+                        {contentTab[tab]}
+                    </div>
                 </div>
-            </div>
-        </div>
+            </div>)
+        )
     )
 }
 

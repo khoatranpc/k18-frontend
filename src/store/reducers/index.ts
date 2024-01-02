@@ -78,6 +78,7 @@ import deleteDocument from './document/deleteDocument.reducer';
 import updateDocument from './document/updateDocument.reducer';
 import uploadFile from './file/uploadFile.reducer';
 import getTeById from './te/getTeById.reducer';
+import updateTe from './te/updateTe.reducer';
 
 const rootReducer = {
     test: test,
@@ -159,6 +160,7 @@ const rootReducer = {
     deleteDocument,
     updateDocument,
     uploadFile,
-    getTeById
+    getTeById,
+    updateTe
 };
 export default rootReducer;

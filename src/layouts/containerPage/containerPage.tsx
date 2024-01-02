@@ -47,7 +47,14 @@ const ContainerPage = (props: Props) => {
             onClick() {
                 logout();
             }
-        }
+        },
+        ...crrRole !== ROLE_USER.TC ? [{
+            key: "PERSONAL_INFO",
+            label: 'Cá nhân',
+            onClick() {
+                router.push('/te/my-info');
+            }
+        }] : []
     ]
     const refRoute = useRef<PayloadRoute>({
         payload: {
@@ -148,7 +155,7 @@ const ContainerPage = (props: Props) => {
                             }
                         </span>
                     </div>
-                    <Dropdown menu={{ items: badgeMoreAction }} placement="top">
+                    <Dropdown menu={{ items: badgeMoreAction }} trigger={["click"]} placement="top">
                         <span className={styles.moreAction}>
                             {MapIconKey[KEY_ICON.DOT3VT]}
                         </span>

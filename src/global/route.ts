@@ -18,13 +18,14 @@ const CombineRoute = {
       TEMPLATE_MAIL: "/te/manager/template-mail",
       STAFF: '/te/manager/staff',
       STAFF_INFO: '/te/manager/staff/[teId]',
-      REPORT: '/te/manager/staff/report',
+      REPORT: '/te/manager/report',
       STORAGE: {
         DOCUMENT: '/te/manager/storage/document',
         COURSE: "/te/manager/storage/course",
         COURSE_DETAIL: "/te/manager/storage/course/[courseId]",
       }
     },
+    MY_INFO: '/te/my-info',
     CALENDAR: "/te/calendar",
     SETTING: "/te/setting",
     HELP: "/te/help",

@@ -221,6 +221,10 @@ function getFileInfoFromBase64(base64String: string) {
     return null;
 }
 
+const compareRefData = (ref1: Obj, ref2: Obj) => {
+    return (JSON.stringify(ref1) === JSON.stringify(ref2))
+};
+
 export {
     uuid,
     listMonth,
@@ -235,5 +239,6 @@ export {
     getColorByCourseName,
     getColorByStatusProcess,
     calculateAge,
-    getFileInfoFromBase64
+    getFileInfoFromBase64,
+    compareRefData
 }
