@@ -30,7 +30,7 @@ const ContainerPage = (props: Props) => {
     const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
     const getUser = crrUser.response?.data as Obj;
-    const crrRole = (crrUser.response as Obj)?.data.roleAccount as ROLE_USER;
+    const crrRole = (crrUser.response as Obj)?.data?.roleAccount as ROLE_USER;
     const course = useGetListCourse();
     const mappingTab = tabForRole[crrRole];
     const router = useRouter();
@@ -149,9 +149,9 @@ const ContainerPage = (props: Props) => {
                         <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
                         <span className={styles.role}>
                             {
-                                ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
+                                ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
                                     :
-                                    ((crrUser.response as Obj)?.data.roleAccount as ROLE_USER)
+                                    ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER)
                             }
                         </span>
                     </div>
