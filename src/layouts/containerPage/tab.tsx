@@ -1,12 +1,13 @@
 import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from "@/global/enum";
-import { TabRoute } from "@/global/interface";
+import { Obj, SiderRoute, TabRoute } from "@/global/interface";
 import { MapIconKey } from "@/global/icon";
 import CombineRoute from "@/global/route";
-import Collapse, { ItemPanels } from "@/components/Collapse";
 import ContentPanel, { ItemContentPanel } from "./Panels/Content";
 import HeaderPanel from "./Panels/Header";
-import styles from "@/styles/tabs/Tab.module.scss";
 import IconDocument from "@/icons/Document";
+import Collapse, { ItemPanels } from "@/components/Collapse";
+import Employee from "@/icons/Employee";
+import styles from "@/styles/tabs/Tab.module.scss";
 
 const listPanelTeacher: ItemContentPanel[] = [
   {
@@ -29,8 +30,6 @@ const panelsTeacher: ItemPanels[] = [
       <HeaderPanel
         listChildRoute={[
           CombineRoute["TE"]["MANAGER"]["TEACHER"],
-          CombineRoute["TE"]["MANAGER"]["TEACHERRANK"],
-          CombineRoute["TE"]["MANAGER"]["TEACHERSALARY"],
         ]}
         className={`${styles.tabPanel} ${styles.parent}`}
         icon={MapIconKey[KEY_ICON.TC]}
@@ -185,19 +184,19 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       positionTE: PositionTe.LEADER,
     },
     {
-      title: (
-        <Collapse
-          panels={panelsRecruitment}
-          className={`collapse_tab ${styles.mangerRecruitment}`}
-        />
-      ),
+      title: (props?: Obj) => <Collapse
+        panels={panelsRecruitment}
+        className={`collapse_tab ${styles.mangerRecruitment}`}
+        closedBar={props?.closedBar}
+        icon={MapIconKey[KEY_ICON.RCM]}
+      />,
       route: "/",
       key: "RECUITMENT",
       indexRoute: "",
       noReplaceTitle: true,
       component: ComponentPage.RECRUITMENT,
       notRouting: true,
-      className: `${styles.tabFeedback}`,
+      className: `${styles.tabFeedback} ${styles.collapse}`,
     },
     {
       title: "Tuyển dụng",
@@ -242,7 +241,12 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       hide: true,
     },
     {
-      title: <Collapse panels={panelsTeacher} className="collapse_tab" />,
+      title: (props?: Obj) => <Collapse
+        icon={MapIconKey[KEY_ICON.TC]}
+        closedBar={props?.closedBar}
+        panels={panelsTeacher}
+        className={`collapse_tab ${styles.collapse}`}
+      />,
       route: "/",
       key: "TEACHERS_PN",
       keyIcon: KEY_ICON.TC,
@@ -262,12 +266,12 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.MANAGER_CLASS,
     },
     {
-      title: (
-        <Collapse
-          panels={panelsDocument}
-          className={`collapse_tab ${styles.managerLocation}`}
-        />
-      ),
+      title: (props?: Obj) => <Collapse
+        icon={<IconDocument />}
+        closedBar={props?.closedBar}
+        panels={panelsDocument}
+        className={`collapse_tab ${styles.managerLocation} ${styles.collapse}`}
+      />,
       route: "",
       key: "MG_DOCUMENT",
       notRouting: true,
@@ -318,12 +322,12 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       hide: true,
     },
     {
-      title: (
-        <Collapse
-          panels={panelsLocation}
-          className={`collapse_tab ${styles.managerLocation}`}
-        />
-      ),
+      title: (props?: Obj) => <Collapse
+        icon={MapIconKey[KEY_ICON.LOCATION]}
+        closedBar={props?.closedBar}
+        panels={panelsLocation}
+        className={`collapse_tab ${styles.managerLocation} ${styles.collapse}`}
+      />,
       route: CombineRoute["TE"]["LOCATION"],
       key: "MG_LOCATION",
       // keyIcon: KEY_ICON.LOCATION,
@@ -363,12 +367,12 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       component: ComponentPage.TIMESCHEDULE,
     },
     {
-      title: (
-        <Collapse
-          panels={panelsFeedback}
-          className={`collapse_tab ${styles.collapseFeedback}`}
-        />
-      ),
+      title: (props?: Obj) => <Collapse
+        icon={MapIconKey[KEY_ICON.MS]}
+        closedBar={props?.closedBar}
+        panels={panelsFeedback}
+        className={`collapse_tab ${styles.collapseFeedback} ${styles.collapse}`}
+      />,
       route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
       key: "FEED_BACK",
       showIcon: true,
@@ -457,7 +461,12 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
       positionTE: PositionTe.LEADER,
     },
     {
-      title: <Collapse panels={panelsTE} className="collapse_tab" />,
+      title: (props?: Obj) => <Collapse
+        icon={<Employee />}
+        closedBar={props?.closedBar}
+        panels={panelsTE}
+        className={`collapse_tab ${styles.collapse}`}
+      />,
       route: "",
       key: "STAFF",
       showIcon: false,
@@ -614,4 +623,109 @@ const tabForRole: Record<ROLE_USER, Array<TabRoute>> = {
   ],
   COMMON: [],
 };
-export { tabForRole };
+const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
+  TE: [
+    {
+      title: "Tổng quan",
+      route: CombineRoute["TE"]["OVERVIEW"],
+      keyIcon: "OV",
+      indexroute: CombineRoute["TE"]["OVERVIEW"],
+      noReplaceTitle: true,
+      positionTE: PositionTe.LEADER
+    },
+    {
+      title: "Tuyển dụng",
+      route: 'RECRUITMENT',
+      keyIcon: "RCM",
+      indexroute: 'RECRUITMENT',
+      notRouting: true,
+      children: [
+        {
+          title: "Tuyển dụng",
+          route: CombineRoute["TE"]["RECRUITMENT"],
+          indexroute: CombineRoute["TE"]["RECRUITMENT"],
+          noReplaceTitle: true,
+        },
+        {
+          title: "Chi tiết ứng viên",
+          route: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
+          indexroute: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
+          noReplaceTitle: true,
+          hasBackPage: true,
+          hide: true
+        },
+        {
+          title: "Lịch phỏng vấn",
+          route: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
+          indexroute: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
+          noReplaceTitle: true,
+        }
+      ]
+    },
+    {
+      title: "Giáo viên",
+      route: "TEACHER",
+      indexroute: "TEACHER",
+      keyIcon: "TC",
+      children: [
+        {
+          route: CombineRoute["TE"]["MANAGER"]["TEACHER"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["TEACHER"],
+          title: "Danh sách",
+        },
+        {
+          route: CombineRoute["TE"]["MANAGER"]["DETAILTEACHER"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["DETAILTEACHER"],
+          title: "Chi tiết giáo viên",
+          hide: true,
+          hasBackPage: true,
+          component: ComponentPage.TEACHER_DETAIL
+        },
+      ]
+    },
+    {
+      title: "Lớp học",
+      route: CombineRoute["TE"]["MANAGER"]["CLASS"],
+      indexroute: CombineRoute["TE"]["MANAGER"]["CLASS"],
+      keyIcon: "HTS"
+    },
+    {
+      title: "Chi tiết lớp học",
+      route: CombineRoute["TE"]["MANAGER"]["DETAILCLASS"],
+      indexroute: CombineRoute["TE"]["MANAGER"]["DETAILCLASS"],
+      hide: true,
+      hasBackPage: true,
+      component: ComponentPage.DETAILCLASS,
+    },
+    {
+      title: "Lưu trữ",
+      route: "STORAGE",
+      indexroute: "STORAGE",
+      keyIcon: "FD",
+      notRouting: true,
+      children: [
+        {
+          title: "Tài liệu",
+          route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["DOCUMENT"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["DOCUMENT"],
+        },
+        {
+          title: "Khoá học",
+          route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE"],
+        },
+        {
+          title: "Chi tiết khoá học",
+          route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE_DETAIL"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE_DETAIL"],
+          hide: true,
+          hasBackPage: true,
+          component: ComponentPage.COURSE_DETAIL
+        },
+      ]
+    }
+  ],
+  TEACHER: [],
+  COMMON: []
+};
+export { tabForRole, siderByRole };

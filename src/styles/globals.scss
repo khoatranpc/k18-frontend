@@ -1073,3 +1073,35 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
     width: 100% !important;
     height: 100% !important;
 }
+
+.customCollapseSider {
+
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+        transition: 0s !important;
+
+        &:hover {
+            background-color: var(--pink-red) !important;
+            color: var(--base) !important;
+        }
+    }
+
+    .ant-menu-item-selected {
+        background-color: var(--pink-red) !important;
+        color: var(--base) !important;
+    }
+
+    &.ant-layout-sider-collapsed {
+        li.ant-menu-submenu-selected div.ant-menu-submenu-title{
+            padding-left: 24px !important;
+        }
+    }
+
+    li.ant-menu-submenu-selected div.ant-menu-submenu-title {
+        color: var(--black) !important;
+        border-left: 2px solid var(--base);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        padding-left: 22px !important;
+    }
+}

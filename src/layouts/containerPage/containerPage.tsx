@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Dropdown, MenuProps } from 'antd';
+import { Avatar, Dropdown, Menu, MenuProps } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from '@/global/enum';
-import { Obj, State } from '@/global/interface';
+import { Obj, SiderRoute, State } from '@/global/interface';
 import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
 import { getLabelPositionTe } from '@/global/init';
@@ -15,16 +15,46 @@ import useGetDataRoute from '@/utils/hooks/getDataRoute';
 import { AppDispatch, RootState } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import PageHeader from '@/components/PageHeader';
-import { tabForRole } from './tab';
+import { siderByRole } from './tab';
 import Loading from '@/components/loading';
 import Empty from '@/components/Empty';
 import logo from '@/assets/imgs/mindx.png';
+import { Layout } from 'antd';
+const { Sider } = Layout;
 import styles from '@/styles/ContainerPage.module.scss';
 
 interface Props {
     children: React.ReactElement;
 }
-
+type MenuItem = Required<MenuProps>['items'][number];
+function getItem(
+    label: React.ReactNode,
+    route: React.Key,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+): MenuItem {
+    return {
+        key: route,
+        icon,
+        children,
+        label,
+    } as Obj as MenuItem;
+}
+export const findRoute = (listRoute: SiderRoute[], currentRoute: string): any => {
+    for (const element of listRoute) {
+        if (element.indexroute === currentRoute) {
+            return element;
+        }
+        if (element.children && element.children.length > 0) {
+            // Gọi đệ quy để kiểm tra trong children
+            const foundInChildren = findRoute(element.children, currentRoute);
+            if (foundInChildren) {
+                return foundInChildren;
+            }
+        }
+    }
+    return null;
+}
 const ContainerPage = (props: Props) => {
     const getRolePage = (props.children.type as Obj).Role as ROLE_USER;
     const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
@@ -32,7 +62,19 @@ const ContainerPage = (props: Props) => {
     const getUser = crrUser.response?.data as Obj;
     const crrRole = (crrUser.response as Obj)?.data?.roleAccount as ROLE_USER;
     const course = useGetListCourse();
-    const mappingTab = tabForRole[crrRole];
+    const mappingTab = siderByRole[crrRole];
+    const items: MenuItem[] = mappingTab.map((item) => {
+        return !item.hide ? getItem(item.title,
+            item.route,
+            MapIconKey[item.keyIcon as KEY_ICON],
+            item.children?.map((child) => {
+                if (!child.hide) {
+                    return getItem(child.title, child.route, MapIconKey[child.keyIcon as KEY_ICON]);
+                } else return null
+            })
+        ) : null
+    });
+    const [collapsed, setCollapsed] = useState(false);
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const routeStore = useGetDataRoute();
@@ -60,15 +102,13 @@ const ContainerPage = (props: Props) => {
         payload: {
             route: mappingTab?.[0]?.route,
             title: mappingTab?.[0]?.title as React.ReactElement,
-            icon: mappingTab?.[0]?.keyIcon,
+            icon: mappingTab?.[0]?.keyIcon as KEY_ICON,
             component: mappingTab?.[0]?.component
         }
     });
     useEffect(() => {
         if (refRoute.current.payload.route !== router.route) {
-            const findTabRoute = mappingTab?.find((item) => {
-                return item.indexRoute === router.route;
-            });
+            const findTabRoute = findRoute(mappingTab, router.route);
             if (router.route === '/') {
                 refRoute.current.payload = {
                     route: '/',
@@ -79,11 +119,11 @@ const ContainerPage = (props: Props) => {
             } else {
                 if (findTabRoute) {
                     refRoute.current.payload = {
-                        route: findTabRoute.indexRoute,
+                        route: findTabRoute.indexroute,
                         title: findTabRoute.title as React.ReactElement,
-                        icon: findTabRoute.keyIcon,
+                        icon: findTabRoute.keyIcon as KEY_ICON,
                         replaceTitle: findTabRoute.noReplaceTitle ?
-                            findTabRoute.title as React.ReactElement : routeStore?.replaceTitle as React.ReactElement,
+                            findTabRoute.label as React.ReactElement : routeStore?.replaceTitle as React.ReactElement,
                         hasBackPage: findTabRoute.hasBackPage ?? (findTabRoute.noReplaceTitle ? false : true),
                         moreData: findTabRoute.noReplaceTitle ? undefined : routeStore?.moreData,
                         component: findTabRoute.component
@@ -119,33 +159,20 @@ const ContainerPage = (props: Props) => {
     if (loadingForCheckRole) return <Loading isCenterScreen onFirstLoad />
     return (
         <div className={styles.containerPage}>
-            <div className={`${styles.navTab} ${styles.bgWhite}`}>
+            <Sider collapsible collapsed={collapsed} className={`${styles.navTab} ${styles.bgWhite} customCollapseSider`} onCollapse={(value) => setCollapsed(value)}>
                 <div className={styles.logo}>
                     <Image src={logo} alt='' className={styles.imgLogo} />
                 </div>
-                <div className={styles.listTabLink}>
-                    {
-                        mappingTab?.map((item) => {
-                            return !item.hide && (item.positionTE ? getUser.positionTe === item.positionTE : true) && <Link
-                                key={item.key}
-                                href={item.route}
-                                className={`${router.route === item.route || router.route.includes(item.route) ? styles.active : ''}`}
-                                onClick={(e) => {
-                                    if (item.notRouting) {
-                                        e.preventDefault();
-                                    }
-                                }}
-                            >
-                                <div className={`${!item.key.includes('PN') ? styles.tab : styles.panel} ${item.className}`} key={item.key}>
-                                    {item.showIcon && MapIconKey[item.keyIcon as KEY_ICON]}
-                                    <span>{item.title}</span>
-                                </div></Link>;
-                        })
+                <Menu theme="dark" mode="inline" items={items} onClick={(info) => {
+                    const getRoute = info.key;
+                    const currentRoute = findRoute(mappingTab, getRoute);
+                    if (currentRoute) {
+                        router.push(currentRoute.route);
                     }
-                </div>
+                }} />
                 <div className={styles.badge}>
-                    <Avatar size='large' />
-                    <div className={styles.user}>
+                    <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string} />
+                    {!collapsed && <div className={styles.user}>
                         <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
                         <span className={styles.role}>
                             {
@@ -154,15 +181,15 @@ const ContainerPage = (props: Props) => {
                                     ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER)
                             }
                         </span>
-                    </div>
+                    </div>}
                     <Dropdown menu={{ items: badgeMoreAction }} trigger={["click"]} placement="top">
                         <span className={styles.moreAction}>
                             {MapIconKey[KEY_ICON.DOT3VT]}
                         </span>
                     </Dropdown>
                 </div>
-            </div >
-            <div className={styles.mainColumn}>
+            </Sider>
+            <div className={`${styles.mainColumn} ${collapsed ? styles.inCollapsed : ""}`}>
                 <PageHeader />
                 <div className={`${styles.mainChild} ${styles.bgWhite}`}>
                     {routeStore?.route === '/empty' ? <Empty /> : props.children}

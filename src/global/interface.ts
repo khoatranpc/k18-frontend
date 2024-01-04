@@ -36,7 +36,7 @@ export interface Query {
 }
 export interface TabRoute {
     route: string;
-    title: React.ReactElement | string;
+    title: React.ReactElement | string | React.ReactNode | { (props?: Obj): React.ReactNode };
     key: string;
     keyIcon?: KEY_ICON;
     showIcon?: boolean;
@@ -49,6 +49,22 @@ export interface TabRoute {
     notRouting?: boolean;
     className?: string;
     hasBackPage?: boolean;
+}
+export interface SiderRoute {
+    route: string;
+    title: string | React.ReactNode;
+    keyIcon?: keyof typeof KEY_ICON;
+    replaceTitle?: React.ReactElement | string;
+    noReplaceTitle?: boolean;
+    component?: ComponentPage;
+    indexroute: string;
+    positionTE?: PositionTe;
+    notRouting?: boolean;
+    className?: string;
+    hasBackPage?: boolean;
+    hide?: boolean;
+    showIcon?: boolean;
+    children?: this[];
 }
 export interface Columns extends TableColumnsType<Record<string, unknown>> {
 

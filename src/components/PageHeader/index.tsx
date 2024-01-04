@@ -3,17 +3,20 @@ import { useRouter } from 'next/router';
 import { Avatar, Badge, Input } from 'antd';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
-import { ComponentPage, KEY_ICON, ROLE } from '@/global/enum';
+import { ComponentPage, KEY_ICON, ROLE, ROLE_USER } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import useGetCrrUser from '@/utils/hooks/getUser';
 import useGetStateRouter from '@/utils/hooks/stateRouter';
 import styles from '@/styles/ContainerPage.module.scss';
+import { findRoute } from '@/layouts/containerPage/containerPage';
+import { siderByRole } from '@/layouts/containerPage/tab';
 
 const PageHeader = () => {
     const stateRouter = useGetStateRouter();
     const currentUser = useGetCrrUser()?.data as Obj;
-
+    const crrRole = currentUser.roleAccount as ROLE_USER;
     const router = useRouter();
+    const getCrrSiderRoute = findRoute(siderByRole[crrRole], router.route);
     const handlePrevPage = () => {
         switch (stateRouter.component) {
             case ComponentPage.DETAILCLASS:
@@ -41,10 +44,12 @@ const PageHeader = () => {
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
             {
                 <div className={styles.titleHeader}>
-                    <h2>{stateRouter?.hasBackPage && <span className={styles.backPage} onClick={() => {
-                        handlePrevPage();
-                    }}>{MapIconKey[KEY_ICON.ARROWL]}</span>}
-                        {stateRouter?.replaceTitle || stateRouter?.title}
+                    <h2>{
+                        getCrrSiderRoute?.hasBackPage && <span className={styles.backPage} onClick={() => {
+                            handlePrevPage();
+                        }}>{MapIconKey[KEY_ICON.ARROWL]}</span>
+                    }
+                        {stateRouter?.title}
                     </h2>
                 </div>
             }
