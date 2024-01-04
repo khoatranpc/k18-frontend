@@ -75,7 +75,7 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     ZOOM: <Image alt="" src={iconZoom} />,
     DRIVE: <Image alt="" src={iconDrive} />,
     RELOAD: <Image alt="" src={iconReload} />,
-    LOCATION: <Image alt="" src={iconLocation} />,
+    LOCATION: <Image alt="" src={iconLocation} width={20} height={20}/>,
     EDIT: <Image alt="" src={iconEdit} />,
     CLOCK: <Clock />,
     TICK: < Image alt="" src={iconTick} />,

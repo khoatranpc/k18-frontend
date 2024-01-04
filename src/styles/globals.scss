@@ -1092,7 +1092,7 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
     }
 
     &.ant-layout-sider-collapsed {
-        li.ant-menu-submenu-selected div.ant-menu-submenu-title{
+        li.ant-menu-submenu-selected div.ant-menu-submenu-title {
             padding-left: 24px !important;
         }
     }
@@ -1103,5 +1103,21 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
         padding-left: 22px !important;
+    }
+
+    li.ant-menu-item {
+
+        img {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        span {
+            &:last-child {
+                display: inline-block;
+                width: fit-content;
+                margin-left: 1rem !important;
+            }
+        }
     }
 }

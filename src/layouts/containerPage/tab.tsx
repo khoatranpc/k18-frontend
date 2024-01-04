@@ -723,7 +723,61 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           component: ComponentPage.COURSE_DETAIL
         },
       ]
-    }
+    },
+    {
+      title: "Cơ sở",
+      route: "LOCATION",
+      indexroute: "LOCATION",
+      keyIcon: "LOCATION",
+      children: [
+        {
+          title: "Khu vực",
+          route: CombineRoute["TE"]["AREA"],
+          indexroute: CombineRoute["TE"]["AREA"],
+        },
+        {
+          title: "Danh sách",
+          route: CombineRoute["TE"]["LOCATION"],
+          indexroute: CombineRoute["TE"]["LOCATION"],
+        },
+      ]
+    },
+    {
+      title: "Khung giờ học",
+      keyIcon: "CLOCK",
+      route: CombineRoute["TE"]["TIMESCHEDULE"],
+      indexroute: CombineRoute["TE"]["TIMESCHEDULE"],
+    },
+    {
+      title: "Feedback",
+      keyIcon: "MS",
+      route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
+      indexroute: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
+    },
+    {
+      title: "Mẫu mail",
+      keyIcon: "MAIL",
+      route: CombineRoute["TE"]["MANAGER"]["TEMPLATE_MAIL"],
+      indexroute: CombineRoute["TE"]["MANAGER"]["TEMPLATE_MAIL"],
+    },
+    {
+      title: "TE",
+      keyIcon: "EMPLOYEE",
+      route: "",
+      indexroute: "",
+      children: [
+        {
+          title: "Danh sách",
+          route: CombineRoute["TE"]["MANAGER"]["STAFF"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["STAFF"],
+        },
+        {
+          title: "Báo cáo",
+          route: CombineRoute["TE"]["MANAGER"]["REPORT"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["REPORT"],
+        },
+      ]
+    },
   ],
   TEACHER: [],
   COMMON: []
