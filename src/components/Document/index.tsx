@@ -32,17 +32,21 @@ const Document = () => {
     }
 
     useEffect(() => {
-        listDocument.query();
+        listDocument.query({
+            query: {
+                fields: '_id,docTitle,docDescribe'
+            }
+        });
     }, []);
     return (
         <div className={styles.documents}>
             <div className={styles.btn}>
                 <Button onClick={() => {
                     listDocument.query();
-                }}><ReloadOutlined /></Button>&nbsp;
+                }} loading={listDocument.data.isLoading}><ReloadOutlined /></Button>&nbsp;
                 {hasRole && <Button onClick={handleOpenForm}>Tạo tài liệu</Button>}
             </div>
-            {listDocument.data.isLoading ? <Loading isCenterScreen /> :
+            {listDocument.data.isLoading && !listDocument.data.response ? <Loading isCenterScreen /> :
                 (getListDocument ? (getListDocument.length === 0 ? <Empty /> :
                     <div className={styles.contentMain}>
                         <div className={`${styles.listDocument} ${toggle ? styles.onToggle : ''}`}>

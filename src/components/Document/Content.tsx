@@ -4,8 +4,9 @@ import { DeleteOutlined, EditFilled } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
 import { PositionTe } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
-import { useComparePositionTE, useDeleteDocument, useGetListDocument, useHandleDrawer } from '@/utils/hooks';
+import { useComparePositionTE, useDeleteDocument, useGetListDocument, useHandleDrawer, usetGetDetailDoc } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
+import Loading from '../loading';
 import styles from '@/styles/Document.module.scss';
 
 interface Props {
@@ -16,6 +17,9 @@ const Content = (props: Props) => {
     const message = useHookMessage();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const drawer = useHandleDrawer();
+    const currentDoc = usetGetDetailDoc();
+    const getRoleTe = useComparePositionTE(PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC);
+    const getCurrentDoc = currentDoc.data.response?.data as Obj;
     const deleteDoc = useDeleteDocument();
     const listDocument = useGetListDocument();
     const handleOpenForm = () => {
@@ -54,26 +58,37 @@ const Content = (props: Props) => {
             message.close();
         }
     }, [deleteDoc.data]);
+    useEffect(() => {
+        if ((props.doc && getCurrentDoc?._id !== props.doc?._id)) {
+            currentDoc.query({
+                params: [props.doc?._id as string]
+            });
+        }
+    }, [props.doc, getCurrentDoc]);
     return (
         <div className={styles.contentDocument}>
             {
-                props.doc ? <div className={`${styles.viewContent} ${props.isToggle ? styles.onToggle : ''}`}>
+                (currentDoc.data.isLoading || (getCurrentDoc && props.doc && getCurrentDoc._id !== props.doc!._id)) ? <Loading isCenterScreen /> : ((props.doc && getCurrentDoc) ? <div className={`${styles.viewContent} ${props.isToggle ? styles.onToggle : ''}`}>
                     {hasRole && <EditFilled className={styles.editIcon} onClick={() => {
                         handleOpenForm()
                     }} />}
                     {props.isToggle && <>
-                        <p className={styles.docName}>Tài liệu: <b>{props.doc?.docTitle}</b></p>
-                        <p>Mô tả: <b>{props.doc?.docDescribe}</b></p>
+                        <p className={styles.docName}>Tài liệu: <b>{getCurrentDoc.docTitle}</b></p>
+                        <p>Mô tả: <b>{getCurrentDoc.docDescribe}</b></p>
                     </>}
-                    <p>Trạng thái: {props.doc.active ? 'Triển khai' : 'Ngừng triển khai'}</p>
-                    <p>Cập nhật: {formatDatetoString(props.doc.updatedAt as string, 'MM/yyyy')}</p>
-                    <p>Link tài liệu: {props.doc.linkDoc ? <a target="_blank" href={props.doc.linkDoc}>Link</a> : 'Đang cập nhật'}</p>
+                    {getRoleTe && <p>Share: {(getCurrentDoc.role as Obj[]).map((item, idx) => {
+                        return `${item}${idx < (Object.keys(getCurrentDoc.role).length - 1) ? ', ' : ''}`
+                    })}</p>}
+                    <p>Trạng thái: {getCurrentDoc.active ? 'Triển khai' : 'Ngừng triển khai'}</p>
+                    <p>Cập nhật: {formatDatetoString(getCurrentDoc.updatedAt as string, 'MM/yyyy')}</p>
+                    <p>Link tài liệu: {getCurrentDoc.linkDoc ? <a target="_blank" href={getCurrentDoc.linkDoc}>Link</a> : 'Đang cập nhật'}</p>
                     {
-                        props.doc.linkDoc && <div className={styles.preview}>
-                            <iframe src={props.doc.linkDoc} className={styles.linkPreview} />
+                        getCurrentDoc.linkDoc && <div className={styles.preview}>
+                            <iframe src={getCurrentDoc.linkDoc} className={styles.linkPreview} />
                         </div>
                     }
                 </div> : <div>Hãy chọn tài liệu để xem nội dung</div>
+                )
             }
         </div>
     )

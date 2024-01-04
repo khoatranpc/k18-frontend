@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Form } from 'react-bootstrap';
-import { Button, DatePicker, Input, MenuProps } from 'antd';
+import { Button, Checkbox, DatePicker, Input, MenuProps } from 'antd';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -109,6 +109,16 @@ const PersonalInfo = () => {
                     <CropImage className={styles.cropImage} classNameImgPreview={styles.imageStaff} src={getValues.img ?? `https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png`} onCropped={(file) => {
                         setFieldValue("fileImage", file);
                     }} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>
+                        Trạng thái
+                    </Form.Label>
+                    <Checkbox.Group value={getValues.activate ? ['ACTIVE'] : []} onChange={(checkedValue) => {
+                        setFieldValue('activate', checkedValue.includes('ACTIVE'));
+                    }}>
+                        <Checkbox style={{ marginLeft: '0.4rem' }} value={'ACTIVE'}>Active</Checkbox>
+                    </Checkbox.Group>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>

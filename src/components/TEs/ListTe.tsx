@@ -55,15 +55,13 @@ const ListTE = () => {
         }
     });
     useEffect(() => {
-        if (!listTe.data.response && !listTe.data.isLoading) {
-            listTe.query({
-                query: {
-                    fields: '_id,teName,positionTe,courseId,courseName,email,phoneNumber,activate,img',
-                    getAll: true
-                }
-            })
-        }
-    }, [listTe.data]);
+        listTe.query({
+            query: {
+                fields: '_id,teName,positionTe,courseId,courseName,email,phoneNumber,activate,img',
+                getAll: true
+            }
+        })
+    }, []);
     return (
         <div className={styles.listTE}>
             <Table
