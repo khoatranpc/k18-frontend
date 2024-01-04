@@ -1111,13 +1111,5 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
             width: 2rem;
             height: 2rem;
         }
-
-        span {
-            &:last-child {
-                display: inline-block;
-                width: fit-content;
-                margin-left: 1rem !important;
-            }
-        }
     }
 }

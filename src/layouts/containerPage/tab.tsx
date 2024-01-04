@@ -743,8 +743,8 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       ]
     },
     {
-      title: "Khung giờ học",
-      keyIcon: "CLOCK",
+      title: "Giờ học",
+      keyIcon: "TIMESCHEDULE",
       route: CombineRoute["TE"]["TIMESCHEDULE"],
       indexroute: CombineRoute["TE"]["TIMESCHEDULE"],
     },
