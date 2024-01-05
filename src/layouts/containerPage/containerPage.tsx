@@ -167,13 +167,13 @@ const ContainerPage = (props: Props) => {
                     setContainerSize(rect.width);
                 }}
             />
-            <Sider ref={siderRef} collapsible collapsed={collapsed} className={`${styles.navTab} ${styles.bgWhite} customCollapseSider`} onCollapse={(value) => setCollapsed(value)}>
+            <Sider ref={siderRef} collapsed={collapsed} className={`${styles.navTab} ${styles.bgWhite} customCollapseSider`} onCollapse={(value) => setCollapsed(value)}>
                 <ResizeObserver
                     onResize={(rect) => {
                         setSiderSize(rect.width);
                     }}
                 />
-                <div className={styles.toggleBar}>
+                <div className={styles.toggleBar} onClick={() => { setCollapsed(!collapsed) }}>
                     {collapsed ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
                 </div>
                 <div className={styles.logo}>
