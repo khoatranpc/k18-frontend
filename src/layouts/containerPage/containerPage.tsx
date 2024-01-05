@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Dropdown, Menu, MenuProps } from 'antd';
-import Link from 'next/link';
+import ResizeObserver from 'react-resize-observer';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from '@/global/enum';
 import { Obj, SiderRoute, State } from '@/global/interface';
 import CombineRoute from '@/global/route';
@@ -20,7 +21,7 @@ import Loading from '@/components/loading';
 import Empty from '@/components/Empty';
 import logo from '@/assets/imgs/mindx.png';
 import { Layout } from 'antd';
-const { Sider } = Layout;
+const { Sider, Content } = Layout;
 import styles from '@/styles/ContainerPage.module.scss';
 
 interface Props {
@@ -59,7 +60,9 @@ const ContainerPage = (props: Props) => {
     const getRolePage = (props.children.type as Obj).Role as ROLE_USER;
     const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
-    const getUser = crrUser.response?.data as Obj;
+    const siderRef = useRef(null);
+    const [siderSize, setSiderSize] = useState<number>(0);
+    const [containerSize, setContainerSize] = useState<number>(0);
     const crrRole = (crrUser.response as Obj)?.data?.roleAccount as ROLE_USER;
     const course = useGetListCourse();
     const mappingTab = siderByRole[crrRole];
@@ -155,11 +158,24 @@ const ContainerPage = (props: Props) => {
                 setLoadingForCheckRole(false);
             }
         }
-    }, [crrUser])
+    }, [crrUser]);
     if (loadingForCheckRole) return <Loading isCenterScreen onFirstLoad />
     return (
         <div className={styles.containerPage}>
-            <Sider collapsible collapsed={collapsed} className={`${styles.navTab} ${styles.bgWhite} customCollapseSider`} onCollapse={(value) => setCollapsed(value)}>
+            <ResizeObserver
+                onResize={(rect) => {
+                    setContainerSize(rect.width);
+                }}
+            />
+            <Sider ref={siderRef} collapsible collapsed={collapsed} className={`${styles.navTab} ${styles.bgWhite} customCollapseSider`} onCollapse={(value) => setCollapsed(value)}>
+                <ResizeObserver
+                    onResize={(rect) => {
+                        setSiderSize(rect.width);
+                    }}
+                />
+                <div className={styles.toggleBar}>
+                    {collapsed ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
+                </div>
                 <div className={styles.logo}>
                     <Image src={logo} alt='' className={styles.imgLogo} />
                 </div>
@@ -189,7 +205,7 @@ const ContainerPage = (props: Props) => {
                     </Dropdown>
                 </div>
             </Sider>
-            <div className={`${styles.mainColumn} ${collapsed ? styles.inCollapsed : ""}`}>
+            <div className={`${styles.mainColumn} ${collapsed ? styles.inCollapsed : ""}`} style={{ maxWidth: containerSize - Math.floor(siderSize) - 50 }}>
                 <PageHeader />
                 <div className={`${styles.mainChild} ${styles.bgWhite}`}>
                     {routeStore?.route === '/empty' ? <Empty /> : props.children}

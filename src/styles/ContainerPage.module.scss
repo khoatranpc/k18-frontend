@@ -1,5 +1,7 @@
 .containerPage {
     display: flex;
+    max-width: 100%;
+    overflow-x: hidden;
     min-height: 100vh;
 
     .listTabLink {
@@ -12,18 +14,11 @@
         display: flex;
         flex: 1;
         padding: 2.5rem 1.5rem;
-        max-width: 82.5vw;
         transition: 0.2s;
-
-        &.inCollapsed {
-            max-width: 90vw;
-        }
-
         flex-direction: column;
     }
 
     .navTab {
-        flex: 0.2;
         position: relative;
         min-width: fit-content !important;
         padding: 4rem 2.4rem;

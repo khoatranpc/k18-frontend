@@ -77,7 +77,8 @@ const Table = (props: Props) => {
         <div className={`tableCustomize ${styles.tableCustomizeAnt} ${props.className ? props.className : ''}`}>
             <TableComponent
                 style={{
-                    width: props.width ?? '100%'
+                    width: props.width ?? '100%',
+                    maxWidth: '100%'
                 }}
                 scroll={{
                     x: props.hasFixedColumn ? (props.width ?? '100%') : '',
