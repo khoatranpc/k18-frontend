@@ -66,7 +66,7 @@ const ContainerPage = (props: Props) => {
     const crrRole = (crrUser.response as Obj)?.data?.roleAccount as ROLE_USER;
     const course = useGetListCourse();
     const mappingTab = siderByRole[crrRole];
-    const items: MenuItem[] = mappingTab.map((item) => {
+    const items: MenuItem[] = mappingTab?.map((item) => {
         return !item.hide ? getItem(item.title,
             item.route,
             MapIconKey[item.keyIcon as KEY_ICON],

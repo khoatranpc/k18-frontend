@@ -74,10 +74,15 @@ import { queryListDocument } from "@/store/reducers/document/getListDocument.red
 import { clearCreateDocument, queryCreateDocument } from "@/store/reducers/document/createDocument.reducer";
 import { clearDeleteDocument, queryDeleteDocument } from "@/store/reducers/document/deleteDocument.reducer";
 import { clearUpdateDocument, queryUpdateDocument } from "@/store/reducers/document/updateDocument.reducer";
-import { queryUploadFile } from "@/store/reducers/file/uploadFile.reducer";
 import { queryGetTeById } from "@/store/reducers/te/getTeById.reducer";
 import { clearUpdateTe, queryUpdateTe } from "@/store/reducers/te/updateTe.reducer";
 import { queryGetDetailDoc } from "@/store/reducers/document/getDetailDoc.reducer";
+import { clearCreateFolder, queryCreateFolder } from "@/store/reducers/folder/createFolder.reducer";
+import { queryListFolder } from "@/store/reducers/folder/getListFolder.reducer";
+import { queryListFile } from "@/store/reducers/file/getListFile.reducer";
+import { clearCreateFile, queryCreateFile } from "@/store/reducers/file/createFile.reducer";
+import { clearUpdateFolder, queryUpdateFolder } from "@/store/reducers/folder/updateFolder.reducer";
+import { clearUpdateFile, queryUpdateFile } from "@/store/reducers/file/updateFile.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -939,10 +944,15 @@ const useGetListDocument = createHookQueryReducer('getListDocument', queryListDo
 const useCreateDocument = createHookQueryReducer('createDocument', queryCreateDocument, clearCreateDocument);
 const useDeleteDocument = createHookQueryReducer('deleteDocument', queryDeleteDocument, clearDeleteDocument);
 const useUpdateDocument = createHookQueryReducer('updateDocument', queryUpdateDocument, clearUpdateDocument);
-const useUploadFile = createHookQueryReducer('uploadFile', queryUploadFile);
 const useGetTeById = createHookQueryReducer('getTeById', queryGetTeById);
 const useUpdateTeById = createHookQueryReducer('updateTe', queryUpdateTe, clearUpdateTe);
 const usetGetDetailDoc = createHookQueryReducer('getDetailDoc', queryGetDetailDoc);
+const useCreateFolder = createHookQueryReducer('createFolder', queryCreateFolder, clearCreateFolder);
+const useUpdateFolder = createHookQueryReducer('updateFolder', queryUpdateFolder, clearUpdateFolder);
+const useGetListFolder = createHookQueryReducer('listFolder', queryListFolder);
+const useGetListFile = createHookQueryReducer('listFile', queryListFile);
+const useCreateFile = createHookQueryReducer('createFile', queryCreateFile, clearCreateFile);
+const useUpdateFile = createHookQueryReducer('updateFile', queryUpdateFile, clearUpdateFile);
 
 export {
     useGetListClass,
@@ -1018,8 +1028,13 @@ export {
     useDeleteDocument,
     useUpdateDocument,
     useComponentSize,
-    useUploadFile,
     useGetTeById,
     useUpdateTeById,
-    usetGetDetailDoc
+    usetGetDetailDoc,
+    useCreateFolder,
+    useGetListFolder,
+    useGetListFile,
+    useCreateFile,
+    useUpdateFolder,
+    useUpdateFile
 }

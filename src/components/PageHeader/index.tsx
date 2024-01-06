@@ -14,7 +14,7 @@ import { siderByRole } from '@/layouts/containerPage/tab';
 const PageHeader = () => {
     const stateRouter = useGetStateRouter();
     const currentUser = useGetCrrUser()?.data as Obj;
-    const crrRole = currentUser.roleAccount as ROLE_USER;
+    const crrRole = currentUser?.roleAccount as ROLE_USER;
     const router = useRouter();
     const getCrrSiderRoute = findRoute(siderByRole[crrRole], router.route);
     const handlePrevPage = () => {

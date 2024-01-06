@@ -76,10 +76,15 @@ import getListDocument from './document/getListDocument.reducer';
 import createDocument from './document/createDocument.reducer';
 import deleteDocument from './document/deleteDocument.reducer';
 import updateDocument from './document/updateDocument.reducer';
-import uploadFile from './file/uploadFile.reducer';
 import getTeById from './te/getTeById.reducer';
 import updateTe from './te/updateTe.reducer';
 import getDetailDoc from './document/getDetailDoc.reducer';
+import createFolder from './folder/createFolder.reducer';
+import updateFolder from './folder/updateFolder.reducer';
+import listFolder from './folder/getListFolder.reducer';
+import createFile from './file/createFile.reducer';
+import listFile from './file/getListFile.reducer';
+import updateFile from './file/updateFile.reducer';
 
 const rootReducer = {
     test: test,
@@ -160,9 +165,14 @@ const rootReducer = {
     createDocument,
     deleteDocument,
     updateDocument,
-    uploadFile,
     getTeById,
     updateTe,
-    getDetailDoc
+    getDetailDoc,
+    createFolder,
+    listFolder,
+    createFile,
+    listFile,
+    updateFolder,
+    updateFile
 };
 export default rootReducer;
