@@ -42,18 +42,19 @@ function getItem(
     } as Obj as MenuItem;
 }
 export const findRoute = (listRoute: SiderRoute[], currentRoute: string): any => {
-    for (const element of listRoute) {
-        if (element.indexroute === currentRoute) {
-            return element;
-        }
-        if (element.children && element.children.length > 0) {
-            // Gọi đệ quy để kiểm tra trong children
-            const foundInChildren = findRoute(element.children, currentRoute);
-            if (foundInChildren) {
-                return foundInChildren;
+    if (listRoute)
+        for (const element of listRoute) {
+            if (element.indexroute === currentRoute) {
+                return element;
+            }
+            if (element.children && element.children.length > 0) {
+                // Gọi đệ quy để kiểm tra trong children
+                const foundInChildren = findRoute(element.children, currentRoute);
+                if (foundInChildren) {
+                    return foundInChildren;
+                }
             }
         }
-    }
     return null;
 }
 const ContainerPage = (props: Props) => {
