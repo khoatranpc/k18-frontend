@@ -83,6 +83,8 @@ import { queryListFile } from "@/store/reducers/file/getListFile.reducer";
 import { clearCreateFile, queryCreateFile } from "@/store/reducers/file/createFile.reducer";
 import { clearUpdateFolder, queryUpdateFolder } from "@/store/reducers/folder/updateFolder.reducer";
 import { clearUpdateFile, queryUpdateFile } from "@/store/reducers/file/updateFile.reducer";
+import { clearDeleteFolder, queryDeleteFolder } from "@/store/reducers/folder/deleteFolder.reducer";
+import { clearDeleteFile, queryDeleteFile } from "@/store/reducers/file/deleteFile.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -953,6 +955,8 @@ const useGetListFolder = createHookQueryReducer('listFolder', queryListFolder);
 const useGetListFile = createHookQueryReducer('listFile', queryListFile);
 const useCreateFile = createHookQueryReducer('createFile', queryCreateFile, clearCreateFile);
 const useUpdateFile = createHookQueryReducer('updateFile', queryUpdateFile, clearUpdateFile);
+const useDeleteFolder = createHookQueryReducer('deleteFolder', queryDeleteFolder, clearDeleteFolder);
+const useDeleteFile = createHookQueryReducer('deleteFile', queryDeleteFile, clearDeleteFile);
 
 export {
     useGetListClass,
@@ -1036,5 +1040,7 @@ export {
     useGetListFile,
     useCreateFile,
     useUpdateFolder,
-    useUpdateFile
+    useUpdateFile,
+    useDeleteFolder,
+    useDeleteFile
 }

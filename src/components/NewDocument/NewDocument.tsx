@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { Button, Input, Radio, Tree, Popconfirm } from 'antd';
 import * as yup from 'yup';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import { Obj } from '@/global/interface';
-import { useCreateFile, useCreateFolder, useGetListFile, useGetListFolder, useUpdateFile, useUpdateFolder } from '@/utils/hooks';
+import { useCreateFile, useCreateFolder, useDeleteFile, useDeleteFolder, useGetListFile, useGetListFolder, useUpdateFile, useUpdateFolder } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import { uuid } from '@/utils';
 import ModalCustomize from '../ModalCustomize';
@@ -35,10 +35,12 @@ const NewDocument = (props: Props) => {
     const message = useHookMessage();
     const createFolder = useCreateFolder();
     const updateFolder = useUpdateFolder();
+    const deleteFolder = useDeleteFolder();
     const listFolder = useGetListFolder();
     const createFile = useCreateFile();
     const listFile = useGetListFile();
     const updateFile = useUpdateFile();
+    const deleteFile = useDeleteFile();
     const getListFolder = listFolder.data.response?.data as Obj[] || [];
     const getListFile = listFile.data.response?.data as Obj[] || [];
     const [modal, setModal] = useState<{
@@ -162,31 +164,68 @@ const NewDocument = (props: Props) => {
 
     const confirm = () => {
         if (crrNode) {
-            const typeCrrNode = crrNode.type;
-            const mapCrrNode: Obj = {
-                content: crrNode.content,
-                isDeleted: 1,
-                name: crrNode.name,
-                type: crrNode.type,
+            if (!props.onBin) {
+                const typeCrrNode = crrNode.type;
+                const mapCrrNode: Obj = {
+                    content: crrNode.content,
+                    isDeleted: 1,
+                    name: crrNode.name,
+                    type: crrNode.type,
+                }
+                switch (typeCrrNode) {
+                    case TypeFile.FILE:
+                        updateFile.query({
+                            body: mapCrrNode,
+                            params: [values.nodeSelect]
+                        });
+                        break;
+                    case TypeFile.FOLDER:
+                        updateFolder.query({
+                            body: mapCrrNode,
+                            params: [values.nodeSelect]
+                        });
+                        break;
+                }
+                setFieldValue('nodeSelect', '');
+            } else {
+                switch (crrNode.type) {
+                    case TypeFile.FOLDER:
+                        deleteFolder.query({
+                            params: [crrNode._id as string]
+                        });
+                        break;
+                    case TypeFile.FILE:
+                        deleteFile.query({
+                            params: [crrNode._id as string]
+                        });
+                        break;
+                }
             }
-            switch (typeCrrNode) {
-                case TypeFile.FILE:
-                    updateFile.query({
-                        body: mapCrrNode,
-                        params: [values.nodeSelect]
-                    });
-                    break;
-                case TypeFile.FOLDER:
-                    updateFolder.query({
-                        body: mapCrrNode,
-                        params: [values.nodeSelect]
-                    });
-                    break;
-            }
-            setFieldValue('nodeSelect', '');
+
         }
     };
-
+    const handleRestore = () => {
+        if (crrNode) {
+            switch (crrNode.type) {
+                case TypeFile.FOLDER:
+                    updateFolder.query({
+                        body: {
+                            restore: 1
+                        },
+                        params: [crrNode._id as string]
+                    })
+                    break;
+                case TypeFile.FILE:
+                    updateFile.query({
+                        body: {
+                            restore: 1
+                        },
+                        params: [crrNode._id as string]
+                    })
+                    break;
+            }
+        }
+    }
     const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
         const getKeyNodeSelect = selectedKeys.length ? selectedKeys[0] : '';
         setFieldValue('nodeSelect', getKeyNodeSelect as string);
@@ -230,35 +269,45 @@ const NewDocument = (props: Props) => {
     const handleQueryData = () => {
         listFolder.query({
             query: {
-                isDeleted: 0
+                isDeleted: props.onBin ? 1 : 0
             }
         });
         listFile.query({
             query: {
-                isDeleted: 0
+                isDeleted: props.onBin ? 1 : 0
             }
         });
     }
     useEffect(() => {
-        if (createFolder.data.response || createFile.data.response || updateFolder.data.response || updateFile.data.response) {
+        if (createFolder.data.response || createFile.data.response || updateFolder.data.response || updateFile.data.response || deleteFolder.data.response || deleteFile.data.response) {
             message.open({
-                content: createFolder.data.response?.message as string || createFile.data.response?.message as string || updateFolder.data.response?.message as string || updateFile.data.response?.message as string,
-                type: (createFolder.data.success || createFile.data.success || updateFolder.data.success || updateFile.data.success) ? 'success' : 'error'
+                content: createFolder.data.response?.message as string || createFile.data.response?.message as string || updateFolder.data.response?.message as string || updateFile.data.response?.message as string || deleteFolder.data.response?.message as string || deleteFile.data.response?.message as string,
+                type: (createFolder.data.success || createFile.data.success || updateFolder.data.success || updateFile.data.success || deleteFolder.data.success || deleteFile.data.success) ? 'success' : 'error'
             });
-            if (createFolder.data.success || createFile.data.success || updateFolder.data.success || updateFile.data.success) {
+            if (createFolder.data.success || createFile.data.success || updateFolder.data.success || updateFile.data.success || deleteFolder.data.success || deleteFile.data.success) {
                 if (createFolder.data.success) createFolder.clear?.();
                 if (createFile.data.success) createFile.clear?.();
                 if (updateFolder.data.success) updateFolder.clear?.();
                 if (updateFile.data.success) updateFile.clear?.();
+                if (deleteFolder.data.success) deleteFolder.clear?.();
+                if (deleteFile.data.success) deleteFile.clear?.();
                 setModal({
                     ...modal,
                     show: false
                 });
-                handleQueryData()
+                handleQueryData();
             }
             message.close();
         }
-    }, [createFolder.data, createFile.data, updateFolder.data, updateFile.data, props.onBin]);
+        return () => {
+            createFolder.clear?.();
+            createFile.clear?.();
+            updateFolder.clear?.();
+            updateFile.clear?.();
+            deleteFolder.clear?.();
+            deleteFile.clear?.();
+        }
+    }, [createFolder.data, createFile.data, updateFolder.data, updateFile.data, deleteFolder.data, deleteFile.data, props.onBin]);
     return (
         <div className={styles.newDocument}>
             <div className={styles.toolbar}>
@@ -268,6 +317,14 @@ const NewDocument = (props: Props) => {
                 <FolderAddOutlined className={styles.icon} onClick={() => {
                     handleFile(TypeHandleFile.NEW_FOLDER)
                 }} />
+                {props.onBin &&
+                    <Popconfirm
+                        title="Khôi phục tệp"
+                        description={<p>Xác nhận khôi phục tệp <b>{crrNode?.name}</b>?<br /> Điều này sẽ khôi phục tất cả tệp bên trong nếu là thư mục!</p>}
+                        onConfirm={handleRestore}
+                    >
+                        <ReloadOutlined className={styles.icon} />
+                    </Popconfirm>}
                 <Popconfirm
                     title="Chú ý"
                     description={values.nodeSelect ? (!props.onBin ? <div>
@@ -290,6 +347,7 @@ const NewDocument = (props: Props) => {
                 {!getListFolder || (!getListFolder && listFolder.data.isLoading) ?
                     <Loading />
                     : <Tree
+                        disabled={listFile.data.isLoading || listFolder.data.isLoading || createFolder.data.isLoading || updateFolder.data.isLoading || createFile.data.isLoading}
                         className={styles.tree}
                         showLine
                         switcherIcon={<DownOutlined />}

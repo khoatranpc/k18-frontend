@@ -41,7 +41,7 @@ const ContainerDocument = () => {
                     setTab(key)
                 }}
             />
-            <NewDocument />
+            <NewDocument onBin={tab === 'BIN'} />
         </div>
     )
 }

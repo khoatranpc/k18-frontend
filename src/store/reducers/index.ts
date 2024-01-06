@@ -82,7 +82,9 @@ import getDetailDoc from './document/getDetailDoc.reducer';
 import createFolder from './folder/createFolder.reducer';
 import updateFolder from './folder/updateFolder.reducer';
 import listFolder from './folder/getListFolder.reducer';
+import deleteFolder from './folder/deleteFolder.reducer';
 import createFile from './file/createFile.reducer';
+import deleteFile from './file/deleteFile.reducer';
 import listFile from './file/getListFile.reducer';
 import updateFile from './file/updateFile.reducer';
 
@@ -173,6 +175,8 @@ const rootReducer = {
     createFile,
     listFile,
     updateFolder,
-    updateFile
+    updateFile,
+    deleteFolder,
+    deleteFile
 };
 export default rootReducer;
