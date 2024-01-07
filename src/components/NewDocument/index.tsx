@@ -42,7 +42,7 @@ const ContainerDocument = () => {
                     setTab(key)
                 }}
             />}
-            <NewDocument onBin={hasRoleMg ?? tab === 'BIN'} />
+            <NewDocument onBin={hasRoleMg && tab === 'BIN'} />
         </div>
     )
 }

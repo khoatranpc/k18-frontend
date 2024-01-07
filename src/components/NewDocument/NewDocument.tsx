@@ -43,6 +43,7 @@ const NewDocument = (props: Props) => {
     const deleteFile = useDeleteFile();
     const getListFolder = listFolder.data.response?.data as Obj[] || [];
     const getListFile = listFile.data.response?.data as Obj[] || [];
+    const firstMounted = useRef(true);
     const [modal, setModal] = useState<{
         show: boolean,
         name?: string,
@@ -315,6 +316,11 @@ const NewDocument = (props: Props) => {
             refValues.current = values;
         }
     }, [values, modal]);
+    useEffect(() => {
+        if (getListFile && getListFolder && firstMounted.current) {
+            firstMounted.current = false;
+        }
+    }, [getListFolder, getListFile])
     return (
         <div className={styles.newDocument}>
             {hasRoleMg && <div className={styles.toolbar}>
@@ -351,7 +357,7 @@ const NewDocument = (props: Props) => {
                 <hr />
             </div>}
             <div className={styles.treeSelect}>
-                {(listFolder.data.isLoading) || (listFile.data.isLoading) ?
+                {firstMounted.current ?
                     <Loading />
                     : <Tree
                         disabled={listFile.data.isLoading || listFolder.data.isLoading || createFolder.data.isLoading || updateFolder.data.isLoading || createFile.data.isLoading}
