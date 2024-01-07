@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import styles from '@/styles/Document.module.scss';
 import Tabs from '../Tabs';
 import { TabsProps } from 'antd';
 import NewDocument from './NewDocument';
-import { useGetListFile, useGetListFolder } from '@/utils/hooks';
+import { useComparePositionTE, useGetListFile, useGetListFolder } from '@/utils/hooks';
+import styles from '@/styles/Document.module.scss';
 
 const ContainerDocument = () => {
     const listFolder = useGetListFolder();
     const listFile = useGetListFile();
+    const hasRoleMg = useComparePositionTE('ASSISTANT', 'HR', 'LEADER', 'QC');
 
     const tabs: TabsProps['items'] = [
         {
@@ -34,14 +35,14 @@ const ContainerDocument = () => {
     }, [tab]);
     return (
         <div className={styles.containerDocument}>
-            <Tabs
+            {hasRoleMg && <Tabs
                 notAllowContent
                 listItemTab={tabs}
                 onClickTab={(key) => {
                     setTab(key)
                 }}
-            />
-            <NewDocument onBin={tab === 'BIN'} />
+            />}
+            <NewDocument onBin={hasRoleMg ?? tab === 'BIN'} />
         </div>
     )
 }

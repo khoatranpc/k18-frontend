@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -6,7 +6,7 @@ import { Button, Input, Radio, Tree, Popconfirm } from 'antd';
 import * as yup from 'yup';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import { Obj } from '@/global/interface';
-import { useCreateFile, useCreateFolder, useDeleteFile, useDeleteFolder, useGetListFile, useGetListFolder, useUpdateFile, useUpdateFolder } from '@/utils/hooks';
+import { useComparePositionTE, useCreateFile, useCreateFolder, useDeleteFile, useDeleteFolder, useGetListFile, useGetListFolder, useUpdateFile, useUpdateFolder } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import { uuid } from '@/utils';
 import ModalCustomize from '../ModalCustomize';
@@ -144,6 +144,8 @@ const NewDocument = (props: Props) => {
             }
         }
     });
+    const hasRoleMg = useComparePositionTE('ASSISTANT', 'HR', 'LEADER', 'QC');
+    const refValues = useRef<typeof values | null>(null);
     const listData: DataNode[] = getListFolder.map((item) => {
         return {
             ...item,
@@ -308,9 +310,14 @@ const NewDocument = (props: Props) => {
             deleteFile.clear?.();
         }
     }, [createFolder.data, createFile.data, updateFolder.data, updateFile.data, deleteFolder.data, deleteFile.data, props.onBin]);
+    useEffect(() => {
+        if (!modal.show) {
+            refValues.current = values;
+        }
+    }, [values, modal]);
     return (
         <div className={styles.newDocument}>
-            <div className={styles.toolbar}>
+            {hasRoleMg && <div className={styles.toolbar}>
                 <EditOutlined className={styles.icon} onClick={() => {
                     handleEdit();
                 }} />
@@ -342,9 +349,9 @@ const NewDocument = (props: Props) => {
                     <DeleteOutlined className={styles.icon} />
                 </Popconfirm>
                 <hr />
-            </div>
+            </div>}
             <div className={styles.treeSelect}>
-                {!getListFolder || (!getListFolder && listFolder.data.isLoading) ?
+                {(listFolder.data.isLoading) || (listFile.data.isLoading) ?
                     <Loading />
                     : <Tree
                         disabled={listFile.data.isLoading || listFolder.data.isLoading || createFolder.data.isLoading || updateFolder.data.isLoading || createFile.data.isLoading}
@@ -375,8 +382,8 @@ const NewDocument = (props: Props) => {
                             ...modal,
                             show: false
                         });
-                        if (modal.isCreate) {
-                            handleReset(null);
+                        if (refValues.current !== values) {
+                            setValues(refValues.current as typeof values);
                         }
                     }}
                 >

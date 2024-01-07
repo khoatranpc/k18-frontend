@@ -15,15 +15,7 @@ const findNearestParent = (tree: Obj[], key: string, parent: Obj | null = null):
     }
     return null;
 };
-const buildTreeFromGroup = (groupedData: Obj, rootId?: string): Obj[] => {
-    const roots: Obj[] = groupedData[`${String(rootId as any)}`] || [];
-    return roots.map(root => {
-        return ({
-            ...root,
-            children: buildTreeFromGroup(groupedData, root._id)
-        })
-    });
-};
+
 const listToTreeFnc = (listData: Obj[]) => {
     const newList: Obj[] = [...listData];
     for (let i = 0; i < newList.length; i++) {

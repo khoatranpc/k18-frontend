@@ -854,7 +854,7 @@ const useGetDataRoundComments = () => {
         query
     }
 }
-const useComparePositionTE = (...positionCompare: PositionTe[]) => {
+const useComparePositionTE = (...positionCompare: (keyof typeof PositionTe)[]) => {
     const data = useSelector((state: RootState) => (state.crrUserInfo as State).state);
     return positionCompare.includes((data.response?.data as Obj)?.position as PositionTe);
 }
