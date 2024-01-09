@@ -87,7 +87,7 @@ const PageHeader = () => {
             }
             <div className={styles.listUserConnection}>
                 {getListUserConnection?.map((item, idx) => {
-                    return <Tooltip key={idx} trigger={"hover"} title={<div>
+                    return !item.isDisconnect && <Tooltip key={idx} trigger={"hover"} title={<div>
                         {item.id === currentUser?._id ? 'Bạn' : item.userName}
                     </div>}>
                         <Avatar src={item.img} className={styles.user} />
