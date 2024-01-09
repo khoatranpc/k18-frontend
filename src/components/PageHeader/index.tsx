@@ -56,7 +56,7 @@ const PageHeader = () => {
             userName: currentUser?.fullName ?? currentUser?.teName ?? 'Anonymous',
             img: currentUser?.img,
             id: currentUser?._id,
-            ...currentUser.positionTe ? {
+            ...currentUser?.positionTe ? {
                 position:
                     currentUser.positionTe
             } : {},
