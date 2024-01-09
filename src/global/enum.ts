@@ -188,3 +188,7 @@ export enum Region {
     MN = 'MN',
     ONL = 'ONL'
 }
+
+export enum RoomSocket {
+    COMMON = 'COMMON'
+}

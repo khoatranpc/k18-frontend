@@ -85,6 +85,7 @@ import { clearUpdateFolder, queryUpdateFolder } from "@/store/reducers/folder/up
 import { clearUpdateFile, queryUpdateFile } from "@/store/reducers/file/updateFile.reducer";
 import { clearDeleteFolder, queryDeleteFolder } from "@/store/reducers/folder/deleteFolder.reducer";
 import { clearDeleteFile, queryDeleteFile } from "@/store/reducers/file/deleteFile.reducer";
+import { queryGetSocketConnection } from "@/store/reducers/socket/socketConnection.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -957,6 +958,7 @@ const useCreateFile = createHookQueryReducer('createFile', queryCreateFile, clea
 const useUpdateFile = createHookQueryReducer('updateFile', queryUpdateFile, clearUpdateFile);
 const useDeleteFolder = createHookQueryReducer('deleteFolder', queryDeleteFolder, clearDeleteFolder);
 const useDeleteFile = createHookQueryReducer('deleteFile', queryDeleteFile, clearDeleteFile);
+const useSocketConnection = createHookQueryReducer('socketConnection', queryGetSocketConnection);
 
 export {
     useGetListClass,
@@ -1042,5 +1044,6 @@ export {
     useUpdateFolder,
     useUpdateFile,
     useDeleteFolder,
-    useDeleteFile
+    useDeleteFile,
+    useSocketConnection
 }
