@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { Avatar, Badge, Input } from 'antd';
+import { Avatar, Badge, Input, Tooltip } from 'antd';
 import { AppDispatch } from '@/store';
 import { UserOnline, onReceivedData, queryEmitSocket, queryReceiveConnection } from '@/store/reducers/socket/socketConnection.reducer';
 import { Obj } from '@/global/interface';
@@ -87,7 +87,11 @@ const PageHeader = () => {
             }
             <div className={styles.listUserConnection}>
                 {getListUserConnection?.map((item, idx) => {
-                    return <Avatar key={idx} src={item.img} />
+                    return <Tooltip key={idx} trigger={"hover"} title={<div>
+                        {item.id === currentUser?._id ? 'Bạn' : item.userName}
+                    </div>}>
+                        <Avatar src={item.img} className={styles.user} />
+                    </Tooltip>
                 })}
             </div>
             <div className={styles.featFnc}>
