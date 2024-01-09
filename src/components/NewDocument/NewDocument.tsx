@@ -30,6 +30,7 @@ const validationSchema = yup.object({
 });
 interface Props {
     onBin?: boolean;
+    setCurrentNode?: (node: string) => void;
 }
 const NewDocument = (props: Props) => {
     const message = useHookMessage();
@@ -232,6 +233,7 @@ const NewDocument = (props: Props) => {
     const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
         const getKeyNodeSelect = selectedKeys.length ? selectedKeys[0] : '';
         setFieldValue('nodeSelect', getKeyNodeSelect as string);
+        props.setCurrentNode?.(getKeyNodeSelect as string);
     };
     const handleCreate = (name: string, content?: string) => {
         setModal({

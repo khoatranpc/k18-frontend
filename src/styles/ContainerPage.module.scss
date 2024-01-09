@@ -113,6 +113,11 @@
         justify-content: space-between;
         align-items: center;
 
+        .listUserConnection {
+            display: flex;
+            margin-left: auto;
+        }
+
         .input,
         input {
             background-color: var(--bg-input1);

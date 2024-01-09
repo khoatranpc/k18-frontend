@@ -957,6 +957,7 @@ const useCreateFile = createHookQueryReducer('createFile', queryCreateFile, clea
 const useUpdateFile = createHookQueryReducer('updateFile', queryUpdateFile, clearUpdateFile);
 const useDeleteFolder = createHookQueryReducer('deleteFolder', queryDeleteFolder, clearDeleteFolder);
 const useDeleteFile = createHookQueryReducer('deleteFile', queryDeleteFile, clearDeleteFile);
+const useSocketConnection = createHookQueryReducer('socketConnection', () => { });
 
 export {
     useGetListClass,
@@ -1042,5 +1043,6 @@ export {
     useUpdateFolder,
     useUpdateFile,
     useDeleteFolder,
-    useDeleteFile
+    useDeleteFile,
+    useSocketConnection
 }

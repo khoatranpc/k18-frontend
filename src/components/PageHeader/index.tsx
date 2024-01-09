@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 import { Avatar, Badge, Input } from 'antd';
+import { AppDispatch } from '@/store';
+import { UserOnline, onReceivedData, queryEmitSocket, queryReceiveConnection } from '@/store/reducers/socket/socketConnection.reducer';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { ComponentPage, KEY_ICON, ROLE, ROLE_USER } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import useGetCrrUser from '@/utils/hooks/getUser';
 import useGetStateRouter from '@/utils/hooks/stateRouter';
-import styles from '@/styles/ContainerPage.module.scss';
 import { findRoute } from '@/layouts/containerPage/containerPage';
 import { siderByRole } from '@/layouts/containerPage/tab';
+import { useSocketConnection } from '@/utils/hooks';
+import styles from '@/styles/ContainerPage.module.scss';
 
 const PageHeader = () => {
     const stateRouter = useGetStateRouter();
     const currentUser = useGetCrrUser()?.data as Obj;
     const crrRole = currentUser?.roleAccount as ROLE_USER;
+    const socketConnection = useSocketConnection();
+    const getListUserConnection = socketConnection.data.response as unknown as Obj[] ?? [];
     const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
     const getCrrSiderRoute = findRoute(siderByRole[crrRole], router.route);
     const handlePrevPage = () => {
         switch (stateRouter.component) {
@@ -40,6 +47,31 @@ const PageHeader = () => {
                 break;
         }
     }
+    const handleReceivedMsg = (data: UserOnline) => {
+        dispatch(onReceivedData(data));
+    }
+    const handleEmitSocket = (disconnect?: boolean) => {
+        return queryEmitSocket({
+            role: crrRole,
+            userName: currentUser?.fullName ?? currentUser?.teName ?? 'Anonymous',
+            img: currentUser?.img,
+            id: currentUser?._id,
+            ...currentUser.positionTe ? {
+                position:
+                    currentUser.positionTe
+            } : {},
+            isDisconnect: !!disconnect
+        })
+    }
+    useEffect(() => {
+        if (currentUser) {
+            queryReceiveConnection(handleReceivedMsg);
+            dispatch(handleEmitSocket(false));
+        }
+        window.addEventListener('beforeunload', function () {
+            dispatch(handleEmitSocket(true));
+        })
+    }, [currentUser]);
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
             {
@@ -53,6 +85,11 @@ const PageHeader = () => {
                     </h2>
                 </div>
             }
+            <div className={styles.listUserConnection}>
+                {getListUserConnection?.map((item, idx) => {
+                    return <Avatar key={idx} src={item.img} />
+                })}
+            </div>
             <div className={styles.featFnc}>
                 <Input className={styles.input} placeholder='Search' size='large' prefix={MapIconKey[KEY_ICON.SRCH]} />
                 <div className="badge">

@@ -16,7 +16,7 @@ export interface Action {
         failed?: string;
         query?: Query
     },
-    response?: Record<string, unknown> | null;
+    response?: Record<string, unknown> | null | any;
     success?: boolean;
 }
 export interface State {

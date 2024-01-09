@@ -134,9 +134,31 @@
 }
 
 .containerDocument {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+
+    .breadCumb {
+        position: absolute;
+        right: 1.2rem;
+        top: 1.2rem;
+
+        .flexIconBreadCumb {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+    }
+
+    &.anRole {
+        .breadCumb {
+            position: static;
+            margin-left: auto;
+            margin-top: 1.2rem;
+            margin-right: 1.2rem;
+        }
+    }
 }
 
 .newDocument {

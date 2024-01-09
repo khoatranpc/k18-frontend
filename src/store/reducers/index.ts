@@ -87,6 +87,7 @@ import createFile from './file/createFile.reducer';
 import deleteFile from './file/deleteFile.reducer';
 import listFile from './file/getListFile.reducer';
 import updateFile from './file/updateFile.reducer';
+import socketConnection from './socket/socketConnection.reducer';
 
 const rootReducer = {
     test: test,
@@ -177,6 +178,7 @@ const rootReducer = {
     updateFolder,
     updateFile,
     deleteFolder,
-    deleteFile
+    deleteFile,
+    socketConnection
 };
 export default rootReducer;
