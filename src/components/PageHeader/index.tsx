@@ -68,9 +68,6 @@ const PageHeader = () => {
             queryReceiveConnection(handleReceivedMsg);
             dispatch(handleEmitSocket(false));
         }
-        window.addEventListener('beforeunload', function () {
-            dispatch(handleEmitSocket(true));
-        })
     }, [currentUser]);
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>

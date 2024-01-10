@@ -11,6 +11,8 @@ export interface UserOnline {
     img?: string;
     id: string;
     isDisconnect?: boolean;
+    // side server
+    socketId?: string;
 }
 const createSocket = () => {
     const socket = io(process.env.NEXT_PUBLIC_SERVER_API as string);
