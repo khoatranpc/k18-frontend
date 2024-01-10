@@ -3,6 +3,7 @@ import { createAction } from "@reduxjs/toolkit";
 import { Obj, State } from "@/global/interface";
 import { ComponentPage, KEY_ICON } from "@/global/enum";
 import { createSliceReducer } from "@/utils/redux-toolkit";
+import { initState } from "@/global/init-data";
 
 export interface StateRoute {
     route: string;
@@ -27,7 +28,11 @@ const getDataRoute = createSliceReducer('dataRoute', undefined, {
                 ...(action ? action.payload : {}),
             }
         }
+    },
+    clear: (state: State) => {
+        state.state = initState.state;
     }
 });
 export const initDataRoute = createAction<PayloadRoute, string>(`${getDataRoute.name}/init`);
+export const clearDataRouter = createAction<void, string>(`${getDataRoute.name}/clear`);
 export default getDataRoute.reducer;

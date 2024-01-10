@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { Avatar, Badge, Input, Tooltip } from 'antd';
 import { AppDispatch } from '@/store';
+import { clearDataRouter } from '@/store/reducers/global-reducer/route';
 import { UserOnline, onReceivedData, queryEmitSocket, queryReceiveConnection } from '@/store/reducers/socket/socketConnection.reducer';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
@@ -25,7 +26,7 @@ const PageHeader = () => {
     const dispatch = useDispatch<AppDispatch>();
     const getCrrSiderRoute = findRoute(siderByRole[crrRole], router.route);
     const handlePrevPage = () => {
-        switch (stateRouter.component) {
+        switch (stateRouter?.component) {
             case ComponentPage.DETAILCLASS:
                 if (currentUser?.roleAccount === ROLE.TEACHER) {
                     router.push(CombineRoute['TEACHER']['CLASS']);
@@ -46,6 +47,7 @@ const PageHeader = () => {
                 router.back();
                 break;
         }
+        dispatch(clearDataRouter());
     }
     const handleReceivedMsg = (data: UserOnline) => {
         dispatch(onReceivedData(data));
@@ -78,7 +80,7 @@ const PageHeader = () => {
                             handlePrevPage();
                         }}>{MapIconKey[KEY_ICON.ARROWL]}</span>
                     }
-                        {stateRouter?.title}
+                        {(!getCrrSiderRoute?.hasBackPage ? stateRouter?.title : stateRouter?.replaceTitle) ?? getCrrSiderRoute?.title}
                     </h2>
                 </div>
             }

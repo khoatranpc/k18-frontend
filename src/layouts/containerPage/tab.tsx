@@ -23,13 +23,11 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           title: "Tuyển dụng",
           route: CombineRoute["TE"]["RECRUITMENT"],
           indexroute: CombineRoute["TE"]["RECRUITMENT"],
-          noReplaceTitle: true,
         },
         {
           title: "Chi tiết ứng viên",
           route: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
           indexroute: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
-          noReplaceTitle: true,
           hasBackPage: true,
           hide: true
         },
@@ -37,8 +35,14 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           title: "Lịch phỏng vấn",
           route: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
           indexroute: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
-          noReplaceTitle: true,
-        }
+        },
+        {
+          title: "Tạo hồ sơ ứng viên",
+          route: CombineRoute["TE"]["RECRUITMENT_CREATE_CANDIDATE"],
+          indexroute: CombineRoute["TE"]["RECRUITMENT_CREATE_CANDIDATE"],
+          hide: true,
+          hasBackPage: true
+        },
       ]
     },
     {
