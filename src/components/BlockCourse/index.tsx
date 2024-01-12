@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Button, Checkbox, Image, Tooltip } from 'antd';
+import { Checkbox, Image, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
 import { ROLE } from '@/global/enum';
 import logo from '@/assets/imgs/logo.png';
@@ -95,6 +95,10 @@ const BlockCourse = (props: Props) => {
                                     <p>Mã: {props.data.levelCode}</p>
                                     <p>Tài liệu: {props.data.textbook ? <a target="_blank" href={props.data.textbook}>Link</a> : 'Đang cập nhật'}</p>
                                     <p>Record tham khảo: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : 'Đang cập nhật'}</p>
+                                    <p>Bộ trắc nghiệm:  <a target="_blank" style={{ cursor: 'pointer' }} onClick={(e) => {
+                                        e.preventDefault();
+                                        router.push(`/te/manager/storage/course/${router.query.courseId}/${props.data?._id}/test`)
+                                    }}>Link</a></p>
                                 </div>
                             )}
                         </div>

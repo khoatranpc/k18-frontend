@@ -1113,3 +1113,9 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
         }
     }
 }
+
+.drawerCreateQuestion {
+    .ant-drawer-content-wrapper {
+        height: 100vh !important;
+    }
+}
