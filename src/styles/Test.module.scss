@@ -239,4 +239,137 @@
             }
         }
     }
+
+    .containerStudentQuizz {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url("https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        background-position: center center;
+        background-size: cover;
+
+        //  background-color: whitesmoke;
+        .studentQuizzWrapper {
+            width: 1200px;
+            height: 800px;
+            padding: 35px;
+            border-radius: 35px;
+            box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+
+            .background {
+                background-image: url(../assets/imgs/4303292.jpg);
+                border-radius: 0 0 43% 43%;
+                background-size: cover;
+                width: 100%;
+                height: 350px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                overflow: hidden;
+                z-index: 1;
+            }
+
+            .contentWrapper {
+                position: absolute;
+                z-index: 3;
+                top: 0;
+                left: 0;
+                padding: 35px;
+
+
+                .quizzTime {
+                    color: var(--base);
+                    font-weight: bold;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .quizzTime span {
+                    margin-left: 10px;
+                    font-size: 24px;
+                }
+
+                .quizz {
+                    margin-top: 150px;
+                    width: 80%;
+                    margin-left: auto;
+                    margin-right: auto;
+
+                    .quizz_quesstion {
+                        background-color: white;
+                        position: relative;
+                        border-radius: 3px;
+                        box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+                        padding: 10px;
+
+                        .quesstionCount {
+                            background-color: var(--base);
+                            width: fit-content;
+                            padding: 10px 35px;
+                            border-radius: 25px;
+                            color: white;
+                            position: absolute;
+                            top: -7px;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            font-size: 20px;
+                        }
+
+                        p {
+                            padding: 8px 25px;
+                            margin-top: 25px;
+                            font-size: 18px
+                        }
+
+                    }
+
+                    .answer {
+
+                        margin-top: 30px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 20px;
+                        justify-content: space-between;
+                    }
+
+                    .answer div {
+                        width: 440px;
+                        border-radius: 3px;
+                        box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+                        background-color: white;
+                        padding: 10px 20px;
+                        text-align: center;
+                    }
+
+                    button {
+                        padding: 10px 25px;
+                        border: none;
+                        background-color: var(--color-red);
+                        border-radius: 25px;
+                        color: white;
+                        font-weight: bold;
+                        cursor: pointer;
+                        margin-top: 80px;
+                        margin-left: auto
+                    }
+
+                    button:hover {
+                        background-color: var(--base);
+                        transition: .5s;
+                        box-shadow: 0 0 10px rgba(240, 63, 63, 0.6);
+                    }
+
+                }
+
+            }
+
+
+        }
+    }
 }
