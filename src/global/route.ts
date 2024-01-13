@@ -21,6 +21,7 @@ const CombineRoute = {
         DOCUMENT: '/te/manager/storage/document',
         COURSE: "/te/manager/storage/course",
         COURSE_DETAIL: "/te/manager/storage/course/[courseId]",
+        TEST_COURSE: "/te/manager/storage/course/[courseId]/[courseLevelId]/test"
       }
     },
     MY_INFO: '/te/my-info',

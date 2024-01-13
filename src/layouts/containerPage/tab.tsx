@@ -105,6 +105,13 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           hasBackPage: true,
           component: ComponentPage.COURSE_DETAIL
         },
+        {
+          title: "Bộ trắc nghiệm",
+          route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["TEST_COURSE"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["TEST_COURSE"],
+          hide: true,
+          hasBackPage: true
+        }
       ]
     },
     {

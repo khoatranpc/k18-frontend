@@ -60,7 +60,7 @@ const TeInfo = () => {
             !currentTe.data.success ? <Empty /> : (<div className={styles.teInfo}>
                 <div className={styles.leftInfo}>
                     <div className={styles.shortInfo}>
-                        <Image className={styles.imageStaff} width={200} height={200} src={getCurrentTe?.img ?? 'https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png'} />
+                        <Image alt='' className={styles.imageStaff} width={200} height={200} src={getCurrentTe?.img ?? 'https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png'} />
                         <p className={styles.teName}>{getCurrentTe?.teName}</p>
                         <p>{getCurrentTe?.positionTe}{`${getCurrentTe?.courseId?`-${getCurrentTe?.courseId?.courseName}`:''}`}</p>
                         <p>{getCurrentTe?.email}</p>

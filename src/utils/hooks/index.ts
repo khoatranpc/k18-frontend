@@ -85,6 +85,10 @@ import { clearUpdateFolder, queryUpdateFolder } from "@/store/reducers/folder/up
 import { clearUpdateFile, queryUpdateFile } from "@/store/reducers/file/updateFile.reducer";
 import { clearDeleteFolder, queryDeleteFolder } from "@/store/reducers/folder/deleteFolder.reducer";
 import { clearDeleteFile, queryDeleteFile } from "@/store/reducers/file/deleteFile.reducer";
+import { queryListCollectionQuiz } from "@/store/reducers/test/getListCollectionTest.reducer";
+import { clearCreateCollectionQuiz, queryCreateCollectionQuiz } from "@/store/reducers/test/createCollectionQuiz.reducer";
+import { clearCreateQuestion, queryCreateQuestion } from "@/store/reducers/test/createQuestion.reducer";
+import { queryGetlistQuestion } from "@/store/reducers/test/getListQuestion.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -958,6 +962,10 @@ const useUpdateFile = createHookQueryReducer('updateFile', queryUpdateFile, clea
 const useDeleteFolder = createHookQueryReducer('deleteFolder', queryDeleteFolder, clearDeleteFolder);
 const useDeleteFile = createHookQueryReducer('deleteFile', queryDeleteFile, clearDeleteFile);
 const useSocketConnection = createHookQueryReducer('socketConnection', () => { });
+const useListCollectionQuiz = createHookQueryReducer('listCollectionQuiz', queryListCollectionQuiz);
+const useCreateCollectionQuiz = createHookQueryReducer('createCollectionQuiz', queryCreateCollectionQuiz, clearCreateCollectionQuiz);
+const useCreateQuestionQuiz = createHookQueryReducer('createQuestion', queryCreateQuestion, clearCreateQuestion);
+const useGetListQuestion = createHookQueryReducer('getListQuestion', queryGetlistQuestion);
 
 export {
     useGetListClass,
@@ -1044,5 +1052,9 @@ export {
     useUpdateFile,
     useDeleteFolder,
     useDeleteFile,
-    useSocketConnection
+    useSocketConnection,
+    useListCollectionQuiz,
+    useCreateCollectionQuiz,
+    useCreateQuestionQuiz,
+    useGetListQuestion
 }
