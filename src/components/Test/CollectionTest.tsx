@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Image } from 'antd';
+import { Button, Image, Input } from 'antd';
 import { EyeTwoTone } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
 import { LOGO } from '@/global/init-data';
 import { useHandleDrawer } from '@/utils/hooks';
 import styles from '@/styles/Test.module.scss';
+import ModalCustomize from '../ModalCustomize';
 
 interface Props {
     data?: Obj;
@@ -13,6 +14,7 @@ interface Props {
 const CollectionTest = (props: Props) => {
     const drawer = useHandleDrawer();
     const router = useRouter();
+    const [modal, setModal] = useState(false);
     const handleOpenForm = () => {
         drawer.open({
             open: true,
@@ -32,6 +34,9 @@ const CollectionTest = (props: Props) => {
             rootClassName: 'drawerCreateQuestion',
             size: "large"
         });
+    };
+    const handleCreateExamination = () => {
+        setModal(true);
     }
     return (
         <div className={styles.collectionTest}>
@@ -43,10 +48,18 @@ const CollectionTest = (props: Props) => {
                     }}><EyeTwoTone /></span>
                     <p><b>{props.data?.title}</b></p>
                     <p>10 câu hỏi</p>
-                    <Button size="small">Bắt đầu</Button>
+                    <Button size="small" onClick={handleCreateExamination}>Bắt đầu</Button>
                 </div>
             </div>
-        </div>
+            <ModalCustomize
+                show={modal}
+                modalHeader={<div>Bắt đầu kiểm tra</div>}
+            >
+                <div>
+                    <Input size="small" placeholder="Nhập mã lớp"/>
+                </div>
+            </ModalCustomize>
+        </div >
     )
 }
 
