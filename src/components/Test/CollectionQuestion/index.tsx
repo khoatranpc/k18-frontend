@@ -24,6 +24,7 @@ interface Question extends Obj {
     collectionQuizId: string;
     key: string;
     _id?: string;
+    order: number;
 }
 interface Props {
     courseLevelId: string;
@@ -57,12 +58,18 @@ const QuestionComponent = ((props: Props) => {
                     key: uuid(),
                     order: index + 1
                 }
-            })
+            }),
+            order: values.question.length + 1
         };
         setFieldValue('question', [...values.question, newQuestion])
     };
     const handleRemove = (index: number) => {
-        values.question.splice(index, 1);
+        const question = (values.question[index] as Obj);
+        if (question._id) {
+            question.isDelete = true;
+        } else {
+            values.question.splice(index, 1);
+        }
         setFieldValue('question', [...values.question]);
     };
     const handleChangeQuestion = (title: string, type: keyof typeof TypeQuestion, idx: number, changeType: boolean) => {
@@ -123,19 +130,17 @@ const QuestionComponent = ((props: Props) => {
         findQuestion.options[indexAnswer].content = value;
         setFieldValue('question', [...values.question]);
     }
-    const handleChangeRadioQuiz = (index: number, indexQuestion: number,) => {
-        const findQuestion = values.question[indexQuestion] as Question;
-        findQuestion.options.forEach((item, idx) => {
-            if (idx === index) {
-                item.isCorrect = true;
-            } else {
-                item.isCorrect = false;
-            }
-        });
-        // values.question[indexQuestion]
-        // console.log(findQuestion);
-        setFieldValue('question', [...values.question]);
-    }
+    const handleChangeRadioQuiz = (index: number, indexQuestion: number) => {
+        const updatedQuestions = [...values.question] as Obj[];
+        const findQuestion: Obj = { ...updatedQuestions[indexQuestion] as Obj };
+        const updatedOptions = findQuestion.options.map((item: Obj, idx: number) => ({
+            ...item,
+            isCorrect: idx === index,
+        })) as Obj[];
+        findQuestion.options = updatedOptions;
+        updatedQuestions[indexQuestion] = findQuestion as Obj;
+        setFieldValue('question', updatedQuestions);
+    };
     const handleSubmit = () => {
         saveQuestionQuiz.query({
             body: {
@@ -183,7 +188,8 @@ const QuestionComponent = ((props: Props) => {
             >
                 {
                     (values.question as Question[]).map((item, idx) => {
-                        return <Panel
+                        console.log(item);
+                        return !item.isDelete && <Panel
                             header={<div className={styles.header}
                                 onClick={e => {
                                     e.stopPropagation();
@@ -224,8 +230,8 @@ const QuestionComponent = ((props: Props) => {
                                     }}
                                     value={item.options.findIndex((option) => option.isCorrect)}
                                 >
-                                    {item.options.map((item, radioIndex) => {
-                                        return <div key={item.key} className={`${styles[`div${radioIndex + 1}`]} ${styles.answer}`}>
+                                    {item.options.map((item: Obj, radioIndex) => {
+                                        return <div key={item._id} className={`${styles[`div${radioIndex + 1}`]} ${styles.answer}`}>
                                             <Input
                                                 value={item.content}
                                                 onChange={(e) => {

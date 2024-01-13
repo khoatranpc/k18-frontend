@@ -40,6 +40,7 @@ const mappingListQuestionWithOption = (listQuestion: Obj[], listOption: Obj[]) =
 
         newListQuestion.push(newQuestion);
     });
+    newListQuestion.sort((a, b) => a.order - b.order);
     return newListQuestion
 }
 export {
