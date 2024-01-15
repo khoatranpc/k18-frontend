@@ -2,8 +2,8 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { Drawer } from 'antd';
 import { useHandleDrawer } from '@/utils/hooks';
-import { OpenDrawer } from '@/store/reducers/global-reducer/drawer';
 import Loading from '../loading';
+import { OpenDrawer } from '@/store/reducers/global-reducer/drawer';
 
 const DrawerComponent = () => {
     const drawer = useHandleDrawer();
@@ -14,7 +14,7 @@ const DrawerComponent = () => {
     })
     return (
         <div>
-            {getDataDrawer?.open && <Drawer {...getDataDrawer} onClose={() => {
+            {getDataDrawer?.open && <Drawer {...getDataDrawer} maskClosable={false} onClose={() => {
                 drawer.close()
             }}>
                 <DynamicComponent {...getDataDrawer.props} />

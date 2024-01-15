@@ -89,6 +89,9 @@ import { queryListCollectionQuiz } from "@/store/reducers/test/getListCollection
 import { clearCreateCollectionQuiz, queryCreateCollectionQuiz } from "@/store/reducers/test/createCollectionQuiz.reducer";
 import { clearCreateQuestion, queryCreateQuestion } from "@/store/reducers/test/createQuestion.reducer";
 import { queryGetlistQuestion } from "@/store/reducers/test/getListQuestion.reducer";
+import { RoomTest, emitRoomQuizzTestSocket, getDataFromRoomQuizzSocket, receivedDataFromRoomQuizz } from "@/store/reducers/socket/socketQuizzTest.reducer";
+import { clearSaveRoomQuizzTest, querySaveRoomQuizzTest } from "@/store/reducers/test/saveRoomQuizzTest.reducer";
+import { clearStudentJoin, queryStudentJoinRoomQuizz } from "@/store/reducers/test/studentJoinRoomQuizz.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -916,7 +919,29 @@ const useComponentSize = (ref: MutableRefObject<any>) => {
 
     return componentSize;
 };
+const useQuizzTestSocket = () => {
+    const quizzTest = useSelector((state: RootState) => (state.quizzTestSocket as State).state);
+    const dispatch = useDispatch<AppDispatch>();
 
+    const receveidDataFromSocket = (data: Obj) => {
+        dispatch(getDataFromRoomQuizzSocket(data));
+    }
+    const getDataFromRoomQuizz = (room: string, callBack: Function) => {
+        return receivedDataFromRoomQuizz(room, callBack)
+    }
+    const queryRoom = (room: string, data: RoomTest) => {
+        dispatch(emitRoomQuizzTestSocket({
+            room,
+            data
+        }));
+        getDataFromRoomQuizz(room, receveidDataFromSocket)
+    }
+
+    return {
+        data: quizzTest,
+        queryRoom,
+    }
+}
 
 const useCreateCommentsRoundProcess = createHookQueryReducer('createComment', queryCreateComment, clearReducerCreateComment);
 const useUpdateDataProcessRoundCandidate = createHookQueryReducer('updateDataRoundProcessCandidate', queryUpdateDataRoundProcessCandidate, clearQueryUpdateDataRoundProcessCandidate);
@@ -966,6 +991,8 @@ const useListCollectionQuiz = createHookQueryReducer('listCollectionQuiz', query
 const useCreateCollectionQuiz = createHookQueryReducer('createCollectionQuiz', queryCreateCollectionQuiz, clearCreateCollectionQuiz);
 const useCreateQuestionQuiz = createHookQueryReducer('createQuestion', queryCreateQuestion, clearCreateQuestion);
 const useGetListQuestion = createHookQueryReducer('getListQuestion', queryGetlistQuestion);
+const useSaveRoomQuizzTest = createHookQueryReducer('saveRoomQuizzTest', querySaveRoomQuizzTest, clearSaveRoomQuizzTest);
+const useStudentJoinRoomQuizz = createHookQueryReducer('studentJoinRoomQuizz', queryStudentJoinRoomQuizz, clearStudentJoin);
 
 export {
     useGetListClass,
@@ -1056,5 +1083,8 @@ export {
     useListCollectionQuiz,
     useCreateCollectionQuiz,
     useCreateQuestionQuiz,
-    useGetListQuestion
+    useGetListQuestion,
+    useQuizzTestSocket,
+    useSaveRoomQuizzTest,
+    useStudentJoinRoomQuizz
 }

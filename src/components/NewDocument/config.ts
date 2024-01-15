@@ -1,5 +1,5 @@
-import { Obj } from "@/global/interface";
 import { arrayToTree } from 'performant-array-to-tree';
+import { Obj } from "@/global/interface";
 
 const findNearestParent = (tree: Obj[], key: string, parent: Obj | null = null): Obj | null => {
     for (const node of tree) {

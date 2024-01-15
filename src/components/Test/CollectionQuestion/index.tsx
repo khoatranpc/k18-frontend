@@ -188,7 +188,6 @@ const QuestionComponent = ((props: Props) => {
             >
                 {
                     (values.question as Question[]).map((item, idx) => {
-                        console.log(item);
                         return !item.isDelete && <Panel
                             header={<div className={styles.header}
                                 onClick={e => {
