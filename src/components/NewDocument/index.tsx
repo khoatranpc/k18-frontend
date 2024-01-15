@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FolderOpenOutlined } from '@ant-design/icons';
 import { Breadcrumb, TabsProps } from 'antd';
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Obj } from '@/global/interface';
 import { useComparePositionTE, useGetListFile, useGetListFolder } from '@/utils/hooks';
+import Expand from '@/icons/Expand';
 import Tabs from '../Tabs';
 import NewDocument from './NewDocument';
 import { mapNodeParentByPath } from './config';
@@ -16,6 +18,7 @@ const ContainerDocument = () => {
     const mappingListData = [...getListFolder, ...getListFile];
     const hasRoleMg = useComparePositionTE('ASSISTANT', 'HR', 'LEADER', 'QC');
     const [currentNode, setCurrentNode] = useState<string>('');
+    const handle = useFullScreenHandle();
     const getCurrentNode = useMemo(() => {
         return mapNodeParentByPath(currentNode, mappingListData)
     }, [currentNode, getListFolder, getListFile]) as Obj[];
@@ -43,14 +46,26 @@ const ContainerDocument = () => {
         });
     }, [tab]);
     return (
-        <div className={`${styles.containerDocument} ${!hasRoleMg && styles.anRole}`}>
-            {hasRoleMg && <Tabs
-                notAllowContent
-                listItemTab={tabs}
-                onClickTab={(key) => {
-                    setTab(key)
-                }}
-            />}
+        <FullScreen
+            handle={handle}
+            className={`${styles.containerDocument} ${!hasRoleMg && styles.anRole} ${handle.active && styles.isFullScreen}`}
+        >
+            <div className={styles.expand} onClick={() => {
+                if (!handle.active) {
+                    handle.enter();
+                } else {
+                    handle.exit();
+                }
+            }}><Expand className={styles.icon} /></div>
+            {
+                hasRoleMg && <Tabs
+                    notAllowContent
+                    listItemTab={tabs}
+                    onClickTab={(key) => {
+                        setTab(key)
+                    }}
+                />
+            }
             <div className={styles.breadCumb}>
                 <Breadcrumb
                     items={getCurrentNode.map((item) => {
@@ -61,7 +76,7 @@ const ContainerDocument = () => {
                 />
             </div>
             <NewDocument onBin={hasRoleMg && tab === 'BIN'} setCurrentNode={setCurrentNode} />
-        </div>
+        </FullScreen >
     )
 }
 

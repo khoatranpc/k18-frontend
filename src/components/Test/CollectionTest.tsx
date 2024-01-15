@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import { EyeTwoTone } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
 import { LOGO } from '@/global/init-data';
-import { useHandleDrawer } from '@/utils/hooks';
+import { useHandleDrawer, useSaveRoomQuizzTest } from '@/utils/hooks';
 import ModalCustomize from '../ModalCustomize';
 import styles from '@/styles/Test.module.scss';
 
@@ -21,13 +21,19 @@ const CollectionTest = (props: Props) => {
     const drawer = useHandleDrawer();
     const router = useRouter();
     const [modal, setModal] = useState(false);
+    const saveRoomQuizzTest = useSaveRoomQuizzTest();
     const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
         initialValues: {
             codeClass: ''
         },
         validationSchema,
         onSubmit(values) {
-
+            saveRoomQuizzTest.query({
+                body: {
+                    ...values,
+                    questionId: props.data?._id as string
+                }
+            });
         }
     })
     const handleOpenForm = () => {
@@ -82,8 +88,8 @@ const CollectionTest = (props: Props) => {
                     >
                         <Input name="codeClass" onChange={handleChange} onBlur={handleBlur} size="small" placeholder="Nhập mã lớp" />
                         {errors.codeClass && touched.codeClass && <p className="error">{errors.codeClass}</p>}
-                        <a href={`/quizz/${values.codeClass}?test=${props.data?._id}`} target="_blank">Link</a>
-                        <Button size="small" htmlType="submit">Xác nhận</Button>
+                        {saveRoomQuizzTest.data.success && <a href={`/quizz/${values.codeClass}`} target="_blank">Link</a>}
+                        <Button size="small" htmlType="submit" loading={saveRoomQuizzTest.data.isLoading}>Xác nhận</Button>
                     </Form>
                 </ModalCustomize>
             }

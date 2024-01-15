@@ -90,8 +90,11 @@ import updateFile from './file/updateFile.reducer';
 import socketConnection from './socket/socketConnection.reducer';
 import listCollectionQuiz from './test/getListCollectionTest.reducer';
 import createCollectionQuiz from './test/createCollectionQuiz.reducer';
+import saveRoomQuizzTest from './test/saveRoomQuizzTest.reducer';
 import createQuestion from './test/createQuestion.reducer';
 import getListQuestion from './test/getListQuestion.reducer';
+import studentJoinRoomQuizz from './test/studentJoinRoomQuizz.reducer';
+import quizzTestSocket from './socket/socketQuizzTest.reducer';
 
 const rootReducer = {
     test: test,
@@ -187,6 +190,9 @@ const rootReducer = {
     listCollectionQuiz,
     createCollectionQuiz,
     createQuestion,
-    getListQuestion
+    getListQuestion,
+    quizzTestSocket,
+    saveRoomQuizzTest,
+    studentJoinRoomQuizz
 };
 export default rootReducer;
