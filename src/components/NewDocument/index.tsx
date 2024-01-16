@@ -75,7 +75,7 @@ const ContainerDocument = () => {
                     })}
                 />
             </div>
-            <NewDocument onBin={hasRoleMg && tab === 'BIN'} setCurrentNode={setCurrentNode} />
+            <NewDocument listNode={getCurrentNode} onBin={hasRoleMg && tab === 'BIN'} setCurrentNode={setCurrentNode} />
         </FullScreen >
     )
 }

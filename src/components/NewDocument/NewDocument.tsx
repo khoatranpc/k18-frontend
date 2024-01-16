@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined, ReloadOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined, ReloadOutlined, FolderOpenFilled } from '@ant-design/icons';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { Button, Input, Radio, Tree, Popconfirm } from 'antd';
@@ -31,6 +31,7 @@ const validationSchema = yup.object({
 interface Props {
     onBin?: boolean;
     setCurrentNode?: (node: string) => void;
+    listNode?: Obj[];
 }
 const NewDocument = (props: Props) => {
     const message = useHookMessage();
@@ -148,11 +149,12 @@ const NewDocument = (props: Props) => {
     });
     const hasRoleMg = useComparePositionTE('ASSISTANT', 'HR', 'LEADER', 'QC');
     const refValues = useRef<typeof values | null>(null);
+    const getListNodeOpen = props.listNode?.map((item) => item._id as string) as string[] ?? [];
     const listData: DataNode[] = getListFolder.map((item) => {
         return {
             ...item,
             key: item._id,
-            title: <span className={styles.file}><FolderFilled />{item.name}</span>
+            title: <span className={styles.file}>{!getListNodeOpen.includes(item._id) ? <FolderFilled /> : <FolderOpenFilled />}{item.name}</span>
         }
     });
     const listFileData: DataNode[] = getListFile.map((item) => {
