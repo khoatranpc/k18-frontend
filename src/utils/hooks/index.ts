@@ -92,6 +92,8 @@ import { queryGetlistQuestion } from "@/store/reducers/test/getListQuestion.redu
 import { RoomTest, emitRoomQuizzTestSocket, getDataFromRoomQuizzSocket, receivedDataFromRoomQuizz } from "@/store/reducers/socket/socketQuizzTest.reducer";
 import { clearSaveRoomQuizzTest, querySaveRoomQuizzTest } from "@/store/reducers/test/saveRoomQuizzTest.reducer";
 import { clearStudentJoin, queryStudentJoinRoomQuizz } from "@/store/reducers/test/studentJoinRoomQuizz.reducer";
+import { clearCreateRequestOnleave, queryCreateRequestOnleave } from "@/store/reducers/requestOnLeave/createRequestOnLeave.reducer";
+import { queryListRequestOnLeave } from "@/store/reducers/requestOnLeave/listRequestOnLeave.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -993,6 +995,8 @@ const useCreateQuestionQuiz = createHookQueryReducer('createQuestion', queryCrea
 const useGetListQuestion = createHookQueryReducer('getListQuestion', queryGetlistQuestion);
 const useSaveRoomQuizzTest = createHookQueryReducer('saveRoomQuizzTest', querySaveRoomQuizzTest, clearSaveRoomQuizzTest);
 const useStudentJoinRoomQuizz = createHookQueryReducer('studentJoinRoomQuizz', queryStudentJoinRoomQuizz, clearStudentJoin);
+const useCreateRequestOnLeave = createHookQueryReducer('createRequestOnLeave', queryCreateRequestOnleave, clearCreateRequestOnleave);
+const useListRequestOnLeave = createHookQueryReducer('listRequestOnLeave', queryListRequestOnLeave);
 
 export {
     useGetListClass,
@@ -1086,5 +1090,7 @@ export {
     useGetListQuestion,
     useQuizzTestSocket,
     useSaveRoomQuizzTest,
-    useStudentJoinRoomQuizz
+    useStudentJoinRoomQuizz,
+    useCreateRequestOnLeave,
+    useListRequestOnLeave
 }

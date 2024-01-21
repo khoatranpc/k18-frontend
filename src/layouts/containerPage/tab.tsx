@@ -64,6 +64,11 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           hasBackPage: true,
           component: ComponentPage.TEACHER_DETAIL
         },
+        {
+          route: CombineRoute["TE"]["MANAGER"]["REQUEST_ONLEAVE"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["REQUEST_ONLEAVE"],
+          title: "Thông tin off",
+        },
       ]
     },
     {

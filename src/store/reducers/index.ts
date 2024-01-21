@@ -95,6 +95,8 @@ import createQuestion from './test/createQuestion.reducer';
 import getListQuestion from './test/getListQuestion.reducer';
 import studentJoinRoomQuizz from './test/studentJoinRoomQuizz.reducer';
 import quizzTestSocket from './socket/socketQuizzTest.reducer';
+import createRequestOnLeave from './requestOnLeave/createRequestOnLeave.reducer';
+import listRequestOnLeave from './requestOnLeave/listRequestOnLeave.reducer';
 
 const rootReducer = {
     test: test,
@@ -193,6 +195,8 @@ const rootReducer = {
     getListQuestion,
     quizzTestSocket,
     saveRoomQuizzTest,
-    studentJoinRoomQuizz
+    studentJoinRoomQuizz,
+    createRequestOnLeave,
+    listRequestOnLeave
 };
 export default rootReducer;

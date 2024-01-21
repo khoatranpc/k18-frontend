@@ -16,10 +16,10 @@ const filterTeacherWithArea = (listRecordCourseApply?: Obj[], listDataTeacher?: 
     const listTeacher = filterTeacherWithCourse(listRecordCourseApply, listDataTeacher, courseId);
     const dataLocationTotal: Obj = {}
     listTeacher.map((item) => {
-        if (!dataLocationTotal[item.area]) {
-            dataLocationTotal[item.area] = 0;
+        if (!dataLocationTotal[item?.area]) {
+            dataLocationTotal[item?.area] = 0;
         }
-        dataLocationTotal[item.area] += 1;
+        dataLocationTotal[item?.area] += 1;
     });
     const listLocation = listArea?.map((item) => {
         const getNameArea = item.name; 
