@@ -122,7 +122,7 @@ const FeedbackClautid = () => {
                 return value ? <div className={`${styles.cell} ${styles.completed}`}>Hoàn thành</div> :
                     <div>
                         <Button size="small" onClick={() => {
-                            if (value) {
+                            if (!value) {
                                 setShowModalFeedback({
                                     show: true,
                                     data: record,
