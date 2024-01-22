@@ -179,7 +179,8 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           indexroute: CombineRoute['TE']['MANAGER']['STAFF_INFO'],
           hide: true,
           component: ComponentPage.TE_STAFF,
-          hasBackPage: true
+          hasBackPage: true,
+          noReplaceTitle: true
         },
       ]
     },
