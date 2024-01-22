@@ -61,7 +61,7 @@ const Class = () => {
             title: 'Lịch học',
             dataIndex: 'classId',
             render(value) {
-                const getTimeScheduleData = getMatchingTimeSchedule(listTimeSchedule.data.response?.data as Array<Obj>, value.timeSchedule as Array<Obj>)
+                const getTimeScheduleData = getMatchingTimeSchedule(listTimeSchedule.data.response?.data as Array<Obj>, value?.timeSchedule as Array<Obj>)
                 return getTimeScheduleData.map((item) => {
                     return <p key={item.order as number} style={{ margin: 0 }}>
                         - {item.weekday as string}, {item.start}-{item.end}
