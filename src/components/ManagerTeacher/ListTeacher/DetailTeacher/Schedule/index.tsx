@@ -15,7 +15,7 @@ const Schedule = () => {
             payload: {
                 query: {
                     query: {
-                        year: 2023,
+                        year: currentDate.getFullYear(),
                         month: currentDate.getMonth(),
                         option: 'MONTH'
                     },
