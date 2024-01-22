@@ -79,7 +79,7 @@ const getWeekday = (day: number, vi?: boolean, short?: boolean) => {
                 return "T6";
             case 6:
                 return "T7";
-            case 7:
+            case 0:
                 return "CN";
             default:
                 return "CN"
@@ -98,7 +98,7 @@ const getWeekday = (day: number, vi?: boolean, short?: boolean) => {
                 return Weekday.T6;
             case 6:
                 return Weekday.T7;
-            case 7:
+            case 0:
                 return Weekday.CNB;
             default:
                 return Weekday.CNB;
@@ -117,7 +117,7 @@ const getWeekday = (day: number, vi?: boolean, short?: boolean) => {
                 return "TH 6";
             case 6:
                 return "TH 7";
-            case 7:
+            case 0:
                 return "CN";
             default:
                 return "CN"
