@@ -45,9 +45,9 @@ const Interview = (props: Props) => {
             <div className={`${styles.handleInterview} ${styles.infoRound}`}>
                 <h2>Vòng phỏng vấn {getDataRoundProcess?.processed && (<sup style={{ color: !getDataRoundProcess?.result ? 'var(--light-red)' : 'var(--success)' }}>{!getDataRoundProcess?.processed ? 'Đang xử lý' : (getDataRoundProcess?.result ? 'Pass' : 'Failed')}</sup>)}</h2>
                 <div className={styles.infoInterview}>
-                    <p>Link meet: {getDataRoundProcess?.linkMeet as string ? <a href={getDataRoundProcess.linkMeet || '#'} className="link" target="_blank">{getDataRoundProcess?.linkMeet}</a> : <span className="error">Chưa có link!</span>}</p>
-                    <p>Thời gian: {getDataRoundProcess?.time as string ? formatDatetoString(new Date(getDataRoundProcess.time as string), 'dd/MM/yyyy, HH:mm:a') : <span className="error">Chưa có lịch!</span>}</p>
-                    <p>TE: {getDataRoundProcess?.te ? (`${getDataRoundProcess.te.teName}-${getDataRoundProcess.te.positionTe}${getDataRoundProcess.te.courseId ? ` ${getDataRoundProcess.te.courseId.courseName}` : ''}`) : (<span className="error">Chưa có thông tin TE!</span>)}</p>
+                    <p>Link meet: {getDataRoundProcess?.linkMeet as string ? <a href={getDataRoundProcess?.linkMeet || '#'} className="link" target="_blank">{getDataRoundProcess?.linkMeet}</a> : <span className="error">Chưa có link!</span>}</p>
+                    <p>Thời gian: {getDataRoundProcess?.time as string ? formatDatetoString(new Date(getDataRoundProcess?.time as string), 'dd/MM/yyyy, HH:mm:a') : <span className="error">Chưa có lịch!</span>}</p>
+                    <p>TE: {getDataRoundProcess?.te ? (`${getDataRoundProcess?.te.teName}-${getDataRoundProcess?.te.positionTe}${getDataRoundProcess?.te.courseId ? ` ${getDataRoundProcess?.te.courseId.courseName}` : ''}`) : (<span className="error">Chưa có thông tin TE!</span>)}</p>
                 </div>
                 <div className={styles.function}>
                     <div className={styles.actions}>
@@ -57,7 +57,7 @@ const Interview = (props: Props) => {
                             <CalendarAdd /> {getDataRoundProcess?.time ? ('Cập nhật') : ('Tạo lịch')}
                         </span>
                         <span className={styles.sentMail}>
-                            <SendingMail pass={getDataRoundProcess.result} round={RoundProcess.INTERVIEW} />
+                            <SendingMail pass={getDataRoundProcess?.result} round={RoundProcess.INTERVIEW} />
                         </span>
                     </div>
                     <div className={styles.handleStep}>
