@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined, ReloadOutlined, FolderOpenFilled } from '@ant-design/icons';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { Button, Input, Radio, Tree, Popconfirm } from 'antd';
+import { Button, Input, Radio, Tree, Popconfirm, Popover } from 'antd';
 import * as yup from 'yup';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import { Obj } from '@/global/interface';
@@ -12,6 +12,7 @@ import { uuid } from '@/utils';
 import ModalCustomize from '../ModalCustomize';
 import Loading from '../loading';
 import { findCurrentNode, findNearestParent, listToTreeFnc } from './config';
+import BarsAction from './BarsAction';
 import styles from '@/styles/Document.module.scss';
 
 enum TypeHandleFile {
@@ -45,6 +46,7 @@ const NewDocument = (props: Props) => {
     const deleteFile = useDeleteFile();
     const getListFolder = listFolder.data.response?.data as Obj[] || [];
     const getListFile = listFile.data.response?.data as Obj[] || [];
+    const [titleSearch, setTitleSearch] = useState<string>('');
     const firstMounted = useRef(true);
     const [modal, setModal] = useState<{
         show: boolean,
@@ -154,7 +156,7 @@ const NewDocument = (props: Props) => {
         return {
             ...item,
             key: item._id,
-            title: <span className={styles.file}>{!getListNodeOpen.includes(item._id) ? <FolderFilled /> : <FolderOpenFilled />}{item.name}</span>
+            title: <span className={`${styles.file} ${getListNodeOpen.includes(item._id) && styles.activeFile}`}>{!getListNodeOpen.includes(item._id) ? <FolderFilled /> : <FolderOpenFilled />}{item.name}</span>
         }
     });
     const listFileData: DataNode[] = getListFile.map((item) => {
@@ -285,6 +287,11 @@ const NewDocument = (props: Props) => {
             }
         });
     }
+    const handleSearch = (value: string) => {
+        return listFileData?.filter((item: Obj) => {
+            return item?.name && String(item?.name).toLowerCase().includes(value.toLowerCase());
+        })
+    }
     useEffect(() => {
         if (createFolder.data.response || createFile.data.response || updateFolder.data.response || updateFile.data.response || deleteFolder.data.response || deleteFile.data.response) {
             message.open({
@@ -327,6 +334,31 @@ const NewDocument = (props: Props) => {
     }, [getListFolder, getListFile])
     return (
         <div className={styles.newDocument}>
+            <div className={styles.search}>
+                <Popover
+                    open={!!titleSearch}
+                    content={<div className={styles.listValueFileSearch}>
+                        {
+                            handleSearch(titleSearch).length !== 0 ? handleSearch(titleSearch)?.map((item: Obj) => {
+                                return <p
+                                    className={styles.item}
+                                    key={item?._id as string}
+                                    onClick={() => {
+                                        setFieldValue('nodeSelect', item.key as string);
+                                        props.setCurrentNode?.(item.key as string);
+                                        setTitleSearch('');
+                                    }}
+                                >
+                                    {item.title}
+                                </p>
+                            })
+                                : <p>Không có dữ liệu</p>
+                        }
+                    </div>}
+                >
+                    <Input size="small" placeholder="Tìm kiếm file" onChange={(e) => setTitleSearch(e.target.value as string)} />
+                </Popover>
+            </div>
             {hasRoleMg && <div className={styles.toolbar}>
                 <EditOutlined className={styles.icon} onClick={() => {
                     handleEdit();
@@ -374,6 +406,13 @@ const NewDocument = (props: Props) => {
                 }
             </div>
             <div className={styles.contentDocumentTree}>
+                <div className={styles.barsOutLined}>
+                    <BarsAction
+                        onOpenNewTab={() => {
+                            window.open(crrNode.content, '_blank');
+                        }}
+                    />
+                </div>
                 {values.nodeSelect ?
                     (crrNode && crrNode?.content ? < iframe width={'100%'} height={'100%'} src={crrNode.content} /> : <div className={styles.emptyNode}>Tài liệu chưa có nội dung</div>)
                     :
