@@ -15,10 +15,13 @@ interface Props {
     handleSubmit?: (values: Obj) => void;
     handleModal?: () => void;
     hasDoc?: boolean;
+    disabledLinkMeet?: boolean;
 }
 const CreateCalendar = (props: Props) => {
     const validationSchema = yup.object({
-        linkMeet: yup.string().required('Chưa có thông tin link meet!'),
+        ...!props.disabledLinkMeet ? {
+            linkMeet: yup.string().required('Chưa có thông tin link meet!')
+        } : {},
         te: yup.string().required('Chưa có thông tin TE!'),
         time: yup.string().required('Chưa có thông tin thời gian!'),
         ...props.hasDoc ? {
@@ -71,13 +74,15 @@ const CreateCalendar = (props: Props) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Group>
-                <Form.Label>
-                    Link meet <span className="error">*</span>
-                </Form.Label>
-                <Input size='small' name="linkMeet" value={values.linkMeet} onChange={handleChange} onBlur={handleBlur} />
-                {errors.linkMeet && touched.linkMeet && <p className="error">{errors.linkMeet}</p>}
-            </Form.Group>
+            {!props.disabledLinkMeet &&
+                <Form.Group>
+                    <Form.Label>
+                        Link meet <span className="error">*</span>
+                    </Form.Label>
+                    <Input size='small' name="linkMeet" value={values.linkMeet} onChange={handleChange} onBlur={handleBlur} />
+                    {errors.linkMeet && touched.linkMeet && <p className="error">{errors.linkMeet}</p>}
+                </Form.Group>
+            }
             {
                 props.hasDoc && <Form.Group>
                     <Form.Label>

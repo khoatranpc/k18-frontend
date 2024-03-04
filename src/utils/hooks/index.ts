@@ -94,6 +94,8 @@ import { clearSaveRoomQuizzTest, querySaveRoomQuizzTest } from "@/store/reducers
 import { clearStudentJoin, queryStudentJoinRoomQuizz } from "@/store/reducers/test/studentJoinRoomQuizz.reducer";
 import { clearCreateRequestOnleave, queryCreateRequestOnleave } from "@/store/reducers/requestOnLeave/createRequestOnLeave.reducer";
 import { queryListRequestOnLeave } from "@/store/reducers/requestOnLeave/listRequestOnLeave.reducer";
+import { clearGoogleAuth, queryGoogleAuth } from "@/store/reducers/google/auth.reducer";
+import { clearGoogleRedirect, queryGoogleRedirect } from "@/store/reducers/google/redirect.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -997,6 +999,8 @@ const useSaveRoomQuizzTest = createHookQueryReducer('saveRoomQuizzTest', querySa
 const useStudentJoinRoomQuizz = createHookQueryReducer('studentJoinRoomQuizz', queryStudentJoinRoomQuizz, clearStudentJoin);
 const useCreateRequestOnLeave = createHookQueryReducer('createRequestOnLeave', queryCreateRequestOnleave, clearCreateRequestOnleave);
 const useListRequestOnLeave = createHookQueryReducer('listRequestOnLeave', queryListRequestOnLeave);
+const useGoogleAuth = createHookQueryReducer('googleAuth', queryGoogleAuth, clearGoogleAuth);
+const useGoogleRedirect = createHookQueryReducer('googleRedirect', queryGoogleRedirect, clearGoogleRedirect);
 
 export {
     useGetListClass,
@@ -1092,5 +1096,7 @@ export {
     useSaveRoomQuizzTest,
     useStudentJoinRoomQuizz,
     useCreateRequestOnLeave,
-    useListRequestOnLeave
+    useListRequestOnLeave,
+    useGoogleAuth,
+    useGoogleRedirect
 }

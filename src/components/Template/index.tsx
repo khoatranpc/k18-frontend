@@ -8,6 +8,7 @@ import { useHookMessage } from '@/utils/hooks/message';
 import Loading from '../loading';
 import TextEditor from '../TextEditor';
 import styles from '@/styles/MailTemplate.module.scss';
+// import { Button } from 'antd';
 
 const listTemplateString = Object.values(TemplateMail);
 
@@ -28,8 +29,12 @@ const Template = () => {
     const handleBlur = (newValue: string) => {
         setValue(newValue);
     }
-    const handleChange = (newValue: string) => {
-        // console.log(newValue);
+    const handleChange = (type: 'title' | 'value', newValue: string) => {
+        if (type === 'title') {
+            setTitle(newValue);
+        } else {
+            setValue(newValue);
+        }
     }
     const handleSave = () => {
         if (dataMailtemplate) {
@@ -70,8 +75,7 @@ const Template = () => {
     useEffect(() => {
         if (dataMailtemplate && Object.keys(dataMailtemplate).length) {
             setTitle(dataMailtemplate.title);
-            const exmple = dataMailtemplate.html ? String(dataMailtemplate.html).replace('NAME', 'Nguyễn Văn A').replace('POSITION', 'Giáo viên/Trợ giảng Khối ...') : '';
-            setValue(exmple);
+            setValue(dataMailtemplate.html ?? '');
         } else {
             setTitle('');
             setValue('');
@@ -105,13 +109,18 @@ const Template = () => {
                 notAllowContent
                 listItemTab={listTab}
             />
+            {/* <Button className={styles.btnAddNewMailTemplate}>Tạo mẫu mail</Button> */}
             <TextEditor
                 title={title}
-                setTitle={setTitle}
+                setTitle={(value) => {
+                    handleChange('title', value);
+                }}
                 hasTitle
                 value={value}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(value) => {
+                    handleChange('value', value);
+                }}
                 handleSubmit={handleSave}
                 loadingButton={createMailTemplate.data.isLoading || updateMailTemplate.data.isLoading}
             />

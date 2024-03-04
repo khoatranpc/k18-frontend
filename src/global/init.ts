@@ -112,7 +112,8 @@ const getLabelMailTemplate: Record<TemplateMail, string> = {
     FAILCV: 'Fail CV',
     FAILINTERVIEW: ' Fail PV',
     NOCONNECT: 'Không liên hệ được',
-    PASSINTERVIEW: 'Pass PV'
+    PASSINTERVIEW: 'Pass PV',
+    INVITEINTERVIEW: 'Mời phỏng vấn'
 }
 const getLabelRegion: Record<Region, string> = {
     MB: 'Miền Bắc',

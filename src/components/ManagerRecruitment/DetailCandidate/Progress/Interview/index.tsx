@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
 import { formatDatetoString } from '@/utils';
-import { useGetDataRoundProcess, useGetDetailCandidate, useUpdateDataProcessRoundCandidate } from '@/utils/hooks';
+import { useGetDataRoundProcess, useGetDetailCandidate, useGoogleAuth, useUpdateDataProcessRoundCandidate } from '@/utils/hooks';
 import ConfirmContext from '../context';
 import CalendarAdd from '@/icons/CalendarAdd';
 import ListComment from '../Comment';
@@ -12,6 +12,7 @@ import ModalCustomize from '@/components/ModalCustomize';
 import SendingMail from '../SendingMail';
 import CreateCalendar from '../CreateCalendar';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { useHookMessage } from '@/utils/hooks/message';
 
 interface Props {
     roundId?: string;
@@ -20,6 +21,9 @@ const Interview = (props: Props) => {
     const router = useRouter();
     const dataRoundProcess = useGetDataRoundProcess();
     const currentCandidate = useGetDetailCandidate();
+    const message = useHookMessage();
+    const googleAuth = useGoogleAuth();
+    const getDataAuth = (googleAuth.data.response as Obj)?.data as Obj;
     const getCandidateId = router.query;
 
     const candidate = currentCandidate.data.response?.data as Obj;
@@ -39,6 +43,23 @@ const Interview = (props: Props) => {
             setModal(false);
         }
     }, [updateDataRoundProcessCandidate.data]);
+    useEffect(() => {
+        if (getDataAuth && !googleAuth.data.success || ((updateDataRoundProcessCandidate.data.response?.message as string)?.includes('No access, refresh token'))) {
+            localStorage.removeItem('authGoogle');
+            message.open({
+                type: 'warning',
+                content: 'Đã xảy ra lỗi đăng nhập Google, thực hiện lại thao tác để đăng nhập!'
+            });
+            googleAuth.clear?.();
+            updateDataRoundProcessCandidate.clear?.();
+            message.close();
+        } else {
+            if (googleAuth.data.success && getDataAuth?.url) {
+                localStorage.setItem('callbackUrl', router.asPath);
+                window.location.href = getDataAuth.url;
+            }
+        }
+    }, [googleAuth.data.response, updateDataRoundProcessCandidate.data]);
 
     return (
         <div className={styles.roundInterview}>
@@ -52,7 +73,15 @@ const Interview = (props: Props) => {
                 <div className={styles.function}>
                     <div className={styles.actions}>
                         <span className={styles.handleSchedule} onClick={() => {
-                            setModal(true);
+                            if (!localStorage.getItem('authGoogle')) {
+                                googleAuth.query({
+                                    query: {
+                                        callBackUrl: router.asPath
+                                    }
+                                });
+                            } else {
+                                setModal(true);
+                            }
                         }}>
                             <CalendarAdd /> {getDataRoundProcess?.time ? ('Cập nhật') : ('Tạo lịch')}
                         </span>
@@ -62,7 +91,6 @@ const Interview = (props: Props) => {
                     </div>
                     <div className={styles.handleStep}>
                         <Button
-                            // disabled={getDataRoundProcess?.result}
                             className={styles.btnHandleStep}
                             onClick={() => {
                                 handleModal(false, 'FAIL');
@@ -71,7 +99,6 @@ const Interview = (props: Props) => {
                             Trượt
                         </Button>
                         <Button
-                            // disabled={getDataRoundProcess?.result}
                             className={styles.btnHandleStep}
                             onClick={() => {
                                 handleModal(true, 'PASS');
@@ -86,7 +113,6 @@ const Interview = (props: Props) => {
             <ModalCustomize
                 onHide={() => {
                     setModal(false);
-                    // btnCancel.current?.click();
                 }}
                 centered
                 modalHeader={
@@ -100,6 +126,7 @@ const Interview = (props: Props) => {
                     handleModal={() => {
                         setModal(false);
                     }}
+                    disabledLinkMeet
                     handleSubmit={(values) => {
                         updateDataRoundProcessCandidate.query({
                             params: [props.roundId as string],
@@ -110,7 +137,7 @@ const Interview = (props: Props) => {
                                     candidateId: getCandidateId.candidateId
                                 } : {}
                             }
-                        })
+                        });
                     }}
                 />
             </ModalCustomize>
