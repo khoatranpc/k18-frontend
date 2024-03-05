@@ -20,6 +20,7 @@ import Loading from '../loading';
 import iconArrowLeft from '@/assets/svgs/icon-arrow-left.svg';
 import Dropdown from '../Dropdown';
 import styles from '@/styles/auth/FormRegister.module.scss';
+import CropImage from '../CropImage';
 
 const crrCourseRegister: {
     idCourse: string,
@@ -72,6 +73,9 @@ const validationSchema = yup.object({
     bankHolderName: yup.string().required('Bạn chưa điền tên chủ sở hữu!'),
     role: yup.array().min(1, 'Bạn cần chọn ít nhất một vị trí!').required('Bạn cần chọn vị trí!'),
     coursesRegister: yup.array().min(1, 'Bạn cần chọn ít nhất một cấp độ của một khóa học!').required('Bạn cần chọn khóa học!'),
+    imgIdFront: yup.mixed().required("Bạn chưa điền CCCD mặt trước"),
+    imgIdBack: yup.mixed().required("Bạn chưa điền CCCD mặt sau"),
+
 });
 const FormRegister = () => {
     const [step, setStep] = useState<number>(1);
@@ -114,6 +118,8 @@ const FormRegister = () => {
             identify: '',
             licenseDate: '',
             licensePlace: '',
+            imgIdFront: '',
+            imgIdBack: '',
             taxCode: '',
             facebookLink: '',
             area: '',
@@ -131,6 +137,8 @@ const FormRegister = () => {
         },
         validationSchema,
         onSubmit(values) {
+            console.log("🚀 ~ onSubmit ~ values:", values)
+            
             if (isValid) {
                 dispatch(queryRegisterPreTeacher({
                     payload: {
@@ -282,6 +290,28 @@ const FormRegister = () => {
                                     <Input type="text" onChange={handleChange} name="licensePlace" value={values.licensePlace} onBlur={handleBlur} placeholder="Cục cảnh sát..." size="large" className={styles.input} />
                                     {errors.licensePlace && touched.licensePlace && <p className="error">{errors.licensePlace}</p>}
                                 </Form.Group>
+                                <div className={styles.groupIdImg}>
+                                <Form.Group className={styles.mb_24}>
+                                    <Form.Label className={styles.fs_12}>
+                                        <span>Căn cước công dân mặt trước <span className="field_required">*</span></span>
+                                    </Form.Label>
+                                    <CropImage disabledFixResize disabledCircleImage className={styles.cropImage} classNameImgPreview={styles.imageStaff} src={`https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png`} onCropped={(file) => {
+                        setFieldValue("imgIdFront", file);
+                    }} />
+                                    {errors.imgIdFront && touched.imgIdFront && <p className="error">{errors.imgIdFront}</p>}
+                                </Form.Group>
+                                <Form.Group className={styles.mb_24}>
+                                    <Form.Label className={styles.fs_12}>
+                                        <span>Căn cước công dân mặt sau <span className="field_required">*</span></span>
+                                    </Form.Label>
+                                    <CropImage disabledFixResize disabledCircleImage className={styles.cropImage} classNameImgPreview={styles.imageStaff} src={`https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png`} onCropped={(file) => {
+                        setFieldValue("imgIdBack", file);
+                    }} />
+                                    {errors.imgIdBack && touched.imgIdBack && <p className="error">{errors.imgIdBack}</p>}
+                                </Form.Group>
+
+                                </div>
+
                                 <Form.Group>
                                     <Form.Label className={styles.fs_12}>
                                         <span>Khu vực sống <span className="field_required">*</span></span>
