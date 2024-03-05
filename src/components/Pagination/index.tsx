@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON, TypeCount } from '@/global/enum';
 import styles from '@/styles/Pagination.module.scss';
@@ -15,6 +15,7 @@ interface Props {
     }) => void;
 }
 const Pagination = (props: Props) => {
+    const callbackChange = useRef<boolean>(false);
     const [crrDataPagination, setCrrDataPagination] = useState({
         rowOnPage: props.rowOnPage || 10,
         crrPage: props.crrPage || 1,
@@ -27,6 +28,7 @@ const Pagination = (props: Props) => {
             setCrrDataPagination({
                 ...crrDataPagination,
             });
+            callbackChange.current = true;
         }
     }
     const handlePage = (type: TypeCount) => {
@@ -43,13 +45,16 @@ const Pagination = (props: Props) => {
             setCrrDataPagination({
                 ...crrDataPagination,
             });
+            callbackChange.current = true;
         }
     }
     useEffect(() => {
-        props.onChangePagination?.({
-            currentPage: crrDataPagination.crrPage,
-            currentTotalRowOnPage: crrDataPagination.rowOnPage
-        })
+        if (callbackChange.current) {
+            props.onChangePagination?.({
+                currentPage: crrDataPagination.crrPage,
+                currentTotalRowOnPage: crrDataPagination.rowOnPage
+            })
+        }
     }, [crrDataPagination]);
     return (
         <div className={`${styles.paginationAjax} ${props.className || ''}`}>

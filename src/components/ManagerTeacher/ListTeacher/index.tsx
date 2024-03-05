@@ -15,6 +15,7 @@ import styles from '@/styles/teacher/ManagerTeacher.module.scss';
 
 const ListTeacher = () => {
     const { listTeacher, query } = useListTeacher();
+    const getListTeacher = listTeacher.response?.data as Obj;
     const dataTeacherRegisterCourse = useTeacherRegisterCourse();
     const router = useRouter();
     const area = useGetArea();
@@ -43,7 +44,9 @@ const ListTeacher = () => {
         router.push(`/te/manager/teacher/detail/${record._id as string}`);
     }
     useEffect(() => {
-        handleQueryListTeacher(10, 1);
+        if (!getListTeacher) {
+            handleQueryListTeacher(10, 1);
+        }
         if (!area.data.success) {
             area.query();
         }
@@ -60,8 +63,7 @@ const ListTeacher = () => {
             <ToolBar
                 context={ManagerTeacherContext}
                 onClickReload={() => {
-                    //pending get current data pagination
-                    handleQueryListTeacher(10, 1);
+                    handleQueryListTeacher(getListTeacher?.currentTotalRowOnPage ?? 10, getListTeacher?.currentPage ?? 1);
                 }}
                 listFilter={[]}
                 exportCSVButton
@@ -81,6 +83,10 @@ const ListTeacher = () => {
                 columns={columns}
                 rowData={rowData}
                 hanldeClickRow={handleClickRow}
+                rowOnPage={getListTeacher?.currentTotalRowOnPage}
+                showSizePage
+                crrPage={getListTeacher?.currentPage}
+                maxPage={(listTeacher.response?.data as Obj)?.totalPage}
             />
         </div>
     )
