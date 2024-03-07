@@ -68,7 +68,7 @@ const Course = () => {
     const rowData: RowData[] = generateRowDataForMergeRowSingleField(getListCourse, 'courseLevel');
     const handleClickRadio = (recordId: string, currentRecord: Obj, levelId: string, type: CheckCourseLevel) => {
         const getIdRecordTeacherRegister = currentRecord._id as string;
-        const getBaseDataCourseRegsiter = getCurrentRecordTeacherRegister.map((item) => {
+        const getBaseDataCourseRegsiter = getCurrentRecordTeacherRegister?.map((item) => {
             const idCourse = item.idCourse._id;
             const levelHandle = (item.levelHandle as Obj[]).map((level) => level._id);
             return {
@@ -76,11 +76,11 @@ const Course = () => {
                 levelHandle
             }
         });
-        const findCurrentCourse = getBaseDataCourseRegsiter.findIndex((item) => {
+        const findCurrentCourse = getBaseDataCourseRegsiter?.findIndex((item) => {
             return item.idCourse === getIdRecordTeacherRegister
         });
         if (findCurrentCourse >= 0) {
-            const listLevelHandle = getBaseDataCourseRegsiter[findCurrentCourse].levelHandle as string[];
+            const listLevelHandle = getBaseDataCourseRegsiter?.[findCurrentCourse].levelHandle as string[];
             const findIndexLevelHandle = listLevelHandle.findIndex((item) => {
                 return item === levelId;
             });
@@ -95,7 +95,7 @@ const Course = () => {
                         listLevelHandle.splice(findIndexLevelHandle, 1);
                     }
                     if (listLevelHandle.length === 0) {
-                        getBaseDataCourseRegsiter.splice(findCurrentCourse, 1);
+                        getBaseDataCourseRegsiter?.splice(findCurrentCourse, 1);
                     }
                     break;
             }
@@ -105,7 +105,7 @@ const Course = () => {
                 idCourse,
                 levelHandle: [levelId]
             };
-            getBaseDataCourseRegsiter.push(newCourse)
+            getBaseDataCourseRegsiter?.push(newCourse)
         }
         updateRegisterCourse.query({
             body: {

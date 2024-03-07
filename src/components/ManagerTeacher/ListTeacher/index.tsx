@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import React, { useEffect, useRef } from 'react';
 import ManagerTeacherContext from '../context';
 import { Obj } from '@/global/interface';
-import { useGetArea, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
+import { useGetArea, useImportCSVDataTeacher, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import { ComponentPage } from '@/global/enum';
 import CombineRoute from '@/global/route';
+import { useHookMessage } from '@/utils/hooks/message';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { AppDispatch } from '@/store';
 import Table from '@/components/Table';
@@ -15,6 +16,9 @@ import styles from '@/styles/teacher/ManagerTeacher.module.scss';
 
 const ListTeacher = () => {
     const { listTeacher, query } = useListTeacher();
+    const importCSVDataTeacher = useImportCSVDataTeacher();
+    const message = useHookMessage();
+    const getDataImportCSV = importCSVDataTeacher.data;
     const getListTeacher = listTeacher.response?.data as Obj;
     const dataTeacherRegisterCourse = useTeacherRegisterCourse();
     const router = useRouter();
@@ -22,7 +26,7 @@ const ListTeacher = () => {
     const getAreas = area.data.response?.data as Obj[];
     const dispatch = useDispatch<AppDispatch>();
     const firstQuery = useRef(true);
-    const columns = getColums(undefined, getAreas);
+    const columns = getColums(undefined, getAreas, dataTeacherRegisterCourse.listData.isLoading);
     const rowData = mapRowData((listTeacher.response?.data as Obj)?.listTeacher || [], (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []);
     const handleQueryListTeacher = (rowOnPage: number, currentPage: number) => {
         query(rowOnPage, currentPage);
@@ -44,7 +48,7 @@ const ListTeacher = () => {
         router.push(`/te/manager/teacher/detail/${record._id as string}`);
     }
     useEffect(() => {
-        if (!getListTeacher) {
+        if (!getListTeacher || (getListTeacher && !getListTeacher.currentPage)) {
             handleQueryListTeacher(10, 1);
         }
         if (!area.data.success) {
@@ -58,6 +62,16 @@ const ListTeacher = () => {
             dataTeacherRegisterCourse.query(getListId);
         }
     }, [listTeacher]);
+    useEffect(() => {
+        if (getDataImportCSV.response) {
+            message.open({
+                type: getDataImportCSV.success ? 'success' : 'error',
+                content: (getDataImportCSV.response as Obj)?.message as string
+            });
+            importCSVDataTeacher.clear?.();
+            message.close();
+        }
+    }, [getDataImportCSV]);
     return (
         <div className={styles.listTeacher}>
             <ToolBar
@@ -69,6 +83,21 @@ const ListTeacher = () => {
                 exportCSVButton
                 createButton
                 iconReload
+                enableImportCSV
+                loadingImport={importCSVDataTeacher.data.isLoading}
+                onImportCSV={(data) => {
+                    // console.log(data) 
+                    const formData = new FormData();
+                    if (data) {
+                        formData.append("csvFile", data as File);
+                        importCSVDataTeacher.query({
+                            body: formData,
+                            headers: {
+                                "Content-Type": "mutilpart/form-data"
+                            }
+                        });
+                    }
+                }}
             />
             <Table
                 loading={listTeacher.isLoading}

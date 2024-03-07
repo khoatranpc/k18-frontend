@@ -99,6 +99,7 @@ import createRequestOnLeave from './requestOnLeave/createRequestOnLeave.reducer'
 import listRequestOnLeave from './requestOnLeave/listRequestOnLeave.reducer';
 import googleAuth from './google/auth.reducer';
 import googleRedirect from './google/redirect.reducer';
+import teacherImportCSV from './teacher/importCSV.reducer';
 
 const rootReducer = {
     test: test,
@@ -201,6 +202,7 @@ const rootReducer = {
     createRequestOnLeave,
     listRequestOnLeave,
     googleAuth,
-    googleRedirect
+    googleRedirect,
+    teacherImportCSV
 };
 export default rootReducer;

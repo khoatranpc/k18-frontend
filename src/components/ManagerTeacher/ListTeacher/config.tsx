@@ -4,7 +4,7 @@ import { getColorTeacherPoint, getStringGender } from "@/global/init";
 import { formatDatetoString, generateRowDataForMergeRowSingleField } from "@/utils";
 import Loading from "@/components/loading";
 
-const getColums = (styles?: Obj, area?: Obj[]): Columns => {
+const getColums = (styles?: Obj, area?: Obj[], loadingQueryCourse?: boolean): Columns => {
     return [
         {
             key: 'DATE',
@@ -304,7 +304,7 @@ const getColums = (styles?: Obj, area?: Obj[]): Columns => {
                     className: 'header-border',
                     dataIndex: 'courseRegister',
                     render(value) {
-                        return (value as Obj)?.idCourse.courseName || <Loading className="margin-auto" />
+                        return loadingQueryCourse ? <Loading className="margin-auto" /> : (value as Obj)?.idCourse?.courseName
                     }
                 },
                 {
@@ -315,9 +315,9 @@ const getColums = (styles?: Obj, area?: Obj[]): Columns => {
                     className: 'header-border',
                     dataIndex: 'courseRegister',
                     render(value) {
-                        return ((value as Obj)?.levelHandle as Array<Obj>)?.map((item, idx) => {
+                        return loadingQueryCourse ? <Loading className="margin-auto" /> : ((value as Obj)?.levelHandle as Array<Obj>)?.map((item, idx) => {
                             return idx < ((value as Obj)?.levelHandle as Array<Obj>).length - 1 ? item.levelCode + ', ' : item.levelCode
-                        }) || <Loading className="margin-auto" />
+                        })
                     },
                 }
             ],
