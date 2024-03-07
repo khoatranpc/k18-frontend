@@ -290,7 +290,7 @@ const FormRegister = () => {
                                     <Input type="text" onChange={handleChange} name="licensePlace" value={values.licensePlace} onBlur={handleBlur} placeholder="Cục cảnh sát..." size="large" className={styles.input} />
                                     {errors.licensePlace && touched.licensePlace && <p className="error">{errors.licensePlace}</p>}
                                 </Form.Group>
-                                <div className={styles.groupIdImg}>
+                                {/* <div className={styles.groupIdImg}>
                                 <Form.Group className={styles.mb_24}>
                                     <Form.Label className={styles.fs_12}>
                                         <span>Căn cước công dân mặt trước <span className="field_required">*</span></span>
@@ -310,7 +310,7 @@ const FormRegister = () => {
                                     {errors.imgIdBack && touched.imgIdBack && <p className="error">{errors.imgIdBack}</p>}
                                 </Form.Group>
 
-                                </div>
+                                </div> */}
 
                                 <Form.Group>
                                     <Form.Label className={styles.fs_12}>
