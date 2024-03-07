@@ -106,7 +106,7 @@ const Overview = () => {
                                         getCourseTeacherRegister?.map((item) => {
                                             return (item.coursesRegister as Array<Obj>)?.map((course) => {
                                                 return <ul className={styles.containerCourse} key={course.idCourse._id as string}>
-                                                    <span className={styles.course}>{course.idCourse.courseName || ''}</span>
+                                                    <span className={styles.course}>{course?.idCourse?.courseName || ''}</span>
                                                     {(course.levelHandle as Array<Obj>)?.map((level, idxLevel) => {
                                                         return <li key={idxLevel}>
                                                             {level.levelCode || ''}

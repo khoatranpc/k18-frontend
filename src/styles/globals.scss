@@ -1119,3 +1119,18 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
         height: 100vh !important;
     }
 }
+
+.btn-import-csv {
+    border: 1px solid var(--base);
+    padding: 0 0.8rem;
+    border-radius: 0.8rem;
+    background-color: transparent;
+    color: var(--base);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    .inputFileCSV {
+        display: none;
+    }
+}

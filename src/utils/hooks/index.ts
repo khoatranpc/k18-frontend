@@ -96,6 +96,7 @@ import { clearCreateRequestOnleave, queryCreateRequestOnleave } from "@/store/re
 import { queryListRequestOnLeave } from "@/store/reducers/requestOnLeave/listRequestOnLeave.reducer";
 import { clearGoogleAuth, queryGoogleAuth } from "@/store/reducers/google/auth.reducer";
 import { clearGoogleRedirect, queryGoogleRedirect } from "@/store/reducers/google/redirect.reducer";
+import { clearTeacherIpmortCSV, queryImportCSV } from "@/store/reducers/teacher/importCSV.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -1001,6 +1002,7 @@ const useCreateRequestOnLeave = createHookQueryReducer('createRequestOnLeave', q
 const useListRequestOnLeave = createHookQueryReducer('listRequestOnLeave', queryListRequestOnLeave);
 const useGoogleAuth = createHookQueryReducer('googleAuth', queryGoogleAuth, clearGoogleAuth);
 const useGoogleRedirect = createHookQueryReducer('googleRedirect', queryGoogleRedirect, clearGoogleRedirect);
+const useImportCSVDataTeacher = createHookQueryReducer('teacherImportCSV', queryImportCSV, clearTeacherIpmortCSV);
 
 export {
     useGetListClass,
@@ -1098,5 +1100,6 @@ export {
     useCreateRequestOnLeave,
     useListRequestOnLeave,
     useGoogleAuth,
-    useGoogleRedirect
+    useGoogleRedirect,
+    useImportCSVDataTeacher
 }

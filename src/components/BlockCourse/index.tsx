@@ -55,7 +55,7 @@ const BlockCourse = (props: Props) => {
         <div className={`${styles.blockCourse} ${props.className}`}>
             <div className={`${styles.content} ${props.isLevel ? styles.levelCourse : ''}`}>
                 <div className={styles.imageCourse}>
-                    <Image height={"100%"} alt="" src={!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage) ?? logo)} className={styles.image} />
+                    <Image height={"100%"} alt="" src={(!props.isLevel ? (props.data?.courseImage) : ((props.data?.levelImage)) ?? logo)} className={styles.image} />
                 </div>
                 <div className={styles.course}>
                     <div className={styles.title}>
@@ -74,7 +74,7 @@ const BlockCourse = (props: Props) => {
                                 }
                             }}
                         >
-                            {props.isLevel ? props.data?.levelCode : props.data?.courseTitle as string}
+                            <b>{props.isLevel ? props.data?.levelCode : props.data?.courseTitle as string}</b>
                         </span>
                         <span className={styles.action}>
                             <Checkbox checked={props.data?.active}>Active</Checkbox>
@@ -82,7 +82,7 @@ const BlockCourse = (props: Props) => {
                     </div>
                     <div className={styles.combineDescription}>
                         <p className={`${!props.level ? styles.description : ''}`}>
-                            {props.data ? (!props.isLevel ? props.data.courseDescription : (`${props.data.levelName}`)) : ''}
+                            <b>{props.data ? (!props.isLevel ? props.data.courseDescription : (`${props.data.levelName}`)) : ''}</b>
                             {props.isLevel && <span><br />{props.data?.levelDescription}</span>}
                         </p>
                         <div className={styles.info}>
@@ -92,10 +92,10 @@ const BlockCourse = (props: Props) => {
                                     <p> Syllabus: {props.data.syllabus ? <a target="_blank" href={props.data.syllabus}>Link</a> : 'Đang cập nhật'}</p>
                                 </div> :
                                 <div className={styles.infoCourseOverview}>
-                                    <p>Mã: {props.data.levelCode}</p>
-                                    <p>Tài liệu: {props.data.textbook ? <a target="_blank" href={props.data.textbook}>Link</a> : 'Đang cập nhật'}</p>
-                                    <p>Record tham khảo: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : 'Đang cập nhật'}</p>
-                                    <p>Bộ trắc nghiệm:  <a target="_blank" style={{ cursor: 'pointer' }} onClick={(e) => {
+                                    <p><b>Mã</b>: {props.data.levelCode}</p>
+                                    <p><b>Tài liệu</b>: {props.data.textbook ? <a target="_blank" href={props.data.textbook}>Link</a> : 'Đang cập nhật'}</p>
+                                    <p><b>Record tham khảo</b>: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : 'Đang cập nhật'}</p>
+                                    <p><b>Bộ trắc nghiệm</b>:  <a target="_blank" style={{ cursor: 'pointer' }} onClick={(e) => {
                                         e.preventDefault();
                                         router.push(`/te/manager/storage/course/${router.query.courseId}/${props.data?._id}/test`)
                                     }}>Link</a></p>

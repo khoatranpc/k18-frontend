@@ -2,10 +2,12 @@ import React, { Context, useContext, useState } from 'react';
 import { Button, Dropdown, Tag } from 'antd';
 import type { MenuProps } from 'antd';
 import { ContextInterface } from './interface';
+import { Obj } from '@/global/interface';
 import { fieldFilter } from '@/global/init';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import PopUp from '@/components/PopUp';
+import CSV from '@/components/CSVReader';
 import PopUpFilter from './PopUpFilter';
 import FieldOption from '@/components/ManagerClass/listFieldByOption';
 import styles from '@/styles/tabs/Toolbar.module.scss';
@@ -24,6 +26,9 @@ interface Props {
     iconReload?: boolean;
     context: Context<ContextInterface>;
     enableFilter?: boolean;
+    enableImportCSV?: boolean;
+    loadingImport?: boolean;
+    onImportCSV?: (file?: File) => void;
     onClickCreateButton?: () => void;
     onClickExportCSVButton?: () => void;
     onClickReload?: () => void;
@@ -129,13 +134,16 @@ const ToolBar = (props: Props) => {
                 </Button>}
                 {
                     props.exportCSVButton && <Button
-                        className={`btn-toolbar ${props.exportCSVButtonClassName}`}
+                        className={`btn-toolbar mr-8 ${props.exportCSVButtonClassName}`}
                         onClick={() => {
                             props.onClickExportCSVButton?.()
                         }}
                     >
                         <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
                     </Button>
+                }
+                {
+                    props.enableImportCSV && <CSV loadingImport={props.loadingImport} processFromServer setData={props.onImportCSV} />
                 }
                 {
                     props.iconReload &&

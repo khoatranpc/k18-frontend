@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useCSVReader } from "react-papaparse";
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
+import { Upload } from 'antd';
 
 interface Props {
     handleRowTitleColumn?: (data: string[]) => void;
+    onLoadCSV?: (data: Obj[]) => void;
+    loadingImport?: boolean;
+    processFromServer?: boolean;
+    setData?: (file?: File) => void;
 }
 const CSV = (props: Props) => {
     const { CSVReader } = useCSVReader();
+    const inputRef = useRef<HTMLInputElement>(null);
+    const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        e.preventDefault();
+        const file = e.target.files?.[0];
+        props.setData?.(file);
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
+    }
     return (
-        <CSVReader
+        !props.processFromServer ? <CSVReader
             onUploadAccepted={(results: any) => {
                 const data = results.data as string[][];
                 props.handleRowTitleColumn?.(data[0]);
                 const rowColumn = data[0];
-                const mappingDatatoJson = [];
+                const mappingDatatoJson: Obj[] = [];
 
                 for (let i = 1; i < data.length; i++) {
                     const objectRowData: Obj = {};
@@ -22,21 +37,26 @@ const CSV = (props: Props) => {
                     }
                     mappingDatatoJson.push(objectRowData);
                 }
-                console.log(mappingDatatoJson);
+                props.onLoadCSV?.(mappingDatatoJson)
             }}
         >
             {({
                 getRootProps,
             }: any) => (
-                <>
-                    <div>
-                        <button type='button' {...getRootProps()}>
-                            Browse file
-                        </button>
-                    </div>
-                </>
+                <button className="btn-import-csv" type='button' {...getRootProps()}>
+                    {props.loadingImport ? <LoadingOutlined /> : <UploadOutlined />}  Tải CSV
+                </button>
             )}
-        </CSVReader>
+        </CSVReader> : <button
+            disabled={props.loadingImport}
+            className="btn-import-csv"
+            onClick={() => {
+                inputRef.current?.click();
+            }}
+        >
+            {props.loadingImport ? <LoadingOutlined /> : <UploadOutlined />}  Tải CSV
+            <input ref={inputRef} className="inputFileCSV" type="file" onChange={onChange} />
+        </button>
     )
 }
 
