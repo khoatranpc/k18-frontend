@@ -41,7 +41,8 @@ const ContextProvider = (props: Props) => {
         area: queryParams?.area ?? 'ALL',
         sort: queryParams?.sort ?? 'ASC',
         status: queryParams?.status ?? 'ALL',
-        resourceHunt: queryParams?.resourceHunt ?? 'ALL'
+        resourceHunt: queryParams?.resourceHunt ?? 'ALL',
+        courseApply: queryParams?.courseApply ?? 'ALL',
     });
     return (
         <ContextRecruitment.Provider value={{

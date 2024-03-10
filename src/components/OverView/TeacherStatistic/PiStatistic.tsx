@@ -91,10 +91,7 @@ const PiStatistic = () => {
                 setValueCourse(defaultCourse?._id);
             }
             if (!courseApply.listData.response && !courseApply.listData.isLoading) {
-                const listTeacherId = getListTeacher.map((item) => {
-                    return item._id as string;
-                });
-                courseApply.query(listTeacherId);
+                courseApply.query();
             } else if (courseApply.listData.success) {
                 const listLocation = filterTeacherWithArea(getListCourseApplyData, getListTeacher, getListArea, defaultCourse?._id)
                 setData(listLocation);

@@ -87,6 +87,13 @@ const ContainerPage = (props: Props) => {
         return (crrUser.response as Obj)?.data?.courseId?._id as string === item._id
     });
     const badgeMoreAction: MenuProps['items'] = [
+        ...crrRole !== ROLE_USER.TC ? [{
+            key: "PERSONAL_INFO",
+            label: 'Cá nhân',
+            onClick() {
+                router.push('/te/my-info');
+            }
+        }] : [],
         {
             key: 'LOG_OUT',
             label: 'Đăng xuất',
@@ -94,13 +101,6 @@ const ContainerPage = (props: Props) => {
                 logout();
             }
         },
-        ...crrRole !== ROLE_USER.TC ? [{
-            key: "PERSONAL_INFO",
-            label: 'Cá nhân',
-            onClick() {
-                router.push('/te/my-info');
-            }
-        }] : []
     ]
     const refRoute = useRef<PayloadRoute>({
         payload: {
@@ -187,24 +187,21 @@ const ContainerPage = (props: Props) => {
                         router.push(currentRoute.route);
                     }
                 }} />
-                <div className={styles.badge}>
-                    <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string} />
-                    {!collapsed && <div className={styles.user}>
-                        <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
-                        <span className={styles.role}>
-                            {
-                                ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
-                                    :
-                                    ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER)
-                            }
-                        </span>
-                    </div>}
-                    <Dropdown menu={{ items: badgeMoreAction }} trigger={["click"]} placement="top">
-                        <span className={styles.moreAction}>
-                            {MapIconKey[KEY_ICON.DOT3VT]}
-                        </span>
-                    </Dropdown>
-                </div>
+                <Dropdown menu={{ items: badgeMoreAction }} trigger={["click"]} placement="bottom">
+                    <div className={styles.badge}>
+                        <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string} />
+                        {!collapsed && <div className={styles.user}>
+                            <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
+                            <span className={styles.role}>
+                                {
+                                    ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`
+                                        :
+                                        ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER)
+                                }
+                            </span>
+                        </div>}
+                    </div>
+                </Dropdown>
             </Sider>
             <div className={`${styles.mainColumn} ${collapsed ? styles.inCollapsed : ""}`} style={{ maxWidth: containerSize - Math.floor(siderSize) - 50 }}>
                 <PageHeader />

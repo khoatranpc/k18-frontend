@@ -7,7 +7,7 @@ import { ComponentPage, KEY_ICON, ResourceApply, StatusProcessing } from '@/glob
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import CombineRoute from '@/global/route';
-import { useDebounce, useDispatchDataRouter, useGetArea, useGetListDataRecruitment } from '@/utils/hooks';
+import { useDebounce, useDispatchDataRouter, useGetArea, useGetListCourse, useGetListDataRecruitment } from '@/utils/hooks';
 import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import { ContextRecruitment } from '../context';
@@ -41,6 +41,8 @@ const FilterBar = (props: Props) => {
             value: item
         }
     });
+    const listCourse = useGetListCourse();
+    const getListCourse = (listCourse.listCourse as Obj)?.data as Obj[];
     const listFieldFilter = [
         {
             label: 'Khu vực',
@@ -93,13 +95,30 @@ const FilterBar = (props: Props) => {
                 },
                 ...listResourseApply
             ]
+        },
+        {
+            label: 'Bộ môn',
+            field: 'courseApply',
+            value: [
+                {
+                    label: 'Tất cả',
+                    value: 'ALL'
+                },
+                ...getListCourse ? getListCourse?.map(item => {
+                    return {
+                        label: item.courseName,
+                        value: item._id
+                    }
+                }) : []
+            ]
         }
     ];
     const getIndexToField: Record<string, keyof typeof conditionFilter.condition> = {
         '0': 'area',
         '1': 'sort',
         '2': 'status',
-        '3': 'resourceHunt'
+        '3': 'resourceHunt',
+        '4': 'courseApply'
     }
     const handleChangeConditionFilter = (field: keyof typeof conditionFilter.condition, value: any) => {
         conditionFilter.setCondition({

@@ -6,6 +6,7 @@ import styles from '@/styles/course/ManagerCourse.module.scss';
 
 interface Props {
     data?: Obj;
+    color?: string;
 }
 const ChartColumn = (props: Props) => {
     const options: Highcharts.Options = {
@@ -55,15 +56,15 @@ const ChartColumn = (props: Props) => {
             data: [
                 {
                     y: 10,
-                    color: 'red'
+                    color: props.color ?? 'red'
                 },
                 {
                     y: 10,
-                    color: 'red'
+                    color: props.color ?? 'red'
                 },
                 {
                     y: 10,
-                    color: 'red'
+                    color: props.color ?? 'red'
                 },
             ],
             colorByPoint: true,

@@ -135,7 +135,7 @@ const CourseDetail = () => {
                                 </div>
                             </div>
                             {crrUser?.data?.roleAccount === ROLE.TE && <div className={styles.chartOverviewLevel}>
-                                <ChartColumn />
+                                <ChartColumn color={currentCourse?.color as string} />
                             </div>}
                         </div>
                     </div>

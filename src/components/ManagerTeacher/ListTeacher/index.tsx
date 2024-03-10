@@ -48,7 +48,7 @@ const ListTeacher = () => {
         router.push(`/te/manager/teacher/detail/${record._id as string}`);
     }
     useEffect(() => {
-        if (!getListTeacher || (getListTeacher && !getListTeacher.currentPage)) {
+        if (!getListTeacher || (getListTeacher && !getListTeacher.currentPage) || !listTeacher.payload?.query?.query?.currentPage) {
             handleQueryListTeacher(10, 1);
         }
         if (!area.data.success) {
@@ -56,10 +56,12 @@ const ListTeacher = () => {
         }
     }, []);
     useEffect(() => {
-        if (firstQuery.current && listTeacher.success) {
-            firstQuery.current = false;
-            const getListId = ((listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.map((item) => item._id) || [];
-            dataTeacherRegisterCourse.query(getListId);
+        if (listTeacher.payload?.query?.query?.currentPage) {
+            if (firstQuery.current && listTeacher.success) {
+                firstQuery.current = false;
+                const getListId = ((listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.map((item) => item._id) || [];
+                dataTeacherRegisterCourse.query(getListId);
+            }
         }
     }, [listTeacher]);
     useEffect(() => {
@@ -77,7 +79,7 @@ const ListTeacher = () => {
             <ToolBar
                 context={ManagerTeacherContext}
                 onClickReload={() => {
-                    handleQueryListTeacher(getListTeacher?.currentTotalRowOnPage ?? 10, getListTeacher?.currentPage ?? 1);
+                    handleQueryListTeacher(getListTeacher?.recordOnPage ?? 10, getListTeacher?.currentPage ?? 1);
                 }}
                 listFilter={[]}
                 exportCSVButton
@@ -110,12 +112,12 @@ const ListTeacher = () => {
                 bordered
                 hasFixedColumn
                 columns={columns}
-                rowData={rowData}
+                rowData={getListTeacher?.currentPage && rowData}
                 hanldeClickRow={handleClickRow}
-                rowOnPage={getListTeacher?.currentTotalRowOnPage}
+                rowOnPage={getListTeacher?.recordOnPage}
                 showSizePage
-                crrPage={getListTeacher?.currentPage}
-                maxPage={(listTeacher.response?.data as Obj)?.totalPage}
+                crrPage={getListTeacher?.currentPage ?? 1}
+                maxPage={(listTeacher.response?.data as Obj)?.totalPage ?? 1}
             />
         </div>
     )
