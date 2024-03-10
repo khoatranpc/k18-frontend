@@ -132,4 +132,11 @@
             color: var(--white);
         }
     }
+    .groupIdImg{
+        display: flex;
+        justify-content: space-around;
+    }
+    .cropImage{
+        width: 150px;
+    }
 }
