@@ -53,14 +53,23 @@ const Interview = (props: Props) => {
             googleAuth.clear?.();
             updateDataRoundProcessCandidate.clear?.();
             message.close();
-        } else {
+        }
+        else if (updateDataRoundProcessCandidate.data.response) {
+            message.open({
+                type: updateDataRoundProcessCandidate.data.success ? 'success' : 'error',
+                content: updateDataRoundProcessCandidate.data.response?.message as string
+            });
+            updateDataRoundProcessCandidate.clear?.();
+            message.close();
+        }
+        else {
             if (googleAuth.data.success && getDataAuth?.url) {
                 localStorage.setItem('callbackUrl', router.asPath);
                 window.location.href = getDataAuth.url;
             }
         }
     }, [googleAuth.data.response, updateDataRoundProcessCandidate.data]);
-
+    console.log(updateDataRoundProcessCandidate.data);
     return (
         <div className={styles.roundInterview}>
             <div className={`${styles.handleInterview} ${styles.infoRound}`}>

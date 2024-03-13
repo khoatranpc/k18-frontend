@@ -5,11 +5,13 @@ Highcharts3D(Highcharts);
 import { HighchartsReact } from 'highcharts-react-official';
 import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
-import { useGetListDataRecruitment } from '@/utils/hooks';
+import { useGetListCourse, useGetListDataRecruitment } from '@/utils/hooks';
 import styles from '@/styles/Overview.module.scss';
 
 const ByCourse = () => {
     const listCandidate = useGetListDataRecruitment();
+    const listCourse = useGetListCourse();
+    const getListCourse = (listCourse.listCourse?.data as Obj[])?.map((item) => item.courseName) || [];
     const getDataListCandidate = ((listCandidate.data.response?.data as Obj)?.listData as Obj[]) || [];
     const mapDataByCourse: Obj = {};
     getDataListCandidate.forEach((item) => {
@@ -38,7 +40,7 @@ const ByCourse = () => {
             align: 'left'
         },
         xAxis: {
-            categories: ['Web', 'UI/UX', 'Data'],
+            categories: getListCourse ?? [],
             crosshair: true,
             accessibility: {
                 description: 'Countries'
@@ -63,12 +65,12 @@ const ByCourse = () => {
             {
                 type: 'column',
                 name: 'Tổng',
-                data: [mapDataByCourse['Web'], mapDataByCourse['Data'], mapDataByCourse['UIUX']]
+                data: getListCourse.map((item) => (mapDataByCourse[item] ?? 0))
             },
             {
                 type: 'column',
                 name: 'Pass',
-                data: [mapDataByCourse['WebPass'], mapDataByCourse['DataPass'], mapDataByCourse['UIUXPass']]
+                data: getListCourse.map((item) => (mapDataByCourse[`${item}Pass`] ?? 0))
             }
         ]
     }

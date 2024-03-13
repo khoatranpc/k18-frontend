@@ -11,7 +11,6 @@ import DefaultLayout from '@/layouts/default';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import "cropperjs/dist/cropper.css";
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-resizable/css/styles.css';
 import '@/styles/globals.scss';
 import '@/styles/auth/FormCollect.scss';
 

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, FolderAddOutlined, FolderFilled, EditOutlined, ReloadOutlined, FolderOpenFilled } from '@ant-design/icons';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { Resize, ResizeVertical, ResizeHorizon } from "react-resize-layout";
 import { Button, Input, Radio, Tree, Popconfirm, Popover } from 'antd';
 import * as yup from 'yup';
 import type { DataNode, TreeProps } from 'antd/es/tree';
@@ -333,7 +334,7 @@ const NewDocument = (props: Props) => {
         }
     }, [getListFolder, getListFile])
     return (
-        <div className={styles.newDocument}>
+        <div className={`${styles.newDocument} newDocument`}>
             <div className={styles.search}>
                 <Popover
                     open={!!titleSearch}
@@ -392,33 +393,40 @@ const NewDocument = (props: Props) => {
                 </Popconfirm>
                 <hr />
             </div>}
-            <div className={styles.treeSelect}>
-                {firstMounted.current ?
-                    <Loading />
-                    : <Tree
-                        disabled={listFile.data.isLoading || listFolder.data.isLoading || createFolder.data.isLoading || updateFolder.data.isLoading || createFile.data.isLoading}
-                        className={styles.tree}
-                        showLine
-                        switcherIcon={<DownOutlined />}
-                        onSelect={onSelect}
-                        treeData={treeData}
-                    />
-                }
-            </div>
             <div className={styles.contentDocumentTree}>
-                <div className={styles.barsOutLined}>
-                    <BarsAction
-                        onOpenNewTab={() => {
-                            window.open(crrNode.content, '_blank');
-                        }}
-                    />
-                </div>
-                {values.nodeSelect ?
-                    (crrNode && crrNode?.content ? < iframe width={'100%'} height={'100%'} src={crrNode.content} /> : <div className={styles.emptyNode}>Tài liệu chưa có nội dung</div>)
-                    :
-                    <div className={styles.emptyNode}>
-                        Lựa chọn tài liệu để xem chi tiết
-                    </div>}
+                <BarsAction
+                    className={styles.barsOutLined}
+                    onOpenNewTab={() => {
+                        window.open(crrNode.content, '_blank');
+                    }}
+                />
+                <Resize handleWidth="2px" handleColor="#777">
+                    <ResizeHorizon width="fit-content" className={styles.barResize}>
+                        <div className={styles.treeSelect}>
+                            {firstMounted.current ?
+                                <Loading />
+                                : <Tree
+                                    style={{ width: '100%' }}
+                                    disabled={listFile.data.isLoading || listFolder.data.isLoading || createFolder.data.isLoading || updateFolder.data.isLoading || createFile.data.isLoading}
+                                    className={styles.tree}
+                                    showLine
+                                    switcherIcon={<DownOutlined />}
+                                    onSelect={onSelect}
+                                    treeData={treeData}
+                                />
+                            }
+                        </div>
+                    </ResizeHorizon>
+                    <ResizeHorizon className={styles.contentFrame}>
+                        {values.nodeSelect ?
+                            (crrNode && crrNode?.content ? < iframe width={'100%'} height={'100%'} src={crrNode.content} /> : <div className={styles.emptyNode} style={{ width: '100%', height: '100%' }} >Tài liệu chưa có nội dung</div>)
+                            :
+                            <div className={styles.emptyNode} style={{ width: '100%', height: '100%' }} >
+                                Lựa chọn tài liệu để xem chi tiết
+                            </div>
+                        }
+                    </ResizeHorizon>
+                </Resize>
             </div>
             {
                 modal.show && <ModalCustomize

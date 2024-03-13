@@ -7,6 +7,7 @@ import styles from '@/styles/Document.module.scss';
 
 interface Props {
     onOpenNewTab?: () => void;
+    className?: string;
 }
 enum KeyAction {
     OPEN = 'OPEN',
@@ -31,14 +32,13 @@ const BarsAction = (props: Props) => {
         }
     }
     return (
-        <div className={styles.barsAction}>
+        <div className={props.className}>
             <Dropdown
                 trigger={'click'}
                 listSelect={listSelectDropDown}
                 title={<BarsOutlined style={{ cursor: 'pointer' }} />}
                 onClickItem={(e) => handleClickItemDropDown(e.key)}
             />
-
         </div>
     )
 }

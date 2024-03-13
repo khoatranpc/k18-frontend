@@ -240,5 +240,5 @@ export {
     getColorByStatusProcess,
     calculateAge,
     getFileInfoFromBase64,
-    compareRefData
+    compareRefData,
 }
