@@ -69,7 +69,7 @@ const CreateCalendar = (props: Props) => {
             }
             return 'Không có Te nào được chọn!'
         };
-        return `${findTe.teName}-${findTe.positionTe}${findTe.courseId ? ` ${findTe.courseId.courseName}` : ''}`;
+        return `${findTe.teName}-${findTe.positionTe}${findTe.courseId ? ` ${(findTe.courseId as Obj[])?.map((item=>item.courseName))}` : ''}`;
     }, [values.te, getDataRoundProcess]);
 
     return (

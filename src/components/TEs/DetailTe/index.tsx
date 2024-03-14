@@ -49,7 +49,7 @@ const TeInfo = () => {
         if ((!currentTe.data.response || (currentTe.data.response && (currentTe.data.response as Obj).data?._id !== router.query.teId)) && !currentTe.data.isLoading) {
             currentTe.query({
                 params: [router.query.teId as string],
-                query:{
+                query: {
                     fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook'
                 }
             });
@@ -62,7 +62,7 @@ const TeInfo = () => {
                     <div className={styles.shortInfo}>
                         <Image alt='' className={styles.imageStaff} width={200} height={200} src={getCurrentTe?.img ?? 'https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png'} />
                         <p className={styles.teName}>{getCurrentTe?.teName}</p>
-                        <p>{getCurrentTe?.positionTe}{`${getCurrentTe?.courseId?`-${getCurrentTe?.courseId?.courseName}`:''}`}</p>
+                        <p>{getCurrentTe?.positionTe}{`${getCurrentTe?.courseId ? `${(getCurrentTe.courseId as Obj[])?.length !==0?'-':''}${(getCurrentTe.courseId as Obj[])?.map(item => item.courseName)}` : ''}`}</p>
                         <p>{getCurrentTe?.email}</p>
                         <p>{getCurrentTe?.phoneNumber}</p>
                     </div>

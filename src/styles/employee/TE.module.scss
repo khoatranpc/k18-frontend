@@ -1,5 +1,6 @@
 .listTE {
     padding: 1.2rem;
+    position: relative;
 }
 
 .statusActive {
@@ -131,4 +132,30 @@ g {
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;
+}
+
+.groupBtn {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    margin-bottom: 1.2rem;
+    gap: 1.8rem;
+
+    .reload,
+    .createBtn {
+        &:hover {
+            color: var(--base) !important;
+            border-color: var(--base) !important;
+        }
+    }
+}
+
+.btnSubmit {
+    margin-top: 1.2rem;
+    float: right;
+
+    &:hover {
+        color: var(--base) !important;
+        border-color: var(--base) !important;
+    }
 }

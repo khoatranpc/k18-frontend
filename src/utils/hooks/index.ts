@@ -1,6 +1,6 @@
 import React, { MutableRefObject, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Action, BaseInterfaceHookReducer, Obj, State } from "@/global/interface";
+import { Action, BaseInterfaceHookReducer, Obj, Query, State } from "@/global/interface";
 import { AppDispatch, RootState } from "@/store";
 import { queryGetListCourse } from "@/store/reducers/course/listCourse.reducer";
 import { queryGetLocations } from "@/store/reducers/location/localtion.reducer";
@@ -97,6 +97,7 @@ import { queryListRequestOnLeave } from "@/store/reducers/requestOnLeave/listReq
 import { clearGoogleAuth, queryGoogleAuth } from "@/store/reducers/google/auth.reducer";
 import { clearGoogleRedirect, queryGoogleRedirect } from "@/store/reducers/google/redirect.reducer";
 import { clearTeacherIpmortCSV, queryImportCSV } from "@/store/reducers/teacher/importCSV.reducer";
+import { clearCreateTE, queryCreateTe } from "@/store/reducers/te/createTe.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -106,8 +107,13 @@ const useGetTimeSchedule = createHookQueryReducer('timeSchedule', queryGetListTi
 const useGetListCourse = () => {
     const listCourse = useSelector((state: RootState) => (state.listCourse as State).state);
     const dispatch = useDispatch<AppDispatch>();
-    const queryListCourse = () => {
-        dispatch(queryGetListCourse());
+    const queryListCourse = (query?: Query) => {
+        const payload: Action = {
+            payload: {
+                query
+            }
+        }
+        dispatch(queryGetListCourse(payload));
     }
     return {
         listCourse: listCourse.response as Obj,
@@ -1003,6 +1009,7 @@ const useListRequestOnLeave = createHookQueryReducer('listRequestOnLeave', query
 const useGoogleAuth = createHookQueryReducer('googleAuth', queryGoogleAuth, clearGoogleAuth);
 const useGoogleRedirect = createHookQueryReducer('googleRedirect', queryGoogleRedirect, clearGoogleRedirect);
 const useImportCSVDataTeacher = createHookQueryReducer('teacherImportCSV', queryImportCSV, clearTeacherIpmortCSV);
+const useCreateTe = createHookQueryReducer('createTe', queryCreateTe, clearCreateTE);
 
 export {
     useGetListClass,
@@ -1101,5 +1108,6 @@ export {
     useListRequestOnLeave,
     useGoogleAuth,
     useGoogleRedirect,
-    useImportCSVDataTeacher
+    useImportCSVDataTeacher,
+    useCreateTe
 }

@@ -130,3 +130,5 @@ export const GOOGLE_AUTH = 'GOOGLE_AUTH';
 export const GOOGLE_REDIRECT = 'GOOGLE_REDIRECT';
 
 export const TEACHER_IMPORT_CSV = 'TEACHER_IMPORT_CSV';
+
+export const CREATE_TE = 'CREATE_TE';

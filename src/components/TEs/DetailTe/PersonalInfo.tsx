@@ -5,13 +5,12 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import dayjs from 'dayjs';
-import SelectBaseCourse from '@/components/SelectBaseCourse';
 import { Obj } from '@/global/interface';
 import { PositionTe } from '@/global/enum';
 import { getLabelPositionTe } from '@/global/init';
 import { compareRefData } from '@/utils';
 import useGetCrrUser from '@/utils/hooks/getUser';
-import { useGetTeById, useUpdateTeById } from '@/utils/hooks';
+import { useGetListCourse, useGetTeById, useUpdateTeById } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import CropImage from '@/components/CropImage';
 import Dropdown from '@/components/Dropdown';
@@ -29,10 +28,12 @@ const PersonalInfo = () => {
     const message = useHookMessage();
     const crrUser = useGetCrrUser()?.data as Obj;
     const getCurrentTe = (currentTe.data.response as Obj)?.data as Obj;
+    const listCourse = useGetListCourse();
+    const getListCourse = listCourse.listCourse?.data as Obj[];
     const { values, errors, touched, handleBlur, setFieldValue, handleChange, handleReset, handleSubmit } = useFormik({
         initialValues: {
             ...router.query.teId ? getCurrentTe : crrUser,
-            ...getCurrentTe?.courseId ? { courseId: getCurrentTe.courseId?._id } : {}
+            ...getCurrentTe?.courseId ? { courseId: (getCurrentTe.courseId as Obj[])?.map((item => item._id)) } : {}
         },
         validationSchema,
         onSubmit(values) {
@@ -53,7 +54,7 @@ const PersonalInfo = () => {
     const refValues = useRef(values);
     const getValues: Obj = {
         ...values,
-        ...values.courseId ? { courseId: values.courseId?._id } : {}
+        ...values.courseId ? { courseId: (values.courseId as Obj[])?.map((item => item._id)) } : {}
     };
     const listPosition: MenuProps['items'] = [
         {
@@ -94,7 +95,7 @@ const PersonalInfo = () => {
             currentTe.query({
                 params: [router.query.teId ?? crrUser._id],
                 query: {
-                    fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook'
+                    fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook,personalEmail'
                 }
             });
         }
@@ -148,6 +149,13 @@ const PersonalInfo = () => {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>
+                        Email cá nhân<span className="error">*</span>
+                    </Form.Label>
+                    <Input size="small" name="personalEmail" onChange={handleChange} onBlur={handleBlur} value={getValues.personalEmail} />
+                    {(errors as Obj).personalEmail && (touched as Obj).personalEmail && <p className="error">{(errors as Obj).personalEmail as string}</p>}
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>
                         SĐT <span className="error">*</span>
                     </Form.Label>
                     <Input size="small" name="phoneNumber" onChange={handleChange} onBlur={handleBlur} value={getValues.phoneNumber} />
@@ -176,9 +184,16 @@ const PersonalInfo = () => {
                         Bộ môn <span className="error">*</span>
                     </Form.Label>
                     <br />
-                    <SelectBaseCourse value={getValues.courseId as string} disabledAll onChange={(value) => {
-                        setFieldValue('courseId', value);
-                    }} />
+                    <Checkbox.Group
+                        onChange={(checkedValues) => {
+                            setFieldValue('courseId', checkedValues);
+                        }}
+                        defaultValue={values.courseId}
+                    >
+                        {getListCourse?.map((item) => {
+                            return <Checkbox value={item?._id}>{item.courseName}</Checkbox>
+                        })}
+                    </Checkbox.Group>
                 </Form.Group>}
                 <div className={styles.btnAction}>
                     <Button size="small" onClick={handleReset} loading={updateTe.data.isLoading}>Reset</Button>

@@ -69,7 +69,6 @@ const Interview = (props: Props) => {
             }
         }
     }, [googleAuth.data.response, updateDataRoundProcessCandidate.data]);
-    console.log(updateDataRoundProcessCandidate.data);
     return (
         <div className={styles.roundInterview}>
             <div className={`${styles.handleInterview} ${styles.infoRound}`}>
@@ -77,7 +76,7 @@ const Interview = (props: Props) => {
                 <div className={styles.infoInterview}>
                     <p>Link meet: {getDataRoundProcess?.linkMeet as string ? <a href={getDataRoundProcess?.linkMeet || '#'} className="link" target="_blank">{getDataRoundProcess?.linkMeet}</a> : <span className="error">Chưa có link!</span>}</p>
                     <p>Thời gian: {getDataRoundProcess?.time as string ? formatDatetoString(new Date(getDataRoundProcess?.time as string), 'dd/MM/yyyy, HH:mm:a') : <span className="error">Chưa có lịch!</span>}</p>
-                    <p>TE: {getDataRoundProcess?.te ? (`${getDataRoundProcess?.te.teName}-${getDataRoundProcess?.te.positionTe}${getDataRoundProcess?.te.courseId ? ` ${getDataRoundProcess?.te.courseId.courseName}` : ''}`) : (<span className="error">Chưa có thông tin TE!</span>)}</p>
+                    <p>TE: {getDataRoundProcess?.te ? (`${getDataRoundProcess?.te.teName}-${getDataRoundProcess?.te.positionTe}${getDataRoundProcess?.te.courseId ? ` ${(getDataRoundProcess?.te.courseId as Obj[]).find(item => item._id === candidate.courseApply)?.courseName ?? ''}` : ''}`) : (<span className="error">Chưa có thông tin TE!</span>)}</p>
                 </div>
                 <div className={styles.function}>
                     <div className={styles.actions}>
