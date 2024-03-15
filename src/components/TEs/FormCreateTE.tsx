@@ -122,7 +122,7 @@ const FormCreateTE = () => {
                         }}
                     >
                         {getListCourse?.map((item) => {
-                            return <Checkbox value={item?._id}>{item.courseName}</Checkbox>
+                            return <Checkbox value={item?._id} key={item?._id}>{item.courseName}</Checkbox>
                         })}
                     </Checkbox.Group>
                 }
