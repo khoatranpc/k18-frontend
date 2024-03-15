@@ -6,6 +6,20 @@
     flex-direction: column;
     height: 90%;
 
+    * {
+        &::-webkit-scrollbar {
+            height: 0.5rem;
+            width: 0.5rem;
+            background-color: var(--row-head);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--base);
+            width: 0;
+            border-radius: 1rem;
+        }
+    }
+
     .zone_arrow {
         align-self: flex-start;
         height: 2rem;
@@ -113,13 +127,13 @@
     }
 
     .input {
-        width: 44rem;
-        height: 4.4rem;
+        width: 100%;
         font-size: 1.4rem;
         border: 1px solid #0000001a;
     }
 
     .btn_next {
+        margin-top: 1.2rem;
         width: 100%;
         display: flex;
         align-items: center;
@@ -137,6 +151,10 @@
     .groupIdImg {
         display: flex;
         justify-content: space-around;
+
+        .mb_24 {
+            max-width: 45%;
+        }
     }
 
     .cropImage {

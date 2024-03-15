@@ -88,10 +88,10 @@ const Feedback = (props: Props) => {
     return (
         <div className={styles.fillFeedbackClautid}>
             <p>
-                Lớp: <b>{props.dataClass.classId.codeClass}</b>
+                Lớp: <b>{props.dataClass?.classId?.codeClass}</b>
             </p>
             <p>
-                Ngày dự thính: {formatDatetoString(props.dataClass.time, 'iiiiii, dd/MM/yyyy')}
+                Ngày dự thính: {formatDatetoString(props.dataClass?.time, 'iiiiii, dd/MM/yyyy')}
             </p>
             <p>
                 Lần: {props.countTime + 1}

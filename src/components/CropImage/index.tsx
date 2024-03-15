@@ -7,7 +7,7 @@ import styles from '@/styles/CropImage.module.scss';
 interface Props extends HTMLAttributes<HTMLElement | any> {
     src: string;
     onCropped?: (file: Blob) => void;
-    width?: number;
+    width?: number | string;
     height?: number;
     className?: string;
     classNameImgPreview?: string;
@@ -67,11 +67,9 @@ const CropImage = (props: Props) => {
                 <Image alt='' className={`${styles.image} ${props.classNameImgPreview}`} src={imagePreview} width={!props.disabledFixResize ? (props.width ?? 200) : '100%'} height={!props.disabledFixResize ? (props.height ?? 200) : ''} style={{ borderRadius: props.disabledCircleImage ? '0' : "50%", ...props.style }} /> :
                 (<div className={styles.cropping}>
                     <input style={{ display: "none" }} ref={inputRef} type="file" onChange={onChange} />
-                    <Button icon={<UploadOutlined />} size="small" onClick={() => {
-                        inputRef.current?.click();
-                    }}>Chọn ảnh</Button>
                     <Cropper
                         width={props.width ?? 200}
+                        height={200}
                         size={100}
                         ref={cropperRef as any}
                         style={{ height: 200 }}
@@ -90,18 +88,27 @@ const CropImage = (props: Props) => {
                     />
                 </div>)
             }
-            {/* {(!acceptImage) && 
-            } */}
-            <Button className={styles.btnHandle} onClick={() => {
-                if (!acceptImage) {
-                    getCropData();
+            <div className={styles.btnGroup}>
+                {!acceptImage && <Button
+                    icon={<UploadOutlined />}
+                    size="small"
+                    onClick={() => {
+                        inputRef.current?.click();
+                    }}
+                >
+                    Chọn ảnh
+                </Button>
                 }
-                setAcceptImage(!acceptImage);
-            }}>{!acceptImage ? "Duyệt" : "Đổi"}</Button>
-            <Button onClick={() => {
-                setImagePreview(props.src as string);
-                setAcceptImage(true);
-            }}>Reset</Button>
+                <Button
+                    size="small"
+                    className={styles.btnHandle}
+                    onClick={() => {
+                        if (!acceptImage) {
+                            getCropData();
+                        }
+                        setAcceptImage(!acceptImage);
+                    }}>{!acceptImage ? "Duyệt" : "Đổi"}</Button>
+            </div>
         </div>
     )
 }

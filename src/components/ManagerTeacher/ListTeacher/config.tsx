@@ -345,11 +345,11 @@ const getColums = (styles?: Obj, area?: Obj[], loadingQueryCourse?: boolean): Co
     ]
 };
 const mapRowData = (data: Array<Obj>, registerCourse: Array<Obj>): RowData[] => {
-    const mappingData = data?.map((item, idx) => {
+    const mappingData = data?.map((item) => {
         return {
             ...item,
             key: item._id as string,
-            courseRegister: registerCourse[idx]?.['coursesRegister']
+            courseRegister: registerCourse.find(record => record.idTeacher === item._id)?.['coursesRegister']
         }
     });
     if (registerCourse.length !== 0) {

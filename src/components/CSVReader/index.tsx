@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useCSVReader } from "react-papaparse";
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
-import { Upload } from 'antd';
 
 interface Props {
     handleRowTitleColumn?: (data: string[]) => void;

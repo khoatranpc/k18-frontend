@@ -589,14 +589,15 @@ const useGetPreTeacher = () => {
     const data = useSelector((state: RootState) => (state.preTeacher as State).state);
     const dispatch = useDispatch();
 
-    const query = (recordOnPage: number, currentPage: number, fields?: string[]) => {
+    const query = (recordOnPage?: number, currentPage?: number, fields?: string[], email?: string) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
                         recordOnPage,
                         currentPage,
-                        fields
+                        fields,
+                        email
                     }
                 }
             }
