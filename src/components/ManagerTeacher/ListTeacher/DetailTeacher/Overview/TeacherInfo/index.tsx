@@ -210,7 +210,7 @@ const TeacherInfo = (props: Props) => {
                                 disabledCircleImage
                                 className={styles.cropImage}
                                 classNameImgPreview={styles.imageStaff}
-                                src={values?.frontId ?? `https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png`}
+                                src={values?.frontId as string}
                                 onCropped={(file) => {
                                     setFieldValue("frontId", file);
                                 }}
@@ -228,7 +228,7 @@ const TeacherInfo = (props: Props) => {
                                 disabledCircleImage
                                 className={styles.cropImage}
                                 classNameImgPreview={styles.imageStaff}
-                                src={values?.backId ?? `https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png`}
+                                src={values?.backId as string}
                                 onCropped={(file) => {
                                     setFieldValue("backId", file);
                                 }}

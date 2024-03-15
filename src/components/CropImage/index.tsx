@@ -1,4 +1,4 @@
-import React, { useRef, useState, HTMLAttributes } from 'react';
+import React, { useRef, useState, HTMLAttributes, useEffect } from 'react';
 import { Button, Image } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import Cropper, { ReactCropperElement } from "react-cropper";
@@ -20,6 +20,7 @@ const CropImage = (props: Props) => {
     const [imagePreview, setImagePreview] = useState<string>(props.src ?? "");
     const [acceptImage, setAcceptImage] = useState(!!props.src);
     const inputRef = useRef<HTMLInputElement>(null);
+    const firstRendered = useRef(true);
 
     const onChange = (e: any) => {
         e.preventDefault();
@@ -61,6 +62,14 @@ const CropImage = (props: Props) => {
             }
         }
     };
+    useEffect(() => {
+        if (props.src && firstRendered.current) {
+            firstRendered.current = false;
+            setImage(props.src);
+            setImagePreview(props.src);
+            setAcceptImage(!!props.src);
+        }
+    }, [props.src]);
     return (
         <div className={`${styles.cropImage} ${props.className ?? ''}`}>
             {(acceptImage) ?
