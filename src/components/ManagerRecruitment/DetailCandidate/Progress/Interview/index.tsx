@@ -143,7 +143,8 @@ const Interview = (props: Props) => {
                                 round: RoundProcess.INTERVIEW,
                                 ...getCandidateId.candidateId ? {
                                     candidateId: getCandidateId.candidateId
-                                } : {}
+                                } : {},
+                                isSetInterview: true
                             }
                         });
                     }}

@@ -98,6 +98,8 @@ import { clearGoogleAuth, queryGoogleAuth } from "@/store/reducers/google/auth.r
 import { clearGoogleRedirect, queryGoogleRedirect } from "@/store/reducers/google/redirect.reducer";
 import { clearTeacherIpmortCSV, queryImportCSV } from "@/store/reducers/teacher/importCSV.reducer";
 import { clearCreateTE, queryCreateTe } from "@/store/reducers/te/createTe.reducer";
+import { clearCreateTimeSchedule, queryCreateTimeSchedule } from "@/store/reducers/timeschedule/createTimeSchedule.reducer";
+import { clearUpdateTimeSchedule, queryUpdateTimeSchedule } from "@/store/reducers/timeschedule/updateTimeSchedule.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -1010,6 +1012,8 @@ const useGoogleAuth = createHookQueryReducer('googleAuth', queryGoogleAuth, clea
 const useGoogleRedirect = createHookQueryReducer('googleRedirect', queryGoogleRedirect, clearGoogleRedirect);
 const useImportCSVDataTeacher = createHookQueryReducer('teacherImportCSV', queryImportCSV, clearTeacherIpmortCSV);
 const useCreateTe = createHookQueryReducer('createTe', queryCreateTe, clearCreateTE);
+const useCreateTimeSchedule = createHookQueryReducer('createTimeSchedule', queryCreateTimeSchedule, clearCreateTimeSchedule);
+const useUpdateTimeSchedule = createHookQueryReducer('updateTimeSchedule', queryUpdateTimeSchedule, clearUpdateTimeSchedule);
 
 export {
     useGetListClass,
@@ -1109,5 +1113,7 @@ export {
     useGoogleAuth,
     useGoogleRedirect,
     useImportCSVDataTeacher,
-    useCreateTe
+    useCreateTe,
+    useCreateTimeSchedule,
+    useUpdateTimeSchedule
 }

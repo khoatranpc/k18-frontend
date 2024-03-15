@@ -37,6 +37,7 @@
     }
 
     .form {
+        max-height: 70%;
         width: 100%;
         flex: 1;
         display: flex;
@@ -132,11 +133,13 @@
             color: var(--white);
         }
     }
-    .groupIdImg{
+
+    .groupIdImg {
         display: flex;
         justify-content: space-around;
     }
-    .cropImage{
+
+    .cropImage {
         width: 150px;
     }
 }

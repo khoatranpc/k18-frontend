@@ -6,3 +6,22 @@
         justify-content: flex-end;
     }
 }
+
+.pickTime {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+
+    .item {
+        max-width: 80%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btnGroup {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+}
