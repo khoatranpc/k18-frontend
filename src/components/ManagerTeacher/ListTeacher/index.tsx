@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ManagerTeacherContext from '../context';
 import { Obj } from '@/global/interface';
-import { useGetArea, useImportCSVDataTeacher, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
+import { useDebounce, useGetArea, useImportCSVDataTeacher, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import { ComponentPage } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -23,13 +23,18 @@ const ListTeacher = () => {
     const dataTeacherRegisterCourse = useTeacherRegisterCourse();
     const router = useRouter();
     const area = useGetArea();
+    const [email, setEmail] = useState<string>('');
+    const debounce = useDebounce(email, 500);
     const getAreas = area.data.response?.data as Obj[];
     const dispatch = useDispatch<AppDispatch>();
+    const firstMounted = useRef<boolean>(true);
     const firstQuery = useRef(true);
-    const columns = getColums(undefined, getAreas, dataTeacherRegisterCourse.listData.isLoading);
+    const columns = getColums(undefined, getAreas, dataTeacherRegisterCourse.listData.isLoading && !dataTeacherRegisterCourse.listData.response);
     const rowData = mapRowData((listTeacher.response?.data as Obj)?.listTeacher || [], (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []);
-    const handleQueryListTeacher = (rowOnPage: number, currentPage: number) => {
-        query(rowOnPage, currentPage);
+    const handleQueryListTeacher = (rowOnPage?: number, currentPage?: number, email?: string) => {
+        query(rowOnPage, currentPage, {
+            email
+        });
     }
     const handleClickRow = (record: Obj) => {
         const payload: PayloadRoute = {
@@ -48,7 +53,7 @@ const ListTeacher = () => {
         router.push(`/te/manager/teacher/detail/${record._id as string}`);
     }
     useEffect(() => {
-        if (!getListTeacher || (getListTeacher && !getListTeacher.currentPage) || !listTeacher.payload?.query?.query?.currentPage) {
+        if (firstMounted.current && (!getListTeacher || (getListTeacher && !getListTeacher.currentPage) || !listTeacher.payload?.query?.query?.currentPage)) {
             handleQueryListTeacher(10, 1);
         }
         if (!area.data.success) {
@@ -57,13 +62,17 @@ const ListTeacher = () => {
     }, []);
     useEffect(() => {
         if (listTeacher.payload?.query?.query?.currentPage) {
-            if (firstQuery.current && listTeacher.success) {
+            if (listTeacher.success && !email) {
                 firstQuery.current = false;
                 const getListId = ((listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.map((item) => item._id) || [];
                 dataTeacherRegisterCourse.query(getListId);
             }
         }
-    }, [listTeacher]);
+        if (debounce && email && listTeacher.success && !listTeacher.isLoading) {
+            const getListId = ((listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.map((item) => item._id) || [];
+            dataTeacherRegisterCourse.query(getListId);
+        }
+    }, [listTeacher.response, debounce]);
     useEffect(() => {
         if (getDataImportCSV.response) {
             message.open({
@@ -74,12 +83,23 @@ const ListTeacher = () => {
             message.close();
         }
     }, [getDataImportCSV]);
+    useEffect(() => {
+        if (!firstMounted.current) {
+            handleQueryListTeacher(getListTeacher?.recordOnPage ?? 10, getListTeacher?.currentPage ?? 1, email);
+        } else {
+            firstMounted.current = false;
+        }
+    }, [debounce]);
     return (
         <div className={styles.listTeacher}>
             <ToolBar
+                onChangeSearch={(value) => {
+                    setEmail(value);
+                }}
+                placeHolderSearch="Nhập email cần tìm"
                 context={ManagerTeacherContext}
                 onClickReload={() => {
-                    handleQueryListTeacher(getListTeacher?.recordOnPage ?? 10, getListTeacher?.currentPage ?? 1);
+                    handleQueryListTeacher(getListTeacher?.recordOnPage ?? 10, getListTeacher?.currentPage ?? 1, email);
                 }}
                 listFilter={[]}
                 exportCSVButton
@@ -88,7 +108,6 @@ const ListTeacher = () => {
                 enableImportCSV
                 loadingImport={importCSVDataTeacher.data.isLoading}
                 onImportCSV={(data) => {
-                    // console.log(data) 
                     const formData = new FormData();
                     if (data) {
                         formData.append("csvFile", data as File);
@@ -106,7 +125,7 @@ const ListTeacher = () => {
                 className={styles.tableManagerTeacher}
                 disableDefaultPagination
                 onChangeDataPagination={(data) => {
-                    handleQueryListTeacher(data.currentTotalRowOnPage, data.currentPage);
+                    handleQueryListTeacher(data.currentTotalRowOnPage, data.currentPage, email);
                 }}
                 enablePaginationAjax
                 bordered

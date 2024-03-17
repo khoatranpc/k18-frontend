@@ -1134,3 +1134,15 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
         display: none;
     }
 }
+
+.newDocument {
+    .resize {
+        height: 100% !important;
+        display: flex;
+        position: static !important;
+
+        .resize-handle-horizon {
+            height: 100% !important;
+        }
+    }
+}

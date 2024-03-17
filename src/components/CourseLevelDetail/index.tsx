@@ -123,6 +123,30 @@ const CourseLevelDetail = (props: Props) => {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>
+                        Slide:
+                    </Form.Label>
+                    <Input size="small" name='slide' value={values.slide} onChange={handleChange} onBlur={handleBlur} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>
+                        Teaching Guide:
+                    </Form.Label>
+                    <Input size="small" name='teachingGuide' value={values.teachingGuide} onChange={handleChange} onBlur={handleBlur} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>
+                        Bộ trắc nghiệm:
+                    </Form.Label>
+                    <Input size="small" name='quiz' value={values.quiz} onChange={handleChange} onBlur={handleBlur} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>
+                        BT Thực hành:
+                    </Form.Label>
+                    <Input size="small" name='practice' value={values.practice} onChange={handleChange} onBlur={handleBlur} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>
                         Record tham khảo:
                     </Form.Label>
                     <Input size="small" name='record' value={values.record} onChange={handleChange} onBlur={handleBlur} />

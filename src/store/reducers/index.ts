@@ -100,6 +100,9 @@ import listRequestOnLeave from './requestOnLeave/listRequestOnLeave.reducer';
 import googleAuth from './google/auth.reducer';
 import googleRedirect from './google/redirect.reducer';
 import teacherImportCSV from './teacher/importCSV.reducer';
+import createTe from './te/createTe.reducer';
+import createTimeSchedule from './timeschedule/createTimeSchedule.reducer';
+import updateTimeSchedule from './timeschedule/updateTimeSchedule.reducer';
 
 const rootReducer = {
     test: test,
@@ -203,6 +206,9 @@ const rootReducer = {
     listRequestOnLeave,
     googleAuth,
     googleRedirect,
-    teacherImportCSV
+    teacherImportCSV,
+    createTe,
+    createTimeSchedule,
+    updateTimeSchedule
 };
 export default rootReducer;

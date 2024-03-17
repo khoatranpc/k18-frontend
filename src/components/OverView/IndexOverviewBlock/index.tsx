@@ -165,11 +165,6 @@ const IndexOverViewBlock = (props: Props) => {
         TEACHERPOINT: Number((evulate.totalTeacherpoint / evulate.countTeacherpoint) || 0).toFixed(2)
     }
     useEffect(() => {
-        if (props.type === TypeOverView.TEACHER) {
-            listTeacher.query?.(undefined, undefined, {
-                fields: ['_id', 'roleIsMT', 'roleIsST', 'roleIsSP', 'teacherPoint', 'salaryPH', 'area']
-            });
-        }
         if (props.type === TypeOverView.CLASS) {
             listClass.query({
                 query: {

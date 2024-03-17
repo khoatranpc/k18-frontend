@@ -1,5 +1,5 @@
 import React, { Context, useContext, useState } from 'react';
-import { Button, Dropdown, Tag } from 'antd';
+import { Button, Dropdown, Input, Tag } from 'antd';
 import type { MenuProps } from 'antd';
 import { ContextInterface } from './interface';
 import { Obj } from '@/global/interface';
@@ -11,6 +11,7 @@ import CSV from '@/components/CSVReader';
 import PopUpFilter from './PopUpFilter';
 import FieldOption from '@/components/ManagerClass/listFieldByOption';
 import styles from '@/styles/tabs/Toolbar.module.scss';
+import { SearchOutlined } from '@ant-design/icons';
 
 export interface ItemFilterField {
     key: string;
@@ -28,10 +29,12 @@ interface Props {
     enableFilter?: boolean;
     enableImportCSV?: boolean;
     loadingImport?: boolean;
+    placeHolderSearch?: string;
     onImportCSV?: (file?: File) => void;
     onClickCreateButton?: () => void;
     onClickExportCSVButton?: () => void;
     onClickReload?: () => void;
+    onChangeSearch?: (value: string) => void;
 }
 const ToolBar = (props: Props) => {
     const storeContext = useContext(props.context);
@@ -120,9 +123,10 @@ const ToolBar = (props: Props) => {
                 )
             }
             <div className="right-fnc">
-                <div className="search">
-                    {MapIconKey[KEY_ICON.SRCH]}
-                    {MapIconKey[KEY_ICON.DOT3VT]}
+                <div className="search" style={{ marginRight: '1.2rem' }}>
+                    <Input prefix={<SearchOutlined />} size="small" placeholder={props.placeHolderSearch} onChange={(e) => {
+                        props.onChangeSearch?.(e.target.value);
+                    }} />
                 </div>
                 {props.createButton && <Button
                     className={`btn-toolbar mr-8 ${props.createButtonClassName}`}

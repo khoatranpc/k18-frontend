@@ -100,7 +100,8 @@ const getLabelRoundProcess: Record<RoundProcess, string> = {
     CLAUTID: 'Dự thính',
     DONE: 'Xong',
     INTERVIEW: 'Phỏng vấn',
-    TEST: 'Dạy thử'
+    TEST: 'Dạy thử',
+    FILLFOWM: "Điền thông tin"
 }
 const getLabelPositionTe: Record<PositionTe, string> = {
     ASSISTANT: 'Trợ lý',

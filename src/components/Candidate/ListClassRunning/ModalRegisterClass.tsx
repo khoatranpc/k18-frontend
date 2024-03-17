@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, DatePicker, Input, Radio } from 'antd';
+import { Button, DatePicker, Input, MenuProps, Radio } from 'antd';
+import { CloseOutlined, LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { Obj } from '@/global/interface';
+import { Action, Obj } from '@/global/interface';
 import { ClassForm } from '@/global/enum';
-import { useGetCandidateOnboard, useGetClautidForCandidateOnboard, useQueryBookTeacher, useRegisterClautid, useUpdateClassClautid } from '@/utils/hooks';
+import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
+import { useDebounce, useGetCandidateOnboard, useGetClautidForCandidateOnboard, useGetListClass, useQueryBookTeacher, useRegisterClautid, useUpdateClassClautid } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import ModalCustomize from '@/components/ModalCustomize';
+import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
 
 
@@ -34,12 +38,22 @@ const ModalRegisterClass = (props: Props) => {
             return schema.notRequired();
         }),
     });
+    const listClass = useGetListClass();
+    const getListClass = (listClass.response?.data as Obj)?.classes as Obj[];
     const registerClautid = useRegisterClautid();
     const candidateInfo = useGetCandidateOnboard();
     const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
     const bookTeacher = useQueryBookTeacher('GET');
     const updateClassClautidInfo = useUpdateClassClautid();
     const candidateClautid = useGetClautidForCandidateOnboard();
+
+    const dispatch = useDispatch();
+    const [searchClass, setSearchClass] = useState("");
+    const [newClass, setNewClass] = useState({
+        codeClass: "",
+        id: ""
+    });
+    const debounceSearchClass = useDebounce(searchClass, 500);
 
     const message = useHookMessage();
     const getListLocationClass = (props.class?.recordBookTeacher as Array<Obj>)?.map((item) => {
@@ -52,11 +66,11 @@ const ModalRegisterClass = (props: Props) => {
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: {
-            classId: props.classRegister ? props.classRegister.classId._id : (props.class?._id || ''),
-            date: props.classRegister ? props.classRegister.time as string : '',
+            classId: props.classRegister ? props.classRegister?.classId?._id : (props.class?._id || ''),
+            date: props.classRegister ? props.classRegister?.time as string : '',
             emailCandidate: getCandidateInfo && getCandidateInfo.email ? getCandidateInfo.email as string : '',
-            form: props.classRegister ? props.classRegister.form as string : '',
-            location: props.classRegister ? props.classRegister.location._id as string : (ClassForm.ONLINE || '')
+            form: props.classRegister ? props.classRegister?.form as string : '',
+            location: props.classRegister ? props.classRegister?.location?._id as string : (ClassForm.ONLINE || '')
         },
         validationSchema,
         onSubmit(values) {
@@ -81,7 +95,32 @@ const ModalRegisterClass = (props: Props) => {
             }
         }
     });
-
+    const handleQueryListClass = (codeClass: string) => {
+        const payload: Action = {
+            payload: {
+                query: {
+                    query: {
+                        fields: ["_id", "codeClass"],
+                        codeClass
+                    }
+                }
+            }
+        };
+        dispatch(queryGetListClass(payload));
+    }
+    const options: MenuProps['items'] = getListClass?.map((item) => {
+        return {
+            label: item?.codeClass,
+            key: item?._id
+        }
+    }) ?? [];
+    const handleResetClass = () => {
+        setNewClass({
+            id: "",
+            codeClass: ""
+        });
+        setFieldValue("classId", props.classRegister ? props.classRegister?.classId?._id : '')
+    }
     useEffect(() => {
         if (updateClassClautidInfo.data.response && updateClassClautidInfo.data.success) {
             message.open({
@@ -119,6 +158,11 @@ const ModalRegisterClass = (props: Props) => {
             bookTeacher.query?.(props.classRegister.classId._id as string, ['locationId', 'locationCode', 'locationDetail']);
         }
     }, [props.isUpdate, props.classRegister]);
+    useEffect(() => {
+        if (debounceSearchClass) {
+            handleQueryListClass(debounceSearchClass);
+        }
+    }, [debounceSearchClass]);
     return (
         <ModalCustomize
             show={props.showModal}
@@ -131,7 +175,35 @@ const ModalRegisterClass = (props: Props) => {
                 <Form.Group>
                     <Form.Label><b>Lớp</b></Form.Label>
                     <br />
-                    {props.isUpdate ? (props.classRegister ? props.classRegister.classId.codeClass : '') : props.class?.codeClass}
+                    {props.isUpdate ? (props.classRegister ? <p style={{ display: 'flex', alignItems: 'start' }}>{props.classRegister.classId.codeClass}{newClass.codeClass ? ` -> ${newClass.codeClass}` : ""} {newClass.codeClass && <CloseOutlined style={{ cursor: 'pointer' }} onClick={handleResetClass} />}</p> : '') : props.class?.codeClass}
+                    {props.isUpdate &&
+                        <Dropdown
+                            loading={listClass.isLoading}
+                            listSelect={options}
+                            trigger='click'
+                            title={<div className={styles.inputLoading}>
+                                <Input
+                                    prefix={listClass.isLoading ? <LoadingOutlined /> : <SearchOutlined />}
+                                    size="small"
+                                    placeholder="Nhập mã lớp"
+                                    onChange={(e) => {
+                                        setSearchClass(e.target.value);
+                                    }}
+                                />
+                            </div>
+                            }
+                            sizeButton="small"
+                            onClickItem={(e) => {
+                                if (e.key !== values.classId) {
+                                    setNewClass({
+                                        id: e.key,
+                                        codeClass: (options.find((item: any) => item.key == e.key) as Obj)?.label as string
+                                    });
+                                    setFieldValue("classId", e.key);
+                                }
+                            }}
+                        />
+                    }
                 </Form.Group>
                 {
                     !props.isUpdate ? <Form.Group>
@@ -139,7 +211,7 @@ const ModalRegisterClass = (props: Props) => {
                         <Input size="small" name="emailCandidate" value={values.emailCandidate} onChange={handleChange} onBlur={handleBlur} />
                         {errors.emailCandidate && touched.emailCandidate && <p className="error">{errors.emailCandidate}</p>}
                     </Form.Group> : <Form.Group>
-                        <Form.Label><b>Lần {Number(props.countTime) + 1}</b></Form.Label>
+                        <Form.Label><b>Lần {Number(props.countTime)}</b></Form.Label>
                     </Form.Group>
                 }
                 <Form.Group>
@@ -179,7 +251,7 @@ const ModalRegisterClass = (props: Props) => {
                         <Radio.Group value={values.location} onChange={handleChange} name="location" onBlur={handleBlur}>
                             {getLocation?.map((item, idx) => {
                                 return (
-                                    <Form.Label key={idx}>
+                                    item.locationCode !== "ONLINE" && <Form.Label key={idx}>
                                         <Radio value={item._id as string} />{item.locationCode}&nbsp;&nbsp;
                                     </Form.Label>
                                 )

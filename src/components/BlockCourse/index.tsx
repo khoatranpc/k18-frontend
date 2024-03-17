@@ -89,16 +89,19 @@ const BlockCourse = (props: Props) => {
                             {props.data && (!props.isLevel ?
                                 <div className={styles.infoCourseOverview}>
                                     <p>Khoá học: {props.data.courseName}</p>
-                                    <p> Syllabus: {props.data.syllabus ? <a target="_blank" href={props.data.syllabus}>Link</a> : 'Đang cập nhật'}</p>
+                                    <p> Syllabus: {props.data.syllabus ? <a target="_blank" href={props.data.syllabus}>Link</a> : <span style={{ color: 'red' }}>Đang cập nhật</span>}</p>
                                 </div> :
                                 <div className={styles.infoCourseOverview}>
                                     <p><b>Mã</b>: {props.data.levelCode}</p>
-                                    <p><b>Tài liệu</b>: {props.data.textbook ? <a target="_blank" href={props.data.textbook}>Link</a> : 'Đang cập nhật'}</p>
-                                    <p><b>Record tham khảo</b>: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : 'Đang cập nhật'}</p>
-                                    <p><b>Bộ trắc nghiệm</b>:  <a target="_blank" style={{ cursor: 'pointer' }} onClick={(e) => {
+                                    <p><b>Tài liệu</b>: {props.data.textbook ? <a target="_blank" href={props.data.textbook}>Link</a> : <span style={{ color: 'red' }}>Đang cập nhật</span>}</p>
+                                    <p><b>Slide</b>:  {props.data.slide ? <a target="_blank" href={props.data.slide}>Link</a> : <span style={{ color: 'red' }}>Đang cập nhật</span>}</p>
+                                    <p><b>Teaching Guide</b>:  {props.data.teachingGuide ? <a target="_blank" href={props.data.slide}>Link</a> : <span style={{ color: 'red' }}>Đang cập nhật</span>}</p>
+                                    <p><b>Record tham khảo</b>: {props.data.record ? <a target="_blank" href={props.data.record}>Link</a> : <span style={{ color: 'red' }}>Đang cập nhật</span>}</p>
+                                    <p><b>Bộ trắc nghiệm</b>: {props.data.quiz ? <a target="_blank" href={props.data.quiz}>Link</a> : <span style={{ color: 'red' }}>Đang cập nhật</span>}</p>
+                                    {/* <p><b>Bộ trắc nghiệm</b>:  <a target="_blank" style={{ cursor: 'pointer' }} onClick={(e) => {
                                         e.preventDefault();
                                         router.push(`/te/manager/storage/course/${router.query.courseId}/${props.data?._id}/test`)
-                                    }}>Link</a></p>
+                                    }}>Link</a></p> */}
                                 </div>
                             )}
                         </div>

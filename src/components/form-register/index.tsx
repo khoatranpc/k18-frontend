@@ -99,8 +99,8 @@ const validationSchema = yup.object({
         .array()
         .min(1, "Bạn cần chọn ít nhất một cấp độ của một khóa học!")
         .required("Bạn cần chọn khóa học!"),
-    // frontId: yup.mixed().required("Bạn chưa điền CCCD mặt trước"),
-    // backId: yup.mixed().required("Bạn chưa điền CCCD mặt sau"),
+    frontId: yup.mixed().required("Bạn chưa điền CCCD mặt trước"),
+    backId: yup.mixed().required("Bạn chưa điền CCCD mặt sau"),
 });
 const FormRegister = () => {
     const [step, setStep] = useState<number>(1);
@@ -177,19 +177,29 @@ const FormRegister = () => {
         },
         validationSchema,
         onSubmit(values) {
-            console.log("🚀 ~ onSubmit ~ values:", values);
-
             if (isValid) {
+                const data: Obj = {
+                    ...values,
+                    dateStartWork: (values.dateStartWork as unknown as Obj).$d,
+                    licenseDate: (values.licenseDate as unknown as Obj).$d,
+                    dob: (values.dob as unknown as Obj).$d,
+                }
+                const formData = new FormData();
+                for (const key in data) {
+                    if (key !== "frontId" && key !== "backId") {
+                        formData.append(`${key}`, JSON.stringify(data[key]));
+                    } else {
+                        formData.append(`${key}`, data[key]);
+                    }
+                }
                 dispatch(
                     queryRegisterPreTeacher({
                         payload: {
                             query: {
-                                body: {
-                                    ...values,
-                                    dateStartWork: (values.dateStartWork as unknown as Obj).$d,
-                                    licenseDate: (values.licenseDate as unknown as Obj).$d,
-                                    dob: (values.dob as unknown as Obj).$d,
-                                },
+                                body: formData,
+                                headers: {
+                                    "Content-Type": "mutilpart/form-data"
+                                }
                             },
                         },
                     })
@@ -309,7 +319,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="abc@gmail.com"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.email && touched.email && (
@@ -329,7 +339,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="Nguyễn Văn A"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.fullName && touched.fullName && (
@@ -349,7 +359,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="01234..."
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.phoneNumber && touched.phoneNumber && (
@@ -371,7 +381,8 @@ const FormRegister = () => {
                                         setFieldValue("dob", e);
                                     }}
                                     onBlur={handleBlur}
-                                    placeholder="yy-mm-dd"
+                                    format={"DD/MM/YYYY"}
+                                    placeholder="dd/mm/yy"
                                 />
                                 {errors.dob && touched.dob && (
                                     <p className="error">{errors.dob}</p>
@@ -413,7 +424,7 @@ const FormRegister = () => {
                                     value={values.identify}
                                     onBlur={handleBlur}
                                     placeholder="Nhập số CCCD 12 số"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.identify && touched.identify && (
@@ -434,7 +445,8 @@ const FormRegister = () => {
                                         setFieldValue("licenseDate", e);
                                     }}
                                     onBlur={handleBlur}
-                                    placeholder="yy-mm-dd"
+                                    placeholder="dd/mm/yy"
+                                    format={"DD/MM/YYYY"}
                                 />
                                 {errors.licenseDate && touched.licenseDate && (
                                     <p className="error">{errors.licenseDate}</p>
@@ -453,7 +465,7 @@ const FormRegister = () => {
                                     value={values.licensePlace}
                                     onBlur={handleBlur}
                                     placeholder="Cục cảnh sát..."
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.licensePlace && touched.licensePlace && (
@@ -475,8 +487,7 @@ const FormRegister = () => {
                                         classNameImgPreview={styles.imageStaff}
                                         src={`https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png`}
                                         onCropped={(file) => {
-                                            console.log("🚀 ~ FormRegister ~ file:", file)
-                                            
+                                            console.log(file);
                                             setFieldValue("frontId", file);
                                         }}
                                     />
@@ -543,7 +554,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="Đại Fọc FPT / Thiết kế đồ họa"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.educationInfo && touched.educationInfo && (
@@ -564,7 +575,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="Product Designer / MindX School"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.companyInfo && touched.companyInfo && (
@@ -584,7 +595,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="71 Nguyễn Chí Thanh"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.address && touched.address && (
@@ -600,12 +611,13 @@ const FormRegister = () => {
                                 <DatePicker
                                     className={styles.input}
                                     name="dateStartWork"
-                                    placeholder="yy-mm-dd"
+                                    placeholder="dd/mm/yy"
                                     value={values.dateStartWork as any}
                                     onChange={(e) => {
                                         setFieldValue("dateStartWork", e);
                                     }}
                                     onBlur={handleBlur}
+                                    format={"DD/MM/YYYY"}
                                 />
                                 {errors.dateStartWork && touched.dateStartWork && (
                                     <p className="error">{errors.dateStartWork}</p>
@@ -625,7 +637,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="https://..."
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.CVfile && touched.CVfile && (
@@ -645,7 +657,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="https://..."
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.facebookLink && touched.facebookLink && (
@@ -668,7 +680,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="VD: Techcombank"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.bankName && touched.bankName && (
@@ -688,7 +700,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="VD: 1903..."
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.bankNumber && touched.bankNumber && (
@@ -708,7 +720,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="VD: Nguyễn Văn Cường"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.bankHolderName && touched.bankHolderName && (
@@ -728,7 +740,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="12345678"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                             </Form.Group>
@@ -750,7 +762,7 @@ const FormRegister = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="VD: Lập trình viên Web fullstack"
-                                    size="large"
+                                    size="small"
                                     className={styles.input}
                                 />
                                 {errors.background && touched.background && (

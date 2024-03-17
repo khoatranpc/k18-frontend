@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import PiStatistic from './PiStatistic';
 import Columns from './Columns';
 import TableOverViewTotalTeacher from './TableOverViewTotalTeacher';
-import Expand from '@/icons/Expand';
 import { ExpandContent } from '..';
+import Expand from '@/icons/Expand';
 import styles from '@/styles/Overview.module.scss';
 
 interface Props {
@@ -11,6 +12,19 @@ interface Props {
     isOnExpand?: boolean;
 }
 const TeacherStatistic = (props: Props) => {
+    const listTeacher = useListTeacher();
+    const courseApply = useTeacherRegisterCourse();
+    useEffect(() => {
+        if (!listTeacher.listTeacher.response || (listTeacher.listTeacher.response?.data?.currentPage)) {
+            if (!courseApply.listData.isLoading) {
+                courseApply.query();
+            }
+            listTeacher.query?.(undefined, undefined, {
+                fields: ['_id', 'roleIsMT', 'roleIsST', 'roleIsSP', 'teacherPoint', 'salaryPH', 'area']
+            });
+
+        }
+    }, []);
     return (
         <div className={`${styles.teacherAnalystic} ${props.isOnExpand ? styles.teacherAnalysticOnExpand : ''}`}>
             <h2>Giáo viên <Expand className={styles.expandIcon} onClick={() => {

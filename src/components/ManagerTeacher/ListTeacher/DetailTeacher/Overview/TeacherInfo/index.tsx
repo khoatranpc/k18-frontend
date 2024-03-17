@@ -7,9 +7,10 @@ import { Button, Checkbox, DatePicker, Input, MenuProps, Radio } from 'antd';
 import { Gender, ROLE_TEACHER } from '@/global/enum';
 import { Obj } from '@/global/interface';
 import { useGetArea, useGetTeacherDetail, useUpdateDetailTeacher } from '@/utils/hooks';
-import Dropdown from '@/components/Dropdown';
-import styles from '@/styles/teacher/DetailTeacher.module.scss';
 import { useHookMessage } from '@/utils/hooks/message';
+import Dropdown from '@/components/Dropdown';
+import CropImage from '@/components/CropImage';
+import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 interface Props {
     countRole: number;
@@ -190,6 +191,53 @@ const TeacherInfo = (props: Props) => {
                             <Checkbox value={ROLE_TEACHER.SP}>Supporter</Checkbox>
                         </Checkbox.Group>
                     </Form.Group>
+                </div>
+                <div className={styles.right}>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>
+                            Số CCCD
+                        </Form.Label>
+                        <Input size="small" name="identify" value={values?.identify} onChange={handleChange} onBlur={handleBlur} />
+                        {errors?.identify && touched?.identify && <p className="error">{errors.identify as string}</p>}
+                    </Form.Group>
+                    <div className={styles.groupImageIdentify}>
+                        <Form.Group className={styles.mb_24}>
+                            <Form.Label>
+                                Mặt trước CCCD
+                            </Form.Label>
+                            <CropImage
+                                disabledFixResize
+                                disabledCircleImage
+                                className={styles.cropImage}
+                                classNameImgPreview={styles.imageStaff}
+                                src={values?.frontId as string}
+                                onCropped={(file) => {
+                                    setFieldValue("frontId", file);
+                                }}
+                            />
+                            {errors?.frontId && touched?.frontId && (
+                                <p className="error">{errors?.frontId as string}</p>
+                            )}
+                        </Form.Group>
+                        <Form.Group className={styles.mb_24}>
+                            <Form.Label>
+                                Mặt sau CCCD
+                            </Form.Label>
+                            <CropImage
+                                disabledFixResize
+                                disabledCircleImage
+                                className={styles.cropImage}
+                                classNameImgPreview={styles.imageStaff}
+                                src={values?.backId as string}
+                                onCropped={(file) => {
+                                    setFieldValue("backId", file);
+                                }}
+                            />
+                            {errors?.backId && touched?.backId && (
+                                <p className="error">{errors?.backId as string}</p>
+                            )}
+                        </Form.Group>
+                    </div>
                     <div className={`${styles.btnAction} ${styles.fromFormInfo}`}>
                         <Button onClick={handleReset}>Reset</Button>
                         <Button htmlType="submit" disabled={JSON.stringify(getDataTeacher) === JSON.stringify(values)}>Lưu</Button>

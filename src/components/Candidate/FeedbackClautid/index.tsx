@@ -126,37 +126,21 @@ const FeedbackClautid = () => {
                                 setShowModalFeedback({
                                     show: true,
                                     data: record,
-                                    countTime: index,
+                                    countTime: index + 1,
                                     isCreate: true
                                 });
                             }
                         }}>Thực hiện</Button>
-                        <Popconfirm
-                            okButtonProps={{
-                                className: styles.btnPopup
-                            }}
-                            cancelButtonProps={{
-                                className: styles.btnPopup
-                            }}
-                            icon={null}
-                            trigger="click"
-                            title={<div className={styles.option}>
-                                <p>Lựa chọn hành động cập nhật</p>
-                                <Button size="small" className={styles.btnTime} onClick={() => {
-                                    if (value) {
-                                        setModalUpdateClassregister({
-                                            isUpdate: true,
-                                            show: true,
-                                            classRegister: record,
-                                            countTime: index
-                                        });
-                                    }
-                                }}>Thông tin</Button>
-                                <Button size="small">Đổi lớp</Button>
-                            </div>}
-                        >
-                            <Button size="small">Cập nhật</Button>
-                        </Popconfirm>
+                        <Button size="small" onClick={() => {
+                            if (!value) {
+                                setModalUpdateClassregister({
+                                    isUpdate: true,
+                                    show: true,
+                                    classRegister: record,
+                                    countTime: index + 1
+                                });
+                            }
+                        }}>Cập nhật</Button>
                     </div >
             },
         },

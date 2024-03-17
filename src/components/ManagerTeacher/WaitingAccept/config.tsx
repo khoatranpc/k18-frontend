@@ -1,6 +1,5 @@
-import { Columns } from "@/global/interface";
-import { Gender, ROLE_TEACHER } from "@/global/enum";
-import { getStringGender } from "@/global/init";
+import { Columns, } from "@/global/interface";
+import { ROLE_TEACHER } from "@/global/enum";
 import { formatDatetoString } from "@/utils";
 import ConfirmTeacher from "./Confirm";
 
@@ -27,6 +26,12 @@ const getConfigColumns = (): Columns => {
             key: 'EMAIL',
             dataIndex: 'email',
             title: 'Email',
+            width: 250,
+        },
+        {
+            key: 'PHONENUMBER',
+            dataIndex: 'phoneNumber',
+            title: 'SĐT',
             width: 200,
         },
         {
@@ -39,30 +44,6 @@ const getConfigColumns = (): Columns => {
             }
         },
         {
-            key: 'PHONENUMBER',
-            dataIndex: 'phoneNumber',
-            title: 'SĐT',
-            width: 180,
-        },
-        {
-            key: 'GENDER',
-            dataIndex: 'gender',
-            title: 'Giới tính',
-            width: 90,
-            render(value, record, index) {
-                return getStringGender[value as Gender]
-            },
-        },
-        {
-            key: 'DOB',
-            dataIndex: 'dob',
-            title: 'Ngày sinh',
-            width: 120,
-            render(value) {
-                return formatDatetoString(value as Date, 'dd/MM/yyyy');
-            }
-        },
-        {
             key: 'FB',
             dataIndex: 'facebookLink',
             title: 'Facebook',
@@ -72,34 +53,13 @@ const getConfigColumns = (): Columns => {
             }
         },
         {
-            key: 'MST',
-            dataIndex: 'taxCode',
-            title: 'MST',
-            width: 150,
-        },
-        {
             key: 'AREA',
             dataIndex: 'area',
             title: 'Khu vực',
             width: 120,
-        },
-        {
-            key: 'EDU',
-            dataIndex: 'educationInfo',
-            title: 'Trường học/Ngành học',
-            width: 250,
-        },
-        {
-            key: 'COMPANY',
-            dataIndex: 'companyInfo',
-            title: 'Đơn vị công tác/vị trí',
-            width: 250,
-        },
-        {
-            key: 'BACKGROUND',
-            dataIndex: 'background',
-            title: 'Lý lịch nghề',
-            width: 190,
+            render(value) {
+                return <p>{value.name}</p>
+            }
         },
         {
             key: 'ADDRESS',
