@@ -1,7 +1,7 @@
 import React from "react";
 import { AxiosHeaders, Method, RawAxiosRequestHeaders } from "axios";
 import { TableColumnsType } from "antd";
-import { ComponentPage, KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from "./enum";
+import { ComponentPage, KEY_ICON, PositionTe, ROLE, ROLE_TEACHER, ROLE_USER, STATUS_CLASS } from "./enum";
 import { StatusEvent } from "@/components/Calendar/Note/styles";
 
 type MethodsHeaders = Partial<{
@@ -58,7 +58,7 @@ export interface SiderRoute {
     noReplaceTitle?: boolean;
     component?: ComponentPage;
     indexroute: string;
-    positionTE?: PositionTe;
+    positionAccept?: (PositionTe | ROLE | ROLE_USER)[];
     notRouting?: boolean;
     className?: string;
     hasBackPage?: boolean;

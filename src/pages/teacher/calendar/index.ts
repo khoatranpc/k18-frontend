@@ -4,7 +4,7 @@ import ContainerPage from "@/layouts/containerPage/containerPage";
 
 const TeacherCalendarPage = CreatePage(
   "TeacherCalendar",
-  ROLE_USER.TC,
+  [ROLE_USER.TC],
   ContainerPage
 );
 export default TeacherCalendarPage;

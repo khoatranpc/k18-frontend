@@ -19,10 +19,10 @@ const ListClassRunning = () => {
     const columns: Columns = [
         {
             key: 'SUBJECT',
-            title: 'Khối',
+            title: 'Bộ môn',
             dataIndex: 'courseId',
-            render(value, record, index) {
-                return <div className={styles.courseName} style={{ backgroundColor: getColorByCourseName[value.courseName] }}>
+            render(value, record) {
+                return <div className={styles.courseName} style={{ backgroundColor: (record?.courseId as Obj)?.color as string }}>
                     {value.courseName}
                 </div>
             },
@@ -136,7 +136,8 @@ const ListClassRunning = () => {
                         recordOnPage: 10,
                         status: STATUS_CLASS.RUNNING,
                         forRecruitment: true,
-                        course: filterCousre
+                        course: filterCousre,
+                        fields: ["_id", "codeClass", "dayRange", "timeSchedule", "courseId", "courseLevelId", "levelName", "levelCode", "courseName", "color", "start", "end", "weekday", "status", "classForm", "levelNumber"],
                     }
                 }
             }

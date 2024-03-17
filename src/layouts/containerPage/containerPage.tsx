@@ -5,7 +5,7 @@ import ResizeObserver from 'react-resize-observer';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from '@/global/enum';
+import { ComponentPage, KEY_ICON, PositionTe, ROLE, ROLE_USER } from '@/global/enum';
 import { Obj, SiderRoute, State } from '@/global/interface';
 import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
@@ -21,7 +21,7 @@ import Loading from '@/components/loading';
 import Empty from '@/components/Empty';
 import logo from '@/assets/imgs/mindx.png';
 import { Layout } from 'antd';
-const { Sider, Content } = Layout;
+const { Sider } = Layout;
 import styles from '@/styles/ContainerPage.module.scss';
 
 interface Props {
@@ -58,9 +58,10 @@ export const findRoute = (listRoute: SiderRoute[], currentRoute: string): any =>
     return null;
 }
 const ContainerPage = (props: Props) => {
-    const getRolePage = (props.children.type as Obj).Role as ROLE_USER;
+    const getRolePage = (props.children.type as Obj).Role as string[];
     const [loadingForCheckRole, setLoadingForCheckRole] = useState<boolean>(true);
     const crrUser = useSelector((state: RootState) => (state.crrUserInfo as State).state);
+    const getPosition = (crrUser.response?.data as Obj)?.positionTe as string;
     const siderRef = useRef(null);
     const [siderSize, setSiderSize] = useState<number>(0);
     const [containerSize, setContainerSize] = useState<number>(0);
@@ -68,11 +69,11 @@ const ContainerPage = (props: Props) => {
     const course = useGetListCourse();
     const mappingTab = siderByRole[crrRole];
     const items: MenuItem[] = mappingTab?.map((item) => {
-        return !item.hide ? getItem(item.title,
+        return !item.hide && item.positionAccept?.includes(crrRole === ROLE_USER.TE ? getPosition as PositionTe : ROLE_USER.TC) ? getItem(item.title,
             item.route,
             MapIconKey[item.keyIcon as KEY_ICON],
             item.children?.map((child) => {
-                if (!child.hide) {
+                if (!child.hide && child.positionAccept?.includes(getPosition as PositionTe)) {
                     return getItem(child.title, child.route, MapIconKey[child.keyIcon as KEY_ICON]);
                 } else return null
             })
@@ -147,13 +148,13 @@ const ContainerPage = (props: Props) => {
         dispatch(initDataRoute(refRoute.current));
     }, [router.route]);
     useEffect(() => {
-        if (!course.listCourse && getRolePage === ROLE_USER.TE) {
+        if (!course.listCourse && getRolePage.includes(ROLE_USER.TE)) {
             course.queryListCourse();
         }
     }, [course.listCourse]);
     useEffect(() => {
         if (crrRole) {
-            if (getRolePage !== ROLE_USER.COMMON && getRolePage !== crrRole) {
+            if (!getRolePage.includes(ROLE_USER.COMMON) && (!getRolePage.includes(crrRole) || (crrRole === ROLE_USER.TE && !getRolePage.includes(getPosition) && !getRolePage.includes(ROLE_USER.COMMON)))) {
                 router.push('/404');
             } else {
                 setLoadingForCheckRole(false);

@@ -8,6 +8,7 @@ import { useHookMessage } from '@/utils/hooks/message';
 import VisualStep from './VisualStep';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
+import { Form } from 'react-bootstrap';
 
 const Candidate = () => {
 
@@ -40,15 +41,23 @@ const Candidate = () => {
             <h1>Chào mừng ứng viên đến với quy trình onboard</h1>
             <h2>Vui lòng nhập email để kiểm tra</h2>
             <div className={styles.checkCandidate}>
-                <Input value={email} onChange={(e) => {
-                    setEmail(e.target.value);
-                }} />
-                <Button
-                    onClick={() => {
-                        handleQueryCandidate()
+                <Form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleQueryCandidate();
                     }}
-                    loading={candidateInfo.data.isLoading}
-                >Kiểm tra</Button>
+                    style={{ display: 'flex' }}
+                >
+                    <Input value={email} onChange={(e) => {
+                        setEmail(e.target.value);
+                    }} />
+                    <Button
+                        loading={candidateInfo.data.isLoading}
+                        htmlType="submit"
+                    >
+                        Kiểm tra
+                    </Button>
+                </Form>
             </div>
             {getCandidateInfo && <VisualStep />}
         </div>

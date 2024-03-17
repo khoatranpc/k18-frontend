@@ -95,7 +95,11 @@ const CourseDetail = () => {
                             <div style={{ float: "right", display: "flex", gap: "0.8rem" }}>
                                 {listCourse.loading && <Loading />}
                                 <Button onClick={() => {
-                                    listCourse.queryListCourse();
+                                    if (crrUser?.data?.roleAccount === ROLE.TE) {
+                                        listCourse.queryListCourse();
+                                    } else {
+                                        courseApply.query(crrUser?.data?.roleAccount === ROLE.TE ? undefined : [crrUser?.data?._id as string]);
+                                    }
                                 }}>
                                     <ReloadOutlined />
                                 </Button>
@@ -121,9 +125,6 @@ const CourseDetail = () => {
                                             <span className={styles.attachLink}>
                                                 <InfoCircleOutlined className={styles.icon} /><span><b>Trạng thái</b>: {(currentCourse.active || currentCourse?.idCourse?.active) ? 'Hoạt động' : 'Ngừng hoạt động'}</span>
                                             </span>
-                                            {/* <span className={styles.attachLink}>
-                                                <Employee className={styles.icon} /><span><b>TE QC</b>: Trần Đăng khoa</span>
-                                            </span> */}
                                             <span className={styles.attachLink}>
                                                 <ClockCircleOutlined className={styles.icon} /><span><b>Cập nhật lúc</b>: {formatDatetoString((currentCourse.updatedAt ?? currentCourse?.idCourse?.updatedAt) as string ?? new Date(), 'HH:mm, dd/MM/yyyy')}</span>
                                             </span>

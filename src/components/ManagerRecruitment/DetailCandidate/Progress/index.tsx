@@ -15,14 +15,16 @@ import Test from './Test';
 import PopupConfirm from './PopupConfirm';
 import Done from './DoneAndClassify';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import FillForm from './FillForm';
 
 const getStepByRound: Record<RoundProcess, number> = {
     CV: 0,
     INTERVIEW: 1,
-    CLAUTID: 2,
-    TEST: 3,
-    CLASSIFY: 4,
-    DONE: 5
+    FILLFOWM: 2,
+    CLAUTID: 3,
+    TEST: 4,
+    CLASSIFY: 5,
+    DONE: 6
 }
 
 const listRound = [{
@@ -31,6 +33,9 @@ const listRound = [{
 }, {
     round: RoundProcess.INTERVIEW,
     title: 'Phỏng vấn'
+}, {
+    round: RoundProcess.FILLFOWM,
+    title: 'Form thông tin'
 }, {
     round: RoundProcess.CLAUTID,
     title: 'Dự thính'
@@ -47,8 +52,8 @@ const Progress = () => {
     const getCandidateId = router.query;
     const crrCandidate = useGetDetailCandidate();
     const getDataCandidate = crrCandidate.data.response?.data as Obj;
-
-    const [step, setStep] = useState<RoundProcess>(getDataCandidate.roundProcess as RoundProcess || RoundProcess.CV);
+    const getRoundProcess = (getDataCandidate.roundProcess as RoundProcess);
+    const [step, setStep] = useState<RoundProcess>(getRoundProcess === RoundProcess.CLAUTID && (!getDataCandidate?.fillForm) ? RoundProcess.FILLFOWM : getDataCandidate.roundProcess as RoundProcess || RoundProcess.CV);
     const dataRoundProcess = useGetDataRoundProcess();
     const getDataRoundProcess = dataRoundProcess.data.response?.data as Array<Obj>;
     const getDataRound = getDataRoundProcess?.[0] as Obj;
@@ -76,11 +81,12 @@ const Progress = () => {
     }
     const ContentRoundProgess: Record<RoundProcess, React.ReactElement> = {
         CV: <CV roundId={getDataRound?._id as string} />,
+        FILLFOWM: <FillForm />,
         CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
         INTERVIEW: <Interview roundId={getDataRound?._id as string} />,
         TEST: <Test roundId={getDataRound?._id as string} />,
-        DONE: <Done/>
+        DONE: <Done />
     };
     const queryHandleDataStep = (round: RoundProcess, roundId: string, result?: boolean, linkMeet?: string, time?: Date, doc?: string) => {
         updateDataRoundProcessCandidate.query({
@@ -149,7 +155,7 @@ const Progress = () => {
         }}>
             <div className={styles.progress}>
                 <Step
-                    currentStep={getStepByRound[getDataCandidate?.roundProcess as RoundProcess] || 0}
+                    currentStep={(getRoundProcess === RoundProcess.CLAUTID && !getDataCandidate.fillForm) ? getStepByRound[RoundProcess.FILLFOWM] : (getStepByRound[getDataCandidate?.roundProcess as RoundProcess] || 0)}
                     labelPlacement="vertical"
                     items={
                         listRound.map((item, index) => {

@@ -29,7 +29,7 @@ const ListTeacher = () => {
     const dispatch = useDispatch<AppDispatch>();
     const firstMounted = useRef<boolean>(true);
     const firstQuery = useRef(true);
-    const columns = getColums(undefined, getAreas, dataTeacherRegisterCourse.listData.isLoading);
+    const columns = getColums(undefined, getAreas, dataTeacherRegisterCourse.listData.isLoading && !dataTeacherRegisterCourse.listData.response);
     const rowData = mapRowData((listTeacher.response?.data as Obj)?.listTeacher || [], (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []);
     const handleQueryListTeacher = (rowOnPage?: number, currentPage?: number, email?: string) => {
         query(rowOnPage, currentPage, {

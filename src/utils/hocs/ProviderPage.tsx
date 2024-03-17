@@ -1,12 +1,13 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { ROLE_USER } from '@/global/enum';
+import { PositionTe, ROLE, ROLE_USER } from '@/global/enum';
 import Loading from '@/components/loading';
 
-const CreatePage = (componentDirectString: string, role: ROLE_USER, layout: (props: any) => JSX.Element) => {
+const getArrayRole = [...Object.values(PositionTe), ...Object.values(ROLE_USER), ...Object.values(ROLE)];
+const CreatePage = (componentDirectString: string, role: typeof getArrayRole, layout: (props: any) => JSX.Element) => {
     const DynamicComponent = dynamic(() => import(`@/components/${componentDirectString}`), {
         ssr: false,
-        loading: () => <Loading isCenterScreen/>
+        loading: () => <Loading isCenterScreen />
     })
     const Page = () => {
         return (

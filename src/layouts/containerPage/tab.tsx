@@ -1,4 +1,4 @@
-import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from "@/global/enum";
+import { ComponentPage, KEY_ICON, PositionTe, ROLE, ROLE_USER } from "@/global/enum";
 import { SiderRoute } from "@/global/interface";
 import CombineRoute from "@/global/route";
 
@@ -10,7 +10,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       keyIcon: "OV",
       indexroute: CombineRoute["TE"]["OVERVIEW"],
       noReplaceTitle: true,
-      positionTE: PositionTe.LEADER
+      positionAccept: Object.values(PositionTe)
     },
     {
       title: "Tuyển dụng",
@@ -23,38 +23,45 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           title: "Tuyển dụng",
           route: CombineRoute["TE"]["RECRUITMENT"],
           indexroute: CombineRoute["TE"]["RECRUITMENT"],
+          positionAccept: Object.values(PositionTe)
         },
         {
           title: "Chi tiết ứng viên",
           route: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
           indexroute: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
           hasBackPage: true,
-          hide: true
+          hide: true,
+          positionAccept: Object.values(PositionTe)
         },
         {
           title: "Lịch phỏng vấn",
           route: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
           indexroute: CombineRoute["TE"]["CALENDAR_INTERVIEW"],
+          positionAccept: Object.values(PositionTe)
         },
         {
           title: "Tạo hồ sơ ứng viên",
           route: CombineRoute["TE"]["RECRUITMENT_CREATE_CANDIDATE"],
           indexroute: CombineRoute["TE"]["RECRUITMENT_CREATE_CANDIDATE"],
           hide: true,
-          hasBackPage: true
+          hasBackPage: true,
+          positionAccept: Object.values(PositionTe)
         },
-      ]
+      ],
+      positionAccept: Object.values(PositionTe)
     },
     {
       title: "Giáo viên",
       route: "TEACHER",
       indexroute: "TEACHER",
+      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
       keyIcon: "TC",
       children: [
         {
           route: CombineRoute["TE"]["MANAGER"]["TEACHER"],
           indexroute: CombineRoute["TE"]["MANAGER"]["TEACHER"],
           title: "Danh sách",
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
         {
           route: CombineRoute["TE"]["MANAGER"]["DETAILTEACHER"],
@@ -62,12 +69,14 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           title: "Chi tiết giáo viên",
           hide: true,
           hasBackPage: true,
-          component: ComponentPage.TEACHER_DETAIL
+          component: ComponentPage.TEACHER_DETAIL,
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
         {
           route: CombineRoute["TE"]["MANAGER"]["REQUEST_ONLEAVE"],
           indexroute: CombineRoute["TE"]["MANAGER"]["REQUEST_ONLEAVE"],
           title: "Thông tin off",
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
       ]
     },
@@ -75,7 +84,8 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       title: "Lớp học",
       route: CombineRoute["TE"]["MANAGER"]["CLASS"],
       indexroute: CombineRoute["TE"]["MANAGER"]["CLASS"],
-      keyIcon: "HTS"
+      keyIcon: "HTS",
+      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
     },
     {
       title: "Chi tiết lớp học",
@@ -84,6 +94,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       hide: true,
       hasBackPage: true,
       component: ComponentPage.DETAILCLASS,
+      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
     },
     {
       title: "Lưu trữ",
@@ -91,16 +102,19 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       indexroute: "STORAGE",
       keyIcon: "FD",
       notRouting: true,
+      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
       children: [
         {
           title: "Tài liệu",
           route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["DOCUMENT"],
           indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["DOCUMENT"],
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
         {
           title: "Khoá học",
           route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE"],
           indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE"],
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
         {
           title: "Chi tiết khoá học",
@@ -108,14 +122,16 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE_DETAIL"],
           hide: true,
           hasBackPage: true,
-          component: ComponentPage.COURSE_DETAIL
+          component: ComponentPage.COURSE_DETAIL,
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
         {
           title: "Bộ trắc nghiệm",
           route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["TEST_COURSE"],
           indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["TEST_COURSE"],
           hide: true,
-          hasBackPage: true
+          hasBackPage: true,
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         }
       ]
     },
@@ -129,13 +145,16 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           title: "Khu vực",
           route: CombineRoute["TE"]["AREA"],
           indexroute: CombineRoute["TE"]["AREA"],
+          positionAccept: Object.values(PositionTe)
         },
         {
           title: "Danh sách",
           route: CombineRoute["TE"]["LOCATION"],
           indexroute: CombineRoute["TE"]["LOCATION"],
+          positionAccept: Object.values(PositionTe)
         },
-      ]
+      ],
+      positionAccept: Object.values(PositionTe)
     },
     {
       title: "Giờ học",
@@ -148,13 +167,14 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       keyIcon: "MS",
       route: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
       indexroute: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
+      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
     },
     {
       title: "Mẫu mail",
       keyIcon: "MAIL",
       route: CombineRoute["TE"]["MANAGER"]["TEMPLATE_MAIL"],
       indexroute: CombineRoute["TE"]["MANAGER"]["TEMPLATE_MAIL"],
-      positionTE: PositionTe.LEADER
+      positionAccept: Object.values(PositionTe)
     },
     {
       title: "TE",
@@ -166,11 +186,13 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           title: "Danh sách",
           route: CombineRoute["TE"]["MANAGER"]["STAFF"],
           indexroute: CombineRoute["TE"]["MANAGER"]["STAFF"],
+          positionAccept: [PositionTe.LEADER]
         },
         {
           title: "Báo cáo",
           route: CombineRoute["TE"]["MANAGER"]["REPORT"],
           indexroute: CombineRoute["TE"]["MANAGER"]["REPORT"],
+          positionAccept: Object.values(PositionTe)
         },
         {
           title: "Thông tin TE",
@@ -180,9 +202,11 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           hide: true,
           component: ComponentPage.TE_STAFF,
           hasBackPage: true,
-          noReplaceTitle: true
+          noReplaceTitle: true,
+          positionAccept: [PositionTe.LEADER]
         },
-      ]
+      ],
+      positionAccept: Object.values(PositionTe)
     },
     {
       title: "Thông tin cá nhân",
@@ -200,6 +224,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       showIcon: true,
       indexroute: CombineRoute["TEACHER"]["TEACHERINFO"],
       component: ComponentPage.TEACHERS,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Lớp học",
@@ -208,6 +233,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       showIcon: true,
       indexroute: CombineRoute["TEACHER"]["CLASS"],
       component: ComponentPage.MANAGER_CLASS,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Chi tiết lớp học",
@@ -216,6 +242,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       hide: true,
       keyIcon: KEY_ICON.HTS,
       component: ComponentPage.DETAILCLASS,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Khoá Học",
@@ -224,6 +251,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       showIcon: true,
       indexroute: CombineRoute["TEACHER"]["COURSE"],
       component: ComponentPage.MANAGER_COURSE,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Chi tiết",
@@ -231,6 +259,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       indexroute: CombineRoute["TEACHER"]["COURSE_DETAIL"],
       component: ComponentPage.COURSE_DETAIL,
       hide: true,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Cơ sở",
@@ -239,6 +268,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       showIcon: true,
       indexroute: CombineRoute["TEACHER"]["LOCATION"],
       component: ComponentPage.LOCATION,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Lịch",
@@ -247,6 +277,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       showIcon: true,
       indexroute: CombineRoute["TEACHER"]["CALENDAR"],
       component: ComponentPage.CALENDAR,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Feedback",
@@ -254,6 +285,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       indexroute: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
       hide: true,
       component: ComponentPage.MANAGER_FEEDBACK,
+      positionAccept: [ROLE.TEACHER]
     },
     {
       title: "Tài liệu chung",
@@ -262,6 +294,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       showIcon: true,
       indexroute: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
       component: ComponentPage.DOCUMENT,
+      positionAccept: [ROLE.TEACHER]
     },
   ],
   COMMON: []

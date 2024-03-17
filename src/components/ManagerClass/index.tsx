@@ -101,13 +101,13 @@ const ManagerClass = () => {
         return {
             key: item._id as string,
             codeClass: item.codeClass,
-            subject: item.courseId.courseName,
+            subject: item.courseId?.courseName,
             teacher: crrST,
-            dateStart: item.dayRange.start,
+            dateStart: item.dayRange?.start,
             status: item.status,
             timeSchedule: item.timeSchedule,
             classForm: getClassForm[item.classForm as ClassForm],
-            color: item.courseId.color
+            color: item.courseId?.color
         }
     }) || [];
     const dispatch = useDispatch<AppDispatch>();
@@ -218,7 +218,8 @@ const ManagerClass = () => {
                 query: {
                     query: {
                         currentPage: currentPage,
-                        recordOnPage: recordOnPage
+                        recordOnPage: recordOnPage,
+                        fields: ["_id", "codeClass", "dayRange", "timeSchedule", "courseId", "courseLevelId", "levelName", "levelCode", "courseName","color","start","end","weekday","status","classForm","recordBookTeacher"],
                     }
                 }
             }

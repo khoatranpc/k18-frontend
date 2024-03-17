@@ -165,6 +165,7 @@ export enum Education {
 export enum RoundProcess {
     CV = 'CV',
     INTERVIEW = 'INTERVIEW',
+    FILLFOWM = 'FILLFOWM',
     CLAUTID = 'CLAUTID',
     TEST = 'TEST',
     DONE = 'DONE',

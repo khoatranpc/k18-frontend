@@ -10,4 +10,4 @@ const Home = () => {
 
 export default Home;
 Home.Layout = ContainerPage;
-Home.Role = ROLE_USER.TC;
+Home.Role = [ROLE_USER.TC];

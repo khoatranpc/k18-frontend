@@ -22,9 +22,8 @@ const Test = () => {
     }, [candidateInfo.data.response]);
     return (
         <div className={styles.testClautid}>
-            {getCalendarTest && <h2 style={{ textAlign: 'center' }}>Hãy liên hệ với TE khi cần trợ giúp!</h2>}
-            {!getCalendarTest && !calendarTest.data.isLoading || calendarTest.data.isLoading ? <Loading /> :
-
+            <h2 style={{ textAlign: 'center' }}>Hãy liên hệ với TE khi cần trợ giúp!</h2>
+            {calendarTest.data.isLoading || (!calendarTest.data.response && !calendarTest.data.isLoading) ? <Loading /> :
                 !getCalendarTest ? 'Chưa có lịch dạy thử, vui lòng liên hệ với TE để được hỗ trợ!' :
                     <div>
                         <p>Link meet: <a href={getCalendarTest.linkMeet} target="_blank">{getCalendarTest.linkMeet}</a></p>
