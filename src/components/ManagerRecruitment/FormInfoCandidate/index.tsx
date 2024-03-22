@@ -44,13 +44,9 @@ const validationSchema = yup.object({
     linkCv: yup.string().required('Thiếu link CV!'),
     fullName: yup.string().required('Thiếu họ và tên ứng viên!'),
     phoneNumber: yup.string().required('Thiếu số điện thoại!'),
-    jobPosition: yup.string().required('Thiếu vị trí công việc!'),
     resourceApply: yup.string().required('Chưa có nguồn ứng tuyển'),
     courseApply: yup.string().required('Thiếu khối ứng tuyển!'),
     area: yup.string().required('Thiếu khu vực!'),
-    technique: yup.string().required('Thiếu công nghệ sử dụng!'),
-    scoreTechnique: yup.string().required('Chưa chấm điểm độ thành thạo công nghệ!'),
-    scoreJobPosition: yup.string().required('Chưa chấm điểm vị trí việc làm!'),
     email: yup.string().email('Không đúng định dạng email').required('Thiếu email!'),
 });
 
@@ -373,12 +369,12 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.courseApply && touched.courseApply && !values.courseApply && <p className="error">{errors.courseApply}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Công nghệ sử dụng <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Công nghệ sử dụng</Form.Label>
                         <Input value={values.technique} size={props.isViewInfo ? 'small' : 'middle'} name="technique" onChange={handleChange} onBlur={handleBlur} />
                         {errors.technique && touched.technique && <p className="error">{errors.technique}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Thành thạo công nghệ <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Thành thạo công nghệ</Form.Label>
                         <SelectInputNumber
                             min={0}
                             className={styles.selectExp}
@@ -393,12 +389,12 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.scoreTechnique && touched.scoreTechnique && <p className="error">{errors.scoreTechnique}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Vị trí công việc <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Vị trí công việc</Form.Label>
                         <Input value={values.jobPosition} size={props.isViewInfo ? 'small' : 'middle'} name="jobPosition" onChange={handleChange} onBlur={handleBlur} />
                         {errors.jobPosition && touched.jobPosition && <p className="error">{errors.jobPosition}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Chấm điểm vị trí việc làm <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Chấm điểm vị trí việc làm</Form.Label>
                         <SelectInputNumber
                             min={0}
                             className={styles.selectExp}
@@ -413,7 +409,7 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.scoreJobPosition && touched.scoreJobPosition && <p className="error">{errors.scoreJobPosition}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Trình độ <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Trình độ</Form.Label>
                         <SelectLevelTechnique
                             size="small"
                             title={getStringByLevelTechnique[values.levelTechnique as LevelTechnique]}
@@ -424,7 +420,7 @@ const FormInfoCandidate = (props: Props) => {
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Số năm kinh nghiệm <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Số năm kinh nghiệm</Form.Label>
                         <SelectInputNumber
                             value={Number(values.expTimeTech || 0)}
                             min={0}
@@ -439,7 +435,7 @@ const FormInfoCandidate = (props: Props) => {
                         />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Kỹ năng mềm <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Kỹ năng mềm</Form.Label>
                         <SelectInputNumber
                             max={5}
                             min={0}
