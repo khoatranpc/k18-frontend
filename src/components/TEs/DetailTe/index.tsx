@@ -6,6 +6,7 @@ import { useGetTeById } from '@/utils/hooks';
 import Tabs from '../../Tabs';
 import OverView from './OverView';
 import PersonalInfo from './PersonalInfo';
+import Accounts from './Accounts';
 import Loading from '@/components/loading';
 import Empty from '@/components/Empty';
 import styles from '@/styles/employee/TE.module.scss';
@@ -14,7 +15,8 @@ enum Tab {
     OVER_VIEW = 'OVER_VIEW',
     PERSONAL_INFO = 'PERSONAL_INFO',
     REPORT = 'REPORT',
-    SCHEDULE = 'SCHEDULE'
+    SCHEDULE = 'SCHEDULE',
+    ACCOUNT = 'ACCOUNT'
 }
 const TeInfo = () => {
     const listTabs: TabsProps['items'] = [
@@ -31,6 +33,10 @@ const TeInfo = () => {
             label: "Cá nhân"
         },
         {
+            key: Tab.ACCOUNT,
+            label: "Tài khoản"
+        },
+        {
             key: Tab.SCHEDULE,
             label: "Lịch"
         }
@@ -42,6 +48,7 @@ const TeInfo = () => {
     const contentTab: Record<Tab, React.ReactNode> = {
         OVER_VIEW: <OverView />,
         PERSONAL_INFO: <PersonalInfo />,
+        ACCOUNT: <Accounts />,
         REPORT: <></>,
         SCHEDULE: <></>
     }
@@ -50,7 +57,7 @@ const TeInfo = () => {
             currentTe.query({
                 params: [router.query.teId as string],
                 query: {
-                    fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook'
+                    fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook,personalEmail'
                 }
             });
         }
@@ -62,7 +69,7 @@ const TeInfo = () => {
                     <div className={styles.shortInfo}>
                         <Image alt='' className={styles.imageStaff} width={200} height={200} src={getCurrentTe?.img ?? 'https://res.cloudinary.com/dxo374ch8/image/upload/v1703584277/vsjqknadtdxqk4q05b7p.png'} />
                         <p className={styles.teName}>{getCurrentTe?.teName}</p>
-                        <p>{getCurrentTe?.positionTe}{`${getCurrentTe?.courseId ? `${(getCurrentTe.courseId as Obj[])?.length !==0?'-':''}${(getCurrentTe.courseId as Obj[])?.map(item => item.courseName)}` : ''}`}</p>
+                        <p>{getCurrentTe?.positionTe}{`${getCurrentTe?.courseId ? `${(getCurrentTe.courseId as Obj[])?.length !== 0 ? '-' : ''}${(getCurrentTe.courseId as Obj[])?.map(item => item.courseName)}` : ''}`}</p>
                         <p>{getCurrentTe?.email}</p>
                         <p>{getCurrentTe?.phoneNumber}</p>
                     </div>

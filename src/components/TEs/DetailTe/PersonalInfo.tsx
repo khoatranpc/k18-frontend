@@ -93,7 +93,7 @@ const PersonalInfo = () => {
     useEffect(() => {
         if ((!getCurrentTe || (getCurrentTe._id !== router.query.teId) || !router.query.teId)) {
             currentTe.query({
-                params: [router.query.teId ?? crrUser._id],
+                params: [router.query.teId ?? crrUser?._id],
                 query: {
                     fields: '_id,teName,email,phoneNumber,positionTe,img,courseName,courseId,dob,activate,facebook,personalEmail'
                 }
@@ -166,7 +166,7 @@ const PersonalInfo = () => {
                         Vị trí <span className="error">*</span>
                     </Form.Label>
                     <Dropdown
-                        disabled={getValues.positionTe === PositionTe.LEADER}
+                        disabled={getCurrentTe?.positionTe !== PositionTe.LEADER}
                         listSelect={listPosition}
                         trigger="click"
                         title={getLabelPositionTe[getValues.positionTe as PositionTe]}
