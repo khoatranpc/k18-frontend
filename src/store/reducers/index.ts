@@ -103,6 +103,7 @@ import teacherImportCSV from './teacher/importCSV.reducer';
 import createTe from './te/createTe.reducer';
 import createTimeSchedule from './timeschedule/createTimeSchedule.reducer';
 import updateTimeSchedule from './timeschedule/updateTimeSchedule.reducer';
+import updateAccount from './account/updateAccount.reducer';
 
 const rootReducer = {
     test: test,
@@ -209,6 +210,7 @@ const rootReducer = {
     teacherImportCSV,
     createTe,
     createTimeSchedule,
-    updateTimeSchedule
+    updateTimeSchedule,
+    updateAccount
 };
 export default rootReducer;

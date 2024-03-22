@@ -159,3 +159,10 @@ g {
         border-color: var(--base) !important;
     }
 }
+
+.formAccount {
+    .btnSubmit {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

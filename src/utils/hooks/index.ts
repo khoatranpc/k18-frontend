@@ -100,6 +100,7 @@ import { clearTeacherIpmortCSV, queryImportCSV } from "@/store/reducers/teacher/
 import { clearCreateTE, queryCreateTe } from "@/store/reducers/te/createTe.reducer";
 import { clearCreateTimeSchedule, queryCreateTimeSchedule } from "@/store/reducers/timeschedule/createTimeSchedule.reducer";
 import { clearUpdateTimeSchedule, queryUpdateTimeSchedule } from "@/store/reducers/timeschedule/updateTimeSchedule.reducer";
+import { clearUpdateAccount, queryUpdateAccount } from "@/store/reducers/account/updateAccount.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -1015,6 +1016,7 @@ const useImportCSVDataTeacher = createHookQueryReducer('teacherImportCSV', query
 const useCreateTe = createHookQueryReducer('createTe', queryCreateTe, clearCreateTE);
 const useCreateTimeSchedule = createHookQueryReducer('createTimeSchedule', queryCreateTimeSchedule, clearCreateTimeSchedule);
 const useUpdateTimeSchedule = createHookQueryReducer('updateTimeSchedule', queryUpdateTimeSchedule, clearUpdateTimeSchedule);
+const useUpdateAccount = createHookQueryReducer('updateAccount', queryUpdateAccount, clearUpdateAccount);
 
 export {
     useGetListClass,
@@ -1116,5 +1118,6 @@ export {
     useImportCSVDataTeacher,
     useCreateTe,
     useCreateTimeSchedule,
-    useUpdateTimeSchedule
+    useUpdateTimeSchedule,
+    useUpdateAccount
 }
