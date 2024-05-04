@@ -20,6 +20,7 @@ const CropImage = (props: Props) => {
     const [imagePreview, setImagePreview] = useState<string>(props.src ?? "");
     const [acceptImage, setAcceptImage] = useState(!!props.src);
     const inputRef = useRef<HTMLInputElement>(null);
+    const prevSrc = useRef(props.src);
     const firstRendered = useRef(true);
 
     const onChange = (e: any) => {
@@ -65,6 +66,11 @@ const CropImage = (props: Props) => {
     useEffect(() => {
         if (props.src && firstRendered.current) {
             firstRendered.current = false;
+            setImage(props.src);
+            setImagePreview(props.src);
+            setAcceptImage(!!props.src);
+        }
+        if (props.src !== prevSrc.current) {
             setImage(props.src);
             setImagePreview(props.src);
             setAcceptImage(!!props.src);
