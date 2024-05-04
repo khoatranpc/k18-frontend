@@ -13,6 +13,7 @@ import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import CropImage from '@/components/CropImage';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
+import Loading from '@/components/loading';
 
 interface Props {
     countRole: number;
@@ -98,7 +99,7 @@ const TeacherInfo = (props: Props) => {
     }, [updateTeacher.data]);
     return (
         <div className={styles.overViewTeacherInfo}>
-            <Form className={styles.formInfo} onSubmit={handleSubmit}>
+            {currentTeacher.data.isLoading || (getDataTeacher?._id !== router.query.teacherId as string) ? <Loading isCenterScreen /> : <Form className={styles.formInfo} onSubmit={handleSubmit}>
                 <div className={styles.left}>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Họ tên<span className="error">*</span>:</Form.Label>
@@ -260,7 +261,7 @@ const TeacherInfo = (props: Props) => {
                         <Button htmlType="submit" disabled={JSON.stringify(getDataTeacher) === JSON.stringify(values)} loading={updateTeacher.data.isLoading}>Lưu</Button>
                     </div>
                 </div>
-            </Form>
+            </Form>}
         </div>
     )
 }
