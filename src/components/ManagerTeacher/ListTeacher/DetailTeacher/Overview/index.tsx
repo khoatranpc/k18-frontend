@@ -14,6 +14,7 @@ import Salary from './Salary';
 import Course from './Course';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
 import Account from './Account';
+import Loading from '@/components/loading';
 
 enum TabOverView {
     INFOR = 'INFOR',
@@ -57,71 +58,73 @@ const Overview = () => {
     }, []);
     return (
         <div className={styles.overViewTeacher}>
-            <div className={styles.headerOverview}>
-                <Avatar size={150} icon={getTeacher?.gender === Gender.M ? MapIconKey[KEY_ICON.TEACHER_MALE] : MapIconKey[KEY_ICON.TEACHER_FEMALE]} />
-                <div className={styles.overView}>
-                    <div className={styles.fullName}>
-                        <Tooltip title={`Điểm GV: ${Number(getTeacher?.teacherPoint || 0).toFixed(2)}`}>
-                            <Badge count={Number(getTeacher?.teacherPoint || 0).toFixed(2)} offset={[25, 0]} color={getColorTeacherPoint(Number(getTeacher?.teacherPoint || 0))}>
-                                {getTeacher?.fullName}
-                            </Badge>
-                        </Tooltip>
-                    </div>
-                    <div className={styles.info}>
-                        <div className={styles.column}>
-                            <p>
-                                <b>MST:</b> {getTeacher?.taxCode || ''}
-                            </p>
-                            <div className={styles.indexes}>
-                                <b>Vị trí:</b>
-                                <ul>
-                                    {mapRole.map((item, idx) => {
-                                        return item && <li key={idx}>
-                                            {
-                                                item && idx === 0 ? 'Giảng viên'
-                                                    :
-                                                    (item && idx === 1 ? 'Mentor' :
-                                                        'Supporter'
-                                                    )
-
-                                            }
-                                        </li>
-                                    })}
-                                </ul>
-                            </div>
-                            <div className={styles.salaryPH}>
-                                <b>Lương/h: </b>
-                                <Input
-                                    size="small"
-                                    style={{ width: 'fit-content' }}
-                                    value={(getSalaryTeacher?.[getSalaryTeacher.length - 1]?.rank as number || 0).toLocaleString()}
-                                />
-                            </div>
+            {currentTeacher.data.isLoading || (getTeacher?._id !== router.query.teacherId as string) ? <Loading isCenterScreen /> :
+                <div className={styles.headerOverview}>
+                    <Avatar size={150} icon={getTeacher?.gender === Gender.M ? MapIconKey[KEY_ICON.TEACHER_MALE] : MapIconKey[KEY_ICON.TEACHER_FEMALE]} />
+                    <div className={styles.overView}>
+                        <div className={styles.fullName}>
+                            <Tooltip title={`Điểm GV: ${Number(getTeacher?.teacherPoint || 0).toFixed(2)}`}>
+                                <Badge count={Number(getTeacher?.teacherPoint || 0).toFixed(2)} offset={[25, 0]} color={getColorTeacherPoint(Number(getTeacher?.teacherPoint || 0))}>
+                                    {getTeacher?.fullName}
+                                </Badge>
+                            </Tooltip>
                         </div>
-                        <div className={`${styles.column} ${styles.flex}`}>
-                            <div className={styles.courseRegister}>
-                                <b>Bộ môn:</b>
-                                <div className={styles.listCourseRegister}>
-                                    {
-                                        getCourseTeacherRegister?.map((item) => {
-                                            return (item.coursesRegister as Array<Obj>)?.map((course) => {
-                                                return <ul className={styles.containerCourse} key={course.idCourse._id as string}>
-                                                    <span className={styles.course}>{course?.idCourse?.courseName || ''}</span>
-                                                    {(course.levelHandle as Array<Obj>)?.map((level, idxLevel) => {
-                                                        return <li key={idxLevel}>
-                                                            {level.levelCode || ''}
-                                                        </li>
-                                                    })}
-                                                </ul>
+                        <div className={styles.info}>
+                            <div className={styles.column}>
+                                <p>
+                                    <b>MST:</b> {getTeacher?.taxCode || ''}
+                                </p>
+                                <div className={styles.indexes}>
+                                    <b>Vị trí:</b>
+                                    <ul>
+                                        {mapRole.map((item, idx) => {
+                                            return item && <li key={idx}>
+                                                {
+                                                    item && idx === 0 ? 'Giảng viên'
+                                                        :
+                                                        (item && idx === 1 ? 'Mentor' :
+                                                            'Supporter'
+                                                        )
+
+                                                }
+                                            </li>
+                                        })}
+                                    </ul>
+                                </div>
+                                <div className={styles.salaryPH}>
+                                    <b>Lương/h: </b>
+                                    <Input
+                                        size="small"
+                                        style={{ width: 'fit-content' }}
+                                        value={(getSalaryTeacher?.[getSalaryTeacher.length - 1]?.rank as number || 0).toLocaleString()}
+                                    />
+                                </div>
+                            </div>
+                            <div className={`${styles.column} ${styles.flex}`}>
+                                <div className={styles.courseRegister}>
+                                    <b>Bộ môn:</b>
+                                    <div className={styles.listCourseRegister}>
+                                        {
+                                            getCourseTeacherRegister?.map((item) => {
+                                                return (item.coursesRegister as Array<Obj>)?.map((course) => {
+                                                    return <ul className={styles.containerCourse} key={course.idCourse._id as string}>
+                                                        <span className={styles.course}>{course?.idCourse?.courseName || ''}</span>
+                                                        {(course.levelHandle as Array<Obj>)?.map((level, idxLevel) => {
+                                                            return <li key={idxLevel}>
+                                                                {level.levelCode || ''}
+                                                            </li>
+                                                        })}
+                                                    </ul>
+                                                })
                                             })
-                                        })
-                                    }
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
             <hr className={styles.hr} />
             <Tabs
                 className={styles.listTabChild}
