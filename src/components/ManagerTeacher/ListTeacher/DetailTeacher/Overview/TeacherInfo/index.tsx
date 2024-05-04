@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import FormData from "form-data";
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import * as yup from 'yup';
 import { Button, Checkbox, DatePicker, Input, MenuProps, Radio } from 'antd';
@@ -33,6 +35,7 @@ const TeacherInfo = (props: Props) => {
     const firstInitvalues = useRef(true);
     const updateTeacher = useUpdateDetailTeacher();
     const message = useHookMessage();
+    const router = useRouter();
     const getDataTeacher = (currentTeacher.data.response?.data as Obj);
     const { values, errors, touched, setValues, handleBlur, handleChange, handleReset, handleSubmit, setFieldValue } = useFormik({
         initialValues: getDataTeacher,
@@ -42,9 +45,20 @@ const TeacherInfo = (props: Props) => {
                 ...values
             };
             delete getValues._id;
+            delete getValues.idAccount;
+            delete getValues.createdAt;
+            delete getValues.updatedAt;
+            delete getValues._v;
+            const formData = new FormData();
+            for (const key in getValues) {
+                formData.append(`${key}`, getValues[key]);
+            }
             updateTeacher.query({
-                body: getValues,
-                params: [getDataTeacher._id as string]
+                body: formData,
+                params: [getDataTeacher._id as string],
+                headers: {
+                    "Content-Type": "mutilpart/form-data"
+                }
             });
         }
     });
@@ -71,6 +85,9 @@ const TeacherInfo = (props: Props) => {
     }, [currentTeacher.data]);
     useEffect(() => {
         if (updateTeacher.data.response) {
+            if (updateTeacher.data.success) {
+                currentTeacher.query(router.query.teacherId as string, []);
+            }
             message.open({
                 content: updateTeacher.data.response.message as string,
                 type: updateTeacher.data.success ? 'success' : 'error'
@@ -240,7 +257,7 @@ const TeacherInfo = (props: Props) => {
                     </div>
                     <div className={`${styles.btnAction} ${styles.fromFormInfo}`}>
                         <Button onClick={handleReset}>Reset</Button>
-                        <Button htmlType="submit" disabled={JSON.stringify(getDataTeacher) === JSON.stringify(values)}>Lưu</Button>
+                        <Button htmlType="submit" disabled={JSON.stringify(getDataTeacher) === JSON.stringify(values)} loading={updateTeacher.data.isLoading}>Lưu</Button>
                     </div>
                 </div>
             </Form>
