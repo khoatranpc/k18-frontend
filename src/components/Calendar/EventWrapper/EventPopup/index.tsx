@@ -18,8 +18,8 @@ import { StatusEvent, getColor } from '../../Note/styles';
 import { getStringStatusEvent } from '../../Note';
 import SelectInputNumber from '@/components/SelectInputNumber';
 import SelectRole from '@/components/SelectRole';
-import TitleHeader from '@/components/ManagerClass/TitleHeader';
-import { TabDetailClass } from '@/components/ManagerClass/Detail';
+import TitleHeader from '@/components/ManageClass/TitleHeader';
+import { TabDetailClass } from '@/components/ManageClass/Detail';
 import styles from '@/styles/Calendar.module.scss';
 
 interface Props {

@@ -211,10 +211,8 @@ const FormRegister = () => {
         area.query();
     }, []);
     useEffect(() => {
-        if (step === 5 && !listCourse.response && !listCourse.isLoading) {
-            dispatch(getCourses());
-        }
-    }, [step, listCourse, dispatch]);
+        dispatch(getCourses());
+    }, []);
     useEffect(() => {
         if (registerPreTeacher.response && !registerPreTeacher.isLoading) {
             handleMessage.open(
@@ -794,7 +792,7 @@ const FormRegister = () => {
                                 (listCourse.response.data as Array<Obj>).map(
                                     (item: Obj, index: number) => {
                                         const options: CheckboxOptionType[] = [];
-                                        (item.courseLevel as Array<Obj>).forEach((element: Obj) => {
+                                        (item.courseLevel as Array<Obj>)?.forEach((element: Obj) => {
                                             options.push({
                                                 label: `${element.levelName as string}(${element.levelCode as string
                                                     })`,

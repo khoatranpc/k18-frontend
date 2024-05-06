@@ -10,8 +10,8 @@ import { formatDatetoString } from '@/utils';
 import { useDispatchDataRouter, useGetListFeedbackResponseForTeacher, useGetLocations, useGetTeacherDetail } from '@/utils/hooks';
 import Table from '@/components/Table';
 import ExportCSV from '@/components/ExportCSV';
-import TitleHeader from '@/components/ManagerClass/TitleHeader';
-import { TabDetailClass } from '@/components/ManagerClass/Detail';
+import TitleHeader from '@/components/ManageClass/TitleHeader';
+import { TabDetailClass } from '@/components/ManageClass/Detail';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 const Feedback = () => {

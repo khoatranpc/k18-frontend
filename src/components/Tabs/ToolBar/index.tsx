@@ -9,7 +9,7 @@ import { KEY_ICON } from '@/global/enum';
 import PopUp from '@/components/PopUp';
 import CSV from '@/components/CSVReader';
 import PopUpFilter from './PopUpFilter';
-import FieldOption from '@/components/ManagerClass/listFieldByOption';
+import FieldOption from '@/components/ManageClass/listFieldByOption';
 import styles from '@/styles/tabs/Toolbar.module.scss';
 import { SearchOutlined } from '@ant-design/icons';
 

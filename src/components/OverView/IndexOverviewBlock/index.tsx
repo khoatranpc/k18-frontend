@@ -34,7 +34,6 @@ const IndexOverViewBlock = (props: Props) => {
         SP: 0,
         ST: 0
     }
-    const firstMounted = useRef(true);
     const listCourse = useGetListCourse();
     const teacherApplyCourse = useTeacherRegisterCourse();
     const getListTeacherApplyCourse = teacherApplyCourse.listData.response?.data as Obj[] || [];
@@ -172,7 +171,7 @@ const IndexOverViewBlock = (props: Props) => {
                 }
             });
         }
-    }, []);
+    }, [props.type]);
     return (
         <div className={styles.indexOverviewBlock}>
             <div className={styles.title}>

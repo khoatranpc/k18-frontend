@@ -33,7 +33,7 @@ const ListTeacher = () => {
     const rowData = mapRowData((listTeacher.response?.data as Obj)?.listTeacher || [], (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []);
     const handleQueryListTeacher = (rowOnPage?: number, currentPage?: number, email?: string) => {
         query(rowOnPage, currentPage, {
-            email
+            valueSearch: email
         });
     }
     const handleClickRow = (record: Obj) => {
@@ -96,7 +96,7 @@ const ListTeacher = () => {
                 onChangeSearch={(value) => {
                     setEmail(value);
                 }}
-                placeHolderSearch="Nhập email cần tìm"
+                placeHolderSearch="Nhập email hoặc họ tên cần tìm"
                 context={ManagerTeacherContext}
                 onClickReload={() => {
                     handleQueryListTeacher(getListTeacher?.recordOnPage ?? 10, getListTeacher?.currentPage ?? 1, email);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TabsProps } from 'antd';
 import Tabs from '../Tabs';
-import Statistic from './Statistic';
 import ListTeacher from './ListTeacher';
 import WaitingAccept from './WaitingAccept';
 import styles from '@/styles/teacher/ManagerTeacher.module.scss';

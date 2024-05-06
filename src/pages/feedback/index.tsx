@@ -1,6 +1,6 @@
 import React from 'react';
 import FeedbackLayout from '@/layouts/feedback';
-import FormFeedbackForStudent from '@/components/ManagerFeedback/FormFeedbackForStudent';
+import FormFeedbackForStudent from '@/components/ManageFeedback/FormFeedbackForStudent';
 
 const Feedback = () => {
     return (

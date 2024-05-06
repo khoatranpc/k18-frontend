@@ -4,12 +4,11 @@ import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { ComponentPage, ResultInterview, RoundProcess, StatusProcessing } from '@/global/enum';
 import { getColorByResultInterview, getLabelRoundProcess, getStringResultInterview } from '@/global/init';
-import { formatDatetoString, getColorByCourseName } from '@/utils';
+import { formatDatetoString } from '@/utils';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { ContextRecruitment } from '../context';
 import Table from '@/components/Table';
-import Popup from '../Popup';
 import CombineRoute from '@/global/route';
 import NoProgress from '@/components/NoPress';
 import Processing from '@/components/Processing';
@@ -21,8 +20,11 @@ export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
     NOPROCESS: <NoProgress />,
     PROCESSING: <Processing />
 }
-const TableRecruitment = () => {
-    const { modal, pagination, conditionFilter, isSearch } = useContext(ContextRecruitment);
+interface Props {
+    isSearching: boolean;
+}
+const TableRecruitment = (props: Props) => {
+    const { pagination, conditionFilter, isSearch } = useContext(ContextRecruitment);
     const getDataPagination = pagination.data;
     const router = useRouter();
     const dispatch = useDispatch();
@@ -38,10 +40,12 @@ const TableRecruitment = () => {
     }
     useEffect(() => {
         const getPayloadQuery = listDataRecruitment.data.payload;
-        if (!listDataRecruitment.data.response || (getPayloadQuery && (Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage || Number(getPayloadQuery?.query?.query?.currentPage)) !== getDataPagination.currentPage)) {
-            queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
+        if (!props.isSearching) {
+            if (!listDataRecruitment.data.response || (getPayloadQuery && (Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage || Number(getPayloadQuery?.query?.query?.currentPage)) !== getDataPagination.currentPage)) {
+                queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
+            }
         }
-    }, [pagination.data, listDataRecruitment.data.payload]);
+    }, [pagination.data, listDataRecruitment.data.payload, props.isSearching]);
     const columns: Columns = [
         {
             key: 'TIME',
@@ -123,7 +127,14 @@ const TableRecruitment = () => {
             title: 'TT Mail',
             dataIndex: 'sendMail',
             render(value, record) {
-                return record.result === ResultInterview.PASS ? 'Đã xong' : (!value ? 'Chưa gửi' : 'Đã gửi')
+                return <div
+                    className={styles.result}
+                    style={{
+                        backgroundColor: getColorByResultInterview[record.result === ResultInterview.PASS ? "PASS" : (!value ? 'NOTPASS' : 'PASS')]
+                    }}
+                >
+                    {record.result === ResultInterview.PASS ? 'Đã xong' : (!value ? 'Chưa gửi' : 'Đã gửi')}
+                </div>
             },
             width: 80
         },
@@ -181,19 +192,6 @@ const TableRecruitment = () => {
                 showSizePage
                 maxPage={(listDataRecruitment.data.response?.data as Obj)?.totalPage as number}
             />
-            {
-                modal.config.isShow && <Popup
-                    show={modal.config.isShow}
-                    isCreate={modal.config.isCreate}
-                    onHide={() => {
-                        modal.update({
-                            ...modal.config,
-                            isShow: false
-                        })
-                    }}
-                    title={modal.config.title}
-                />
-            }
         </div>
     )
 }

@@ -15,6 +15,7 @@ import { ContextRecruitment } from '../context';
 interface Props {
     onImport?: () => void;
     onCreate?: () => void;
+    setIsSearching?: (search: boolean) => void;
 }
 
 const FilterBar = (props: Props) => {
@@ -138,12 +139,13 @@ const FilterBar = (props: Props) => {
     useEffect(() => {
         if (!firstRender.current) {
             setIsSearch(!!searchCandidate);
-            listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
+            listDataRecruitment.query(undefined, undefined, undefined, {
                 ...conditionFilter.condition,
                 ...searchCandidate ? {
-                    email: searchCandidate
+                    valueSearch: searchCandidate
                 } : {}
-            })
+            });
+            props.setIsSearching?.(!!searchCandidate);
         }
     }, [searchCandidate]);
     return (
@@ -194,7 +196,7 @@ const FilterBar = (props: Props) => {
                 </div>
                 <div className={styles.rightFnc}>
                     <Input
-                        placeholder="Tìm kiếm theo email"
+                        placeholder="Tìm kiếm theo email hoặc họ tên ứng viên"
                         prefix={candidate.data.isLoading ? <LoadingOutlined /> : <SearchOutlined />}
                         onChange={(e) => {
                             firstRender.current = false;

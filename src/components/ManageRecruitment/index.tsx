@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetListCourse } from '@/utils/hooks';
 import ContextProvider from './ContextProvider';
 import FilterBar from './FilterBar';
@@ -7,6 +7,7 @@ import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const ManagerRecruitment = () => {
     const allCourse = useGetListCourse();
+    const [isSearching, setIsSearching] = useState(false);
     useEffect(() => {
         if (!allCourse.listCourse) {
             allCourse.queryListCourse();
@@ -15,8 +16,12 @@ const ManagerRecruitment = () => {
     return (
         <ContextProvider>
             <div className={styles.containerManagerRecruitment}>
-                <FilterBar />
-                <Table />
+                <FilterBar
+                    setIsSearching={setIsSearching}
+                />
+                <Table
+                    isSearching={isSearching}
+                />
             </div>
         </ContextProvider>
     )

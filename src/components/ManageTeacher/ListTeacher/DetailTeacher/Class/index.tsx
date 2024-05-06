@@ -9,8 +9,8 @@ import { useClassTeacherRegister, useDispatchDataRouter, useGetTimeSchedule } fr
 import { formatDatetoString } from '@/utils';
 import Table from '@/components/Table';
 import { getMatchingTimeSchedule } from './config';
-import TitleHeader from '@/components/ManagerClass/TitleHeader';
-import { TabDetailClass } from '@/components/ManagerClass/Detail';
+import TitleHeader from '@/components/ManageClass/TitleHeader';
+import { TabDetailClass } from '@/components/ManageClass/Detail';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 const Class = () => {

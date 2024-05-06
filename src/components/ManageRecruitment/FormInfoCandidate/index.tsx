@@ -3,7 +3,10 @@ import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
 import { Button, DatePicker, Input, MenuProps, Radio } from 'antd';
-import { getStringByLevelTechnique, getStringObjectTeach, getStringResourceApply, mapRoleToString } from '@/global/init';
+import {
+    // getStringByLevelTechnique,
+    getStringObjectTeach, getStringResourceApply, mapRoleToString
+} from '@/global/init';
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
 import { Education, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing } from '@/global/enum';
@@ -11,7 +14,7 @@ import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
-import SelectLevelTechnique from '@/components/SelectLevelTechnique';
+// import SelectLevelTechnique from '@/components/SelectLevelTechnique';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const listObjectTeach: MenuProps['items'] = [
@@ -69,14 +72,14 @@ const FormInfoCandidate = (props: Props) => {
     const message = useHookMessage();
     const initValues = {
         fullName: props.isViewInfo ? detailCandidate?.fullName as string : '',
-        timeApply: props.isViewInfo ? detailCandidate?.timeApply as string : '',
+        timeApply: props.isViewInfo ? detailCandidate?.timeApply as string : new Date(),
         courseApply: props.isViewInfo ? detailCandidate?.courseApply?._id as string : '',
         area: props.isViewInfo ? detailCandidate?.area as string : '',
         graduatedUniversity: props.isViewInfo ? detailCandidate?.graduatedUniversity as boolean : false,
         education: props.isViewInfo ? detailCandidate?.education as Education : Education.BACHELOR,
         specializedIt: props.isViewInfo ? detailCandidate?.specializedIt as Boolean : false,
         teacherCertification: props.isViewInfo ? detailCandidate?.teacherCertification as Boolean : false,
-        phoneNumber: props.isViewInfo ? detailCandidate?.phoneNumber as string : '',
+        phoneNumber: props.isViewInfo ? detailCandidate?.phoneNumber as string : '0123456789',
         levelTechnique: props.isViewInfo ? detailCandidate?.levelTechnique as LevelTechnique : LevelTechnique.FRESHER,
         linkFacebook: props.isViewInfo ? detailCandidate?.linkFacebook as string : '',
         email: props.isViewInfo ? detailCandidate?.email as string : '',
@@ -99,7 +102,7 @@ const FormInfoCandidate = (props: Props) => {
         scoreJobPosition: props.isViewInfo ? detailCandidate?.scoreJobPosition as number : 0,
         gender: props.isViewInfo ? detailCandidate?.gender as Gender : Gender.NA,
     }
-    const { values, errors, touched, setValues, setFieldValue, setTouched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
+    const { values, errors, touched, setFieldValue, setTouched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
         initialValues: initValues,
         validationSchema,
         onSubmit(values) {
@@ -198,7 +201,10 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.timeApply && touched.timeApply && <p className="error">{errors.timeApply}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Số ĐT <span className="error">*</span></Form.Label>
+                        <Form.Label className="bold">
+                            Số ĐT
+                            {/* <span className="error">*</span> */}
+                        </Form.Label>
                         <Input type="text" name="phoneNumber" placeholder="Số điện thoại" value={values.phoneNumber} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
                     </Form.Group>
@@ -211,6 +217,7 @@ const FormInfoCandidate = (props: Props) => {
                         <Form.Label className={styles.fs_12}>
                             <span>Giới tính <span className="field_required">*</span></span>
                         </Form.Label>
+                        <br />
                         <Radio.Group onChange={handleChange} name="gender" onBlur={handleBlur} value={values.gender}>
                             <Radio value={Gender.M}>Nam</Radio>
                             <Radio value={Gender.FM}>Nữ</Radio>
@@ -248,13 +255,13 @@ const FormInfoCandidate = (props: Props) => {
                         {errors.area && touched.area && <p className="error">{errors.area}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Link facebook</Form.Label>
-                        <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkFacebook" value={values.linkFacebook} onChange={handleChange} onBlur={handleBlur} />
-                    </Form.Group>
-                    <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Link CV <span className="error">*</span></Form.Label>
                         <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkCv" value={values.linkCv} onChange={handleChange} onBlur={handleBlur} />
                         {errors.linkCv && touched.linkCv && <p className="error">{errors.linkCv}</p>}
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label className="bold">Link facebook</Form.Label>
+                        <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkFacebook" value={values.linkFacebook} onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
                 </div>
                 <div className={styles.itemColumn}>
@@ -368,12 +375,13 @@ const FormInfoCandidate = (props: Props) => {
                         />
                         {errors.courseApply && touched.courseApply && !values.courseApply && <p className="error">{errors.courseApply}</p>}
                     </Form.Group>
+                    {/* 
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Công nghệ sử dụng</Form.Label>
                         <Input value={values.technique} size={props.isViewInfo ? 'small' : 'middle'} name="technique" onChange={handleChange} onBlur={handleBlur} />
                         {errors.technique && touched.technique && <p className="error">{errors.technique}</p>}
                     </Form.Group>
-                    <Form.Group className={styles.mb_24}>
+                   <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Thành thạo công nghệ</Form.Label>
                         <SelectInputNumber
                             min={0}
@@ -448,7 +456,7 @@ const FormInfoCandidate = (props: Props) => {
                             }}
                             className={styles.selectExp}
                         />
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Ghi chú</Form.Label>
                         <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size={props.isViewInfo ? 'small' : 'middle'} name="note" onChange={handleChange} onBlur={handleBlur} />
