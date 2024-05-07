@@ -3,7 +3,8 @@ import { Button } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
 import { RoundProcess, TemplateMail } from '@/global/enum';
-import { useGetDetailCandidate, useGetMailTemplate, useMailer } from '@/utils/hooks';
+import { useRouter } from 'next/router';
+import { useGetDetailCandidate, useGetMailTemplate, useMailer, useUpdateDataProcessRoundCandidate } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import TextEditor from '@/components/TextEditor';
 import Send from '@/icons/Send';
@@ -17,6 +18,7 @@ interface Props {
     pass: boolean;
     statusSendMail?: boolean;
     disabled?: boolean;
+    roundId?: string;
 }
 
 const SendingMail = (props: Props) => {
@@ -27,11 +29,12 @@ const SendingMail = (props: Props) => {
             'NOCONNECT': TemplateMail.NOCONNECT,
         }
     }
+    const router = useRouter();
     const getTemplate = mapRoundToMailTemplate[props.round ? props.round : (props.noConnect ? 'NOCONNECT' : '')];
     const [currentTemplate, setCurrentTemplate] = useState<string>(getTemplate);
-
     const mailTemplate = useGetMailTemplate();
     const dataMailtemplate = mailTemplate.data.response?.data as Obj;
+    const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
 
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
@@ -88,11 +91,21 @@ const SendingMail = (props: Props) => {
             });
             if (mailer.data.success) {
                 setModal(false);
+                if (props.round === RoundProcess.INTERVIEW) {
+                    updateDataRoundProcessCandidate.query({
+                        params: [props.roundId as string],
+                        body: {
+                            mailResultSent: true,
+                            round: RoundProcess.INTERVIEW,
+                            candidateId: router.query.candidateId as string
+                        }
+                    });
+                }
             }
             mailer.clear?.();
             message.close();
         }
-    }, [mailer]);
+    }, [mailer, props.roundId]);
     return (
         <div className={styles.sendingMail}>
             <Button size="small" className={styles.btnSentMailCv} onClick={() => { setModal(true) }}>

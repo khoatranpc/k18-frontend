@@ -65,11 +65,11 @@ const CreateCalendar = (props: Props) => {
         });
         if (!findTe) {
             if (getDataRoundProcess.te) {
-                return `${getDataRoundProcess.te.teName}-${getDataRoundProcess.te.positionTe}${getDataRoundProcess.te.courseId ? ` ${getDataRoundProcess.te.courseId.courseName}` : ''}`;
+                return `${getDataRoundProcess.te.teName}-${getDataRoundProcess.te.positionTe}${getDataRoundProcess.te.courseId ? ` ${(getDataRoundProcess.te?.courseId as Obj[])?.map((item) => item.courseName)?.toString()}` : ''}`;
             }
             return 'Không có Te nào được chọn!'
         };
-        return `${findTe.teName}-${findTe.positionTe}${findTe.courseId ? ` ${(findTe.courseId as Obj[])?.map((item => item.courseName))}` : ''}`;
+        return `${findTe.teName}-${findTe.positionTe}${findTe.courseId ? ` ${(getDataRoundProcess.te?.courseId as Obj[])?.map((item) => item.courseName)?.toString()}` : ''}`;
     }, [values.te, getDataRoundProcess]);
 
     return (
