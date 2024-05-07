@@ -110,11 +110,12 @@ const getLabelPositionTe: Record<PositionTe, string> = {
     QC: 'QC'
 }
 const getLabelMailTemplate: Record<TemplateMail, string> = {
+    NOTI_RECEIVED_CV: 'Thông báo nhận CV',
     FAILCV: 'Fail CV',
+    INVITEINTERVIEW: 'Mời phỏng vấn',
     FAILINTERVIEW: ' Fail PV',
-    NOCONNECT: 'Không liên hệ được',
     PASSINTERVIEW: 'Pass PV',
-    INVITEINTERVIEW: 'Mời phỏng vấn'
+    NOCONNECT: 'Không liên hệ được',
 }
 const getLabelRegion: Record<Region, string> = {
     MB: 'Miền Bắc',

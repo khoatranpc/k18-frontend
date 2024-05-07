@@ -290,6 +290,13 @@
             margin-top: 0.8rem;
             display: flex;
             align-items: center;
+            position: relative;
+
+            .statusSentMail {
+                position: absolute;
+                right: -0.8rem;
+                top: -0.8rem;
+            }
         }
 
         .headerFunction {

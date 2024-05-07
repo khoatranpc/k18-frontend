@@ -8,7 +8,6 @@ import { useHookMessage } from '@/utils/hooks/message';
 import Loading from '../loading';
 import TextEditor from '../TextEditor';
 import styles from '@/styles/MailTemplate.module.scss';
-// import { Button } from 'antd';
 
 const listTemplateString = Object.values(TemplateMail);
 
@@ -17,7 +16,6 @@ const Template = () => {
 
     const mailTemplate = useGetMailTemplate();
     const dataMailtemplate = mailTemplate.data.response?.data as Obj;
-
     const createMailTemplate = useCreateMailTemplate();
     const updateMailTemplate = useUpdateMailTemplate();
 

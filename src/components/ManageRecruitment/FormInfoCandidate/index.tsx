@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -9,13 +9,15 @@ import {
 } from '@/global/init';
 import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
-import { Education, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing } from '@/global/enum';
-import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse, useUpdateCandidate } from '@/utils/hooks';
+import { Education, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing, TemplateMail } from '@/global/enum';
+import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse, useGetMailTemplate, useUpdateCandidate } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
+import TextEditor from '@/components/TextEditor';
 // import SelectLevelTechnique from '@/components/SelectLevelTechnique';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import { ReloadOutlined } from '@ant-design/icons';
 
 const listObjectTeach: MenuProps['items'] = [
     {
@@ -63,12 +65,23 @@ const FormInfoCandidate = (props: Props) => {
     const detailCandidate = candidate.data.response?.data as Obj;
     const updateCandidate = useUpdateCandidate();
     const area = useGetArea();
+    const listCourse = useGetListCourse();
+    const getListCourseSelect = (listCourse.listCourse?.data as Array<Obj>)?.map((item) => {
+        return {
+            key: item._id,
+            label: item.courseName
+        }
+    });
     const mapListArea: MenuProps['items'] = (area.data.response?.data as Obj[])?.map((item) => {
         return {
             key: item._id as string,
             label: item.name as string
         }
     });
+    const mailTemplate = useGetMailTemplate();
+    const getMailtemplate = (mailTemplate.data.response?.data as Obj);
+    const [title, setTitle] = useState('');
+    const [value, setValue] = useState('');
     const message = useHookMessage();
     const initValues = {
         fullName: props.isViewInfo ? detailCandidate?.fullName as string : '',
@@ -107,7 +120,14 @@ const FormInfoCandidate = (props: Props) => {
         validationSchema,
         onSubmit(values) {
             if (!props.isViewInfo) {
-                createCandidate.query(values);
+                const mail = {
+                    title,
+                    html: String(value).replace('NAME', values.fullName as string).replace('POSITION', `Giáo viên/Trợ giảng bộ môn ${getListCourseSelect?.find((item) => item.key === values.courseApply)?.label}`)
+                };
+                createCandidate.query({
+                    ...values,
+                    mail
+                });
             } else {
                 updateCandidate.query({
                     body: values,
@@ -123,13 +143,7 @@ const FormInfoCandidate = (props: Props) => {
         });
         return crrArea?.name as string ?? 'Chọn'
     }
-    const listCourse = useGetListCourse();
-    const getListCourseSelect = (listCourse.listCourse?.data as Array<Obj>)?.map((item) => {
-        return {
-            key: item._id,
-            label: item.courseName
-        }
-    });
+
     const listResourceApply: () => MenuProps['items'] = () => {
         const list = Object.keys(ResourceApply);
         return list.map((item) => {
@@ -153,6 +167,21 @@ const FormInfoCandidate = (props: Props) => {
         });
         return findCourse
     };
+    useEffect(() => {
+        if (!getMailtemplate || (getMailtemplate && getMailtemplate.template !== TemplateMail.NOTI_RECEIVED_CV)) {
+            mailTemplate.query?.({
+                query: {
+                    template: TemplateMail.NOTI_RECEIVED_CV
+                }
+            });
+        }
+        if (getMailtemplate && getMailtemplate.template === TemplateMail.NOTI_RECEIVED_CV) {
+            if (!title)
+                setTitle(getMailtemplate.title);
+            if (!value)
+                setValue(getMailtemplate.html);
+        }
+    }, [mailTemplate.data.response]);
     useEffect(() => {
         area.query();
         listCourse.queryListCourse();
@@ -181,7 +210,9 @@ const FormInfoCandidate = (props: Props) => {
                 <div className={styles.itemColumn}>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Họ tên <span className="error">*</span></Form.Label>
-                        <Input type="text" name="fullName" placeholder="Họ tên" value={values.fullName} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        <Input type="text" name="fullName" placeholder="Họ tên" value={values.fullName} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={(e) => {
+                            handleChange(e);
+                        }} onBlur={handleBlur} />
                         {errors.fullName && touched.fullName && <p className="error">{errors.fullName}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
@@ -200,14 +231,13 @@ const FormInfoCandidate = (props: Props) => {
                             rootClassName={styles.popUpDatePicker} />
                         {errors.timeApply && touched.timeApply && <p className="error">{errors.timeApply}</p>}
                     </Form.Group>
-                    <Form.Group className={styles.mb_24}>
+                    {/* <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">
                             Số ĐT
-                            {/* <span className="error">*</span> */}
                         </Form.Label>
                         <Input type="text" name="phoneNumber" placeholder="Số điện thoại" value={values.phoneNumber} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Email <span className="error">*</span></Form.Label>
                         <Input type="email" name="email" placeholder="example@gmail.com" value={values.email} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
@@ -226,6 +256,7 @@ const FormInfoCandidate = (props: Props) => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Năm sinh <span className="field_required">*</span></Form.Label>
+                        <small>(Chỉ cần chọn đúng Năm sinh)</small>
                         <br />
                         <DatePicker
                             placeholder="Ngày tháng năm sinh"
@@ -259,10 +290,11 @@ const FormInfoCandidate = (props: Props) => {
                         <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkCv" value={values.linkCv} onChange={handleChange} onBlur={handleBlur} />
                         {errors.linkCv && touched.linkCv && <p className="error">{errors.linkCv}</p>}
                     </Form.Group>
-                    <Form.Group className={styles.mb_24}>
+                    {/* <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Link facebook</Form.Label>
+                        <CreateMemoComponent Component={<Input />} />
                         <Input type="text" size={props.isViewInfo ? 'small' : 'middle'} name="linkFacebook" value={values.linkFacebook} onChange={handleChange} onBlur={handleBlur} />
-                    </Form.Group>
+                    </Form.Group> */}
                 </div>
                 <div className={styles.itemColumn}>
                     <Form.Group className={styles.mb_24}>
@@ -375,7 +407,8 @@ const FormInfoCandidate = (props: Props) => {
                         />
                         {errors.courseApply && touched.courseApply && !values.courseApply && <p className="error">{errors.courseApply}</p>}
                     </Form.Group>
-                    {/* 
+                    {
+                    /* 
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Công nghệ sử dụng</Form.Label>
                         <Input value={values.technique} size={props.isViewInfo ? 'small' : 'middle'} name="technique" onChange={handleChange} onBlur={handleBlur} />
@@ -461,6 +494,20 @@ const FormInfoCandidate = (props: Props) => {
                         <Form.Label className="bold">Ghi chú</Form.Label>
                         <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size={props.isViewInfo ? 'small' : 'middle'} name="note" onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
+                    <div className={styles.previewMail}>
+                        <p><b>Bản xem trước gửi mail</b></p>
+                        {getMailtemplate && <TextEditor
+                            value={value}
+                            config={{
+                                toolbar: false
+                            }}
+                            hasTitle
+                            title={title}
+                            onChange={setValue}
+                            setTitle={setTitle}
+                            disabledSave
+                        />}
+                    </div>
                     <div className={styles.btn}>
                         <Button
                             size="small"

@@ -30,11 +30,12 @@ const CV = (props: Props) => {
                 <div>
                     <label className={styles.linkCv} onClick={(() => {
                         window.open(`${getDataCandidate.linkCv}`, 'blank');
-                    })}>
+                    })}
+                        style={{ width: 'fit-content' }}
+                    >
                         Link CV <IconArrowView />
                     </label>
                     {getDataRoundProcess?.processed && !getDataRoundProcess?.result && <SendingMail pass={false} round={RoundProcess.CV} />}
-
                 </div>
                 <div className={styles.handleStep}>
                     <Button className={styles.btnHandleStep} onClick={() => {

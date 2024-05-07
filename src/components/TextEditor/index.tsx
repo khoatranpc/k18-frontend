@@ -10,6 +10,7 @@ interface Props extends IJoditEditorProps {
     hasTitle?: boolean;
     loadingButton?: boolean;
     textButton?: string;
+    disabledSave?: boolean;
 }
 const TextEditor = (props: Props) => {
 
@@ -18,19 +19,22 @@ const TextEditor = (props: Props) => {
         return {
             readonly: false, // all options from https://xdsoft.net/jodit/docs/,
             placeholder: props.placeholder || 'Start typings...',
+            ...props.config
         }
-    }, [props.placeholder]);
+    }, [props.placeholder, props.config]);
 
     return (
         <div className={'customize-text-editor'}>
             {props.hasTitle && <div className='title'>
-                <Input placeholder="Tiêu đề" value={props.title || title} onChange={(e) => {
-                    if (props.setTitle) {
-                        props.setTitle?.(e.target.value);
-                    } else {
-                        setTitle(e.target.value);
-                    }
-                }} />
+                <Input
+                    size="small"
+                    placeholder="Tiêu đề" value={props.title || title} onChange={(e) => {
+                        if (props.setTitle) {
+                            props.setTitle?.(e.target.value);
+                        } else {
+                            setTitle(e.target.value);
+                        }
+                    }} />
             </div>}
             <JoditEditor
                 value={props.value}
@@ -39,12 +43,15 @@ const TextEditor = (props: Props) => {
                 onBlur={props.onBlur} // preferred to use only this option to update the content for performance reasons
                 onChange={props.onChange}
             />
-            <Button
-                loading={props.loadingButton}
-                className={'btnStorage'}
-                onClick={() => {
-                    props.handleSubmit?.();
-                }}>{props.textButton ? props.textButton : 'Lưu'}</Button>
+            {!props.disabledSave &&
+                <Button
+                    loading={props.loadingButton}
+                    className={'btnStorage'}
+                    onClick={() => {
+                        props.handleSubmit?.();
+                    }}>{props.textButton ? props.textButton : 'Lưu'}
+                </Button>}
+
         </div>
     );
 }

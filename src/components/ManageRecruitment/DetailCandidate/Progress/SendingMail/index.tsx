@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RoundProcess, TemplateMail } from '@/global/enum';
 import { Button } from 'antd';
+import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
+import { RoundProcess, TemplateMail } from '@/global/enum';
 import { useGetDetailCandidate, useGetMailTemplate, useMailer } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import TextEditor from '@/components/TextEditor';
@@ -14,6 +15,8 @@ interface Props {
     noConnect?: boolean;
     handleSend?: (subject: string, html: string) => void;
     pass: boolean;
+    statusSendMail?: boolean;
+    disabled?: boolean;
 }
 
 const SendingMail = (props: Props) => {
@@ -92,7 +95,13 @@ const SendingMail = (props: Props) => {
     }, [mailer]);
     return (
         <div className={styles.sendingMail}>
-            <Button size="small" className={styles.btnSentMailCv} onClick={() => { setModal(true) }}><Send className={styles.iconSent} />Gửi mail</Button>
+            <Button size="small" className={styles.btnSentMailCv} onClick={() => { setModal(true) }}>
+                <Send className={styles.iconSent} />Gửi mail
+                {
+                    props.statusSendMail ? <CheckCircleFilled style={{ color: 'var(--success)' }} className={styles.statusSentMail} /> :
+                        <CloseCircleFilled style={{ color: 'var(--light-red)' }} className={styles.statusSentMail} />
+                }
+            </Button>
             {modal &&
                 <ModalCustomize
                     size="xl"
