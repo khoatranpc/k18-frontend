@@ -123,7 +123,7 @@ const TableRecruitment = (props: Props) => {
                     className: 'text-center',
                     width: 100,
                     render(value) {
-                        return value && !value.result ? <div
+                        return !value?.result ? <div
                             className={styles.result}
                             style={{
                                 backgroundColor: getColorByResultInterview[value?.sentMail ? 'PASS' : 'NOTPASS']
