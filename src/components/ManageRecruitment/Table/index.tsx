@@ -102,7 +102,7 @@ const TableRecruitment = (props: Props) => {
                     className: 'text-center',
                     width: 100,
                     render(value) {
-                        return <div
+                        return value &? <div
                             style={{
                                 backgroundColor: getColorByResultInterview[
                                     value?.processed ? (
@@ -113,7 +113,7 @@ const TableRecruitment = (props: Props) => {
                             className={styles.result}
                         >
                             <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value?.result ? 'Đạt' : 'Trượt')}</span>
-                        </div >
+                        </div > : '-'
                     }
                 },
                 {
@@ -141,7 +141,7 @@ const TableRecruitment = (props: Props) => {
             className: 'text-center',
             children: [
                 {
-                    key: 'RSCV',
+                    key: 'RSIT',
                     title: 'Kết quả',
                     dataIndex: 'processInterview',
                     className: 'text-center',
