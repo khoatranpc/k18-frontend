@@ -69,7 +69,6 @@ const SendingMail = (props: Props) => {
             }
         });
     }, [currentTemplate]);
-
     useEffect(() => {
         const getTemplate = mapRoundToMailTemplate[props.round ? props.round : (props.noConnect ? 'NOCONNECT' : '')];
         setCurrentTemplate(getTemplate);

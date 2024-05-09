@@ -114,7 +114,7 @@ const Template = () => {
                     handleChange('title', value);
                 }}
                 hasTitle
-                value={value}
+                value={value ?? ''}
                 onBlur={handleBlur}
                 onChange={(value) => {
                     handleChange('value', value);
