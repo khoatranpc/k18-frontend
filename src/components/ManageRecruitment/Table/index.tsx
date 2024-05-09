@@ -102,7 +102,7 @@ const TableRecruitment = (props: Props) => {
                     className: 'text-center',
                     width: 100,
                     render(value) {
-                        return value &? <div
+                        return value ? <div
                             style={{
                                 backgroundColor: getColorByResultInterview[
                                     value?.processed ? (
