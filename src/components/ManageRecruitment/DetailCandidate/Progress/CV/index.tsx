@@ -23,6 +23,7 @@ const CV = (props: Props) => {
         const getTitle = (pass ? <h3>Xác nhận <b className="passStep" style={{ fontSize: 'calc(1.3rem + 0.6vw)' }}>Đạt</b>!</h3> : <h3>Xác nhận <b className="failStep" style={{ fontSize: 'calc(1.3rem + 0.6vw)' }}>Trượt</b>!</h3>);
         confirm.handleModal?.(true, getTitle, type);
     }
+    console.log(getDataRoundProcess)
     return (
         <div className={styles.roundCv}>
             <div className={`${styles.infoRound} ${styles.infoCv}`}>

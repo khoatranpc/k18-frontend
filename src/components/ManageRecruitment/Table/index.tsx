@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { ComponentPage, ResultInterview, RoundProcess, StatusProcessing } from '@/global/enum';
-import { getColorByResultInterview, getLabelRoundProcess, getStringResultInterview } from '@/global/init';
+import { ComponentPage, RoundProcess, StatusProcessing } from '@/global/enum';
+import { getColorByResultInterview, getLabelRoundProcess } from '@/global/init';
 import { formatDatetoString } from '@/utils';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
@@ -70,6 +70,7 @@ const TableRecruitment = (props: Props) => {
             key: 'COURSE_REGISTER',
             title: 'Bộ môn',
             dataIndex: 'courseApply',
+            className: 'text-center',
             render(value) {
                 return value ? <div className={styles.subject} style={{ backgroundColor: value.color }}>
                     {value.courseName}
@@ -90,19 +91,98 @@ const TableRecruitment = (props: Props) => {
             width: 300
         },
         {
-            key: 'PROGRESS',
-            title: 'Trạng thái',
-            dataIndex: 'statusProcess',
-            render(value) {
-                return <div className={styles.statusProcess}>
-                    {getStatusProcess[value as StatusProcessing]}
-                </div> || ''
-            },
-            width: 150
+            key: 'CV',
+            title: 'CV',
+            className: 'text-center',
+            children: [
+                {
+                    key: 'RSCV',
+                    title: 'Kết quả',
+                    dataIndex: 'processCV',
+                    className: 'text-center',
+                    width: 100,
+                    render(value) {
+                        return <div
+                            style={{
+                                backgroundColor: getColorByResultInterview[
+                                    value.processed ? (
+                                        value.result ? 'PASS' : 'NOTPASS'
+                                    ) : ('PENDING')
+                                ]
+                            }}
+                            className={styles.result}
+                        >
+                            <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value.result ? 'Đạt' : 'Trượt')}</span>
+                        </div >
+                    }
+                },
+                {
+                    key: 'RSM',
+                    title: 'TT Mail',
+                    dataIndex: 'processCV',
+                    className: 'text-center',
+                    width: 100,
+                    render(value) {
+                        return !value.result ? <div
+                            className={styles.result}
+                            style={{
+                                backgroundColor: getColorByResultInterview[value.sentMail ? 'PASS' : 'NOTPASS']
+                            }}
+                        >
+                            <span>{value.sentMail ? 'Đã gửi' : 'Chưa gửi'}</span>
+                        </div> : '-'
+                    }
+                }
+            ],
+        },
+        {
+            key: 'INTERVIEW',
+            title: 'Phỏng vấn',
+            className: 'text-center',
+            children: [
+                {
+                    key: 'RSCV',
+                    title: 'Kết quả',
+                    dataIndex: 'processInterview',
+                    className: 'text-center',
+                    width: 100,
+                    render(value) {
+                        return value ? <div
+                            style={{
+                                backgroundColor: getColorByResultInterview[
+                                    value.processed ? (
+                                        value.result ? 'PASS' : 'NOTPASS'
+                                    ) : ('PENDING')
+                                ]
+                            }}
+                            className={styles.result}
+                        >
+                            <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value.result ? 'Đạt' : 'Trượt')}</span>
+                        </div > : '-'
+                    }
+                },
+                {
+                    key: 'RSM',
+                    title: 'TT Mail',
+                    dataIndex: 'processInterview',
+                    className: 'text-center',
+                    width: 100,
+                    render(value) {
+                        return value ? <div
+                            className={styles.result}
+                            style={{
+                                backgroundColor: getColorByResultInterview[value?.mailResultSent ? 'PASS' : 'NOTPASS']
+                            }}
+                        >
+                            <span>{value?.mailResultSent ? 'Đã gửi' : 'Chưa gửi'}</span>
+                        </div> : '-'
+                    }
+                }
+            ],
         },
         {
             key: 'PROCESSING',
-            title: 'Vòng',
+            title: 'Vòng hiện tại',
             dataIndex: 'roundProcess',
             render(value) {
                 return <div>{getLabelRoundProcess[value as RoundProcess]}</div>
@@ -110,42 +190,15 @@ const TableRecruitment = (props: Props) => {
             width: 90
         },
         {
-            key: 'RESULT',
-            title: 'Kết quả',
-            dataIndex: 'result',
-            render(value, record) {
-                return <div className={styles.result} style={{
-                    backgroundColor: getColorByResultInterview[value as ResultInterview]
-                }} >
-                    {getStringResultInterview[value as ResultInterview]}
-                </div >
-            },
-            width: 120
-        },
-        {
-            key: 'STATUS_MAIL',
-            title: 'TT Mail',
-            dataIndex: 'sendMail',
-            render(value, record) {
-                return <div
-                    className={styles.result}
-                    style={{
-                        backgroundColor: getColorByResultInterview[record.result === ResultInterview.PASS ? "PASS" : (!value ? 'NOTPASS' : 'PASS')]
-                    }}
-                >
-                    {record.result === ResultInterview.PASS ? 'Đã xong' : (!value ? 'Chưa gửi' : 'Đã gửi')}
-                </div>
-            },
-            width: 80
-        },
-        {
-            key: 'LASTUPDATE',
-            title: 'Cập nhật',
-            dataIndex: 'updatedAt',
+            key: 'PROGRESS',
+            title: 'Trạng thái xử lý',
+            dataIndex: 'statusProcess',
             render(value) {
-                return formatDatetoString(value, 'dd/MM/yyyy');
+                return <div className={styles.statusProcess}>
+                    {getStatusProcess[value as StatusProcessing]}
+                </div> || ''
             },
-            width: 120
+            width: 150
         },
         {
             key: 'CV',

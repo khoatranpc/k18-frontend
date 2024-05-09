@@ -43,6 +43,7 @@ const ContextProvider = (props: Props) => {
         status: queryParams?.status ?? 'ALL',
         resourceHunt: queryParams?.resourceHunt ?? 'ALL',
         courseApply: queryParams?.courseApply ?? 'ALL',
+        isGetInfoProcessCandidate: true
     });
     return (
         <ContextRecruitment.Provider value={{
