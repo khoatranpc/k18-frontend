@@ -2,6 +2,6 @@ import { PositionTe, ROLE, ROLE_USER } from '@/global/enum';
 import CreatePage from '@/utils/hocs/ProviderPage';
 import ContainerPage from '@/layouts/containerPage/containerPage';
 
-const ManagerClass = CreatePage('ManageRecruitment', [ROLE_USER.TE, ROLE.CXO, PositionTe.ASSISTANT, PositionTe.LEADER, PositionTe.QC], ContainerPage);
+const ManagerRecruitmentPage = CreatePage('ManageRecruitment', [ROLE_USER.TE, ROLE.CXO, PositionTe.ASSISTANT, PositionTe.LEADER, PositionTe.QC, PositionTe.HR], ContainerPage);
 
-export default ManagerClass;
+export default ManagerRecruitmentPage;
