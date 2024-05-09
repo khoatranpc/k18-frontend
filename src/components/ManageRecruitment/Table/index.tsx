@@ -105,14 +105,14 @@ const TableRecruitment = (props: Props) => {
                         return <div
                             style={{
                                 backgroundColor: getColorByResultInterview[
-                                    value.processed ? (
-                                        value.result ? 'PASS' : 'NOTPASS'
+                                    value?.processed ? (
+                                        value?.result ? 'PASS' : 'NOTPASS'
                                     ) : ('PENDING')
                                 ]
                             }}
                             className={styles.result}
                         >
-                            <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value.result ? 'Đạt' : 'Trượt')}</span>
+                            <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value?.result ? 'Đạt' : 'Trượt')}</span>
                         </div >
                     }
                 },
@@ -126,10 +126,10 @@ const TableRecruitment = (props: Props) => {
                         return !value.result ? <div
                             className={styles.result}
                             style={{
-                                backgroundColor: getColorByResultInterview[value.sentMail ? 'PASS' : 'NOTPASS']
+                                backgroundColor: getColorByResultInterview[value?.sentMail ? 'PASS' : 'NOTPASS']
                             }}
                         >
-                            <span>{value.sentMail ? 'Đã gửi' : 'Chưa gửi'}</span>
+                            <span>{value?.sentMail ? 'Đã gửi' : 'Chưa gửi'}</span>
                         </div> : '-'
                     }
                 }
@@ -150,14 +150,14 @@ const TableRecruitment = (props: Props) => {
                         return value ? <div
                             style={{
                                 backgroundColor: getColorByResultInterview[
-                                    value.processed ? (
-                                        value.result ? 'PASS' : 'NOTPASS'
+                                    value?.processed ? (
+                                        value?.result ? 'PASS' : 'NOTPASS'
                                     ) : ('PENDING')
                                 ]
                             }}
                             className={styles.result}
                         >
-                            <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value.result ? 'Đạt' : 'Trượt')}</span>
+                            <span className={styles.result}>{!value.processed ? 'Chưa xử lý' : (value?.result ? 'Đạt' : 'Trượt')}</span>
                         </div > : '-'
                     }
                 },
