@@ -155,7 +155,7 @@ const ModalRegisterClass = (props: Props) => {
 
     useEffect(() => {
         if (props.isUpdate && props.classRegister) {
-            bookTeacher.query?.(props.classRegister.classId._id as string, ['locationId', 'locationCode', 'locationDetail']);
+            bookTeacher.query?.(props.classRegister?.classId?._id as string, ['locationId', 'locationCode', 'locationDetail']);
         }
     }, [props.isUpdate, props.classRegister]);
     useEffect(() => {
@@ -175,7 +175,7 @@ const ModalRegisterClass = (props: Props) => {
                 <Form.Group>
                     <Form.Label><b>Lớp</b></Form.Label>
                     <br />
-                    {props.isUpdate ? (props.classRegister ? <p style={{ display: 'flex', alignItems: 'start' }}>{props.classRegister.classId.codeClass}{newClass.codeClass ? ` -> ${newClass.codeClass}` : ""} {newClass.codeClass && <CloseOutlined style={{ cursor: 'pointer' }} onClick={handleResetClass} />}</p> : '') : props.class?.codeClass}
+                    {props.isUpdate ? (props.classRegister ? <p style={{ display: 'flex', alignItems: 'start' }}>{props.classRegister?.classId?.codeClass}{newClass.codeClass ? ` -> ${newClass.codeClass}` : ""} {newClass.codeClass && <CloseOutlined style={{ cursor: 'pointer' }} onClick={handleResetClass} />}</p> : '') : props.class?.codeClass}
                     {props.isUpdate &&
                         <Dropdown
                             loading={listClass.isLoading}

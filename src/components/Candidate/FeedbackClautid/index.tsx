@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Tooltip, Popconfirm } from 'antd';
+import { Button, Tooltip } from 'antd';
 import Link from 'next/link';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { formatDatetoString } from '@/utils';
@@ -71,7 +71,7 @@ const FeedbackClautid = () => {
             title: 'Lớp',
             dataIndex: 'classId',
             render(value, record, index) {
-                return value?.codeClass || ''
+                return value ? value?.codeClass : ''
             },
         },
         {
