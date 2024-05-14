@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Form } from 'react-bootstrap';
 import { Button, Input } from 'antd';
 import { Obj } from '@/global/interface';
 import { useGetCandidateOnboard } from '@/utils/hooks';
@@ -7,7 +8,6 @@ import { useHookMessage } from '@/utils/hooks/message';
 import VisualStep from './VisualStep';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
-import { Form } from 'react-bootstrap';
 
 const Candidate = () => {
 
