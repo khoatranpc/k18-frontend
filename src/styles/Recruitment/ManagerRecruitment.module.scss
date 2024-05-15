@@ -359,6 +359,11 @@
 
             .round {
                 cursor: pointer;
+                border-radius: 0.8rem;
+                
+                &.active {
+                    background-color: var(--intermediate-2);
+                }
             }
 
             .progress {

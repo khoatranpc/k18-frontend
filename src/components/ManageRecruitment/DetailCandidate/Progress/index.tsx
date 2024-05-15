@@ -159,10 +159,14 @@ const Progress = () => {
                     labelPlacement="vertical"
                     items={
                         listRound.map((item, index) => {
+                            console.log(item)
                             return {
-                                description: <p key={index} className={styles.round} onClick={() => {
-                                    handleClickStep(item.round);
-                                }}>{item.title}</p>
+                                description: <p
+                                    key={index}
+                                    className={`${styles.round} ${step === item.round ? styles.active : ''}`}
+                                    onClick={() => {
+                                        handleClickStep(item.round);
+                                    }}>{item.title}</p>
                             }
                         })
                     }
