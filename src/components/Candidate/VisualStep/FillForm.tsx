@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import { Obj } from '@/global/interface';
 import { useGetCandidateOnboard } from '@/utils/hooks';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
+import { Button } from 'antd';
 
 const FillForm = () => {
     const candidateInfo = useGetCandidateOnboard();
@@ -10,10 +10,16 @@ const FillForm = () => {
     return (
         <div className={styles.FillForm}>
             {!getCandidateInfo?.fillForm ?
-                <h2>
-                    Thực hiện điền form thông tin tại: <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSfLulutQMadFzKp9N1CYDywPeg48OO-fhE8KzWR6ZBe5CPkow/viewform"}>Link</Link>
+                <div style={{ fontSize: '2.2rem' }}>
+                    <p>Thực hiện điền form thông tin tại</p>
+                    <div className={styles.linkWrapper}>
+                        <a href={"https://docs.google.com/forms/d/e/1FAIpQLSfLulutQMadFzKp9N1CYDywPeg48OO-fhE8KzWR6ZBe5CPkow/viewform"}>
+                            <button className={styles.button64} ><span>LINK</span></button>
+                        </a>
+                        
+                    </div>
                     <small>Ứng viên vui lòng sử dụng email đăng ký với MindX để điền form</small>
-                </h2>
+                </div>
                 :
                 <h1>Bạn đã hoàn thành</h1>}
         </div>

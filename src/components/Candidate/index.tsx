@@ -58,6 +58,14 @@ const Candidate = () => {
                     </Button>
                 </Form>
             </div>
+            <div>
+                <p>Tài khoản cũ</p>
+                <ul>
+                    <li>Nguyen Van Cuong</li>
+                    <li>Trang Dăng Khoa</li>
+                    <li>Tran Ngoc Tan</li>
+                </ul>
+            </div>
             {getCandidateInfo && <VisualStep />}
         </div>
     )

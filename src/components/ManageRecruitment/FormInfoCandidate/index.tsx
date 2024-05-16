@@ -17,7 +17,6 @@ import SelectInputNumber from '@/components/SelectInputNumber';
 import TextEditor from '@/components/TextEditor';
 // import SelectLevelTechnique from '@/components/SelectLevelTechnique';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { ReloadOutlined } from '@ant-design/icons';
 
 const listObjectTeach: MenuProps['items'] = [
     {
@@ -45,7 +44,6 @@ const roleRegister: MenuProps['items'] = [
 ];
 const validationSchema = yup.object({
     timeApply: yup.date().required('Thiếu thời gian ứng tuyển!'),
-    dob: yup.date().required('Thiếu ngày tháng năm sinh!'),
     linkCv: yup.string().required('Thiếu link CV!'),
     fullName: yup.string().required('Thiếu họ và tên ứng viên!'),
     phoneNumber: yup.string().required('Thiếu số điện thoại!'),
@@ -97,7 +95,7 @@ const FormInfoCandidate = (props: Props) => {
         linkFacebook: props.isViewInfo ? detailCandidate?.linkFacebook as string : '',
         email: props.isViewInfo ? detailCandidate?.email as string : '',
         roleApply: props.isViewInfo ? detailCandidate?.roleApply as ROLE_TEACHER : ROLE_TEACHER.MT,
-        dob: props.isViewInfo ? detailCandidate?.dob as string : '',
+        dob: props.isViewInfo ? detailCandidate?.dob as string : new Date(),
         note: props.isViewInfo ? detailCandidate?.note as string : '',
         objectExpTeach: props.isViewInfo ? detailCandidate?.objectExpTeach as ObjectTeach : ObjectTeach.K18,
         linkCv: props.isViewInfo ? detailCandidate?.linkCv as string : '',
@@ -255,7 +253,7 @@ const FormInfoCandidate = (props: Props) => {
                         </Radio.Group>
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label className="bold">Năm sinh <span className="field_required">*</span></Form.Label>
+                        <Form.Label className="bold">Năm sinh</Form.Label>
                         <small>(Chỉ cần chọn đúng Năm sinh)</small>
                         <br />
                         <DatePicker
@@ -494,20 +492,22 @@ const FormInfoCandidate = (props: Props) => {
                         <Form.Label className="bold">Ghi chú</Form.Label>
                         <Input.TextArea style={{ resize: 'none' }} rows={2} value={values.note} size={props.isViewInfo ? 'small' : 'middle'} name="note" onChange={handleChange} onBlur={handleBlur} />
                     </Form.Group>
-                    <div className={styles.previewMail}>
-                        <p><b>Bản xem trước gửi mail</b></p>
-                        {getMailtemplate && <TextEditor
-                            value={value}
-                            config={{
-                                toolbar: false
-                            }}
-                            hasTitle
-                            title={title}
-                            onChange={setValue}
-                            setTitle={setTitle}
-                            disabledSave
-                        />}
-                    </div>
+                    {
+                        !props.isViewInfo && <div className={styles.previewMail}>
+                            <p><b>Bản xem trước gửi mail</b></p>
+                            {getMailtemplate && <TextEditor
+                                value={value}
+                                config={{
+                                    toolbar: false
+                                }}
+                                hasTitle
+                                title={title}
+                                onChange={setValue}
+                                setTitle={setTitle}
+                                disabledSave
+                            />}
+                        </div>
+                    }
                     <div className={styles.btn}>
                         <Button
                             size="small"
