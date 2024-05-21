@@ -46,7 +46,6 @@ const validationSchema = yup.object({
     timeApply: yup.date().required('Thiếu thời gian ứng tuyển!'),
     linkCv: yup.string().required('Thiếu link CV!'),
     fullName: yup.string().required('Thiếu họ và tên ứng viên!'),
-    phoneNumber: yup.string().required('Thiếu số điện thoại!'),
     resourceApply: yup.string().required('Chưa có nguồn ứng tuyển'),
     courseApply: yup.string().required('Thiếu khối ứng tuyển!'),
     area: yup.string().required('Thiếu khu vực!'),
@@ -229,13 +228,13 @@ const FormInfoCandidate = (props: Props) => {
                             rootClassName={styles.popUpDatePicker} />
                         {errors.timeApply && touched.timeApply && <p className="error">{errors.timeApply}</p>}
                     </Form.Group>
-                    {/* <Form.Group className={styles.mb_24}>
+                    <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">
                             Số ĐT
                         </Form.Label>
                         <Input type="text" name="phoneNumber" placeholder="Số điện thoại" value={values.phoneNumber} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors.phoneNumber && touched.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
-                    </Form.Group> */}
+                    </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label className="bold">Email <span className="error">*</span></Form.Label>
                         <Input type="email" name="email" placeholder="example@gmail.com" value={values.email} size={props.isViewInfo ? 'small' : 'middle'} className={styles.input} onChange={handleChange} onBlur={handleBlur} />
