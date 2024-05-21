@@ -84,7 +84,7 @@ const Progress = () => {
         FILLFOWM: <FillForm />,
         CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
-        INTERVIEW: <Interview roundId={getDataRound?._id as string} />,
+        INTERVIEW: <Interview roundId={getDataRound?._id as string} round={step}/>,
         TEST: <Test roundId={getDataRound?._id as string} />,
         DONE: <Done />
     };

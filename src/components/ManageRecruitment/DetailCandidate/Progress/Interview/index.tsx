@@ -16,6 +16,7 @@ import { useHookMessage } from '@/utils/hooks/message';
 
 interface Props {
     roundId?: string;
+    round: RoundProcess
 }
 const Interview = (props: Props) => {
     const router = useRouter();
@@ -55,9 +56,12 @@ const Interview = (props: Props) => {
             message.close();
         }
         else if (updateDataRoundProcessCandidate.data.response) {
+            if (props.round === RoundProcess.INTERVIEW) {
+                localStorage.removeItem('authGoogle');
+            }
             message.open({
                 type: updateDataRoundProcessCandidate.data.success ? 'success' : 'error',
-                content: updateDataRoundProcessCandidate.data.response?.message as string
+                content: 'Có lỗi xảy ra, vui lòng thử lại!'
             });
             updateDataRoundProcessCandidate.clear?.();
             message.close();
