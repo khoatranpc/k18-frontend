@@ -10,7 +10,7 @@ import { PositionTe } from '@/global/enum';
 import { getLabelPositionTe } from '@/global/init';
 import { compareRefData } from '@/utils';
 import useGetCrrUser from '@/utils/hooks/getUser';
-import { useGetListCourse, useGetTeById, useUpdateTeById } from '@/utils/hooks';
+import { useComparePositionTE, useGetListCourse, useGetTeById, useUpdateTeById } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import CropImage from '@/components/CropImage';
 import Dropdown from '@/components/Dropdown';
@@ -28,6 +28,7 @@ const PersonalInfo = () => {
     const message = useHookMessage();
     const crrUser = useGetCrrUser()?.data as Obj;
     const getCurrentTe = (currentTe.data.response as Obj)?.data as Obj;
+    const getRoleTe = useComparePositionTE(PositionTe.LEADER);
     const listCourse = useGetListCourse();
     const getListCourse = listCourse.listCourse?.data as Obj[];
     const { values, errors, touched, handleBlur, setFieldValue, handleChange, handleReset, handleSubmit } = useFormik({
@@ -144,7 +145,7 @@ const PersonalInfo = () => {
                     <Form.Label>
                         Email <span className="error">*</span>
                     </Form.Label>
-                    <Input size="small" name="email" onChange={handleChange} onBlur={handleBlur} value={getValues.email} />
+                    <Input disabled={!getRoleTe} size="small" name="email" onChange={handleChange} onBlur={handleBlur} value={getValues.email} />
                     {(errors as Obj).email && (touched as Obj).email && <p className="error">{(errors as Obj).email as string}</p>}
                 </Form.Group>
                 <Form.Group>
@@ -166,7 +167,7 @@ const PersonalInfo = () => {
                         Vị trí <span className="error">*</span>
                     </Form.Label>
                     <Dropdown
-                        disabled={getCurrentTe?.positionTe !== PositionTe.LEADER}
+                        disabled={!getRoleTe}
                         listSelect={listPosition}
                         trigger="click"
                         title={getLabelPositionTe[getValues.positionTe as PositionTe]}
@@ -186,12 +187,14 @@ const PersonalInfo = () => {
                     <br />
                     <Checkbox.Group
                         onChange={(checkedValues) => {
-                            setFieldValue('courseId', checkedValues);
+                            if (getRoleTe) {
+                                setFieldValue('courseId', checkedValues);
+                            }
                         }}
                         defaultValue={values.courseId}
                     >
                         {getListCourse?.map((item) => {
-                            return <Checkbox value={item?._id} key={item?._id}>{item.courseName}</Checkbox>
+                            return <Checkbox disabled={!getRoleTe} value={item?._id} key={item?._id}>{item.courseName}</Checkbox>
                         })}
                     </Checkbox.Group>
                 </Form.Group>}

@@ -161,6 +161,7 @@ const FeedBack = (props: Props) => {
             }
         },
         {
+            key: 'TCP',
             title: 'Chấm điểm',
             children: [
                 {

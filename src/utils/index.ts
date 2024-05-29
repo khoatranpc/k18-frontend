@@ -4,6 +4,7 @@ import { Action, Obj, Query, RowData, State } from '@/global/interface';
 import { StatusProcessing, Weekday } from '@/global/enum';
 import { AppDispatch, RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContent, ToastOptions, toast } from 'react-toastify';
 
 const uuid = () => {
     return uid() as string;
@@ -224,6 +225,9 @@ function getFileInfoFromBase64(base64String: string) {
 const compareRefData = (ref1: Obj, ref2: Obj) => {
     return (JSON.stringify(ref1) === JSON.stringify(ref2))
 };
+const toastify = (content: ToastContent<unknown>, options?: ToastOptions<Obj> | undefined) => {
+    return toast(content, options);
+}
 
 export {
     uuid,
@@ -241,4 +245,5 @@ export {
     calculateAge,
     getFileInfoFromBase64,
     compareRefData,
+    toastify
 }

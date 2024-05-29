@@ -53,7 +53,7 @@ const Table = (props: Props) => {
                         return {
                             ...child,
                             showSorterTooltip: false,
-                            title: child.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{item.title as React.ReactNode} {MapIconKey[KEY_ICON.SORT]}</div> : child.title
+                            title: child.className?.includes('hasSort') ? <div className={`${styles.sortHeader} sort`}>{child.title as React.ReactNode} {MapIconKey[KEY_ICON.SORT]}</div> : child.title
                         }
                     })
                 )

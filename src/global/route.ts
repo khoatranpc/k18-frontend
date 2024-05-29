@@ -8,6 +8,7 @@ const CombineRoute = {
     RECRUITMENT_CREATE_CANDIDATE: "/te/manager/recruitment/create-candidate",
     MANAGER: {
       CLASS: "/te/manager/class",
+      REQUEST_CLASS: "/te/manager/class/request-class",
       DETAILCLASS: "/te/manager/class/detail/[classId]",
       SAVE: "/te/manager/save",
       FEEDBACK: "/te/manager/feedback",

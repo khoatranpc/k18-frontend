@@ -3,6 +3,17 @@
 }
 
 .containerCreateClass {
+    padding: 1.8rem;
+
+    .form {
+        display: flex;
+        gap: 1.8rem;
+
+        .partSideLeft,
+        .partSideRight {
+            flex: 1;
+        }
+    }
 
     p,
     label {
@@ -26,6 +37,6 @@
     text-decoration: underline;
 }
 
-.mb_24{
+.mb_24 {
     margin-bottom: 24px;
 }
