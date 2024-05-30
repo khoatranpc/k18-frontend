@@ -159,7 +159,6 @@ const Progress = () => {
                     labelPlacement="vertical"
                     items={
                         listRound.map((item, index) => {
-                            console.log(item)
                             return {
                                 description: <p
                                     key={index}

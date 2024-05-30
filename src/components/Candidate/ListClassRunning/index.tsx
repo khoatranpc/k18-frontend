@@ -6,7 +6,7 @@ import { Columns, Obj, RowData } from '@/global/interface';
 import { getClassForm, getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { ClassForm, STATUS_CLASS } from '@/global/enum';
 import { useGetListClass } from '@/utils/hooks';
-import { formatDatetoString, getColorByCourseName } from '@/utils';
+import { formatDatetoString } from '@/utils';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
 import Table from '@/components/Table';
 import SelectBaseCourse from '@/components/SelectBaseCourse';
@@ -86,6 +86,7 @@ const ListClassRunning = () => {
             key: 'RANGE_TIME',
             title: 'Hạn đăng ký',
             dataIndex: 'dayRange',
+            className: 'text-center',
             render(value, record, index) {
                 const startDay = new Date(value.start);
                 const endDay = new Date(startDay);
@@ -150,6 +151,7 @@ const ListClassRunning = () => {
                 <div>
                     <label>Khối</label>
                     <SelectBaseCourse
+                        value={filterCousre}
                         className={styles.filterCourse}
                         onChange={(value) => {
                             setFilterCourse(value as string);
