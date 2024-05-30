@@ -33,7 +33,7 @@ const Feedback = (props: Props) => {
     const candidateClautid = useGetClautidForCandidateOnboard();
     const feedbackClautid = useGetFeedbackClautid();
     const getFeedbackClautid = feedbackClautid.data.response?.data as Array<Obj>;
-    const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
+    const getCandidateInfo = candidateInfo.data.response?.data as Obj;
 
     const { values, errors, touched, handleBlur, handleChange, handleReset, handleSubmit, setValues } = useFormik({
         initialValues: initValues,

@@ -7,7 +7,7 @@ import styles from '@/styles/Recruitment/Candidate.module.scss';
 
 const Test = () => {
     const candidateInfo = useGetCandidateOnboard();
-    const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
+    const getCandidateInfo = candidateInfo.data.response?.data as Obj;
 
     const calendarTest = useGetCalendarTest();
     const getCalendarTest = calendarTest.data.response?.data as Obj;

@@ -2,11 +2,10 @@ import React from 'react';
 import { Obj } from '@/global/interface';
 import { useGetCandidateOnboard } from '@/utils/hooks';
 import styles from '@/styles/Recruitment/Candidate.module.scss';
-import { Button } from 'antd';
 
 const FillForm = () => {
     const candidateInfo = useGetCandidateOnboard();
-    const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
+    const getCandidateInfo = candidateInfo.data.response?.data as Obj;
     return (
         <div className={styles.FillForm}>
             {!getCandidateInfo?.fillForm ?
@@ -16,7 +15,7 @@ const FillForm = () => {
                         <a href={"https://docs.google.com/forms/d/e/1FAIpQLSfLulutQMadFzKp9N1CYDywPeg48OO-fhE8KzWR6ZBe5CPkow/viewform"}>
                             <button className={styles.button64} ><span>LINK</span></button>
                         </a>
-                        
+
                     </div>
                     <small>Ứng viên vui lòng sử dụng email đăng ký với MindX để điền form</small>
                 </div>
