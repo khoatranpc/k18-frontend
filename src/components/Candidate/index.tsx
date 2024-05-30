@@ -16,9 +16,7 @@ const Candidate = () => {
   const message = useHookMessage();
 
   const candidateInfo = useGetCandidateOnboard();
-  const getCandidateInfo = (
-    candidateInfo.data.response?.data as Array<Obj>
-  )?.[0];
+  const getCandidateInfo = candidateInfo.data.response?.data as Obj;
 
   const handleQueryCandidate = () => {
     localStorage.setItem("email__", email);

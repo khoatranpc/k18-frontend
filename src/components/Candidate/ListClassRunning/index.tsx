@@ -38,7 +38,7 @@ const ListClassRunning = () => {
             className: 'text-center',
             dataIndex: 'courseLevelId',
             render(value, record, index) {
-                return `${value.levelCode}/${value.levelNumber}`
+                return `${value.levelCode} / LV${value.levelNumber}`
             },
         },
         {

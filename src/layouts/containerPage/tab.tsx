@@ -85,7 +85,22 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       route: CombineRoute["TE"]["MANAGER"]["CLASS"],
       indexroute: CombineRoute["TE"]["MANAGER"]["CLASS"],
       keyIcon: "HTS",
-      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
+      positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
+      notRouting: true,
+      children: [
+        {
+          route: CombineRoute["TE"]["MANAGER"]["CLASS"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["CLASS"],
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
+          title: 'Danh sách'
+        },
+        {
+          indexroute: CombineRoute["TE"]["MANAGER"]["REQUEST_CLASS"],
+          route: CombineRoute["TE"]["MANAGER"]["REQUEST_CLASS"],
+          title: 'Mở lớp',
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC, ROLE.CXO]
+        }
+      ]
     },
     {
       title: "Chi tiết lớp học",

@@ -6,7 +6,7 @@ import { Action, Columns, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
 import { ClassForm, ComponentPage, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
-import { formatDatetoString, getColorByCourseName, sortByString } from '@/utils';
+import { formatDatetoString, sortByString } from '@/utils';
 import { useComparePositionTE, useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
@@ -219,7 +219,7 @@ const ManagerClass = () => {
                     query: {
                         currentPage: currentPage,
                         recordOnPage: recordOnPage,
-                        fields: ["_id", "codeClass", "dayRange", "timeSchedule", "courseId", "courseLevelId", "levelName", "levelCode", "courseName","color","start","end","weekday","status","classForm","recordBookTeacher"],
+                        fields: ["_id", "codeClass", "dayRange", "timeSchedule", "courseId", "courseLevelId", "levelName", "levelCode", "courseName", "color", "start", "end", "weekday", "status", "classForm", "recordBookTeacher"],
                     }
                 }
             }
@@ -259,7 +259,7 @@ const ManagerClass = () => {
                     setStoreManagerClass({
                         ...storeManagerClass,
                         crrKeyTab: key
-                    })
+                    });
                 }} />
                 <ToolBar
                     enableFilter
@@ -268,7 +268,8 @@ const ManagerClass = () => {
                     createButton={hasRole}
                     exportCSVButton={hasRole}
                     onClickCreateButton={() => {
-                        setOpenModal(true);
+                        router.push('/te/manager/class/request-class');
+                        // setOpenModal(true);
                     }}
                     iconReload
                     onClickReload={() => {

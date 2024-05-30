@@ -1,0 +1,6 @@
+import { PositionTe, ROLE, ROLE_USER } from '@/global/enum';
+import CreatePage from '@/utils/hocs/ProviderPage';
+import ContainerPage from '@/layouts/containerPage/containerPage';
+
+const RequestClass = CreatePage('ManageClass/CreateClass', [ROLE_USER.TE, ROLE.CXO, PositionTe.ASSISTANT, PositionTe.LEADER, PositionTe.QC], ContainerPage);
+export default RequestClass;

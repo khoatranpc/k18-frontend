@@ -99,21 +99,21 @@ const OverView = () => {
         }) || [];
         listMT.forEach((item) => {
             dtMt.push({
-                teacherId: item.idTeacher._id as string,
-                fullName: item.idTeacher.fullName as string,
-                locationId: item.location as string,
-                group: item.groupNumber as number,
-                roleRegister: item.roleRegister as ROLE_TEACHER
+                teacherId: item?.idTeacher?._id as string,
+                fullName: item?.idTeacher?.fullName as string,
+                locationId: item?.location as string,
+                group: item?.groupNumber as number,
+                roleRegister: item?.roleRegister as ROLE_TEACHER
             })
         });
 
         ST.forEach((item) => {
-            (item.teacherRegister as Array<Obj>).forEach((tc) => {
+            (item.teacherRegister as Array<Obj>)?.forEach((tc) => {
                 dtSt.push({
-                    teacherId: tc.idTeacher._id as string,
-                    fullName: tc.idTeacher.fullName as string,
-                    groupNumber: item.groupNumber as number,
-                    role: tc.roleRegister
+                    teacherId: tc?.idTeacher?._id as string,
+                    fullName: tc?.idTeacher?.fullName as string,
+                    groupNumber: item?.groupNumber as number,
+                    role: tc?.roleRegister
                 })
             });
         });

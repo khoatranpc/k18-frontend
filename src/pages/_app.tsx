@@ -1,6 +1,7 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import { Obj } from '@/global/interface';
 import Auth from '@/utils/hocs';
 import store from '@/store';
@@ -24,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     {/* <div className={styles.theme}> */}
     <Message />
     <DrawerComponent />
+    <ToastContainer />
     <DefaultLayout>
       {
         Public ?
@@ -39,7 +41,6 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </Layout>)
       }
-
     </DefaultLayout>
     {/* </div> */}
   </Provider>
