@@ -119,28 +119,41 @@ const FeedbackClautid = () => {
             className: "text-center",
             dataIndex: 'feedback',
             render(value, record, index) {
+                console.log(record);
                 return value ? <div className={`${styles.cell} ${styles.completed}`}>Hoàn thành</div> :
                     <div>
-                        <Button size="small" onClick={() => {
-                            if (!value) {
-                                setShowModalFeedback({
-                                    show: true,
-                                    data: record,
-                                    countTime: index + 1,
-                                    isCreate: true
-                                });
-                            }
-                        }}>Thực hiện</Button>
-                        <Button size="small" onClick={() => {
-                            if (!value) {
-                                setModalUpdateClassregister({
-                                    isUpdate: true,
-                                    show: true,
-                                    classRegister: record,
-                                    countTime: index + 1
-                                });
-                            }
-                        }}>Cập nhật</Button>
+                        <Button
+                            size="small"
+                            onClick={() => {
+                                if (!value) {
+                                    setShowModalFeedback({
+                                        show: true,
+                                        data: record,
+                                        countTime: index + 1,
+                                        isCreate: true
+                                    });
+                                }
+                            }}
+                            disabled={!getCandidateClautid?.classIdFirst}
+                        >
+                            Thực hiện
+                        </Button>
+                        <Button
+                            size="small"
+                            onClick={() => {
+                                if (!value) {
+                                    setModalUpdateClassregister({
+                                        isUpdate: true,
+                                        show: true,
+                                        classRegister: record,
+                                        countTime: index + 1
+                                    });
+                                }
+                            }}
+                            disabled={!getCandidateClautid?.classIdSecond}
+                        >
+                            Cập nhật
+                        </Button>
                     </div >
             },
         },
