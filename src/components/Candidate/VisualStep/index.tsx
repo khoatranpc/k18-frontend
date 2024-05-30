@@ -11,7 +11,7 @@ import styles from '@/styles/Recruitment/Candidate.module.scss';
 const VisualStep = () => {
     const candidateInfo = useGetCandidateOnboard();
 
-    const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
+    const getCandidateInfo = candidateInfo.data.response?.data as Obj;
     const getStep = () => {
         if (getCandidateInfo) {
             if (!getCandidateInfo.fillForm) return 0;

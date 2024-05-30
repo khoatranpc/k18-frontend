@@ -17,7 +17,7 @@ const class2: Obj = {};
 const listClassIdClautid: string[] = [];
 const FeedbackClautid = () => {
     const candidateInfo = useGetCandidateOnboard();
-    const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
+    const getCandidateInfo = candidateInfo.data.response?.data as Obj;
     const [showModalFeedback, setShowModalFeedback] = useState<{
         show: boolean,
         data: Obj,

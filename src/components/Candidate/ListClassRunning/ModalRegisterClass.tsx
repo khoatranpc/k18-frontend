@@ -42,7 +42,7 @@ const ModalRegisterClass = (props: Props) => {
     const getListClass = (listClass.response?.data as Obj)?.classes as Obj[];
     const registerClautid = useRegisterClautid();
     const candidateInfo = useGetCandidateOnboard();
-    const getCandidateInfo = (candidateInfo.data.response?.data as Array<Obj>)?.[0];
+    const getCandidateInfo = candidateInfo.data.response?.data as Obj;
     const bookTeacher = useQueryBookTeacher('GET');
     const updateClassClautidInfo = useUpdateClassClautid();
     const candidateClautid = useGetClautidForCandidateOnboard();
