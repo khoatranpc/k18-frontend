@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TabsProps } from 'antd';
+import { DatePicker, TabsProps } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import dayjs from 'dayjs';
 import { Action, Columns, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
 import { ClassForm, ComponentPage, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
-import { useComparePositionTE, useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
+import { useComparePositionTE, useDebounce, useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
@@ -20,42 +21,89 @@ import TitleHeader from './TitleHeader';
 import ModalCustomize from '../ModalCustomize';
 import CreateClass from './CreateClass';
 import { TabDetailClass } from './Detail';
+import SelectBaseCourse from '../SelectBaseCourse';
+import SelectStatusClass from './SelectStatusClass';
 import styles from '@/styles/class/Class.module.scss';
 
-const listFilter: ItemFilterField[] = [
-    {
-        title: 'Môn học',
-        key: fieldFilter.SUBJECT
-    },
-    {
-        title: 'Trạng thái',
-        key: fieldFilter.STATUS
-    },
-    {
-        title: 'Mã khoá (cấp độ)',
-        key: fieldFilter.CODE_CLASS_LEVEL
-    },
-    {
-        title: 'Hình thức',
-        key: fieldFilter.STYLE
-    },
-    {
-        title: 'Giáo viên',
-        key: fieldFilter.TEACHER
-    },
-    {
-        title: 'Tháng KG',
-        key: fieldFilter.OPEN_SCHEDULE
-    },
-    {
-        title: 'Lịch học',
-        key: fieldFilter.TIME_SCHEDULE
-    }
-];
+
 enum Tab {
     ALL_CLASS = 'ALL_CLASS',
     MY_CLASS = 'MY_CLASS',
     REGISTER_CLASS = 'REGISTER_CLASS'
+}
+
+interface PropsFilter {
+    onChange?: (filter: Obj) => void;
+}
+const CustomizeFilter = (props: PropsFilter) => {
+    const firstRender = useRef<boolean>(true);
+    const [filter, setFilter] = useState<Obj>({
+        course: '',
+        status: 'ALL',
+        date: null
+    });
+    useEffect(() => {
+        if (!firstRender.current) {
+            props.onChange?.(filter);
+        }
+        firstRender.current = false;
+    }, [filter]);
+    const listFilter: ItemFilterField[] = [
+        {
+            title: 'Môn học',
+            key: fieldFilter.SUBJECT,
+            filter: <SelectBaseCourse
+                value={filter.course}
+                onChange={(value) => {
+                    setFilter({
+                        ...filter,
+                        course: value
+                    });
+                }}
+            />
+        },
+        {
+            title: 'Trạng thái',
+            key: fieldFilter.STATUS,
+            filter: <SelectStatusClass
+                value={filter.status}
+                onChange={(value) => {
+                    setFilter({
+                        ...filter,
+                        status: value
+                    });
+                }}
+            />
+        },
+        {
+            title: 'Tháng',
+            key: fieldFilter.OPEN_SCHEDULE,
+            filter: <DatePicker
+                value={filter.date ? dayjs(new Date(filter.date)) : null}
+                size="small"
+                placeholder="Chọn (mm/yyyy)"
+                format={"MM/YYYY"}
+                picker="month"
+                onChange={(value) => {
+                    const getDate = (value as Obj)?.$d ? (value as Obj)?.$d : null;
+                    setFilter({
+                        ...filter,
+                        date: getDate
+                    });
+                }}
+            />
+        }
+    ];
+    return <div className={styles.customizeFilter}>
+        {
+            listFilter.map((item) => {
+                return <div className={styles.itemFilter} key={item.key}>
+                    <span><b>{item.title}</b></span>
+                    {item.filter}
+                </div>
+            })
+        }
+    </div>;
 }
 const ManagerClass = () => {
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
@@ -111,10 +159,11 @@ const ManagerClass = () => {
         }
     }) || [];
     const dispatch = useDispatch<AppDispatch>();
-    const [loading, setLoading] = useState<boolean>(true);
     const listClassTeacherPoint = useGetClassTeacherPonit();
     const getListClTeacherPoint = (listClassTeacherPoint.data.response?.data as Array<Obj>);
-
+    const [codeClass, setCodeClass] = useState('');
+    const [conditionFilter, setConditionFilter] = useState<Obj>({});
+    const codeClassDebounce = useDebounce(codeClass, 1000);
     const columns: Columns = [
         {
             key: 'codeClass',
@@ -212,7 +261,7 @@ const ManagerClass = () => {
         dispatch(initDataRoute(routePayload));
         router.push(hasRole ? `/te/manager/class/detail/${record.key}` : `/teacher/class/detail/${record.key}`);
     }
-    const handleQueryListClass = (currentPage: number, recordOnPage: number) => {
+    const handleQueryListClass = (currentPage: number, recordOnPage: number, filter?: Obj) => {
         const payload: Action = {
             payload: {
                 query: {
@@ -220,6 +269,9 @@ const ManagerClass = () => {
                         currentPage: currentPage,
                         recordOnPage: recordOnPage,
                         fields: ["_id", "codeClass", "dayRange", "timeSchedule", "courseId", "courseLevelId", "levelName", "levelCode", "courseName", "color", "start", "end", "weekday", "status", "classForm", "recordBookTeacher"],
+                        codeClass: codeClassDebounce,
+                        ...conditionFilter,
+                        ...filter,
                     }
                 }
             }
@@ -228,18 +280,11 @@ const ManagerClass = () => {
     }
     const [openModal, setOpenModal] = useState<boolean>(false);
     useEffect(() => {
-        handleQueryListClass(1, 10);
-    }, []);
-    useEffect(() => {
-        if (!listClass.response && firstQuery.current) {
-            handleQueryListClass(1, 10)
-            firstQuery.current = false
-        } else {
-            if (loading) {
-                setLoading(false);
-            }
+        if (!firstQuery.current) {
+            handleQueryListClass(1, 10);
         }
-    }, [listClass, loading, setLoading, handleQueryListClass]);
+        firstQuery.current = false;
+    }, [codeClassDebounce]);
     useEffect(() => {
         if (listClass.success && listClass.response && isQueryClassTeacherPoint.current) {
             isQueryClassTeacherPoint.current = false;
@@ -262,18 +307,25 @@ const ManagerClass = () => {
                     });
                 }} />
                 <ToolBar
-                    enableFilter
+                    customizeFilter={<CustomizeFilter onChange={(filter) => {
+                        handleQueryListClass(1, 10, filter);
+                        // console.log(filter);
+                        setConditionFilter(filter);
+                    }} />}
                     context={ManagerClassContext}
-                    listFilter={listFilter}
+                    listFilter={[]}
                     createButton={hasRole}
                     exportCSVButton={hasRole}
                     onClickCreateButton={() => {
                         router.push('/te/manager/class/request-class');
-                        // setOpenModal(true);
                     }}
                     iconReload
                     onClickReload={() => {
-                        handleQueryListClass((listClass?.response?.data as Obj)?.currentPage as number, (listClass?.response?.data as Obj)?.recordOnPage as number)
+                        handleQueryListClass((listClass?.response?.data as Obj)?.currentPage as number, (listClass?.response?.data as Obj)?.recordOnPage as number, conditionFilter)
+                    }}
+                    placeHolderSearch="Nhập mã lớp"
+                    onChangeSearch={(value) => {
+                        setCodeClass(value);
                     }}
                 />
             </div>
@@ -281,17 +333,19 @@ const ManagerClass = () => {
                 className={styles.tableMangerClass}
                 columns={columns}
                 rowData={mapDataListClass}
-                loading={loading || listClass.isLoading}
+                loading={listClass.isLoading}
                 enableRowSelection
                 disableDefaultPagination
                 enablePaginationAjax
                 onChangeDataPagination={(dataPagination: { currentPage: number; currentTotalRowOnPage: number; }) => {
-                    handleQueryListClass(dataPagination.currentPage, dataPagination.currentTotalRowOnPage);
+                    handleQueryListClass(dataPagination.currentPage, dataPagination.currentTotalRowOnPage, conditionFilter);
                     isQueryClassTeacherPoint.current = true;
-                }
-                }
+                }}
+                crrPage={(listClass.response?.data as Obj)?.currentPage}
+                rowOnPage={(listClass.response?.data as Obj)?.recordOnPage}
+                showSizePage
                 hanldeClickRow={handleClickRow}
-                maxPage={(listClass.response?.data as Obj)?.totalPage as number || 1}
+                maxPage={(listClass.response?.data as Obj)?.totalPage as number}
             />
             {
                 openModal && <ModalCustomize

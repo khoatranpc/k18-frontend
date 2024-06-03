@@ -49,13 +49,12 @@ const FeedbackClautid = () => {
 
     const tempList: Obj[] = [];
     for (const key in getCandidateClautid) {
-        if (key.includes("First")) {
+        if (key.includes("First") && !key.includes('Done')) {
             class1[key.split("First")[0]] = getCandidateClautid[key];
         } else if (key.includes("Second")) {
             class2[key.split("Second")[0]] = getCandidateClautid[key];
         }
     }
-
     tempList.push(class1, class2);
     tempList.forEach((item, idx) => {
         item['feedback'] = getFeedbackClautid?.[idx];
@@ -78,7 +77,7 @@ const FeedbackClautid = () => {
             title: 'Ngày dự thính',
             dataIndex: 'time',
             render(value) {
-                const getStringTime = formatDatetoString(value, "iiiiii, dd/MM/yyyy");
+                const getStringTime = formatDatetoString(value, "iiiiiii, dd/MM/yyyy");
                 return getStringTime;
             }
         },
@@ -121,26 +120,38 @@ const FeedbackClautid = () => {
             render(value, record, index) {
                 return value ? <div className={`${styles.cell} ${styles.completed}`}>Hoàn thành</div> :
                     <div>
-                        <Button size="small" onClick={() => {
-                            if (!value) {
-                                setShowModalFeedback({
-                                    show: true,
-                                    data: record,
-                                    countTime: index + 1,
-                                    isCreate: true
-                                });
-                            }
-                        }}>Thực hiện</Button>
-                        <Button size="small" onClick={() => {
-                            if (!value) {
-                                setModalUpdateClassregister({
-                                    isUpdate: true,
-                                    show: true,
-                                    classRegister: record,
-                                    countTime: index + 1
-                                });
-                            }
-                        }}>Cập nhật</Button>
+                        <Button
+                            size="small"
+                            onClick={() => {
+                                if (!value) {
+                                    setShowModalFeedback({
+                                        show: true,
+                                        data: record,
+                                        countTime: index,
+                                        isCreate: true
+                                    });
+                                }
+                            }}
+                            disabled={!getCandidateClautid[`classId${index === 0 ? 'First' : 'Second'}`]}
+                        >
+                            Thực hiện
+                        </Button>
+                        <Button
+                            size="small"
+                            onClick={() => {
+                                if (!value) {
+                                    setModalUpdateClassregister({
+                                        isUpdate: true,
+                                        show: true,
+                                        classRegister: record,
+                                        countTime: index
+                                    });
+                                }
+                            }}
+                            disabled={!getCandidateClautid[`classId${index === 0 ? 'First' : 'Second'}`]}
+                        >
+                            Cập nhật
+                        </Button>
                     </div >
             },
         },

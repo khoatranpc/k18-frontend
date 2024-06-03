@@ -21,3 +21,14 @@
     color: var(--white);
     border-radius: 0.4rem;
 }
+
+.customizeFilter {
+    display: flex;
+    gap: 0.8rem;
+
+    .itemFilter {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
