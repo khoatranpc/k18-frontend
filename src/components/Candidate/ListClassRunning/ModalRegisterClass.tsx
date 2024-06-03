@@ -85,7 +85,7 @@ const ModalRegisterClass = (props: Props) => {
             } else {
                 const mapPayload = {
                     ...values,
-                    countTime: props.countTime,
+                    countTime: Number(props.countTime),
                     recordId: props.recordRegisterClautidId
                 }
                 updateClassClautidInfo.query({
@@ -138,7 +138,7 @@ const ModalRegisterClass = (props: Props) => {
     }, [updateClassClautidInfo.data]);
 
     useEffect(() => {
-        if (registerClautid.data.response && registerClautid.data.success) {
+        if (registerClautid.data.response) {
             message.open({
                 content: registerClautid.data.response.message as string,
                 type: registerClautid.data.success ? 'success' : 'error'
@@ -211,7 +211,7 @@ const ModalRegisterClass = (props: Props) => {
                         <Input size="small" name="emailCandidate" value={values.emailCandidate} onChange={handleChange} onBlur={handleBlur} />
                         {errors.emailCandidate && touched.emailCandidate && <p className="error">{errors.emailCandidate}</p>}
                     </Form.Group> : <Form.Group>
-                        <Form.Label><b>Lần {Number(props.countTime)}</b></Form.Label>
+                        <Form.Label><b>Lần {Number(props.countTime) + 1}</b></Form.Label>
                     </Form.Group>
                 }
                 <Form.Group>

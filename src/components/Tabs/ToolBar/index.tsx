@@ -13,7 +13,7 @@ import FieldOption from '@/components/ManageClass/listFieldByOption';
 import styles from '@/styles/tabs/Toolbar.module.scss';
 import { SearchOutlined } from '@ant-design/icons';
 
-export interface ItemFilterField {
+export interface ItemFilterField extends Obj{
     key: string;
     title: string
 }
@@ -30,6 +30,7 @@ interface Props {
     enableImportCSV?: boolean;
     loadingImport?: boolean;
     placeHolderSearch?: string;
+    customizeFilter?: React.ReactNode;
     onImportCSV?: (file?: File) => void;
     onClickCreateButton?: () => void;
     onClickExportCSVButton?: () => void;
@@ -121,6 +122,9 @@ const ToolBar = (props: Props) => {
                         </div>
                     </div>
                 )
+            }
+            {
+                props.customizeFilter
             }
             <div className="right-fnc">
                 <div className="search" style={{ marginRight: '1.2rem' }}>

@@ -62,12 +62,12 @@ const Clautid = () => {
                     <div className={styles.classRegister}>
                         <div className={styles.class}>
                             {getDataRoundProcess && getDataRoundProcess.classIdFirst ? <span>
-                                Lớp: {getDataRoundProcess.classIdFirst?.codeClass} - {formatDatetoString(new Date(getDataRoundProcess.timeFirst), 'dd/MM/yyyy')} - {getClassForm[getDataRoundProcess.formFirst as ClassForm]} {getDataRoundProcess.timeFirstDone ? <Tick className={`${styles.iconCheck} ${styles.checked}`} /> : <UnCheck className={`${styles.iconCheck} ${styles.unChecked}`} />}
+                                Lớp: {getDataRoundProcess.classIdFirst?.codeClass} - {formatDatetoString(new Date(getDataRoundProcess.timeFirst), 'dd/MM/yyyy')} - {getClassForm[getDataRoundProcess.formFirst as ClassForm]}
                             </span> : <span>Chưa có thông tin lần dự thính 1</span>}
                         </div>
                         <div className={styles.class}>
                             {getDataRoundProcess && getDataRoundProcess.classIdSecond ? <span>
-                                Lớp: {getDataRoundProcess.classIdSecond?.codeClass} - {formatDatetoString(new Date(getDataRoundProcess.timeSecond), 'dd/MM/yyyy')} - {getClassForm[getDataRoundProcess.formSecond as ClassForm]} {getDataRoundProcess.timeSecondDone ? <Tick className={`${styles.iconCheck} ${styles.checked}`} /> : <UnCheck className={`${styles.iconCheck} ${styles.unChecked}`} />}
+                                Lớp: {getDataRoundProcess.classIdSecond?.codeClass} - {formatDatetoString(new Date(getDataRoundProcess.timeSecond), 'dd/MM/yyyy')} - {getClassForm[getDataRoundProcess.formSecond as ClassForm]}
                             </span> : <span>Chưa có thông tin lần dự thính 2</span>}
                         </div>
                     </div>

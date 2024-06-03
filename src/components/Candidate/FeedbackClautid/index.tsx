@@ -49,13 +49,12 @@ const FeedbackClautid = () => {
 
     const tempList: Obj[] = [];
     for (const key in getCandidateClautid) {
-        if (key.includes("First")) {
+        if (key.includes("First") && !key.includes('Done')) {
             class1[key.split("First")[0]] = getCandidateClautid[key];
         } else if (key.includes("Second")) {
             class2[key.split("Second")[0]] = getCandidateClautid[key];
         }
     }
-
     tempList.push(class1, class2);
     tempList.forEach((item, idx) => {
         item['feedback'] = getFeedbackClautid?.[idx];
@@ -78,7 +77,7 @@ const FeedbackClautid = () => {
             title: 'Ngày dự thính',
             dataIndex: 'time',
             render(value) {
-                const getStringTime = formatDatetoString(value, "iiiiii, dd/MM/yyyy");
+                const getStringTime = formatDatetoString(value, "iiiiiii, dd/MM/yyyy");
                 return getStringTime;
             }
         },
@@ -119,7 +118,6 @@ const FeedbackClautid = () => {
             className: "text-center",
             dataIndex: 'feedback',
             render(value, record, index) {
-                console.log(record);
                 return value ? <div className={`${styles.cell} ${styles.completed}`}>Hoàn thành</div> :
                     <div>
                         <Button
@@ -129,12 +127,12 @@ const FeedbackClautid = () => {
                                     setShowModalFeedback({
                                         show: true,
                                         data: record,
-                                        countTime: index + 1,
+                                        countTime: index,
                                         isCreate: true
                                     });
                                 }
                             }}
-                            disabled={!getCandidateClautid?.classIdFirst}
+                            disabled={!getCandidateClautid[`classId${index === 0 ? 'First' : 'Second'}`]}
                         >
                             Thực hiện
                         </Button>
@@ -146,11 +144,11 @@ const FeedbackClautid = () => {
                                         isUpdate: true,
                                         show: true,
                                         classRegister: record,
-                                        countTime: index + 1
+                                        countTime: index
                                     });
                                 }
                             }}
-                            disabled={!getCandidateClautid?.classIdSecond}
+                            disabled={!getCandidateClautid[`classId${index === 0 ? 'First' : 'Second'}`]}
                         >
                             Cập nhật
                         </Button>

@@ -284,7 +284,6 @@ const OverView = () => {
                     value: [...(dataDetailClass?.data.timeSchedule as Array<Obj>) || []]?.map((item, idx) => {
                         return hasRole ? <PickTimeSchedule
                             value={idx === 0 ? getWeekday(new Date(dataDetailClass?.data.dayRange.start as Date).getDay()) as string : ''}
-                            hasFilterByValue={idx === 0}
                             onClickItem={(e) => {
                                 console.log(e);
                             }}

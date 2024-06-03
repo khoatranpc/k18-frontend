@@ -94,7 +94,7 @@ const Feedback = (props: Props) => {
                 Ngày dự thính: {formatDatetoString(props.dataClass?.time, 'iiiiii, dd/MM/yyyy')}
             </p>
             <p>
-                Lần: {props.countTime}
+                Lần: {props.countTime + 1}
             </p>
             <Form onSubmit={handleSubmit}>
                 <Form.Group>
