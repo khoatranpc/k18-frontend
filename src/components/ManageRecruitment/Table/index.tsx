@@ -72,12 +72,12 @@ const TableRecruitment = (props: Props) => {
             dataIndex: 'courseApply',
             className: 'text-center',
             render(value) {
-                return value ? <div className={styles.subject} style={{ backgroundColor: value.color }}>
+                return value ? <div className={styles.subject} style={{ backgroundColor: value.color, width: '100%' }}>
                     {value.courseName}
                 </div> : ''
             },
             fixed: 'left',
-            width: 100
+            width: 150
         },
         {
             key: 'CONTACT',
