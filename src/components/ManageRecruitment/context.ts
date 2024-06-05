@@ -33,7 +33,8 @@ const ContextRecruitment = createContext<{
         setCondition: (condition: Obj) => void;
     },
     isSearch: Boolean;
-    setIsSearch: (search: boolean) => void
+    setIsSearch: (search: boolean) => void;
+    tableComponentId: string;
 }>({
     modal: {
         config: {
@@ -64,6 +65,7 @@ const ContextRecruitment = createContext<{
     setIsSearch(search) {
 
     },
+    tableComponentId: ''
 });
 export {
     ContextRecruitment

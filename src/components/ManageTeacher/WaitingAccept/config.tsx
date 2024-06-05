@@ -40,7 +40,7 @@ const getConfigColumns = (): Columns => {
             title: 'Vị trí đăng ký',
             width: 120,
             render(value) {
-                return (value as Array<ROLE_TEACHER>).toString();
+                return (value as Array<ROLE_TEACHER>).filter(item => item).toString();
             }
         },
         {

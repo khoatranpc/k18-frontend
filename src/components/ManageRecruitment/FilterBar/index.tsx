@@ -8,9 +8,10 @@ import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import CombineRoute from '@/global/route';
 import { useDebounce, useDispatchDataRouter, useGetArea, useGetListCourse, useGetListDataRecruitment } from '@/utils/hooks';
+import { ContextRecruitment } from '../context';
+import ViewStatistic from '../ViewStatistic';
 import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
-import { ContextRecruitment } from '../context';
 
 interface Props {
     onImport?: () => void;
@@ -21,7 +22,7 @@ interface Props {
 const FilterBar = (props: Props) => {
     const router = useRouter();
     const area = useGetArea();
-    const { pagination, conditionFilter, setIsSearch } = useContext(ContextRecruitment);
+    const { pagination, conditionFilter, setIsSearch, tableComponentId } = useContext(ContextRecruitment);
     const listDataRecruitment = useGetListDataRecruitment();
     const getAreas = area.data.response?.data as Obj[];
     const candidate = useGetListDataRecruitment();
@@ -124,12 +125,15 @@ const FilterBar = (props: Props) => {
     const handleChangeConditionFilter = (field: keyof typeof conditionFilter.condition, value: any) => {
         conditionFilter.setCondition({
             ...conditionFilter.condition,
-            [field]: value
+            [field]: value,
         });
     }
     const dispatchRouter = useDispatchDataRouter();
     const handleQueryFilterWithConditional = () => {
-        listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, conditionFilter.condition)
+        listDataRecruitment.query(pagination.data.currentTotalRowOnPage, pagination.data.currentPage, undefined, {
+            ...conditionFilter.condition,
+            componentId: tableComponentId
+        });
     }
     useEffect(() => {
         if (!area.data.response) {
@@ -139,17 +143,12 @@ const FilterBar = (props: Props) => {
     useEffect(() => {
         if (!firstRender.current) {
             setIsSearch(!!searchCandidate);
-            listDataRecruitment.query(undefined, undefined, undefined, {
-                ...conditionFilter.condition,
-                ...searchCandidate ? {
-                    valueSearch: searchCandidate
-                } : {}
-            });
             props.setIsSearching?.(!!searchCandidate);
         }
     }, [searchCandidate]);
     return (
         <div className={styles.filterBar}>
+            <ViewStatistic />
             <div className={styles.listFilter}>
                 {
                     listFieldFilter.map((item, idx) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { memo, useContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Columns, Obj, RowData } from '@/global/interface';
@@ -22,30 +22,26 @@ export const getStatusProcess: Record<StatusProcessing, React.ReactElement> = {
 }
 interface Props {
     isSearching: boolean;
+    listDataRecruitment: ReturnType<typeof useGetListDataRecruitment>;
+    componentId: string;
 }
+
+interface HigherTable {
+    isSearching: boolean;
+}
+
 const TableRecruitment = (props: Props) => {
-    const { pagination, conditionFilter, isSearch } = useContext(ContextRecruitment);
-    const getDataPagination = pagination.data;
+    const { pagination, isSearch } = useContext(ContextRecruitment);
     const router = useRouter();
     const dispatch = useDispatch();
-    const listDataRecruitment = useGetListDataRecruitment();
+    const listDataRecruitment = props.listDataRecruitment;
     const rowData: RowData[] = ((listDataRecruitment.data.response?.data as Obj)?.listData as Array<Obj>)?.map((item) => {
         return {
             key: item._id,
             ...item
         }
     });
-    const queryListData = (recordOnPage: number, page: number) => {
-        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail', 'color'], conditionFilter.condition);
-    }
-    useEffect(() => {
-        const getPayloadQuery = listDataRecruitment.data.payload;
-        if (!props.isSearching) {
-            if (!listDataRecruitment.data.response || (getPayloadQuery && (Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage || Number(getPayloadQuery?.query?.query?.currentPage)) !== getDataPagination.currentPage)) {
-                queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
-            }
-        }
-    }, [pagination.data, listDataRecruitment.data.payload, props.isSearching]);
+
     const columns: Columns = [
         {
             key: 'TIME',
@@ -243,10 +239,48 @@ const TableRecruitment = (props: Props) => {
                 crrPage={pagination.data.currentPage}
                 rowOnPage={pagination.data.currentTotalRowOnPage}
                 showSizePage
-                maxPage={(listDataRecruitment.data.response?.data as Obj)?.totalPage as number}
+                maxPage={(listDataRecruitment.data.response?.data as Obj)?.totalPage as number ?? 1}
             />
         </div>
     )
 }
 
-export default TableRecruitment;
+const MemoTableRecruitment = memo(TableRecruitment, (prevProps, nextProps) => {
+    if (
+        (nextProps.listDataRecruitment.data.payload?.query?.query?.componentId === nextProps.componentId)
+        ||
+        (prevProps.listDataRecruitment.data.payload?.query?.query?.componentId && nextProps.listDataRecruitment.data.payload?.query?.query?.componentId && prevProps.listDataRecruitment.data.payload?.query?.query?.componentId === nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)) {
+        return false;
+    }
+    return true;
+});
+
+const BoundaryTable = (props: HigherTable) => {
+    const listDataRecruitment = useGetListDataRecruitment();
+    const { pagination, conditionFilter, tableComponentId } = useContext(ContextRecruitment);
+    const getDataPagination = pagination.data;
+
+    const queryListData = (recordOnPage: number, page: number) => {
+        listDataRecruitment.query(recordOnPage, page, ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail', 'color'], {
+            ...conditionFilter.condition,
+            componentId: tableComponentId
+        });
+    }
+    useEffect(() => {
+        const getPayloadQuery = listDataRecruitment.data.payload;
+        if (!props.isSearching) {
+            if ((
+                (getPayloadQuery &&
+                    (
+                        Number(getPayloadQuery?.query?.query?.recordOnPage) !== getDataPagination.currentTotalRowOnPage
+                        || (Number(getPayloadQuery?.query?.query?.currentPage) !== getDataPagination.currentPage)
+                    )
+                ))
+            ) {
+                queryListData(getDataPagination.currentTotalRowOnPage, getDataPagination.currentPage);
+            }
+        }
+    }, [pagination.data, listDataRecruitment.data.payload, props.isSearching]);
+    return <MemoTableRecruitment isSearching={props.isSearching} listDataRecruitment={listDataRecruitment} componentId={tableComponentId} />;
+}
+export default BoundaryTable;
