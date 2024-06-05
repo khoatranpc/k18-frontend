@@ -804,4 +804,14 @@
         background-color: var(--intermediate-2);
         font-weight: 500;
     }
+
+    .btnReloadStatistic {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            border-color: var(--base);
+        }
+    }
 }
