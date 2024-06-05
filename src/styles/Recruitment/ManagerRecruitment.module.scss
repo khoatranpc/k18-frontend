@@ -1,5 +1,6 @@
 .containerManagerRecruitment {
     padding-top: 5rem;
+    position: relative;
 
     .filterBar {
         padding: 1.2rem;
@@ -360,7 +361,7 @@
             .round {
                 cursor: pointer;
                 border-radius: 0.8rem;
-                
+
                 &.active {
                     background-color: var(--intermediate-2);
                 }
@@ -787,4 +788,30 @@
 
 .viewInfo {
     padding: 0;
+}
+
+.viewStatistic {
+    position: absolute;
+    top: 1.8rem;
+    display: flex;
+    gap: 3.8rem;
+
+    .titleStatus {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        padding-right: 1.8rem;
+        border-radius: 0.3rem;
+        background-color: var(--intermediate-2);
+        font-weight: 500;
+    }
+
+    .btnReloadStatistic {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            border-color: var(--base);
+        }
+    }
 }

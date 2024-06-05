@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { Obj } from '@/global/interface';
+import { uuid } from '@/utils';
 import { useGetListDataRecruitment } from '@/utils/hooks';
 import { ContextRecruitment } from './context';
-import { Obj } from '@/global/interface';
 
 interface Props {
     children?: React.ReactElement;
@@ -16,6 +17,7 @@ const ContextProvider = (props: Props) => {
         isCreate: false,
         title: 'Thông tin'
     });
+    const tableComponentId = useRef(uuid());
     const listDataRecruitment = useGetListDataRecruitment();
     const queryParams = listDataRecruitment.data.payload?.query?.query as Obj;
     const [dataPaginationPage, setDataPaginationPage] = useState<{
@@ -66,7 +68,8 @@ const ContextProvider = (props: Props) => {
                 },
             },
             isSearch: isSearch,
-            setIsSearch
+            setIsSearch,
+            tableComponentId: tableComponentId.current
         }}>
             {props.children}
         </ContextRecruitment.Provider>
