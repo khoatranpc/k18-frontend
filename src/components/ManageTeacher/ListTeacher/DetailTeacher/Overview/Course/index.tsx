@@ -17,8 +17,9 @@ const Course = () => {
     const dataTeacherRegisterCourse = useTeacherRegisterCourse();
     const updateRegisterCourse = useUpdateTeacherRegisterCourse();
     const message = useHookMessage();
+    const teacherId = router.query.teacherId;
     const getCourseTeacherRegister = (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>)?.filter((item) => {
-        return item.idTeacher === router.query.teacherId
+        return item.idTeacher === teacherId
     });
     const getCurrentRecordTeacherRegister = getCourseTeacherRegister?.[0]?.coursesRegister as Obj[];
     const listCourse = useGetListCourse();
@@ -109,7 +110,8 @@ const Course = () => {
         }
         updateRegisterCourse.query({
             body: {
-                coursesRegister: getBaseDataCourseRegsiter
+                coursesRegister: getBaseDataCourseRegsiter,
+                teacherId: teacherId,
             },
             params: [recordId]
         })

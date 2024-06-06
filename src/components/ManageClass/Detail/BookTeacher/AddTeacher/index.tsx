@@ -1,11 +1,11 @@
 import { Form } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { querySearchTeacherByEmail } from '@/store/reducers/searchTeacher.reducer';
 import { Button, Input, MenuProps, Popconfirm } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Obj, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
-import { useHandleTeacherInRCBT } from '@/utils/hooks';
+import { useDebounce, useHandleTeacherInRCBT } from '@/utils/hooks';
 import { ROLE_TEACHER } from '@/global/enum';
 import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch, RootState } from '@/store';
@@ -28,7 +28,7 @@ const AddTeacher = (props: Props) => {
     const mapListSelect: MenuProps['items'] = (listTeacher.response?.data as Array<Obj>)?.map((item) => {
         return {
             key: item._id as string,
-            label: item.fullName as string
+            label: `${item.fullName as string} - ${item.email as string}`
         }
     }) || [];
     const [teacher, setTeacher] = useState<{
@@ -38,6 +38,9 @@ const AddTeacher = (props: Props) => {
         id: props.teacherId || '',
         label: props.nameTeacher || ''
     });
+    const [emailSearch, setEmailSearch] = useState('');
+    const firstRender = useRef(true);
+    const emailTeacherDebounce = useDebounce(emailSearch)
     const handleSearchTeacher = (value: string) => {
         const payload: Action = {
             payload: {
@@ -82,6 +85,13 @@ const AddTeacher = (props: Props) => {
         }
     }
     useEffect(() => {
+        if (!firstRender.current) {
+            if (emailTeacherDebounce) {
+                handleSearchTeacher(emailTeacherDebounce);
+            }
+        }
+    }, [emailTeacherDebounce]);
+    useEffect(() => {
         if (dataHandle.response) {
             if (dataHandle.success) {
                 props.onSuccess();
@@ -99,9 +109,13 @@ const AddTeacher = (props: Props) => {
             <Form onSubmit={handleSubmit}>
                 <label>Giáo viên: {!props.isUpdate ? teacher.label : updateTeacher.label}</label>
                 <Dropdown
-                    title={<Input placeholder="Nhập email giáo viên" onChange={(e) => {
-                        handleSearchTeacher(e.target.value);
-                    }} />}
+                    title={<Input
+                        placeholder="Nhập email giáo viên"
+                        onChange={(e) => {
+                            firstRender.current = false;
+                            setEmailSearch(e.target.value);
+                        }}
+                    />}
                     onClickItem={(e) => {
                         if (!props.isUpdate) {
                             setTeacher({
