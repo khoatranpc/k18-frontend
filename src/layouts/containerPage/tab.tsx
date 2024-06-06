@@ -83,7 +83,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
     {
       title: "Lớp học",
       route: "CLASS",
-      indexroute: CombineRoute["TE"]["MANAGER"]["CLASS"],
+      indexroute: "CLASS",
       keyIcon: "HTS",
       positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
       notRouting: true,

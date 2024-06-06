@@ -112,16 +112,6 @@ const ManagerClass = () => {
             key: Tab['ALL_CLASS'],
             label: 'Tất cả lớp',
         },
-        ...!hasRole ? [
-            {
-                key: Tab['MY_CLASS'],
-                label: 'Lớp của tôi'
-            },
-            {
-                key: Tab['REGISTER_CLASS'],
-                label: 'Lớp đăng ký'
-            }
-        ] : []
     ];
     const [storeManagerClass, setStoreManagerClass] = useState<{
         crrKeyTab: string;
