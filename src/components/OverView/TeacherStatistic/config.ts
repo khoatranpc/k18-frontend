@@ -48,8 +48,8 @@ const getStatisticTeacher = (listCourse?: Obj[], getListCourseApply?: Obj[], get
                 const getRecordCourseApply = record?.coursesRegister as Obj[];
                 for (let j = 0; j < getRecordCourseApply.length; j++) {
                     const data = getRecordCourseApply[j];
-                    if (data.idCourse._id === item._id) {
-                        (data.levelHandle as Obj[]).forEach((lv) => {
+                    if (data.idCourse?._id === item._id) {
+                        (data.levelHandle as Obj[])?.forEach((lv) => {
                             countTeacherByLevelHandle[`lv${lv.levelNumber}`]++;
                         });
                         break;

@@ -6,7 +6,7 @@ const getTotalTeacher = (courseId?: string, listTeacher?: Obj[]) => {
     };
     listTeacher?.forEach((item) => {
         const checkRegistered = (item.coursesRegister as Obj[])?.find((record) => {
-            return record.idCourse._id === courseId;
+            return record?.idCourse?._id === courseId;
         });
         if (checkRegistered) {
             data['total']++

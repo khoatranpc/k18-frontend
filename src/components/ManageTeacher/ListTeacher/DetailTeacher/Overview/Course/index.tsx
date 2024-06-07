@@ -23,7 +23,9 @@ const Course = () => {
     });
     const getCurrentRecordTeacherRegister = getCourseTeacherRegister?.[0]?.coursesRegister as Obj[];
     const listCourse = useGetListCourse();
-    const getListCourse = listCourse.listCourse?.data as Obj[] || [];
+    const getListCourse = (listCourse.listCourse?.data as Obj[] || [])?.filter((item) => {
+        return (item.courseLevel as Obj[])?.length;
+    });
     const columns: Columns = [
         {
             title: 'Khoá',
@@ -49,7 +51,7 @@ const Course = () => {
                 const getLevelId = value._id as string;
                 let valueEnroll = CheckCourseLevel.UNCHECKED
                 const findRecordByCourseId = getCurrentRecordTeacherRegister?.find((item) => {
-                    return item.idCourse._id === record._id as string
+                    return item?.idCourse?._id === record?._id as string
                 });
                 if (findRecordByCourseId) {
                     const findEnrollLevel = (findRecordByCourseId.levelHandle as Obj[]).find((item) => item._id === getLevelId);
