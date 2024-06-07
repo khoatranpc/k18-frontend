@@ -28,7 +28,8 @@
 
 .day {
     display: flex;
-    align-items: center;
+    padding-top: 0.8rem;
+    flex-direction: column;
     gap: 0.8rem;
     padding-left: 1.6rem;
 }

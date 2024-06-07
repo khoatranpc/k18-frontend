@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 import { Button, TabsProps } from 'antd';
+import { Obj } from '@/global/interface';
 import { PositionTe } from '@/global/enum';
 import { useComparePositionTE, useDetailClass } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import Tabs from '@/components/Tabs';
+import Loading from '@/components/loading';
 import OverView from './OverView';
 import Attendance from './Attendance';
 import FeedBack from './FeedBack';
@@ -14,8 +15,8 @@ import Student from './Student';
 import Syllabus from './Syllabus';
 import TextBook from './TextBook';
 import BookTeacher from './BookTeacher';
+import CreateClass from '../CreateClass';
 import styles from '@/styles/class/DetailClass.module.scss';
-import Loading from '@/components/loading';
 
 export enum TabDetailClass {
     OVERVIEW = 'OVERVIEW',
@@ -25,7 +26,8 @@ export enum TabDetailClass {
     TEXTBOOK = 'TEXTBOOK',
     SYLLABUS = 'SYLLABUS',
     FEEDBACK = 'FEEDBACK',
-    BOOK_TEACHER = 'BOOK_TEACHER'
+    BOOK_TEACHER = 'BOOK_TEACHER',
+    SETTING = 'SETTING'
 }
 const listTab: TabsProps['items'] = [
     {
@@ -44,6 +46,10 @@ const listTab: TabsProps['items'] = [
         key: TabDetailClass.BOOK_TEACHER,
         label: 'Sắp xếp GV'
     },
+    {
+        key: TabDetailClass.SETTING,
+        label: 'Cài đặt'
+    }
 ];
 
 interface Props {
@@ -51,7 +57,6 @@ interface Props {
 }
 const Detail = (props: Props) => {
     const router = useRouter();
-    const dispatch = useDispatch();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const message = useHookMessage();
     const { data, query, clear } = useDetailClass('GET');
@@ -64,7 +69,8 @@ const Detail = (props: Props) => {
         STUDENT: <Student />,
         SYLLABUS: <Syllabus />,
         TEXTBOOK: <TextBook />,
-        BOOK_TEACHER: <BookTeacher classId={router.query.classId as string} />
+        BOOK_TEACHER: <BookTeacher classId={router.query.classId as string} />,
+        SETTING: <CreateClass data={data.response?.data as Obj} />
     }
     useEffect(() => {
         query?.(router.query.classId as string);

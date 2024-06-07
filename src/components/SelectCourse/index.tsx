@@ -19,16 +19,24 @@ interface Props {
     }) => void;
 }
 const SelectCourse = (props: Props) => {
+    const { listCourse, queryListCourse } = useGetListCourse();
+    const crrCourse = (listCourse?.data as Array<Obj>)?.find((item) => {
+        return item._id === props.courseId
+    });
+    const crrCourseLevel = (crrCourse?.courseLevel as Obj[])?.find((item) => {
+        return item._id === props.courseLevelId
+    });
+    const mapLabel = `${!props.shortLabelItem ? `${crrCourse?.levelCode as string} - ${crrCourseLevel?.levelName as string}` : crrCourseLevel?.levelCode as string}`;
     const [value, setValue] = useState<{
         _idSelect: string,
         _courseId: string,
         label: string
     }>({
-        _idSelect: props.courseLevelId || '',
-        _courseId: props.courseId || '',
-        label: props.label || 'Tên khoá - Level'
+        _idSelect: props.courseLevelId ?? '',
+        _courseId: props.courseId ?? '',
+        label: props.courseId && props.courseLevelId ? mapLabel : 'Tên khoá - Level'
     });
-    const { listCourse, queryListCourse } = useGetListCourse();
+
     const mapTreeData = (listCourse?.data as Array<Obj>)?.map((item) => {
         return {
             value: item._id as string,
@@ -49,7 +57,7 @@ const SelectCourse = (props: Props) => {
                 return child._id as string === id;
             });
             if (el) {
-                label = `${item.courseName as string} - ${el.levelCode as string}`;
+                label = `${!props.shortLabelItem ? `${item.courseName as string} - ${el.levelCode as string}` : `${el.levelCode as string}`}`;
                 courseId = item._id as string;
             }
             return undefined;

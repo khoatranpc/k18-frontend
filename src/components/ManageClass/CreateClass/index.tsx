@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Button, Input, InputNumber } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteFilled } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
+import dayjs from 'dayjs';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -12,7 +14,7 @@ import { toastify, uuid } from '@/utils';
 import { AppDispatch, RootState } from '@/store';
 import { clearCreateClass, queryCreateClass } from '@/store/reducers/class/createClass.reducer';
 import { Action, Columns, Obj, State } from '@/global/interface';
-import { useGetLocations, useGetTimeSchedule } from '@/utils/hooks';
+import { useGetLocations, useGetTimeSchedule, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import SelectCourse from '@/components/SelectCourse';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import Table from '@/components/Table';
@@ -22,6 +24,7 @@ import styles from '@/styles/class/CreateClass.module.scss';
 interface Props {
     onReceive?: (status: boolean) => void;
     isUpdate?: boolean;
+    data?: Obj;
 }
 const validationSchema = yup.object({
     codeClass: yup.string().required('Bạn chưa nhập mã lớp!'),
@@ -32,13 +35,37 @@ const validationSchema = yup.object({
     timeOnce: yup.object().required('Bạn chưa chọn ngày học!'),
     timeTwice: yup.object().required('Bạn chưa chọn ngày học!'),
 });
+const getLabelTime = (time: Obj) => {
+    return `${time.weekday}, ${time.start}- ${time.end}`;
+}
 const CreateClass = (props: Props) => {
+    const { query, data } = useQueryBookTeacher('GET');
+    const router = useRouter();
+    const updatedClass = useUpdateClassBasicInfor();
+    const getDataRequestBookTC = useMemo(() => {
+        return data?.response?.data as Obj[]
+    }, [data?.response?.data]);
     const listTimeSchedule = useGetTimeSchedule();
     const dispatch = useDispatch<AppDispatch>();
     const { locations } = useGetLocations();
     const message = useHookMessage();
     const createClass = useSelector((state: RootState) => (state.createClass as State).state);
-    const initValues: Obj = {
+
+    const initValues: Obj = props.data ? {
+        ...props.data,
+        codeClass: props.data.codeClass,
+        courseId: props.data.courseId?._id,
+        courseLevelId: props.data.courseLevelId?._id,
+        dayStart: props.data.dayRange?.start,
+        dayEnd: props.data.dayRange?.end,
+        timeOnce: (props.data.timeSchedule as Obj[])?.[0],
+        timeTwice: (props.data.timeSchedule as Obj[])?.[1],
+        expectedGroup: [],
+        linkZoom: props.data.linkZoom,
+        note: props.data.note ?? '',
+        cxo: props.data.cxo ?? '',
+        bu: props.data.bu ?? ''
+    } : {
         codeClass: '',
         courseId: '',
         courseLevelId: '',
@@ -46,9 +73,13 @@ const CreateClass = (props: Props) => {
         dayEnd: '',
         timeOnce: '',
         timeTwice: '',
-        expectedGroup: []
+        expectedGroup: [],
+        bu: '',
+        cxo: '',
+        linkZoom: '',
+        note: ''
     }
-    const { values, errors, touched, setFieldValue, handleSubmit, handleChange, handleBlur, setTouched, setErrors } = useFormik({
+    const { values, errors, touched, setFieldValue, handleSubmit, handleChange, handleBlur, setTouched, setErrors, handleReset } = useFormik({
         initialValues: initValues,
         validationSchema,
         onSubmit(values) {
@@ -82,8 +113,38 @@ const CreateClass = (props: Props) => {
                     toastify('Một số thông tin họ sinh dự kiến chưa hoàn thiện!', {
                         type: 'error'
                     });
+                } else {
+                    if (!props.data) {
+                        dispatch(queryCreateClass(mapDataforRequest));
+                    } else {
+                        const tmpValues: Obj = {
+                            ...values
+                        };
+                        delete tmpValues._id;
+                        updatedClass.handleUpdate({
+                            payload: {
+                                query: {
+                                    params: [router.query.classId as string],
+                                    body: {
+                                        ...tmpValues,
+                                        codeClass: values.codeClass,
+                                        dayRange: {
+                                            start: values.dayStart,
+                                            end: values.dayEnd
+                                        },
+                                        timeSchedule: [
+                                            values.timeOnce,
+                                            values.timeTwice
+                                        ],
+                                        ...JSON.stringify(values.expectedGroup) !== JSON.stringify(initValues.expectedGroup) ? {
+                                            expectedGroup: values.expectedGroup
+                                        } : {}
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
-                dispatch(queryCreateClass(mapDataforRequest));
             } else {
                 toastify('Thông tin dự kiến nhóm học chưa hoàn thiện!', {
                     type: 'error'
@@ -100,6 +161,7 @@ const CreateClass = (props: Props) => {
     }
     const handleChangeDataBookTeacher = (field: string, value: string | number, index: number) => {
         values.expectedGroup[index][field] = value;
+        setFieldValue('expectedGroup', [...values.expectedGroup]);
     }
     const columns: Columns = [
         {
@@ -186,6 +248,34 @@ const CreateClass = (props: Props) => {
         }
     ];
     useEffect(() => {
+        if (getDataRequestBookTC) {
+            setFieldValue('expectedGroup', getDataRequestBookTC.map((item) => {
+                return {
+                    ...item,
+                    key: item._id,
+                    locationId: item.locationId._id,
+                    totalStudents: item.totalStudents ?? 0,
+                    note: item.note ?? ''
+                }
+            }));
+        }
+    }, [getDataRequestBookTC]);
+    useEffect(() => {
+        query!(router.query.classId as string);
+    }, []);
+    useEffect(() => {
+        if (props.data) {
+            if (updatedClass.updated.response) {
+                message.open({
+                    content: updatedClass.updated.response?.message as string,
+                    type: updatedClass.updated.success ? 'success' : 'error'
+                }, 2000);
+                message.close();
+                updatedClass.clear();
+            }
+        }
+    }, [updatedClass.updated]);
+    useEffect(() => {
         if (createClass && !createClass.isLoading && createClass.response) {
             if (createClass.success) {
                 message.open({
@@ -217,6 +307,9 @@ const CreateClass = (props: Props) => {
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Khoá học:  <span className="error">*</span></Form.Label>
                         <SelectCourse
+                            courseLevelId={values.courseLevelId}
+                            courseId={values.courseId}
+                            shortLabelItem
                             onChange={(dataSelect) => {
                                 setFieldValue('courseId', dataSelect.courseId);
                                 setFieldValue('courseLevelId', dataSelect.levelId);
@@ -244,6 +337,7 @@ const CreateClass = (props: Props) => {
                         <div className="hihi">
                             <RangePicker
                                 format={"DD/MM/YYYY"}
+                                defaultValue={[values.dayStart ? dayjs(values.dayStart) : null, values.dayEnd ? dayjs(values.dayEnd) : null]}
                                 size="small"
                                 className={styles.rangePickerDropdown}
                                 placeholder={['Ngày KG', 'Ngày KT']}
@@ -273,16 +367,14 @@ const CreateClass = (props: Props) => {
                         {(!(values.timeOnce as unknown as Obj)?._id || !(values.timeTwice as unknown as Obj)?._id) && < p className="error">Đừng quên chọn lịch học trong tuần nhé!</p>}
                         <div className={styles.day}>
                             <div className="day1">
-                                <label>Ngày 1: <span className={styles.dayTime}>{(values.timeOnce as unknown as Obj)?.label}</span></label>
+                                <label>Ngày 1: <span className={styles.dayTime}>{getLabelTime(values.timeOnce)}</span></label>
                                 <PickTimeSchedule
+                                    value={values.timeOnce}
                                     size="small"
                                     className={styles.weekday}
                                     onClickItem={(e) => {
                                         const findItem = (listTimeSchedule.data.response?.data as Array<Obj>)?.find((item) => item._id === e.key);
-                                        setFieldValue('timeOnce', {
-                                            _id: e.key,
-                                            label: `${findItem!.weekday}: ${findItem!.start}-${findItem!.end}`
-                                        });
+                                        setFieldValue('timeOnce', findItem);
                                         delete errors.timeOnce;
                                         setErrors({
                                             ...errors,
@@ -291,16 +383,14 @@ const CreateClass = (props: Props) => {
                                 />
                             </div>
                             <div className="day2">
-                                <label>Ngày 2: <span className={styles.dayTime}>{(values.timeTwice as unknown as Obj)?.label}</span></label>
+                                <label>Ngày 2: <span className={styles.dayTime}>{getLabelTime(values.timeTwice)}</span></label>
                                 <PickTimeSchedule
+                                    value={values.timeTwice}
                                     size="small"
                                     className={styles.weekday}
                                     onClickItem={(e) => {
                                         const findItem = (listTimeSchedule.data.response?.data as Array<Obj>)?.find((item) => item._id === e.key);
-                                        setFieldValue('timeTwice', {
-                                            _id: e.key,
-                                            label: `${findItem!.weekday}: ${findItem!.start}-${findItem!.end}`
-                                        });
+                                        setFieldValue('timeTwice', findItem);
                                         delete errors.timeTwice;
                                         setErrors({
                                             ...errors,
@@ -316,13 +406,19 @@ const CreateClass = (props: Props) => {
                         <Form.Label>
                             CXO:
                         </Form.Label>
-                        <Input type="text" size="small" />
+                        <Input type="text" size="small" value={values.cxo} onChange={handleChange} name='cxo' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
                             Cơ sở BU:
                         </Form.Label>
-                        <Input type="text" size="small" />
+                        <Input type="text" size="small" value={values.bu} onChange={handleChange} name='bu' />
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>
+                            Ghi chú:
+                        </Form.Label>
+                        <Input.TextArea size="small" value={values.note} onChange={handleChange} name='note' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
@@ -349,7 +445,7 @@ const CreateClass = (props: Props) => {
                             rowData={[...values.expectedGroup]}
                         />
                     </Form.Group>
-                    <Button loading={createClass.isLoading} size="small" htmlType='submit' className={styles.btnCreateClass}>Lưu</Button>
+                    <Button loading={createClass.isLoading || updatedClass.updated.isLoading} size="small" htmlType='submit' className={styles.btnCreateClass}>Lưu</Button>
                 </div>
             </Form>
         </div>

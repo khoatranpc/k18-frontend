@@ -78,7 +78,8 @@ const TitleHeader = (props: Props) => {
         FEEDBACK: '',
         MANAGER_GROUP: '',
         TEXTBOOK: '',
-        SYLLABUS: ''
+        SYLLABUS: '',
+        SETTING: ''
     }
     return (
         <div className={styles.titleHeader}>
