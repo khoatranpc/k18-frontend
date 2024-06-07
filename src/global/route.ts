@@ -23,7 +23,8 @@ const CombineRoute = {
         DOCUMENT: '/te/manager/storage/document',
         COURSE: "/te/manager/storage/course",
         COURSE_DETAIL: "/te/manager/storage/course/[courseId]",
-        TEST_COURSE: "/te/manager/storage/course/[courseId]/[courseLevelId]/test"
+        TEST_COURSE: "/te/manager/storage/course/[courseId]/[courseLevelId]/test",
+        TIME_WEEKDAY: '/te/manager/storage/time-weekday',
       }
     },
     MY_INFO: '/te/my-info',

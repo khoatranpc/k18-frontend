@@ -132,6 +132,12 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         },
         {
+          title: 'Thời gian học',
+          indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]['TIME_WEEKDAY'],
+          route: CombineRoute["TE"]["MANAGER"]["STORAGE"]['TIME_WEEKDAY'],
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC],
+        },
+        {
           title: "Chi tiết khoá học",
           route: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE_DETAIL"],
           indexroute: CombineRoute["TE"]["MANAGER"]["STORAGE"]["COURSE_DETAIL"],
@@ -147,9 +153,10 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           hide: true,
           hasBackPage: true,
           positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
-        }
+        },
       ]
     },
+
     {
       title: "Cơ sở",
       route: "LOCATION",
