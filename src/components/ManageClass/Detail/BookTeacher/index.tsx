@@ -145,7 +145,7 @@ const BookTeacher = (props: Props) => {
             onCell(data) {
                 return {
                     onClick() {
-                        if ((data.teacherRegister as Obj[]).length && hasRole) {
+                        if (data.teacherRegister && hasRole) {
                             handleClickTeacherCell(data);
                         }
                     }
