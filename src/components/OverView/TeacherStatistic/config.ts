@@ -22,7 +22,7 @@ const filterTeacherWithArea = (listRecordCourseApply?: Obj[], listDataTeacher?: 
         dataLocationTotal[item?.area] += 1;
     });
     const listLocation = listArea?.map((item) => {
-        const getNameArea = item.name; 
+        const getNameArea = item.name;
         const getCountTeacher = dataLocationTotal[item._id] ?? 0;
         return [getNameArea, getCountTeacher]
     });
@@ -45,12 +45,14 @@ const getStatisticTeacher = (listCourse?: Obj[], getListCourseApply?: Obj[], get
         for (let i = 0; i < (getListCourseApply || []).length; i++) {
             const record = getListCourseApply?.[i];
             if (record) {
-                const getRecordCourseApply = record?.coursesRegister as Obj[];
+                const getRecordCourseApply = record?.coursesRegister as Obj[] ?? [];
                 for (let j = 0; j < getRecordCourseApply.length; j++) {
                     const data = getRecordCourseApply[j];
                     if (data.idCourse?._id === item._id) {
                         (data.levelHandle as Obj[])?.forEach((lv) => {
-                            countTeacherByLevelHandle[`lv${lv.levelNumber}`]++;
+                            if (lv) {
+                                countTeacherByLevelHandle[`lv${lv.levelNumber}`]++;
+                            }
                         });
                         break;
                     }
