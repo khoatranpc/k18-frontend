@@ -228,7 +228,7 @@ const TableRecruitment = (props: Props) => {
                 disableDefaultPagination
                 columns={columns}
                 rowData={rowData}
-                enablePaginationAjax={!isSearch}
+                enablePaginationAjax
                 loading={listDataRecruitment.data.isLoading}
                 hanldeClickRow={(record) => {
                     handleRedirectDetail(record._id as string);

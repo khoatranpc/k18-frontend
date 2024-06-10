@@ -144,6 +144,11 @@ const FilterBar = (props: Props) => {
         if (!firstRender.current) {
             setIsSearch(!!searchCandidate);
             props.setIsSearching?.(!!searchCandidate);
+            listDataRecruitment.query(10, 1, undefined, {
+                ...conditionFilter.condition,
+                componentId: tableComponentId,
+                valueSearch: searchCandidate
+            });
         }
     }, [searchCandidate]);
     return (
