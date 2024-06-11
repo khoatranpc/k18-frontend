@@ -22,7 +22,7 @@ const ListClass = () => {
         done: boolean;
     }>({
         codeClassText: '',
-        time: [1],
+        time: [1, 2],
         date: {
             month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),

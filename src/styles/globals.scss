@@ -1148,3 +1148,17 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
         }
     }
 }
+
+.formCollectionFeedback {
+    &.middle {
+        .w-50 {
+            width: 80% !important;
+        }
+    }
+
+    &.small {
+        .w-50 {
+            width: 95% !important;
+        }
+    }
+}

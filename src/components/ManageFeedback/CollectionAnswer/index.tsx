@@ -5,7 +5,7 @@ import { Columns, Obj, RowData } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
 import { formatDatetoString, uuid } from '@/utils';
-import { useGetListCourse, useGetListFeedback } from '@/utils/hooks';
+import { useDebounce, useGetListCourse, useGetListFeedback } from '@/utils/hooks';
 import Table from '@/components/Table';
 import ExportCSV from '@/components/ExportCSV';
 import styles from '@/styles/feedback/CollectionResponse.module.scss';
@@ -21,21 +21,11 @@ const initFilter = {
     course: [],
     codeClass: '',
     groupNumber: [],
-    time: '',
-    pointCxo: '',
-    pointST: '',
-    pointMT: '',
-    pointOb: '',
-    pointSyl: ''
+    time: [1, 2],
 }
 const CollectionAnswer = () => {
-    const [filter, setFilter] = useState<{
-        isFilter: boolean;
-        query: typeof initFilter
-    }>({
-        isFilter: false,
-        query: initFilter
-    });
+    const [filter, setFilter] = useState<typeof initFilter>(initFilter);
+    const debounceFilter = useDebounce(filter);
     const listCourse = useGetListCourse();
     const listResponseFeedback = useGetListFeedback();
     const listValueCourse = (listCourse.listCourse?.data as Array<Obj>)?.map((item) => item._id as string) || [];
@@ -43,21 +33,12 @@ const CollectionAnswer = () => {
     const handleFilter = (isFilter: boolean, query: Obj) => {
         setFilter({
             ...filter,
-            isFilter,
-            query: {
-                ...filter.query,
-                ...query
-            }
+            ...query
         })
     }
     useEffect(() => {
-        if (!listResponseFeedback.data.response) {
-            listResponseFeedback.query(10, 1);
-        }
-    }, []);
-    useEffect(() => {
-        listResponseFeedback.query(10, 1, filter)
-    }, [filter]);
+        listResponseFeedback.query(100, 1, debounceFilter)
+    }, [debounceFilter]);
     useEffect(() => {
         if (!listCourse.listCourse) {
             listCourse.queryListCourse();
@@ -79,15 +60,6 @@ const CollectionAnswer = () => {
             },
             width: 150,
             fixed: 'left',
-            filterDropdown: (props) => {
-                return <DatePicker size={'middle'} picker="month" placeholder="Tháng" onChange={((day) => {
-                    handleFilter(true, {
-                        ...filter.query,
-                        month: String((day as Obj)?.$M) || null,
-                        year: String((day as Obj)?.$y) || null
-                    });
-                })} />
-            },
             filterIcon: MapIconKey[KEY_ICON.TIMESCHEDULE],
         },
         {
@@ -99,7 +71,7 @@ const CollectionAnswer = () => {
             filterDropdown(props) {
                 return <Input className="inputAntd" placeholder="Tìm học viên" onChange={(e) => {
                     handleFilter(true, {
-                        ...filter.query,
+                        ...filter,
                         studentName: e.target.value
                     })
                 }} />
@@ -165,17 +137,6 @@ const CollectionAnswer = () => {
             className: 'text-center',
             title: 'Nhóm',
             width: 90,
-            filterDropdown(props) {
-                return <Checkbox.Group className={styles.checkboxGroup} defaultValue={[1]} onChange={(checkedValue) => {
-                }}>
-                    <Checkbox value={1}>
-                        Data
-                    </Checkbox>
-                    <Checkbox value={2}>
-                        Coding
-                    </Checkbox>
-                </Checkbox.Group>
-            },
             render(value) {
                 return value.groupNumber;
             },
@@ -187,13 +148,17 @@ const CollectionAnswer = () => {
             className: 'text-center',
             width: 100,
             filterDropdown(props) {
-                return <Checkbox.Group className={styles.checkboxGroup} defaultValue={[1]} onChange={(checkedValue) => {
+                return <Checkbox.Group className={styles.checkboxGroup} defaultValue={filter.time} onChange={(checkedValue) => {
+                    filter.time = checkedValue.map(item => Number(item));
+                    setFilter({
+                        ...filter
+                    });
                 }}>
                     <Checkbox value={1}>
-                        Data
+                        Buổi 4
                     </Checkbox>
                     <Checkbox value={2}>
-                        Coding
+                        Buổi 9
                     </Checkbox>
                 </Checkbox.Group>
             },
@@ -307,10 +272,7 @@ const CollectionAnswer = () => {
                 <Button
                     className={`${styles.btn}`}
                     onClick={() => {
-                        setFilter({
-                            isFilter: false,
-                            query: initFilter
-                        });
+                        setFilter(initFilter);
                     }}
                 >
                     <span>{MapIconKey[KEY_ICON.RELOAD]} Reset</span>
@@ -331,14 +293,16 @@ const CollectionAnswer = () => {
                 onChangeDataPagination={(data) => {
                     listResponseFeedback.query(data.currentTotalRowOnPage, data.currentPage);
                 }}
-                maxPage={(listResponseFeedback.data.response?.data as Obj)?.totalPage || 1}
-                enablePaginationAjax={!filter.isFilter}
+                maxPage={(listResponseFeedback.data.response?.data as Obj)?.totalPage ?? 1}
+                enablePaginationAjax
                 disableDefaultPagination
                 className={styles.tableAnswerFeedback}
                 bordered
                 hasFixedColumn
                 columns={columns}
                 rowData={rowData}
+                showSizePage
+                rowOnPage={(listResponseFeedback.data.response?.data as Obj)?.rowOnPage ?? 100}
             />
         </div>
     )

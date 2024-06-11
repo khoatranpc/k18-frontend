@@ -229,6 +229,11 @@ const toastify = (content: ToastContent<unknown>, options?: ToastOptions<Obj> | 
     return toast(content, options);
 }
 
+const getClassResponsive = (width: number) => {
+    if (width < 768) return 'small';
+    if (width < 1024) return 'middle'
+    return 'large';
+}
 export {
     uuid,
     listMonth,
@@ -245,5 +250,6 @@ export {
     calculateAge,
     getFileInfoFromBase64,
     compareRefData,
-    toastify
+    toastify,
+    getClassResponsive
 }
