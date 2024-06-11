@@ -3,10 +3,12 @@ import { Button, Input, MenuProps, Radio } from 'antd';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { Form } from 'react-bootstrap';
+import ResizeObserver from 'react-resize-observer';
 import * as yup from 'yup';
 import { Obj } from '@/global/interface';
 import { ROLE_TEACHER } from '@/global/enum';
 import { useGetListCourse, useGetListGroupClassInFormFeedback, useListClassInFormFeedback, useResponseFeedbackForStudent } from '@/utils/hooks';
+import { getClassResponsive } from '@/utils';
 import { useHookMessage } from '@/utils/hooks/message';
 import Loading from '@/components/loading';
 import Dropdown from '@/components/Dropdown';
@@ -24,6 +26,8 @@ const validationSchema = yup.object({
 
 let getRoleTeacher = '';
 const FormFeedbackForStudent = () => {
+    const [siderSize, setSiderSize] = useState<number>(0);
+
     const courses = useGetListCourse();
     const [step, setStep] = useState(1);
     const listClassInForm = useListClassInFormFeedback();
@@ -225,7 +229,12 @@ const FormFeedbackForStudent = () => {
             },
         ];
     return (
-        <div className={styles.formCollectStudent}>
+        <div className={`${styles.formCollectStudent} formCollectionFeedback ${siderSize ? getClassResponsive(siderSize) : ''}`}>
+            <ResizeObserver
+                onResize={(rect) => {
+                    setSiderSize(rect.width);
+                }}
+            />
             <div className={`${styles.logo} radius border w-50 mb-3`}>
                 <Image src={logo} alt='' className={styles.imgLogo} />
             </div>
