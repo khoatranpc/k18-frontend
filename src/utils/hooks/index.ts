@@ -508,12 +508,12 @@ const useResponseFeedbackForStudent = () => {
 const useGetListFeedback = () => {
     const data = useSelector((state: RootState) => (state.listResponseFeedback as State).state);
     const dispatch = useDispatch();
-    const query = (rowOnPage?: number, currentPage?: number, query?: Obj) => {
+    const query = (rowOnPage?: number, currentPage?: number, query?: Obj, fields?: string[]) => {
         const payload: Action = {
             payload: {
                 query: {
                     query: {
-                        fields: ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'time'],
+                        fields: fields ?? ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'time'],
                         recordOnPage: rowOnPage,
                         currentPage,
                         ...query
