@@ -225,7 +225,7 @@ const FeedBack = (props: Props) => {
         <div className={styles.feedbackDetailClass}>
             <div className={styles.filter}>
                 <span>
-                    Điểm giáo viên lớp: <span style={{ fontWeight: 'bold', color: getColorTeacherPoint(Number(calcTC ?? 0)) }}>{Number(calcTC ?? 0).toFixed(2)}</span>
+                    Điểm giáo viên lớp: <span style={{ fontWeight: 'bold', color: getColorTeacherPoint(Number(calcTC ?? 0)) }}>{Number(calcTC) ? Number(calcTC).toFixed(2) : Number(0).toFixed(2)}</span>
                 </span>
             </div>
             <Table
