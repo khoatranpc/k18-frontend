@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Obj } from '@/global/interface';
 import { ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { getColorFromStatusClass } from '@/global/init';
-import { useListClass, useGetListCourse, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
+import { useListClass, useGetListCourse, useListTeacher, useTeacherRegisterCourse, useGetListFeedback } from '@/utils/hooks';
 import ChartColumn from './ChartColumn';
 import IconArrowView from '@/icons/IconArrowView';
 import { getListTeacherIdOfCourse } from './config';
@@ -39,9 +39,12 @@ const IndexOverViewBlock = (props: Props) => {
     const getListTeacherApplyCourse = teacherApplyCourse.listData.response?.data as Obj[] || [];
     const teacherByCourse: Obj = {};
     const getListCourse = (listCourse.listCourse?.data as Obj[]);
+    const listFb = useGetListFeedback();
+    const getDataFb = (listFb.data.response?.data as Obj)?.list as Obj[];
     const listTeacherStatistic = [];
+    const tc: Obj = {};
     const listTeacherApplyCourse: Record<string, string[]> = (props.type === TypeOverView.TEACHERPOINT || props.type === TypeOverView.RANKSALARY) ? getListTeacherIdOfCourse(getListCourse, getListTeacherApplyCourse) : {};
-    if (props.type === TypeOverView.TEACHERPOINT || props.type === TypeOverView.RANKSALARY) {
+    if (props.type === TypeOverView.RANKSALARY) {
         for (const key in listTeacherApplyCourse) {
             teacherByCourse[key] = 0;
             teacherByCourse[`count${key}`] = 0;
@@ -51,16 +54,11 @@ const IndexOverViewBlock = (props: Props) => {
             for (let i = 0; i < element.length; i++) {
                 const teacherId = element[i];
                 const currentTeacher = getListTeacher?.find((item) => item._id === teacherId);
-                if (props.type === TypeOverView.TEACHERPOINT) {
-                    teacherByCourse[key] += currentTeacher?.teacherPoint || 0;
-                    teacherByCourse[`count${key}`] += (currentTeacher?.teacherPoint ? 1 : 0);
-                } else {
-                    const getSalaryPH = currentTeacher?.salaryPH as Obj[];
-                    if (getSalaryPH && getSalaryPH.length) {
-                        const getCurrentSalary = getSalaryPH[getSalaryPH.length - 1].rank as number;
-                        teacherByCourse[key] += getCurrentSalary || 0;
-                        teacherByCourse[`count${key}`] += (getCurrentSalary ? 1 : 0);
-                    }
+                const getSalaryPH = currentTeacher?.salaryPH as Obj[];
+                if (getSalaryPH && getSalaryPH.length) {
+                    const getCurrentSalary = getSalaryPH[getSalaryPH.length - 1].rank as number;
+                    teacherByCourse[key] += getCurrentSalary || 0;
+                    teacherByCourse[`count${key}`] += (getCurrentSalary ? 1 : 0);
                 }
             }
         }
@@ -77,6 +75,29 @@ const IndexOverViewBlock = (props: Props) => {
                     };
                     listTeacherStatistic.push(newRecordColumn);
                 }
+            }
+        }
+    }
+    if (props.type === TypeOverView.TEACHERPOINT) {
+        if (getDataFb) {
+            getDataFb.forEach((item: Obj) => {
+                if (!tc[item.course?.courseName]) {
+                    tc[item.course?.courseName] = 0;
+                    tc[`count${item.course?.courseName}`] = 0
+                    tc[`color${item.course?.courseName}`] = item.course?.color as string;
+                }
+                tc[item.course?.courseName] += ((Number(item.pointMT) + Number(item.pointST)));
+                tc[`count${item.course?.courseName}`] += 2;
+            });
+        }
+        for (const key in tc) {
+            if (!key.includes('count') && !key.includes('color')) {
+                const newRecordColumn = {
+                    name: key,
+                    y: Number(Number((tc[key] ?? 0) / (tc[`count${key}`] ?? 1)).toFixed(2)),
+                    color: tc[`color${key}`]
+                };
+                listTeacherStatistic.push(newRecordColumn);
             }
         }
     }

@@ -8,6 +8,7 @@
     .chevron {
         display: flex;
         flex-direction: column;
+        gap: 0.3rem;
 
         div {
             height: 1.5rem;
@@ -52,15 +53,6 @@
             width: 1.5rem;
             height: 1.5rem;
         }
-
-        .btnHanldePage {
-            width: 2.4rem;
-            height: 2.4rem;
-            background-color: var(--white);
-            border-radius: 0.8rem;
-            text-align: center;
-            cursor: pointer;
-        }
     }
 
     .stepPage {
@@ -79,4 +71,22 @@
         }
 
     }
+}
+
+.btnHanldePage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.8rem;
+    text-align: center;
+    border: 1px solid var(--grey);
+    border-radius: 0.8rem;
+    cursor: pointer;
+}
+
+.disabled {
+    color: var(--light-blue);
+    cursor: not-allowed;
 }

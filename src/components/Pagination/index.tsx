@@ -61,23 +61,25 @@ const Pagination = (props: Props) => {
             <div className={styles.rowOnPage}>
                 <div className={`${styles.chevronRoot} bgWhite`}>
                     <div className={styles.chevron}>
-                        <div className={styles.chevronUp} onClick={() => {
+                        <div className={`${styles.chevronUp} ${styles.btnHanldePage} `} onClick={() => {
                             handleRowOnPage(TypeCount.INCR);
                         }}>
                             {MapIconKey[KEY_ICON.CHEVRONU]}
                         </div>
-                        <div className={styles.chevronDown} onClick={() => {
+                        <div className={`${styles.chevronDown} ${styles.btnHanldePage} `} onClick={() => {
                             handleRowOnPage(TypeCount.DECR);
                         }}>
                             {MapIconKey[KEY_ICON.CHEVROND]}
                         </div>
                     </div>
-                    <span>{crrDataPagination.rowOnPage < 10 ? `0${crrDataPagination.rowOnPage}` : crrDataPagination.rowOnPage}</span>
+                    <span>
+                        {crrDataPagination.rowOnPage < 10 ? `0${crrDataPagination.rowOnPage}` : crrDataPagination.rowOnPage}
+                    </span>
                 </div>
                 <span>Dòng hiển thị</span>
             </div>
             <div className={styles.pagination}>
-                <div className={`${styles.prevPage} ${styles.btnHanldePage}`} onClick={() => {
+                <div className={`${styles.prevPage} ${styles.btnHanldePage} ${crrDataPagination.crrPage < 2 ? styles.disabled : ''}`} onClick={() => {
                     handlePage(TypeCount.DECR);
                 }}>
                     {MapIconKey[KEY_ICON.CHEVRONL]}
@@ -85,7 +87,7 @@ const Pagination = (props: Props) => {
                 <span className={styles.currentPage}>
                     {crrDataPagination.crrPage < 10 ? `0${crrDataPagination.crrPage}` : crrDataPagination.crrPage}
                 </span>
-                <div className={`${styles.nextPage} ${styles.btnHanldePage}`} onClick={() => {
+                <div className={`${styles.nextPage} ${styles.btnHanldePage} ${crrDataPagination.crrPage === props.maxPage ? styles.disabled : ''}`} onClick={() => {
                     handlePage(TypeCount.INCR);
                 }}>
                     {MapIconKey[KEY_ICON.CHEVRONR]}
@@ -96,12 +98,12 @@ const Pagination = (props: Props) => {
                 <div className={styles.page}>
                     <span>{crrDataPagination.crrPage < 10 ? `0${crrDataPagination.crrPage}` : crrDataPagination.crrPage}{props.showSizePage ? `/${props.maxPage}` : ''}</span>
                     <div className={styles.chevron}>
-                        <div className={styles.chevronUp} onClick={() => {
+                        <div className={`${styles.chevronUp} ${styles.btnHanldePage} `} onClick={() => {
                             handlePage(TypeCount.INCR);
                         }}>
                             {MapIconKey[KEY_ICON.CHEVRONU]}
                         </div>
-                        <div className={styles.chevronDown} onClick={() => {
+                        <div className={`${styles.chevronDown} ${styles.btnHanldePage} `} onClick={() => {
                             handlePage(TypeCount.DECR);
                         }}>
                             {MapIconKey[KEY_ICON.CHEVROND]}

@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Obj } from '@/global/interface';
+import { uuid } from '@/utils';
+import { useGetListFeedback } from '@/utils/hooks';
 import IndexOverViewBlock, { TypeOverView } from './IndexOverviewBlock';
 import OverViewRecruitment from './Recruitment';
 import TeacherStatistic from './TeacherStatistic';
@@ -27,6 +30,13 @@ const OverView = () => {
         RECRUITMENT: <OverViewRecruitment isOnExpand={openExpand.open} setOpenExpand={handleExpand} />,
         TEACHER: <TeacherStatistic isOnExpand={openExpand.open} setOpenExpand={handleExpand} />
     }
+    const listFb = useGetListFeedback();
+    const componentId = useRef(uuid());
+    useEffect(() => {
+        listFb.query(undefined, undefined, {
+            componentId: componentId.current
+        }, ['pointST', 'pointMT', '_id', 'courseName', 'color']);
+    }, []);
     return (
         <div className={styles.containerOverView}>
             <div className={styles.listIndexOverview}>

@@ -8,7 +8,7 @@ import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoin
 import { ClassForm, ComponentPage, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
-import { useComparePositionTE, useDebounce, useGetClassTeacherPonit, useGetListClass } from '@/utils/hooks';
+import { useComparePositionTE, useDebounce, useGetClassTeacherPonit, useGetListClass, useGetListFeedback } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
@@ -123,6 +123,8 @@ const ManagerClass = () => {
         crrKeyTab: items[0].key,
         listFieldFilter: [],
     });
+    const listFeedBack = useGetListFeedback();
+    const getListFeedback = ((listFeedBack.data.response as Obj)?.data as Obj)?.list as Obj[];
     const router = useRouter();
     const listClass = useGetListClass();
     const firstQuery = useRef<boolean>(true);
@@ -149,8 +151,6 @@ const ManagerClass = () => {
         }
     }) || [];
     const dispatch = useDispatch<AppDispatch>();
-    const listClassTeacherPoint = useGetClassTeacherPonit();
-    const getListClTeacherPoint = (listClassTeacherPoint.data.response?.data as Array<Obj>);
     const [codeClass, setCodeClass] = useState('');
     const [conditionFilter, setConditionFilter] = useState<Obj>({});
     const codeClassDebounce = useDebounce(codeClass, 1000);
@@ -164,13 +164,16 @@ const ManagerClass = () => {
                 return sortByString(a.codeClass as string, b.codeClass as string)
             },
             render(value, record, index) {
-                const filterClTeacherPoint: Array<Obj> = getListClTeacherPoint?.filter((item) => {
-                    return item.classId === record.key
+                const filterClTeacherPoint: Array<Obj> = getListFeedback?.filter((item) => {
+                    return item.codeClass._id === record.key
                 });
+                const calcTC = filterClTeacherPoint?.reduce((prevValue, item) => {
+                    return prevValue + (item.pointST + item.pointMT) / 2
+                }, 0);
                 return <span>{value} {filterClTeacherPoint &&
-                    <b style={{ color: getColorTeacherPoint(Number(filterClTeacherPoint[filterClTeacherPoint.length - 1]?.teacherPoint)) }}>
+                    <b style={{ color: getColorTeacherPoint(filterClTeacherPoint?.length ? Number(calcTC / filterClTeacherPoint?.length) : 0) }}>
                         <small>
-                            {Number(filterClTeacherPoint[filterClTeacherPoint.length - 1]?.teacherPoint || 0).toFixed(2)}
+                            {Number(filterClTeacherPoint?.length ? (calcTC / filterClTeacherPoint?.length) : 0).toFixed(2)}
                         </small>
                     </b>}
                 </span>
@@ -276,10 +279,12 @@ const ManagerClass = () => {
         firstQuery.current = false;
     }, [codeClassDebounce]);
     useEffect(() => {
-        if (listClass.success && listClass.response && isQueryClassTeacherPoint.current) {
+        if (listClass.success && listClass.response && isQueryClassTeacherPoint.current && !listClass.isLoading) {
             isQueryClassTeacherPoint.current = false;
             const getListClassId = ((listClass.response.data as Obj)?.classes as Array<Obj>)?.map((item) => item._id as string);
-            listClassTeacherPoint.query(getListClassId)
+            listFeedBack.query(undefined, undefined, {
+                listClass: getListClassId
+            }, ['_id', 'pointST', 'pointMT']);
         }
     }, [listClass]);
     return (
@@ -311,6 +316,7 @@ const ManagerClass = () => {
                     }}
                     iconReload
                     onClickReload={() => {
+                        isQueryClassTeacherPoint.current = true;
                         handleQueryListClass((listClass?.response?.data as Obj)?.currentPage as number, (listClass?.response?.data as Obj)?.recordOnPage as number, conditionFilter)
                     }}
                     placeHolderSearch="Nhập mã lớp"
