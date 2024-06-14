@@ -6,17 +6,14 @@ import { SearchOutlined } from '@ant-design/icons';
 import CombineRoute from '@/global/route';
 import { ComponentPage } from '@/global/enum';
 import { formatDatetoString, getColor3Point } from '@/utils';
-import { useDispatchDataRouter, useGetClassTeacherPonit, useGetListFeedback, useListTeacher } from '@/utils/hooks';
-import SelectInputNumber from '@/components/SelectInputNumber';
+import { useDispatchDataRouter, useGetListFeedback, useListTeacher } from '@/utils/hooks';
 import Table from '@/components/Table';
 import styles from '@/styles/class/DetailClass.module.scss';
 import { getColorTeacherPoint } from '@/global/init';
 
-
 interface Props {
     codeClassId?: string;
 }
-const MAX_TIME = 2;
 const listGroup: Array<number> = [];
 const listTeacherCheck: Array<string> = [];
 
@@ -27,29 +24,21 @@ const initConditionalFilter: Obj = {
 }
 const FeedBack = (props: Props) => {
     const listResponseFeedback = useGetListFeedback();
+    const getLisresponseFb = ((listResponseFeedback.data.response as Obj)?.data as Obj)?.list as Obj[];
+    const calcTC = getLisresponseFb?.reduce((prevValue, item) => {
+        return prevValue + (item.pointST + item.pointMT) / 2
+    }, 0) / getLisresponseFb?.length;
+
     const dispatchRouter = useDispatchDataRouter();
-    const timeCollect = useRef(1);
     const router = useRouter();
-    const classId = router.query.classId as string;
     const listTeacher = useListTeacher();
 
-    const listClassTeacherPoint = useGetClassTeacherPonit();
-
-    const getClassTeacherPoint = () => {
-        if (listClassTeacherPoint.data.response && listClassTeacherPoint.data.success) {
-            const listClassTeacherPointOfClass: Array<Obj> = (listClassTeacherPoint.data.response?.data as Array<Obj>)?.filter((item) => {
-                return item.classId === classId
-            });
-            return listClassTeacherPointOfClass[listClassTeacherPointOfClass.length - 1]?.teacherPoint as number || 0;
-        }
-        return 0;
-    }
     const [conditionalFiter, setConditionalFilter] = useState<Obj>(initConditionalFilter);
     const rowData = useMemo(() => {
         const dataResource = ((listResponseFeedback.data.response?.data as Obj)?.list as Array<Obj>) || [];
         const listData = (dataResource && dataResource.length !== 0) ? dataResource.map((item) => {
             const getMentor = ((listTeacher.listTeacher.response?.data as Obj)?.listTeacher as Array<Obj>)?.find((tc) => {
-                return tc._id === item.groupNumber.teacherRegister[0].idTeacher
+                return tc._id === item.groupNumber?.teacherRegister?.[0].idTeacher
             })?.fullName;
             if (!listGroup.includes(item.groupNumber.groupNumber)) {
                 listGroup.push(item.groupNumber.groupNumber);
@@ -88,6 +77,19 @@ const FeedBack = (props: Props) => {
             render(value, record, index) {
                 return formatDatetoString(value as Date, 'dd/MM/yyyy');
             },
+        },
+        {
+            title: 'Lần',
+            dataIndex: 'timeCollect',
+            className: 'text-center hasSort',
+            key: 'date',
+            width: 50,
+            render(value) {
+                return value
+            },
+            sorter(a, b) {
+                return Number(a) - Number(b)
+            }
         },
         {
             title: 'Học viên',
@@ -200,8 +202,7 @@ const FeedBack = (props: Props) => {
     ];
     useEffect(() => {
         listResponseFeedback.query(undefined, undefined, {
-            codeClass: props.codeClassId as string,
-            timeCollect: timeCollect.current
+            codeClass: props.codeClassId as string
         });
     }, [props.codeClassId]);
     useEffect(() => {
@@ -220,51 +221,11 @@ const FeedBack = (props: Props) => {
             }
         }
     }, [listResponseFeedback.data.response, listTeacher]);
-    useEffect(() => {
-        if (listClassTeacherPoint.data.response) {
-            const findExistdClTeacherPoint = (listClassTeacherPoint.data.response.data as Array<Obj>)?.find((item) => {
-                return item.classId === classId
-            });
-            if (!findExistdClTeacherPoint) {
-                listClassTeacherPoint.query([router.query.classId as string]);
-            }
-        } else if (!listClassTeacherPoint.data.response && !listClassTeacherPoint.data.isLoading) {
-            listClassTeacherPoint.query([router.query.classId as string]);
-        }
-    }, []);
     return (
         <div className={styles.feedbackDetailClass}>
             <div className={styles.filter}>
-                <div className={styles.timeCollect}>
-                    <span>Lần:</span>
-                    <SelectInputNumber
-                        max={MAX_TIME}
-                        onSelect={(e) => {
-                            timeCollect.current = Number(e.key);
-                            listResponseFeedback.query(undefined, undefined, {
-                                codeClass: props.codeClassId as string,
-                                timeCollect: Number(e.key)
-                            });
-                        }}
-                        onHandlerNumber={(type) => {
-                            if (type === 'INCRE' && timeCollect.current < MAX_TIME) {
-                                timeCollect.current += 1;
-                                listResponseFeedback.query(undefined, undefined, {
-                                    codeClass: props.codeClassId as string,
-                                    timeCollect: timeCollect.current
-                                });
-                            } else if (type === 'DECRE' && timeCollect.current > 1) {
-                                timeCollect.current -= 1;
-                                listResponseFeedback.query(undefined, undefined, {
-                                    codeClass: props.codeClassId as string,
-                                    timeCollect: timeCollect.current
-                                });
-                            }
-                        }}
-                    />
-                </div>
                 <span>
-                    Điểm giáo viên lớp: <span style={{ fontWeight: 'bold', color: getColorTeacherPoint(Number(getClassTeacherPoint())) }}>{Number(getClassTeacherPoint()).toFixed(2)}</span>
+                    Điểm giáo viên lớp: <span style={{ fontWeight: 'bold', color: getColorTeacherPoint(Number(calcTC ?? 0)) }}>{Number(calcTC ?? 0).toFixed(2)}</span>
                 </span>
             </div>
             <Table

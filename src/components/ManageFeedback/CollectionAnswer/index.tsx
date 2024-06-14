@@ -28,6 +28,7 @@ const CollectionAnswer = () => {
     const debounceFilter = useDebounce(filter);
     const listCourse = useGetListCourse();
     const listResponseFeedback = useGetListFeedback();
+    const getPaginating = (listResponseFeedback.data.response as Obj)?.data as Obj;
     const listValueCourse = (listCourse.listCourse?.data as Array<Obj>)?.map((item) => item._id as string) || [];
 
     const handleFilter = (isFilter: boolean, query: Obj) => {
@@ -272,7 +273,7 @@ const CollectionAnswer = () => {
                 <Button
                     className={`${styles.btn}`}
                     onClick={() => {
-                        setFilter(initFilter);
+                        listResponseFeedback.query(getPaginating?.recordOnPage ?? 100, getPaginating?.currentPage ?? 1, debounceFilter)
                     }}
                 >
                     <span>{MapIconKey[KEY_ICON.RELOAD]} Reset</span>

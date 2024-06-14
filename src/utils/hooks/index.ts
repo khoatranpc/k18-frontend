@@ -513,7 +513,7 @@ const useGetListFeedback = () => {
             payload: {
                 query: {
                     query: {
-                        fields: fields ?? ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'time'],
+                        fields: fields ?? ['_id', 'studentName', 'phoneNumber', 'course', 'courseName', 'codeClass', 'courseId', 'groupNumber', 'groupNumber', 'pointCxo', 'pointST', 'pointMT', 'pointOb', 'pointSyl', 'docDetail', 'createdAt', 'time', 'feedbackId', 'timeCollect', 'teacherRegister'],
                         recordOnPage: rowOnPage,
                         currentPage,
                         ...query
