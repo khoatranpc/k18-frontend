@@ -1,11 +1,11 @@
 import React from 'react';
 import * as yup from 'yup';
-import styles from '@/styles/teacher/DetailTeacher.module.scss';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import { Button, Input } from 'antd';
-import { useGetTeacherDetail } from '@/utils/hooks';
 import { Obj } from '@/global/interface';
+import { useGetTeacherDetail } from '@/utils/hooks';
+import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 const validationSchema = yup.object({
     password: yup.string().min(8, 'Tối thiếu 8 ký tự').required('Bạn cần nhập mật khẩu!'),

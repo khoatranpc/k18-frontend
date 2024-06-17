@@ -50,6 +50,7 @@ const TeacherInfo = (props: Props) => {
             delete getValues.createdAt;
             delete getValues.updatedAt;
             delete getValues._v;
+            delete getValues.salaryPH;
             const formData = new FormData();
             for (const key in getValues) {
                 formData.append(`${key}`, getValues[key]);

@@ -140,7 +140,6 @@ const Feedback = () => {
             listLocation.queryLocations();
         }
     }, []);
-    console.log(listResponseFeedback.data.response);
     return (
         <div className={styles.feedbackTeacher}>
             <div className={styles.toolBar}>
