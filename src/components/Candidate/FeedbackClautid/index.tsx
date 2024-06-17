@@ -89,8 +89,9 @@ const FeedbackClautid = () => {
             title: 'Cơ sở',
             dataIndex: 'location',
             render(value: Obj, record) {
-                return value ? (record.form === ClassForm.ONLINE ? <a>Zoom</a> : <p>{value.locationCode} <Tooltip title={value.locationDetail}><sup className={styles.sup}>i</sup></Tooltip></p>) : ''
-            }
+                const linkZoom = (record.classId as Obj)?.linkZoom as string;
+                return (record.form === ClassForm.ONLINE ? <a href={linkZoom} target='_blank' style={{color:'var(--deep-blue)'}}>Zoom</a> : <p>{value.locationCode} <Tooltip title={value.locationDetail}><sup className={styles.sup}>i</sup></Tooltip></p>)
+            },
         },
         {
             title: 'Feedback',
