@@ -367,7 +367,7 @@ const CreateClass = (props: Props) => {
                         {(!(values.timeOnce as unknown as Obj)?._id || !(values.timeTwice as unknown as Obj)?._id) && < p className="error">Đừng quên chọn lịch học trong tuần nhé!</p>}
                         <div className={styles.day}>
                             <div className="day1">
-                                <label>Ngày 1: <span className={styles.dayTime}>{getLabelTime(values.timeOnce)}</span></label>
+                                <label>Ngày 1: <span className={styles.dayTime}>{values.timeOnce ? getLabelTime(values.timeOnce) : ''}</span></label>
                                 <PickTimeSchedule
                                     value={values.timeOnce}
                                     size="small"
@@ -383,7 +383,7 @@ const CreateClass = (props: Props) => {
                                 />
                             </div>
                             <div className="day2">
-                                <label>Ngày 2: <span className={styles.dayTime}>{getLabelTime(values.timeTwice)}</span></label>
+                                <label>Ngày 2: <span className={styles.dayTime}>{values.timeTwice ? getLabelTime(values.timeTwice) : ''}</span></label>
                                 <PickTimeSchedule
                                     value={values.timeTwice}
                                     size="small"
@@ -413,6 +413,12 @@ const CreateClass = (props: Props) => {
                             Cơ sở BU:
                         </Form.Label>
                         <Input type="text" size="small" value={values.bu} onChange={handleChange} name='bu' />
+                    </Form.Group>
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>
+                            Link online:
+                        </Form.Label>
+                        <Input type="text" size="small" value={values.linkZoom} onChange={handleChange} name='linkZoom' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
