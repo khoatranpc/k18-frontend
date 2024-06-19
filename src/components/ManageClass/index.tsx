@@ -8,7 +8,7 @@ import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoin
 import { ClassForm, ComponentPage, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, sortByString } from '@/utils';
-import { useComparePositionTE, useDebounce, useGetClassTeacherPonit, useGetListClass, useGetListFeedback } from '@/utils/hooks';
+import { useComparePositionTE, useDebounce, useGetListClass, useGetListFeedback } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
