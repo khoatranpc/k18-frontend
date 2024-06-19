@@ -1,4 +1,5 @@
 import React from 'react';
+import { EyeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { Checkbox, Image, Tooltip } from 'antd';
 import { Obj } from '@/global/interface';
@@ -75,6 +76,7 @@ const BlockCourse = (props: Props) => {
                             }}
                         >
                             <b>{props.isLevel ? props.data?.levelCode : props.data?.courseTitle as string}</b>
+                            {!props.isLevel && <EyeOutlined />}
                         </span>
                         <span className={styles.action}>
                             <Checkbox checked={props.data?.active}>Active</Checkbox>
