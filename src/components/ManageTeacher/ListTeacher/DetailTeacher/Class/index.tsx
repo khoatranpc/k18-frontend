@@ -17,9 +17,7 @@ import { EyeFilled } from '@ant-design/icons';
 
 const Class = () => {
     const listClass = useClassTeacherRegister();
-    const getListClass = useMemo(() => {
-        return (listClass.data.response?.data as Array<Obj>) ?? []
-    }, listClass.data.response);
+    const getListClass = listClass.data.response?.data as Obj[] ?? [];
     const listTimeSchedule = useGetTimeSchedule();
     const dispatchRouter = useDispatchDataRouter();
     const listFeedback = useGetListFeedback();
@@ -87,8 +85,7 @@ const Class = () => {
                 });
                 const classId = (record.classId as Obj)?._id as string;
                 const fbClasses = getListFeedback.filter(item => {
-                
-                    return item.codeClass?._id === classId && item.groupNumer?.groupNumber === record.groupNumber
+                    return item.codeClass?._id === classId && item.groupNumber?.groupNumber === record.groupNumber
                 });
                 let tc = 0;
                 if (fbClasses.length) {
@@ -135,12 +132,14 @@ const Class = () => {
     }, []);
     useEffect(() => {
         if (getListClass.length) {
-            const getListClassId = getListClass.map(item => item._id);
+            const getListClassId = getListClass.map((item: Obj) => {
+                return item.classId?._id
+            });
             listFeedback.query(undefined, undefined, {
                 listClass: getListClassId
             }, ['_id', 'pointST', 'pointMT', 'groupNumber', 'location']);
         }
-    }, [getListClass]);
+    }, [listClass.data.response]);
     return (
         <div className={styles.classRegister}>
             <Table
