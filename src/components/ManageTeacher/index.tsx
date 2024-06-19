@@ -2,38 +2,28 @@ import React, { useState } from 'react';
 import { TabsProps } from 'antd';
 import Tabs from '../Tabs';
 import ListTeacher from './ListTeacher';
-import WaitingAccept from './WaitingAccept';
 import styles from '@/styles/teacher/ManagerTeacher.module.scss';
 
 export enum TabManagerTeacher {
     // STATISTIC = 'STATISTIC',
     LISTTEACHER = 'LISTTEACHER',
-    WAITINGACCEPT = 'WAITINGACCEPT'
+    // WAITINGACCEPT = 'WAITINGACCEPT'
 }
 export const getLableTabManagerTeacher: Record<TabManagerTeacher, string> = {
     LISTTEACHER: 'Danh sách',
     // STATISTIC: 'Thống kê',
-    WAITINGACCEPT: 'Đợi duyệt'
+    // WAITINGACCEPT: 'Đợi duyệt'
 }
 const listTab: TabsProps['items'] = [
-    // {
-    //     key: TabManagerTeacher.STATISTIC,
-    //     label: getLableTabManagerTeacher[TabManagerTeacher.STATISTIC]
-    // },
     {
         key: TabManagerTeacher.LISTTEACHER,
         label: getLableTabManagerTeacher[TabManagerTeacher.LISTTEACHER]
-    },
-    {
-        key: TabManagerTeacher.WAITINGACCEPT,
-        label: getLableTabManagerTeacher[TabManagerTeacher.WAITINGACCEPT]
     },
 ];
 
 const getComponentTab: Record<TabManagerTeacher, React.ReactElement> = {
     // STATISTIC: <Statistic />,
     LISTTEACHER: <ListTeacher />,
-    WAITINGACCEPT: <WaitingAccept />,
 }
 
 const ManagerTeacher = () => {

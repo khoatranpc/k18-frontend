@@ -2,8 +2,9 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import React, { useEffect, useRef, useState } from 'react';
 import ManagerTeacherContext from '../context';
+import { Badge } from 'antd';
 import { Obj } from '@/global/interface';
-import { useDebounce, useGetArea, useImportCSVDataTeacher, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
+import { useDebounce, useGetArea, useGetListFeedback, useImportCSVDataTeacher, useListTeacher, useTeacherRegisterCourse } from '@/utils/hooks';
 import { ComponentPage } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { useHookMessage } from '@/utils/hooks/message';
@@ -13,6 +14,7 @@ import Table from '@/components/Table';
 import ToolBar from '@/components/Tabs/ToolBar';
 import { getColums, mapRowData } from './config';
 import styles from '@/styles/teacher/ManagerTeacher.module.scss';
+import { getColorTeacherPoint } from '@/global/init';
 
 const ListTeacher = () => {
     const { listTeacher, query } = useListTeacher();
@@ -31,9 +33,39 @@ const ListTeacher = () => {
     const firstQuery = useRef(true);
     const columns = getColums(undefined, getAreas, dataTeacherRegisterCourse.listData.isLoading && !dataTeacherRegisterCourse.listData.response);
     const rowData = mapRowData((listTeacher.response?.data as Obj)?.listTeacher || [], (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []);
+    const listFb = useGetListFeedback();
+    const tc: Obj = {};
+    const listTeacherStatistic = [];
+    const getDataFb = (listFb.data.response?.data as Obj)?.list as Obj[];
     const handleQueryListTeacher = (rowOnPage?: number, currentPage?: number, email?: string) => {
         query(rowOnPage, currentPage, {
             valueSearch: email
+        });
+    }
+    if (getDataFb) {
+        getDataFb.forEach((item: Obj) => {
+            if (!tc[item.course?.courseName]) {
+                tc[item.course?.courseName] = 0;
+                tc[`count${item.course?.courseName}`] = 0
+                tc[`color${item.course?.courseName}`] = item.course?.color as string;
+            }
+            tc[item.course?.courseName] += ((Number(item.pointMT) + Number(item.pointST)));
+            tc[`count${item.course?.courseName}`] += 2;
+        });
+    }
+    for (const key in tc) {
+        if (!key.includes('count') && !key.includes('color')) {
+            const newRecordColumn = {
+                name: key,
+                tp: Number(Number((tc[key] ?? 0) / (tc[`count${key}`] ?? 1)).toFixed(2)),
+                color: tc[`color${key}`]
+            };
+            listTeacherStatistic.push(newRecordColumn);
+        }
+    }
+    if (listTeacherStatistic.length) {
+        listTeacherStatistic.sort((a, b) => {
+            return b.tp - a.tp;
         });
     }
     const handleClickRow = (record: Obj) => {
@@ -58,6 +90,9 @@ const ListTeacher = () => {
         }
         if (!area.data.success) {
             area.query();
+        }
+        if (!getDataFb || (getDataFb && (listFb.data.response?.data as Obj)?.recordOnPage)) {
+            listFb.query(undefined, undefined, undefined, ['_id', 'course', 'courseName', 'pointMT', 'pointST', 'color']);
         }
     }, []);
     useEffect(() => {
@@ -92,6 +127,13 @@ const ListTeacher = () => {
     }, [debounce]);
     return (
         <div className={styles.listTeacher}>
+            <div className={styles.teacherPoint}>
+                {listTeacherStatistic.map((item,idx) => {
+                    return <Badge key={idx} count={item.tp} color={getColorTeacherPoint(item.tp)}>
+                        <span className={styles.course} style={{ backgroundColor: item.color }}>UIUX</span>
+                    </Badge>
+                })}
+            </div>
             <ToolBar
                 onChangeSearch={(value) => {
                     setEmail(value);
