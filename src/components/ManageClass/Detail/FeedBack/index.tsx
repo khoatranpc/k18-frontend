@@ -202,7 +202,7 @@ const FeedBack = (props: Props) => {
     ];
     useEffect(() => {
         listResponseFeedback.query(undefined, undefined, {
-            codeClass: props.codeClassId as string
+            listClass: [props.codeClassId as string]
         });
     }, [props.codeClassId]);
     useEffect(() => {

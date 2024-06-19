@@ -1,22 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
+import { Badge } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { getColorFromStatusClass, mapRoleToString, mapStatusToString } from '@/global/init';
+import { getColorFromStatusClass, getColorTeacherPoint, mapRoleToString, mapStatusToString } from '@/global/init';
 import { ComponentPage, KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
-import { useClassTeacherRegister, useDispatchDataRouter, useGetTimeSchedule } from '@/utils/hooks';
+import { useClassTeacherRegister, useDispatchDataRouter, useGetListFeedback, useGetTimeSchedule } from '@/utils/hooks';
 import { formatDatetoString } from '@/utils';
 import Table from '@/components/Table';
 import { getMatchingTimeSchedule } from './config';
 import TitleHeader from '@/components/ManageClass/TitleHeader';
 import { TabDetailClass } from '@/components/ManageClass/Detail';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
+import { EyeFilled } from '@ant-design/icons';
 
 const Class = () => {
     const listClass = useClassTeacherRegister();
+    const getListClass = useMemo(() => {
+        return (listClass.data.response?.data as Array<Obj>) ?? []
+    }, listClass.data.response);
     const listTimeSchedule = useGetTimeSchedule();
     const dispatchRouter = useDispatchDataRouter();
+    const listFeedback = useGetListFeedback();
+    const getListFeedback = listFeedback.data.response?.data?.list as Obj[] ?? [];
     const router = useRouter();
 
     const colums: Columns = [
@@ -26,7 +33,7 @@ const Class = () => {
             dataIndex: 'classId',
             className: `${styles.codeClass}`,
             render(value) {
-                return <span>{value?.codeClass || ''}</span>
+                return <span className='flex align-center' style={{ gap: '0.8rem' }}>{value?.codeClass || ''} <EyeFilled /></span>
             },
             onCell(record) {
                 return {
@@ -53,7 +60,7 @@ const Class = () => {
             title: 'Nhóm',
             dataIndex: 'groupNumber',
             render(value, record) {
-                return `${value} - ${(record.locationId as Obj)?.locationCode as string}`;
+                return `Nhóm ${value} - ${(record.locationId as Obj)?.locationCode as string}`;
             }
         },
         {
@@ -73,24 +80,31 @@ const Class = () => {
             key: 'ROLE',
             title: 'Vị trí',
             dataIndex: 'teacherRegister',
-            render(value) {
+            className: 'text-center',
+            render(value, record: Obj) {
                 const getTeacher = (value as Array<Obj>)?.find((item) => {
                     return item.idTeacher === router.query.teacherId as string;
-                })
-                return mapRoleToString[getTeacher?.roleRegister as ROLE_TEACHER] || ''
+                });
+                const classId = (record.classId as Obj)?._id as string;
+                const fbClasses = getListFeedback.filter(item => {
+                
+                    return item.codeClass?._id === classId && item.groupNumer?.groupNumber === record.groupNumber
+                });
+                let tc = 0;
+                if (fbClasses.length) {
+                    fbClasses.forEach(item => {
+                        tc += ((item.pointMT + item.pointST) / 2)
+                    });
+                }
+                return <Badge
+                    count={fbClasses.length ? Number(tc / fbClasses.length).toLocaleString(undefined, {
+                        maximumFractionDigits: 2
+                    }) : 0}
+                    color={fbClasses.length ? getColorTeacherPoint(tc / fbClasses.length) : 'var(--base)'}
+                >
+                    <span className={styles.positionTeacher}>{getTeacher?.roleRegister as ROLE_TEACHER || ''}</span>
+                </Badge>
             }
-        },
-        {
-            key: 'TIME_OFF',
-            title: 'Buổi nghỉ',
-        },
-        {
-            key: 'SALARY',
-            title: 'Lương/h',
-        },
-        {
-            key: 'BONUS',
-            title: 'Thưởng/buổi',
         },
         {
             key: 'ENROLL',
@@ -107,7 +121,7 @@ const Class = () => {
             }
         }
     ];
-    const rowData: RowData[] = (listClass.data.response?.data as Array<Obj>)?.map((item) => {
+    const rowData: RowData[] = getListClass.map((item) => {
         return {
             ...item,
             key: item._id as string,
@@ -119,6 +133,14 @@ const Class = () => {
             listTimeSchedule.query();
         }
     }, []);
+    useEffect(() => {
+        if (getListClass.length) {
+            const getListClassId = getListClass.map(item => item._id);
+            listFeedback.query(undefined, undefined, {
+                listClass: getListClassId
+            }, ['_id', 'pointST', 'pointMT', 'groupNumber', 'location']);
+        }
+    }, [getListClass]);
     return (
         <div className={styles.classRegister}>
             <Table
