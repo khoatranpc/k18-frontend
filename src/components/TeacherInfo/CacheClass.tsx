@@ -56,8 +56,8 @@ const CacheClass = () => {
                 columns={columns}
                 expandable={{
                     expandedRowRender: (record) => {
-                        return (record.listFb as Obj[])?.map((item) => {
-                            return <p>{item.fb}</p>
+                        return (record.listFb as Obj[])?.map((item, idx) => {
+                            return <p key={idx}>{item.fb}</p>
                         });
                     },
                 }}
