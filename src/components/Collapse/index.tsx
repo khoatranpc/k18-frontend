@@ -1,12 +1,11 @@
 import React from 'react';
 import { Collapse as CollapseComponent, Tooltip } from 'antd';
 import styles from '@/styles/Collapse.module.scss';
-import { Obj } from '@/global/interface';
 
 export interface ItemPanels {
     header: React.ReactNode,
     key: string,
-    content: React.ReactElement
+    content: React.ReactElement | React.ReactNode
 }
 interface Props {
     panels: Array<ItemPanels>;

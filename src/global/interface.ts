@@ -70,7 +70,7 @@ export interface Columns extends TableColumnsType<Record<string, unknown>> {
 
 }
 export interface RowData extends Record<string, any> {
-    key: string;
+    key: string | number;
 }
 export interface BaseInterfaceHookReducer extends Obj {
     data: Obj | Action;

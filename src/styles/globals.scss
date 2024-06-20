@@ -610,6 +610,10 @@ a {
             background-color: var(--bg-input);
 
             thead {
+                .ant-table-row-expand-icon-cell {
+                    background-color: var(--row-head) !important;
+                }
+
                 th {
 
                     .ant-table-column-sorter-inner,

@@ -9,7 +9,7 @@ import Loading from '../loading';
 import Pagination from '../Pagination';
 import styles from '@/styles/Table.module.scss';
 
-interface Props {
+interface Props extends TableProps<Obj> {
     width?: number | string;
     height?: number;
     className?: string;
@@ -76,6 +76,7 @@ const Table = (props: Props) => {
     return (
         <div className={`tableCustomize ${styles.tableCustomizeAnt} ${props.className ? props.className : ''}`}>
             <TableComponent
+                {...props}
                 style={{
                     width: props.width ?? '100%',
                     maxWidth: '100%'
@@ -86,7 +87,7 @@ const Table = (props: Props) => {
                 }}
                 size={props.size}
                 bordered={props.bordered}
-                dataSource={props.rowData}
+                dataSource={props.rowData ?? props.dataSource}
                 columns={mapColumns}
                 rowSelection={props.enableRowSelection ? rowSelection : undefined}
                 loading={{
