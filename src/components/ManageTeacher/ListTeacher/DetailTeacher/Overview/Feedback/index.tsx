@@ -108,7 +108,8 @@ const Feedback = () => {
             dataIndex: 'feedbackResponseId',
             render(value) {
                 return value.docDetail || ''
-            }
+            },
+            width: 700
         }
     ];
     const rowData: RowData[] = (listResponseFeedback.data.response?.data as Array<Obj>)?.map((item) => {

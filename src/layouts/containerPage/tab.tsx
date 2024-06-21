@@ -264,7 +264,8 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       hide: true,
       keyIcon: KEY_ICON.HTS,
       component: ComponentPage.DETAILCLASS,
-      positionAccept: [ROLE.TEACHER]
+      positionAccept: [ROLE.TEACHER],
+      hasBackPage: true
     },
     {
       title: "Khoá Học",

@@ -104,6 +104,7 @@ import createTe from './te/createTe.reducer';
 import createTimeSchedule from './timeschedule/createTimeSchedule.reducer';
 import updateTimeSchedule from './timeschedule/updateTimeSchedule.reducer';
 import updateAccount from './account/updateAccount.reducer';
+import getBookTeacher from './class/getBookTeacher.reducer';
 
 const rootReducer = {
     test: test,
@@ -211,6 +212,7 @@ const rootReducer = {
     createTe,
     createTimeSchedule,
     updateTimeSchedule,
-    updateAccount
+    updateAccount,
+    getBookTeacher
 };
 export default rootReducer;

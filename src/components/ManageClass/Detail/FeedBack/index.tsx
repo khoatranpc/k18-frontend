@@ -197,7 +197,8 @@ const FeedBack = (props: Props) => {
         {
             title: 'Nhận xét',
             dataIndex: 'docDetail',
-            key: 'docDetail'
+            key: 'docDetail',
+            width: 700
         }
     ];
     useEffect(() => {

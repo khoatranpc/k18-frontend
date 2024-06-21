@@ -29,28 +29,6 @@ export enum TabDetailClass {
     BOOK_TEACHER = 'BOOK_TEACHER',
     SETTING = 'SETTING'
 }
-const listTab: TabsProps['items'] = [
-    {
-        key: TabDetailClass.OVERVIEW,
-        label: 'Tổng quan'
-    },
-    {
-        key: TabDetailClass.ATTENDANCE,
-        label: 'Điểm danh'
-    },
-    {
-        key: TabDetailClass.FEEDBACK,
-        label: 'Phản hồi'
-    },
-    {
-        key: TabDetailClass.BOOK_TEACHER,
-        label: 'Sắp xếp GV'
-    },
-    {
-        key: TabDetailClass.SETTING,
-        label: 'Cài đặt'
-    }
-];
 
 interface Props {
     classId?: string;
@@ -58,6 +36,28 @@ interface Props {
 const Detail = (props: Props) => {
     const router = useRouter();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
+    const listTab: TabsProps['items'] = [
+        {
+            key: TabDetailClass.OVERVIEW,
+            label: 'Tổng quan'
+        },
+        {
+            key: TabDetailClass.ATTENDANCE,
+            label: 'Điểm danh'
+        },
+        {
+            key: TabDetailClass.FEEDBACK,
+            label: 'Phản hồi'
+        },
+        {
+            key: TabDetailClass.BOOK_TEACHER,
+            label: 'Sắp xếp GV'
+        },
+        ...hasRole ? [{
+            key: TabDetailClass.SETTING,
+            label: 'Cài đặt'
+        }] : []
+    ];
     const message = useHookMessage();
     const { data, query, clear } = useDetailClass('GET');
     const [currentContent, setCurrentContent] = useState<TabDetailClass>(TabDetailClass.OVERVIEW);

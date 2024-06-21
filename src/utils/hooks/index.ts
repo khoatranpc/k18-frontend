@@ -101,6 +101,7 @@ import { clearCreateTE, queryCreateTe } from "@/store/reducers/te/createTe.reduc
 import { clearCreateTimeSchedule, queryCreateTimeSchedule } from "@/store/reducers/timeschedule/createTimeSchedule.reducer";
 import { clearUpdateTimeSchedule, queryUpdateTimeSchedule } from "@/store/reducers/timeschedule/updateTimeSchedule.reducer";
 import { clearUpdateAccount, queryUpdateAccount } from "@/store/reducers/account/updateAccount.reducer";
+import { queryGetBookTeacher } from "@/store/reducers/class/getBookTeacher.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -1017,6 +1018,7 @@ const useCreateTe = createHookQueryReducer('createTe', queryCreateTe, clearCreat
 const useCreateTimeSchedule = createHookQueryReducer('createTimeSchedule', queryCreateTimeSchedule, clearCreateTimeSchedule);
 const useUpdateTimeSchedule = createHookQueryReducer('updateTimeSchedule', queryUpdateTimeSchedule, clearUpdateTimeSchedule);
 const useUpdateAccount = createHookQueryReducer('updateAccount', queryUpdateAccount, clearUpdateAccount);
+const useGetListBookTeacher = createHookQueryReducer('getBookTeacher', queryGetBookTeacher);
 
 export {
     useGetListClass,
@@ -1119,5 +1121,6 @@ export {
     useCreateTe,
     useCreateTimeSchedule,
     useUpdateTimeSchedule,
-    useUpdateAccount
+    useUpdateAccount,
+    useGetListBookTeacher
 }
