@@ -5,7 +5,7 @@ import ResizeObserver from 'react-resize-observer';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { ComponentPage, KEY_ICON, PositionTe, ROLE, ROLE_USER } from '@/global/enum';
+import { ComponentPage, KEY_ICON, PositionTe, ROLE_USER } from '@/global/enum';
 import { Obj, SiderRoute, State } from '@/global/interface';
 import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
@@ -69,11 +69,11 @@ const ContainerPage = (props: Props) => {
     const course = useGetListCourse();
     const mappingTab = siderByRole[crrRole];
     const items: MenuItem[] = mappingTab?.map((item) => {
-        return !item.hide && item.positionAccept?.includes(crrRole === ROLE_USER.TE ? getPosition as PositionTe : ROLE_USER.TC) ? getItem(item.title,
+        return !item.hide && item.positionAccept?.includes(crrRole === ROLE_USER.TE ? getPosition as PositionTe : crrRole) ? getItem(item.title,
             item.route,
             MapIconKey[item.keyIcon as KEY_ICON],
             item.children?.map((child) => {
-                if (!child.hide && child.positionAccept?.includes(getPosition as PositionTe)) {
+                if (!child.hide && child.positionAccept?.includes(crrRole === ROLE_USER.TE ? getPosition as PositionTe : crrRole)) {
                     return getItem(child.title, child.route, MapIconKey[child.keyIcon as KEY_ICON]);
                 } else return null
             })
@@ -192,7 +192,7 @@ const ContainerPage = (props: Props) => {
                     <div className={styles.badge}>
                         <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string} />
                         {!collapsed && <div className={styles.user}>
-                            <p>{(crrUser.response as Obj)?.data?.teName as string || (crrUser.response as Obj)?.data?.fullName as string}</p>
+                            <p>{(crrUser.response as Obj)?.data?.teName as string ?? (crrUser.response as Obj)?.data?.fullName as string?? (crrUser.response as Obj)?.data?.name as string  }</p>
                             <span className={styles.role}>
                                 {
                                     ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`

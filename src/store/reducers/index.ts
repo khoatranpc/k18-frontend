@@ -105,6 +105,9 @@ import createTimeSchedule from './timeschedule/createTimeSchedule.reducer';
 import updateTimeSchedule from './timeschedule/updateTimeSchedule.reducer';
 import updateAccount from './account/updateAccount.reducer';
 import getBookTeacher from './class/getBookTeacher.reducer';
+import createCs from './cs/createCs.reducer';
+import listCs from './cs/getListCs.reducer';
+import updateCs from './cs/updateCs.reducer';
 
 const rootReducer = {
     test: test,
@@ -213,6 +216,9 @@ const rootReducer = {
     createTimeSchedule,
     updateTimeSchedule,
     updateAccount,
-    getBookTeacher
+    getBookTeacher,
+    createCs,
+    listCs,
+    updateCs
 };
 export default rootReducer;

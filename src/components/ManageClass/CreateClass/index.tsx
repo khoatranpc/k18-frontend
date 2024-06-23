@@ -87,6 +87,8 @@ const CreateClass = (props: Props) => {
                 payload: {
                     query: {
                         body: {
+                            cxo: values.cxo,
+                            bu: values.bu,
                             courseId: values.courseId,
                             courseLevelId: values.courseLevelId,
                             codeClass: values.codeClass,
@@ -137,7 +139,7 @@ const CreateClass = (props: Props) => {
                                             values.timeTwice
                                         ],
                                         ...JSON.stringify(values.expectedGroup) !== JSON.stringify(initValues.expectedGroup) ? {
-                                            expectedGroup: values.expectedGroup
+                                            bookTeacher: values.expectedGroup
                                         } : {}
                                     }
                                 }
@@ -436,7 +438,8 @@ const CreateClass = (props: Props) => {
                             onClick={() => {
                                 const newLc = {
                                     key: uuid(),
-                                    groupNumber: (values.expectedGroup as Obj[]).length + 1
+                                    groupNumber: (values.expectedGroup as Obj[]).length + 1,
+                                    classId: router.query.classId as string
                                 };
                                 values.expectedGroup.push(newLc as unknown as Obj);
                                 setFieldValue('expectedGroup', [...values.expectedGroup]);

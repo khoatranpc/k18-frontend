@@ -5,12 +5,13 @@ import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import { Action, Columns, Obj, RowData } from '@/global/interface';
 import { fieldFilter, getClassForm, getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
-import { ClassForm, ComponentPage, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { ClassForm, ComponentPage, PositionTe, ROLE, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { formatDatetoString, generateRowDataForMergeRowSingleField, sortByString } from '@/utils';
 import { useComparePositionTE, useDebounce, useGetListClass, useGetListFeedback, useGetListBookTeacher } from '@/utils/hooks';
 import { AppDispatch } from '@/store';
 import { PayloadRoute, initDataRoute } from '@/store/reducers/global-reducer/route';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import { queryGetListClass } from '@/store/reducers/class/listClass.reducer';
 import { FieldFilter } from '../Tabs/ToolBar/interface';
 import ManagerClassContext from './context';
@@ -107,6 +108,8 @@ const CustomizeFilter = (props: PropsFilter) => {
 }
 const ManagerClass = () => {
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
+    const crrUser = useGetCrrUser();
+    const getCrrUser = crrUser.data as Obj;
     const items: TabsProps['items'] = [
         {
             key: Tab['ALL_CLASS'],
@@ -322,7 +325,11 @@ const ManagerClass = () => {
             }
         }
         dispatch(initDataRoute(routePayload));
-        router.push(hasRole ? `/te/manager/class/detail/${record._id}` : `/teacher/class/detail/${record._id}`);
+
+        const route = getCrrUser?.roleAccount === ROLE.TE ? (hasRole ? `/te/manager/class/detail/${record._id}` : '/404') : (
+            getCrrUser?.roleAccount === ROLE.CS ? `/cs/class/${record._id}` : `/teacher/class/detail/${record._id}`
+        );
+        router.push(route);
     }
     const handleQueryListClass = (currentPage: number, recordOnPage: number, filter?: Obj) => {
         const payload: Action = {

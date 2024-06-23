@@ -5,7 +5,7 @@ import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Columns, Obj, RowData, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
-import { KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { KEY_ICON, PositionTe, ROLE, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { generateRowDataForMergeRowSingleField, uuid } from '@/utils';
 import useGetCrrUser from '@/utils/hooks/getUser';
@@ -190,7 +190,7 @@ const BookTeacher = (props: Props) => {
                     />
                 </div>
             },
-        },] : (detailClass?.status === STATUS_CLASS.PREOPEN ? [
+        },] : (detailClass?.status === STATUS_CLASS.PREOPEN && !(currentUser?.roleAccount === ROLE.CS) ? [
             {
                 key: 'REGISTER',
                 title: 'Hành động',

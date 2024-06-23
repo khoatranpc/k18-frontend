@@ -137,3 +137,7 @@ export const TEACHER_IMPORT_CSV = 'TEACHER_IMPORT_CSV';
 export const CREATE_TE = 'CREATE_TE';
 
 export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
+
+export const CREATE_CS = 'CREATE_CS';
+export const LIST_CS = 'LIST_CS';
+export const UPDATE_CS = 'UPDATE_CS';

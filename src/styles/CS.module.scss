@@ -1,0 +1,21 @@
+.listCs {
+    padding: 1.8rem;
+
+    .topAction {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.8rem;
+        gap: 1.8rem;
+
+        .reload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            border: 1px solid var(--base) !important;
+            color: var(--base) !important;
+        }
+    }
+}

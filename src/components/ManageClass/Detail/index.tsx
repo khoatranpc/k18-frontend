@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, TabsProps } from 'antd';
 import { Obj } from '@/global/interface';
-import { PositionTe } from '@/global/enum';
+import { PositionTe, ROLE } from '@/global/enum';
 import { useComparePositionTE, useDetailClass } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import Tabs from '@/components/Tabs';
 import Loading from '@/components/loading';
 import OverView from './OverView';
@@ -36,6 +37,8 @@ interface Props {
 const Detail = (props: Props) => {
     const router = useRouter();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
+    const crrUser = useGetCrrUser();
+    const crrRoleUser = (crrUser.data as Obj)?.roleAccount;
     const listTab: TabsProps['items'] = [
         {
             key: TabDetailClass.OVERVIEW,
@@ -53,7 +56,7 @@ const Detail = (props: Props) => {
             key: TabDetailClass.BOOK_TEACHER,
             label: 'Sắp xếp GV'
         },
-        ...hasRole ? [{
+        ...(hasRole || crrRoleUser === ROLE.CS) ? [{
             key: TabDetailClass.SETTING,
             label: 'Cài đặt'
         }] : []
