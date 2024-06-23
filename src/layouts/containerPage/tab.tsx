@@ -2,7 +2,7 @@ import { ComponentPage, KEY_ICON, PositionTe, ROLE, ROLE_USER } from "@/global/e
 import { SiderRoute } from "@/global/interface";
 import CombineRoute from "@/global/route";
 
-const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
+const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
   TE: [
     {
       title: "Tổng quan",
@@ -98,7 +98,7 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
           indexroute: CombineRoute["TE"]["MANAGER"]["REQUEST_CLASS"],
           route: CombineRoute["TE"]["MANAGER"]["REQUEST_CLASS"],
           title: 'Mở lớp',
-          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC, ROLE.CXO]
+          positionAccept: [PositionTe.LEADER, PositionTe.ASSISTANT, PositionTe.QC]
         }
       ]
     },
@@ -236,6 +236,22 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       route: CombineRoute["TE"]["MY_INFO"],
       indexroute: CombineRoute["TE"]["MY_INFO"],
       hide: true
+    },
+    {
+      title: 'CS',
+      indexroute: 'CS',
+      notRouting: true,
+      positionAccept: [PositionTe.LEADER],
+      keyIcon: 'CS',
+      route: 'CS',
+      children: [
+        {
+          title: 'Danh sách CS',
+          route: CombineRoute['TE']['CS']['LIST'],
+          indexroute: CombineRoute['TE']['CS']['LIST'],
+          positionAccept: [PositionTe.LEADER]
+        }
+      ]
     }
   ],
   TEACHER: [
@@ -320,6 +336,63 @@ const siderByRole: Record<ROLE_USER, Array<SiderRoute>> = {
       positionAccept: [ROLE.TEACHER]
     },
   ],
-  COMMON: []
+  COMMON: [],
+  CXO: [],
+  CS: [
+    {
+      title: "Lớp học",
+      route: "CLASS",
+      indexroute: "CLASS",
+      keyIcon: "HTS",
+      positionAccept: [ROLE.CS],
+      notRouting: true,
+      children: [
+        {
+          route: CombineRoute["CS"]["CLASS"]['LIST'],
+          indexroute: CombineRoute["CS"]["CLASS"]['LIST'],
+          positionAccept: [ROLE.CS],
+          title: 'Danh sách'
+        },
+        {
+          indexroute: CombineRoute["CS"]['CLASS']['REQUEST'],
+          route: CombineRoute["CS"]['CLASS']['REQUEST'],
+          title: 'Mở lớp',
+          positionAccept: [ROLE.CS]
+        }
+      ]
+    },
+    {
+      title: "Chi tiết lớp học",
+      route: CombineRoute["CS"]['CLASS']['DETAIL'],
+      indexroute: CombineRoute["CS"]['CLASS']['DETAIL'],
+      hide: true,
+      hasBackPage: true,
+      component: ComponentPage.DETAILCLASS,
+      positionAccept: [ROLE.CS],
+    },
+    {
+      title: "Feedback",
+      keyIcon: "MS",
+      route: CombineRoute['CS']["FEEDBACK"],
+      indexroute: CombineRoute['CS']["FEEDBACK"],
+      positionAccept: [ROLE.CS]
+    },
+    {
+      title: 'CS',
+      indexroute: 'CS',
+      notRouting: true,
+      positionAccept: [ROLE.CS],
+      keyIcon: 'CS',
+      route: 'CS',
+      children: [
+        {
+          title: 'Danh sách CS',
+          route: CombineRoute['CS']['LIST'],
+          indexroute: CombineRoute['CS']['LIST'],
+          positionAccept: [ROLE.CS]
+        }
+      ]
+    },
+  ]
 };
 export { siderByRole };

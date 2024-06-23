@@ -102,6 +102,9 @@ import { clearCreateTimeSchedule, queryCreateTimeSchedule } from "@/store/reduce
 import { clearUpdateTimeSchedule, queryUpdateTimeSchedule } from "@/store/reducers/timeschedule/updateTimeSchedule.reducer";
 import { clearUpdateAccount, queryUpdateAccount } from "@/store/reducers/account/updateAccount.reducer";
 import { queryGetBookTeacher } from "@/store/reducers/class/getBookTeacher.reducer";
+import { clearCreateCs, queryCreateCs } from "@/store/reducers/cs/createCs.reducer";
+import { queryListCs } from "@/store/reducers/cs/getListCs.reducer";
+import { clearUpdateCs, queryUpdateCs } from "@/store/reducers/cs/updateCs.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -129,8 +132,13 @@ const useGetListCourse = () => {
 const useGetLocations = () => {
     const locations = useSelector((state: RootState) => (state.locations as State).state);
     const dispatch = useDispatch<AppDispatch>();
-    const queryLocations = () => {
-        dispatch(queryGetLocations());
+    const queryLocations = (query?: Query) => {
+        const payload: Action = {
+            payload: {
+                query
+            }
+        }
+        dispatch(queryGetLocations(payload));
     }
     return {
         locations: locations.response as Obj,
@@ -1019,6 +1027,9 @@ const useCreateTimeSchedule = createHookQueryReducer('createTimeSchedule', query
 const useUpdateTimeSchedule = createHookQueryReducer('updateTimeSchedule', queryUpdateTimeSchedule, clearUpdateTimeSchedule);
 const useUpdateAccount = createHookQueryReducer('updateAccount', queryUpdateAccount, clearUpdateAccount);
 const useGetListBookTeacher = createHookQueryReducer('getBookTeacher', queryGetBookTeacher);
+const useCreateCs = createHookQueryReducer('createCs', queryCreateCs, clearCreateCs);
+const useListCs = createHookQueryReducer('listCs', queryListCs);
+const useUpdateCs = createHookQueryReducer('updateCs', queryUpdateCs, clearUpdateCs);
 
 export {
     useGetListClass,
@@ -1122,5 +1133,8 @@ export {
     useCreateTimeSchedule,
     useUpdateTimeSchedule,
     useUpdateAccount,
-    useGetListBookTeacher
+    useGetListBookTeacher,
+    useCreateCs,
+    useListCs,
+    useUpdateCs
 }

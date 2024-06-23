@@ -31,7 +31,9 @@ const PageHeader = () => {
                 if (currentUser?.roleAccount === ROLE.TEACHER) {
                     router.push(CombineRoute['TEACHER']['CLASS']);
                 } else {
-                    router.push(CombineRoute['TE']['MANAGER']['CLASS']);
+                    if (currentUser?.roleAccount === ROLE.CS) {
+                        router.push(CombineRoute['CS']['CLASS']['LIST']);
+                    } else router.push(CombineRoute['TE']['MANAGER']['CLASS']);
                 }
                 break;
             case ComponentPage.TEACHER_DETAIL:

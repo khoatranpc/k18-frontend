@@ -7,7 +7,8 @@ export enum METHOD {
 export enum ROLE {
     TEACHER = 'TEACHER',
     TE = 'TE',
-    CXO = 'CXO'
+    CXO = 'CXO',
+    CS = 'CS'
 }
 export enum ROLE_TEACHER {
     SP = 'SP',
@@ -61,7 +62,8 @@ export enum KEY_ICON {
     TEACHER_MALE = 'TEACHER_MALE',
     TEACHER_FEMALE = 'TEACHER_FEMALE',
     MAIL = 'MAIL',
-    EMPLOYEE = 'EMPLOYEE'
+    EMPLOYEE = 'EMPLOYEE',
+    CS = 'CS'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',

@@ -4,10 +4,11 @@ import dayjs from 'dayjs';
 import { Popover, DatePicker, Button } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Action, Obj, Query } from '@/global/interface';
-import { KEY_ICON, PositionTe, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
+import { KEY_ICON, PositionTe, ROLE, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import { MapIconKey } from '@/global/icon';
 import { getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { formatDatetoString, getWeekday, uuid } from '@/utils';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import { useClassSession, useComparePositionTE, useDetailClass, useFindGetAllTe, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import BlockNotifi from './BlockNotifi';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
@@ -32,7 +33,8 @@ const OverView = () => {
     const detailClass = useDetailClass('GET');
     const listTe = useFindGetAllTe();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
-
+    const crrUser = useGetCrrUser();
+    const crrRoleUser = (crrUser.data as Obj)?.roleAccount;
     const getCurrentCourse = (detailClass.data.response?.data as Obj)?.courseId as Obj;
     const getTe = (listTe.data.response as Obj)?.data as Array<Obj> || [];
     const classSession = useClassSession();
@@ -238,7 +240,7 @@ const OverView = () => {
                 },
                 {
                     title: 'Trạng thái',
-                    value: hasRole ? [
+                    value: (hasRole || crrRoleUser === ROLE.CS) ? [
                         <Dropdown
                             key={uuid()}
                             activeKey={dataDetailClass?.data?.status as STATUS_CLASS}

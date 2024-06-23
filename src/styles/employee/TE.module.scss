@@ -166,3 +166,11 @@ g {
         justify-content: flex-end;
     }
 }
+
+.selectTe {
+    display: inline-block;
+}
+
+.selectTePopup {
+    z-index: 1150 !important;
+}

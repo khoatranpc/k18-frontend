@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 import { Obj } from '@/global/interface';
 import { RoundProcess, TemplateMail } from '@/global/enum';
-import { useRouter } from 'next/router';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import { useGetDetailCandidate, useGetMailTemplate, useMailer, useUpdateDataProcessRoundCandidate } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
+import SelectTe from '@/components/SelectTe';
 import TextEditor from '@/components/TextEditor';
 import Send from '@/icons/Send';
 import ModalCustomize from '@/components/ModalCustomize';
@@ -30,11 +32,13 @@ const SendingMail = (props: Props) => {
         }
     }
     const router = useRouter();
+    const crrUser = useGetCrrUser()?.data as Obj;
     const getTemplate = mapRoundToMailTemplate[props.round ? props.round : (props.noConnect ? 'NOCONNECT' : '')];
     const [currentTemplate, setCurrentTemplate] = useState<string>(getTemplate);
     const mailTemplate = useGetMailTemplate();
     const dataMailtemplate = mailTemplate.data.response?.data as Obj;
     const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
+    const [teProcess, setTeProcess] = useState<Obj | null>(null);
 
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
@@ -56,7 +60,7 @@ const SendingMail = (props: Props) => {
                 from: "K18",
                 toMail: getDataCandidate?.email as string,
                 subject: title,
-                html: value,
+                html: value.replace('{{FACEBOOK}}', `<a href="${teProcess!.facebook}" style="color:#1155cc;">FACEBOOK</a>`),
                 round: props.round,
                 candidateId: getDataCandidate._id as string
             }
@@ -77,7 +81,7 @@ const SendingMail = (props: Props) => {
     useEffect(() => {
         if (dataMailtemplate && getDataCandidate) {
             setTitle(dataMailtemplate.title);
-            const example = dataMailtemplate.html ? String(dataMailtemplate.html).replace('NAME', getDataCandidate?.fullName as string).replace('POSITION', `Giáo viên/Trợ giảng ${getDataCandidate?.courseApply.courseName as string}`) : '';
+            const example = dataMailtemplate.html ? String(dataMailtemplate.html).replace('NAME', getDataCandidate?.fullName as string).replace('POSITION', `Giáo viên/Trợ giảng ${getDataCandidate?.courseApply.courseName as string}`).replace('{{TE}}', `${crrUser?.teName} - ${crrUser?.phoneNumber}`) : '';
             setValue(example);
         }
     }, [dataMailtemplate, getDataCandidate]);
@@ -121,8 +125,13 @@ const SendingMail = (props: Props) => {
                     show={modal}
                     onHide={() => {
                         setModal(false);
+                        setTeProcess(null);
                     }}
-                    modalHeader={<div>Gửi mail tới: {getDataCandidate?.email as string}</div>}
+                    modalHeader={<div>Gửi mail tới: {getDataCandidate?.email as string}, TE Xử lý: <SelectTe status={!teProcess ? 'error' : ''} size="small" onChange={(__, _, data) => {
+                        if (data) {
+                            setTeProcess(data);
+                        }
+                    }} /></div>}
                 >
                     <TextEditor
                         title={title}
@@ -133,6 +142,7 @@ const SendingMail = (props: Props) => {
                         loadingButton={mailer.data.isLoading}
                         textButton="Gửi"
                         handleSubmit={handleSubmit}
+                        disabledSave={!teProcess}
                     />
                 </ModalCustomize>}
         </div>

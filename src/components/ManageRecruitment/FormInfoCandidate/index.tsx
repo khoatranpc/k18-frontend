@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { Obj } from '@/global/interface';
 import { Education, Gender, LevelTechnique, ObjectTeach, ROLE_TEACHER, ResourceApply, ResultInterview, StatusProcessing, TemplateMail } from '@/global/enum';
 import { useCreateCandidate, useGetArea, useGetDetailCandidate, useGetListCourse, useGetMailTemplate, useUpdateCandidate } from '@/utils/hooks';
+import useGetCrrUser from '@/utils/hooks/getUser';
 import { useHookMessage } from '@/utils/hooks/message';
 import Dropdown from '@/components/Dropdown';
 import SelectInputNumber from '@/components/SelectInputNumber';
@@ -75,6 +76,7 @@ const FormInfoCandidate = (props: Props) => {
             label: item.name as string
         }
     });
+    const crrUser = useGetCrrUser()?.data as Obj;
     const mailTemplate = useGetMailTemplate();
     const getMailtemplate = (mailTemplate.data.response?.data as Obj);
     const [title, setTitle] = useState('');
@@ -119,7 +121,7 @@ const FormInfoCandidate = (props: Props) => {
             if (!props.isViewInfo) {
                 const mail = {
                     title,
-                    html: String(value).replace('NAME', values.fullName as string).replace('POSITION', `Giáo viên/Trợ giảng bộ môn ${getListCourseSelect?.find((item) => item.key === values.courseApply)?.label}`)
+                    html: String(value).replace('NAME', values.fullName as string).replace('POSITION', `Giáo viên/Trợ giảng bộ môn ${getListCourseSelect?.find((item) => item.key === values.courseApply)?.label}`).replace('{{TE}}', `${crrUser?.teName} - ${crrUser?.phoneNumber}`)
                 };
                 createCandidate.query({
                     ...values,
