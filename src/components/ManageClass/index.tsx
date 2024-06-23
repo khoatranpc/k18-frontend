@@ -109,7 +109,7 @@ const CustomizeFilter = (props: PropsFilter) => {
 const ManagerClass = () => {
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const crrUser = useGetCrrUser();
-    const getCrrUser = crrUser.data as Obj;
+    const getCrrUser = crrUser?.data as Obj;
     const items: TabsProps['items'] = [
         {
             key: Tab['ALL_CLASS'],

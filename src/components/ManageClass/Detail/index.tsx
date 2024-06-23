@@ -38,7 +38,7 @@ const Detail = (props: Props) => {
     const router = useRouter();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const crrUser = useGetCrrUser();
-    const crrRoleUser = (crrUser.data as Obj)?.roleAccount;
+    const crrRoleUser = (crrUser?.data as Obj)?.roleAccount;
     const listTab: TabsProps['items'] = [
         {
             key: TabDetailClass.OVERVIEW,

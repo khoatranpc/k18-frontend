@@ -34,7 +34,7 @@ const OverView = () => {
     const listTe = useFindGetAllTe();
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const crrUser = useGetCrrUser();
-    const crrRoleUser = (crrUser.data as Obj)?.roleAccount;
+    const crrRoleUser = (crrUser?.data as Obj)?.roleAccount;
     const getCurrentCourse = (detailClass.data.response?.data as Obj)?.courseId as Obj;
     const getTe = (listTe.data.response as Obj)?.data as Array<Obj> || [];
     const classSession = useClassSession();
