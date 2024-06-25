@@ -40,7 +40,7 @@ import iconRole from '@/assets/svgs/icon-role.svg';
 import iconHourClass from '@/assets/svgs/icon-hour-glass.svg';
 import iconTeacherFemale from '@/assets/svgs/icon-teacher-female.svg';
 import iconTeacherMale from '@/assets/svgs/icon-teacer-male.svg';
-import { MailOutlined } from "@ant-design/icons";
+import { MailOutlined, AuditOutlined } from "@ant-design/icons";
 import Clock from "@/icons/Clock";
 import Employee from "@/icons/Employee";
 import CS from "@/icons/CS";
@@ -88,7 +88,8 @@ const MapIconKey: Record<KEY_ICON, React.ReactElement> = {
     TEACHER_MALE: < Image alt="" src={iconTeacherMale} />,
     MAIL: <MailOutlined />,
     EMPLOYEE: <Employee />,
-    CS: <CS />
+    CS: <CS />,
+    EV: <AuditOutlined className="antIcon" />
 }
 export {
     MapIconKey

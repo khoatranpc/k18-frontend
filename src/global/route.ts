@@ -53,7 +53,8 @@ const CombineRoute = {
     HELP: "/te/help",
     LOCATION: "/teacher/location",
     TIMESCHEDULE: "/te/timeschedule",
-    GENERAL_DOCUMENT: '/teacher/general-document'
+    GENERAL_DOCUMENT: '/teacher/general-document',
+    TEACHER_EVALUATE: '/teacher/evaluate'
   },
   CS: {
     LIST: '/cs/list',

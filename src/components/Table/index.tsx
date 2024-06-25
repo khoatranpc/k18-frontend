@@ -117,7 +117,9 @@ const Table = forwardRef((props: Props, ref) => {
             />}
         </div>
     )
-})
+});
+
+Table.displayName = 'TableCustomize';
 const MemoTable = memo(Table, (prevProps, nextProps) => {
     if ((nextProps.rowData && !compareData(prevProps.rowData, nextProps.rowData)) || (nextProps.dataSource && !compareData(prevProps.dataSource, nextProps.dataSource))) {
         return false;
@@ -128,4 +130,5 @@ const MemoTable = memo(Table, (prevProps, nextProps) => {
     }
     return true;
 });
+MemoTable.displayName = 'MemoTableCustomize';
 export default MemoTable;
