@@ -1170,3 +1170,11 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
 .align-center {
     align-items: center;
 }
+
+.exportExcel {
+    color: var(--base) !important;
+    border-color: var(--base) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}

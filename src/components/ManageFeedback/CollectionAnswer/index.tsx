@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, Input } from 'antd';
+import { Button, Checkbox, Input } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
+import { getColorTeacherPoint } from '@/global/init';
 import { KEY_ICON } from '@/global/enum';
 import { formatDatetoString, uuid } from '@/utils';
 import { useDebounce, useGetListCourse, useGetListFeedback } from '@/utils/hooks';
 import Table from '@/components/Table';
-import ExportCSV from '@/components/ExportCSV';
+import ExportExcel from '@/components/ExportExcel';
 import styles from '@/styles/feedback/CollectionResponse.module.scss';
-import { getColorTeacherPoint } from '@/global/init';
+import { mapTableDataToExcel } from '@/components/Table/config';
 
 
 const initFilter = {
@@ -30,6 +31,8 @@ const CollectionAnswer = () => {
     const listResponseFeedback = useGetListFeedback();
     const getPaginating = (listResponseFeedback.data.response as Obj)?.data as Obj;
     const listValueCourse = (listCourse.listCourse?.data as Array<Obj>)?.map((item) => item._id as string) || [];
+    const tableRef = useRef<HTMLDivElement>(null);
+    const dataExcel = useRef<Obj[]>([]);
 
     const handleFilter = (isFilter: boolean, query: Obj) => {
         setFilter({
@@ -266,11 +269,19 @@ const CollectionAnswer = () => {
         },
     ];
 
-
+    useEffect(() => {
+        if ((listResponseFeedback.data.response?.data as Obj)?.list) {
+            const dataTable = mapTableDataToExcel(tableRef.current as HTMLDivElement);
+            if (dataTable.length) {
+                dataExcel.current = dataTable;
+            }
+        }
+    }, [(listResponseFeedback.data.response?.data as Obj)?.list]);
     return (
         <div className={styles.collectionAnswer}>
             <div className={styles.toolBar}>
                 <Button
+                    size="small"
                     className={`${styles.btn}`}
                     onClick={() => {
                         listResponseFeedback.query(getPaginating?.recordOnPage ?? 100, getPaginating?.currentPage ?? 1, debounceFilter)
@@ -278,16 +289,9 @@ const CollectionAnswer = () => {
                 >
                     <span>{MapIconKey[KEY_ICON.RELOAD]} Reset</span>
                 </Button>
-                <ExportCSV
-                    data={rowData}
-                    fileName='textTwo'
-                >
-                    <Button
-                        className={`${styles.btn}`}
-                    >
-                        <span>{MapIconKey[KEY_ICON.EP]} Xuất file</span>
-                    </Button>
-                </ExportCSV>
+                <ExportExcel fileName='feedback' sizeBtn='small' onExport={(exportFnc) => {
+                    exportFnc(dataExcel.current);
+                }} />
             </div>
             <Table
                 loading={listResponseFeedback.data.isLoading}
@@ -304,6 +308,7 @@ const CollectionAnswer = () => {
                 rowData={rowData}
                 showSizePage
                 rowOnPage={(listResponseFeedback.data.response?.data as Obj)?.rowOnPage ?? 100}
+                ref={tableRef}
             />
         </div>
     )

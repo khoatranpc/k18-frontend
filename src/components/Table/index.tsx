@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { RefObject, forwardRef, memo, useMemo, useState } from 'react';
 import { Table as TableComponent, TableProps } from 'antd';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { INTERNAL_SELECTION_ITEM } from 'antd/es/table/hooks/useSelection';
@@ -8,6 +8,7 @@ import { KEY_ICON } from '@/global/enum';
 import Loading from '../loading';
 import Pagination from '../Pagination';
 import styles from '@/styles/Table.module.scss';
+import { compareData } from '@/utils';
 
 interface Props extends TableProps<Obj> {
     width?: number | string;
@@ -38,9 +39,10 @@ interface Props extends TableProps<Obj> {
      * onChange: Callback executed when pagination default, filters or sorter is changed
      */
     onChange?: TableProps<Obj>['onChange'];
+    ref?: RefObject<Obj | any>;
 }
 
-const Table = (props: Props) => {
+const Table = forwardRef((props: Props, ref) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const mapColumns: Columns = useMemo(() => {
         return props.columns.map((item) => {
@@ -77,6 +79,7 @@ const Table = (props: Props) => {
         <div className={`tableCustomize ${styles.tableCustomizeAnt} ${props.className ? props.className : ''}`}>
             <TableComponent
                 {...props}
+                ref={ref as any}
                 style={{
                     width: props.width ?? '100%',
                     maxWidth: '100%'
@@ -114,5 +117,15 @@ const Table = (props: Props) => {
             />}
         </div>
     )
-}
-export default Table;
+})
+const MemoTable = memo(Table, (prevProps, nextProps) => {
+    if ((nextProps.rowData && !compareData(prevProps.rowData, nextProps.rowData)) || (nextProps.dataSource && !compareData(prevProps.dataSource, nextProps.dataSource))) {
+        return false;
+    }
+    if (nextProps.loading) return false;
+    if ((nextProps.rowOnPage && nextProps.rowOnPage !== prevProps.rowOnPage) || (nextProps.crrPage && nextProps.crrPage !== prevProps.crrPage) || (nextProps.maxPage && nextProps.maxPage !== prevProps.maxPage)) {
+        return false;
+    }
+    return true;
+});
+export default MemoTable;
