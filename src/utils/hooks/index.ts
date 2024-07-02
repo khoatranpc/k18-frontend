@@ -106,6 +106,7 @@ import { clearCreateCs, queryCreateCs } from "@/store/reducers/cs/createCs.reduc
 import { queryListCs } from "@/store/reducers/cs/getListCs.reducer";
 import { clearUpdateCs, queryUpdateCs } from "@/store/reducers/cs/updateCs.reducer";
 import { clearDeleteRecordBookTeacher, queryDeleteRecordBookTeacher } from "@/store/reducers/class/deleteRecordBookTeacher.reducer";
+import { clearCreateTeacher, queryCreateTeacher } from "@/store/reducers/teacher/createTeacher.reducer";
 
 const useGetListClass = () => {
     const listClass = useSelector((state: RootState) => (state.listClass as State).state);
@@ -1032,6 +1033,9 @@ const useCreateCs = createHookQueryReducer('createCs', queryCreateCs, clearCreat
 const useListCs = createHookQueryReducer('listCs', queryListCs);
 const useUpdateCs = createHookQueryReducer('updateCs', queryUpdateCs, clearUpdateCs);
 const useDeleteRecordBookTC = createHookQueryReducer('deleteRecordBookTeacher', queryDeleteRecordBookTeacher, clearDeleteRecordBookTeacher);
+const useCreateTeacher = createHookQueryReducer('createTeacher', queryCreateTeacher, clearCreateTeacher);
+
+
 
 export {
     useGetListClass,
@@ -1139,5 +1143,6 @@ export {
     useCreateCs,
     useListCs,
     useUpdateCs,
-    useDeleteRecordBookTC
+    useDeleteRecordBookTC,
+    useCreateTeacher
 }

@@ -109,6 +109,7 @@ import createCs from './cs/createCs.reducer';
 import listCs from './cs/getListCs.reducer';
 import updateCs from './cs/updateCs.reducer';
 import deleteRecordBookTeacher from './class/deleteRecordBookTeacher.reducer';
+import createTeacher from './teacher/createTeacher.reducer'
 
 const rootReducer = {
     test: test,
@@ -221,6 +222,7 @@ const rootReducer = {
     createCs,
     listCs,
     updateCs,
-    deleteRecordBookTeacher
+    deleteRecordBookTeacher,
+    createTeacher
 };
 export default rootReducer;
