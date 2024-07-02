@@ -265,6 +265,14 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
       positionAccept: [ROLE.TEACHER]
     },
     {
+      title: "Đánh giá",
+      route: CombineRoute["TEACHER"]["TEACHER_EVALUATE"],
+      keyIcon: KEY_ICON.EV,
+      showIcon: true,
+      indexroute: CombineRoute["TEACHER"]["TEACHER_EVALUATE"],
+      positionAccept: [ROLE.TEACHER]
+    },
+    {
       title: "Lớp học",
       route: CombineRoute["TEACHER"]["CLASS"],
       keyIcon: KEY_ICON.HTS,

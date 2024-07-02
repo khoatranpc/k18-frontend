@@ -73,7 +73,7 @@ const Detail = (props: Props) => {
         SYLLABUS: <Syllabus />,
         TEXTBOOK: <TextBook />,
         BOOK_TEACHER: <BookTeacher classId={router.query.classId as string} />,
-        SETTING: <CreateClass data={data.response?.data as Obj} />
+        SETTING: <CreateClass data={data.response?.data as Obj} isUpdate={true} />
     }
     useEffect(() => {
         query?.(router.query.classId as string);

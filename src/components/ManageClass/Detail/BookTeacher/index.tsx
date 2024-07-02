@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Popover, Popconfirm, Switch, Tooltip } from 'antd';
-import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Columns, Obj, RowData, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
@@ -17,6 +17,8 @@ import AddTeacher from './AddTeacher';
 import AddRequestGroup from './AddRequestGroup';
 import TeacherRegister from './TeacherRegister';
 import styles from '@/styles/class/BookTeacher.module.scss';
+import { title } from 'process';
+import { render } from 'react-dom';
 
 interface Props {
     classId: string;
@@ -78,38 +80,9 @@ const BookTeacher = (props: Props) => {
             className: `${styles.tdGroup}`,
             title: 'Nhóm',
             render(value, record) {
-                return hasRole ? <Popover
-                    trigger={['hover']}
-                    placement='top'
-                    content={<div className={styles.popOver}>
-                        <div
-                            onClick={() => {
-                                setModalAddTeacher({
-                                    show: true,
-                                    requestId: record._id as string
-                                });
-                            }}
-                        >
-                            Thêm GV
-                        </div>
-                        <Popconfirm
-                            title="Xoá nhóm"
-                            okText="Xác nhận"
-                            cancelText="Huỷ"
-                            placement="top"
-                            onConfirm={() => {
-                                console.log('delete', record._id as string);
-                            }}
-                        >
-                            <div>
-                                Xoá nhóm
-                            </div>
-                        </Popconfirm>
-                    </div>}
-                >
+                return hasRole ? <div>
                     <span>{value}</span>
-                    <EyeOutlined className={styles.eye} />
-                </Popover> : value;
+                </div> : value;
             },
             onCell(data) {
                 return {
@@ -156,9 +129,11 @@ const BookTeacher = (props: Props) => {
             key: 'ROLE',
             dataIndex: 'teacherRegister',
             title: 'Vị trí',
-            render(value) {
+            render(value, record) {
                 return <div>
-                    {mapRoleToString[value?.roleRegister as ROLE_TEACHER] || 'Thiếu'}
+                    {mapRoleToString[value?.roleRegister as ROLE_TEACHER] || <div>
+                        Thiếu
+                    </div>}
                 </div>
             },
         },
@@ -190,7 +165,28 @@ const BookTeacher = (props: Props) => {
                     />
                 </div>
             },
-        },] : (detailClass?.status === STATUS_CLASS.PREOPEN && !(currentUser?.roleAccount === ROLE.CS) ? [
+        },
+        {
+            key: 'ACTION',
+            title: 'Hàng động',
+            className: `text-center`,
+            render(_: any, record: Obj) {
+                return <div>
+                    <Button size='small' onClick={() => {
+                        setModalAddTeacher({
+                            requestId: record._id,
+                            show: true
+                        });
+                    }}>Thêm GV</Button>
+                </div>
+            },
+            onCell(data: Obj) {
+                return {
+                    rowSpan: data.rowSpan as number,
+                }
+            }
+        }
+        ] : (detailClass?.status === STATUS_CLASS.PREOPEN && !(currentUser?.roleAccount === ROLE.CS) ? [
             {
                 key: 'REGISTER',
                 title: 'Hành động',

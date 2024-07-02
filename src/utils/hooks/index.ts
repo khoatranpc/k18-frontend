@@ -105,6 +105,7 @@ import { queryGetBookTeacher } from "@/store/reducers/class/getBookTeacher.reduc
 import { clearCreateCs, queryCreateCs } from "@/store/reducers/cs/createCs.reducer";
 import { queryListCs } from "@/store/reducers/cs/getListCs.reducer";
 import { clearUpdateCs, queryUpdateCs } from "@/store/reducers/cs/updateCs.reducer";
+import { clearDeleteRecordBookTeacher, queryDeleteRecordBookTeacher } from "@/store/reducers/class/deleteRecordBookTeacher.reducer";
 import { clearCreateTeacher, queryCreateTeacher } from "@/store/reducers/teacher/createTeacher.reducer";
 
 const useGetListClass = () => {
@@ -1031,6 +1032,7 @@ const useGetListBookTeacher = createHookQueryReducer('getBookTeacher', queryGetB
 const useCreateCs = createHookQueryReducer('createCs', queryCreateCs, clearCreateCs);
 const useListCs = createHookQueryReducer('listCs', queryListCs);
 const useUpdateCs = createHookQueryReducer('updateCs', queryUpdateCs, clearUpdateCs);
+const useDeleteRecordBookTC = createHookQueryReducer('deleteRecordBookTeacher', queryDeleteRecordBookTeacher, clearDeleteRecordBookTeacher);
 const useCreateTeacher = createHookQueryReducer('createTeacher', queryCreateTeacher, clearCreateTeacher);
 
 
@@ -1141,5 +1143,6 @@ export {
     useCreateCs,
     useListCs,
     useUpdateCs,
+    useDeleteRecordBookTC,
     useCreateTeacher
 }

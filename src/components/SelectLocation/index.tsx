@@ -14,19 +14,6 @@ interface Props {
     sizeButton?: 'small' | 'large' | 'middle'
     onSelectLocation?: (locationId: string, text?: string, code?: string) => void;
 }
-const items: MenuProps['items'] = [
-    {
-        label: 'Clicking me will not close the menu.',
-        key: '1',
-    },
-    {
-        label: 'Clicking me will not close the menu also.',
-        key: '2',
-    },
-    {
-        label: 'Clicking me will close the menu.',
-        key: '3',
-    },]
 const SelectLocation = (props: Props) => {
     const { locations, queryLocations } = useGetLocations();
     const mapLocation: MenuProps['items'] = (locations?.data as Array<Obj>)?.map((item) => {

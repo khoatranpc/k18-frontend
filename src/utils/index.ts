@@ -234,6 +234,15 @@ const getClassResponsive = (width: number) => {
     if (width < 1024) return 'middle'
     return 'large';
 }
+/**
+ * 
+ * @param prevData 
+ * @param nextData 
+ * @returns if prevData === nextData return true
+ */
+const compareData = (prevData: any, nextData: any) => {
+    return JSON.stringify(prevData) === JSON.stringify(nextData);
+}
 export {
     uuid,
     listMonth,
@@ -251,5 +260,6 @@ export {
     getFileInfoFromBase64,
     compareRefData,
     toastify,
-    getClassResponsive
+    getClassResponsive,
+    compareData
 }

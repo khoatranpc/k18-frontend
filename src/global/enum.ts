@@ -63,7 +63,8 @@ export enum KEY_ICON {
     TEACHER_FEMALE = 'TEACHER_FEMALE',
     MAIL = 'MAIL',
     EMPLOYEE = 'EMPLOYEE',
-    CS = 'CS'
+    CS = 'CS',
+    EV = 'EV'
 }
 export enum STATUS_CLASS {
     RUNNING = 'RUNNING',
