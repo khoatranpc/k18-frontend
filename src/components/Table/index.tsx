@@ -121,7 +121,7 @@ const Table = forwardRef((props: Props, ref) => {
 
 Table.displayName = 'TableCustomize';
 const MemoTable = memo(Table, (prevProps, nextProps) => {
-    if ((nextProps.rowData && !compareData(prevProps.rowData, nextProps.rowData)) || (nextProps.dataSource && !compareData(prevProps.dataSource, nextProps.dataSource))) {
+    if ((nextProps.rowData && !compareData(prevProps.rowData, nextProps.rowData)) || (nextProps.dataSource && !compareData(prevProps.dataSource, nextProps.dataSource)) || nextProps.columns) {
         return false;
     }
     if (nextProps.loading) return false;

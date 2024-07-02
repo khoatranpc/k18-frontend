@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Button, Input, InputNumber } from 'antd';
+import { Button, Input, InputNumber, Popconfirm } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteFilled } from '@ant-design/icons';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import { toastify, uuid } from '@/utils';
 import { AppDispatch, RootState } from '@/store';
 import { clearCreateClass, queryCreateClass } from '@/store/reducers/class/createClass.reducer';
 import { Action, Columns, Obj, State } from '@/global/interface';
-import { useGetLocations, useGetTimeSchedule, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
+import { useDeleteRecordBookTC, useGetLocations, useGetTimeSchedule, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import SelectCourse from '@/components/SelectCourse';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import Table from '@/components/Table';
@@ -40,6 +40,7 @@ const getLabelTime = (time: Obj) => {
 }
 const CreateClass = (props: Props) => {
     const { query, data } = useQueryBookTeacher('GET');
+    const deleteRCBTC = useDeleteRecordBookTC();
     const router = useRouter();
     const updatedClass = useUpdateClassBasicInfor();
     const getDataRequestBookTC = useMemo(() => {
@@ -51,7 +52,7 @@ const CreateClass = (props: Props) => {
     const message = useHookMessage();
     const createClass = useSelector((state: RootState) => (state.createClass as State).state);
 
-    const initValues: Obj = props.data ? {
+    const initValues: Obj = (props.data && props.isUpdate) ? {
         ...props.data,
         codeClass: props.data.codeClass,
         courseId: props.data.courseId?._id,
@@ -100,7 +101,9 @@ const CreateClass = (props: Props) => {
                                 values.timeOnce,
                                 values.timeTwice
                             ],
-                            bookTeacher: values.expectedGroup
+                            bookTeacher: values.expectedGroup,
+                            linkZoom: values.linkZoom,
+                            note: values.note
                         }
                     }
                 }
@@ -159,6 +162,13 @@ const CreateClass = (props: Props) => {
         if (!props.isUpdate) {
             (values.expectedGroup as Obj[])!.splice(index, 1);
             setFieldValue('expectedGroup', [...values.expectedGroup]);
+        } else {
+            if (getDataRequestBookTC[index]) {
+
+            } else {
+                (values.expectedGroup as Obj[])!.splice(index, 1);
+                setFieldValue('expectedGroup', [...values.expectedGroup]);
+            }
         }
     }
     const handleChangeDataBookTeacher = (field: string, value: string | number, index: number) => {
@@ -184,7 +194,7 @@ const CreateClass = (props: Props) => {
         },
         {
             key: 'LOCATION',
-            title: 'Cơ sở *',
+            title: <span>Cơ sở <span style={{ color: 'var(--base)' }}>*</span></span>,
             dataIndex: 'locationId',
             width: 70,
             render(value, _, index) {
@@ -193,14 +203,13 @@ const CreateClass = (props: Props) => {
                     title={(locations?.data as Array<Obj>)?.find(item => item._id === value)?.locationCode as string ?? 'Chọn'}
                     onSelectLocation={(locationId) => {
                         handleChangeDataBookTeacher('locationId', locationId ?? '', index);
-                        setFieldValue('expectedGroup', [...values.expectedGroup]);
                     }}
                 />
             }
         },
         {
             key: 'HVDK',
-            title: 'Số HV (dự kiến) *',
+            title: <span>Số HV (dự kiến) <span style={{ color: 'var(--base)' }}>*</span></span>,
             width: 150,
             dataIndex: 'totalStudents',
             className: 'text-center',
@@ -237,25 +246,61 @@ const CreateClass = (props: Props) => {
             className: 'text-center',
             width: 90,
             render(_, __, index) {
-                return <Button
-                    size="small"
-                    style={{ display: 'flex', alignItems: 'center', margin: 'auto', borderColor: 'var(--base)' }}
-                    onClick={() => {
-                        handleDeleteGroup(index);
-                    }}
-                >
-                    <DeleteFilled style={{ color: 'var(--base)' }} />
-                </Button>
+                const checkExisted = getDataRequestBookTC?.[index];
+                if (!checkExisted) {
+                    return <Button
+                        loading={deleteRCBTC.data.isLoading}
+                        size="small"
+                        style={{ display: 'flex', alignItems: 'center', margin: 'auto', borderColor: 'var(--base)' }}
+                        onClick={() => {
+                            handleDeleteGroup(index);
+                        }}
+                    >
+                        <DeleteFilled style={{ color: 'var(--base)' }} />
+                    </Button>
+                } else {
+                    return <Popconfirm
+                        title="Thông báo"
+                        description="Xác nhận xoá nhóm!"
+                        okText="Xác nhận"
+                        cancelText="Huỷ"
+                        onConfirm={() => {
+                            deleteRCBTC.query({
+                                params: [checkExisted._id]
+                            });
+                        }}
+                    >
+                        <Button
+                            loading={deleteRCBTC.data.isLoading}
+                            size="small"
+                            style={{ display: 'flex', alignItems: 'center', margin: 'auto', borderColor: 'var(--base)' }}>
+                            <DeleteFilled style={{ color: 'var(--base)' }} />
+                        </Button>
+                    </Popconfirm>
+                }
             }
         }
     ];
+    useEffect(() => {
+        if (deleteRCBTC.data.response) {
+            if (deleteRCBTC.data.success) {
+                query!(router.query.classId as string);
+            }
+            message.open({
+                content: deleteRCBTC.data.success ? 'Xoá thông tin thành công!' : deleteRCBTC.data.response?.message as string,
+                type: deleteRCBTC.data.success ? 'success' : 'error'
+            });
+            message.close();
+            deleteRCBTC.clear?.();
+        }
+    }, [deleteRCBTC.data.response]);
     useEffect(() => {
         if (getDataRequestBookTC) {
             setFieldValue('expectedGroup', getDataRequestBookTC.map((item) => {
                 return {
                     ...item,
                     key: item._id,
-                    locationId: item.locationId._id,
+                    locationId: item.locationId?._id,
                     totalStudents: item.totalStudents ?? 0,
                     note: item.note ?? ''
                 }
@@ -297,13 +342,18 @@ const CreateClass = (props: Props) => {
             }, 2000);
         }
     }, [createClass, dispatch]);
+    useEffect(() => {
+        if (!props.isUpdate) {
+            handleReset({});
+        }
+    }, [props.isUpdate]);
     return (
         <div className={styles.containerCreateClass}>
             <Form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.partSideLeft}>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Mã lớp: <span className="error">*</span></Form.Label>
-                        <Input type="text" name="codeClass" value={values.codeClass} onBlur={handleBlur} onChange={handleChange} placeholder="Mã lớp" size="small" className={styles.input} />
+                        <Input type="text" name="codeClass" defaultValue={values.codeClass} onBlur={handleBlur} onChange={handleChange} placeholder="Mã lớp" size="small" className={styles.input} />
                         {errors.codeClass && touched.codeClass && <p className="error">{errors.codeClass as string}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
@@ -408,25 +458,25 @@ const CreateClass = (props: Props) => {
                         <Form.Label>
                             CXO:
                         </Form.Label>
-                        <Input type="text" size="small" value={values.cxo} onChange={handleChange} name='cxo' />
+                        <Input type="text" size="small" defaultValue={values.cxo} onChange={handleChange} name='cxo' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
                             Cơ sở BU:
                         </Form.Label>
-                        <Input type="text" size="small" value={values.bu} onChange={handleChange} name='bu' />
+                        <Input type="text" size="small" defaultValue={values.bu} onChange={handleChange} name='bu' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
                             Link online:
                         </Form.Label>
-                        <Input type="text" size="small" value={values.linkZoom} onChange={handleChange} name='linkZoom' />
+                        <Input type="text" size="small" defaultValue={values.linkZoom} onChange={handleChange} name='linkZoom' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
                             Ghi chú:
                         </Form.Label>
-                        <Input.TextArea size="small" value={values.note} onChange={handleChange} name='note' />
+                        <Input.TextArea size="small" defaultValue={values.note} onChange={handleChange} name='note' />
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>
