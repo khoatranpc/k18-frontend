@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Checkbox, Input } from "antd";
 import { Form } from "react-bootstrap";
 import { useFormik } from "formik";
@@ -6,6 +6,8 @@ import * as yup from "yup";
 import { Obj } from "@/global/interface";
 import styles from "@/styles/teacher/CreateTeacherbyTe.module.scss";
 import SelectCourseMultiple from "../SelectCourse/SelectMultipale";
+import { useCreateTeacher } from "@/utils/hooks";
+import { toastify } from "@/utils";
 
 const validationSchema = yup.object({
   email: yup
@@ -33,6 +35,7 @@ interface Props {
 }
 
 const CreateTeacherbyTe = (props: Props) => {
+  const createTeacher = useCreateTeacher();
   const {
     values,
     touched,
@@ -53,10 +56,20 @@ const CreateTeacherbyTe = (props: Props) => {
     },
     validationSchema,
     onSubmit(values) {
-      // Handle form submission
-      console.log(values);
+      createTeacher.query({
+        body: values,
+      });
     },
   });
+
+  useEffect(() => {
+    if (createTeacher.data.response) {
+      toastify(createTeacher.data.response?.message as string, {
+        type: createTeacher.data.success ? "success" : "error",
+      });
+      createTeacher.clear?.();
+    }
+  }, [createTeacher.data.response]);
 
   return (
     <div className={styles.contentUdpateCourse}>
