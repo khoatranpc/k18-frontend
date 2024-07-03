@@ -14,7 +14,7 @@ import { toastify, uuid } from '@/utils';
 import { AppDispatch, RootState } from '@/store';
 import { clearCreateClass, queryCreateClass } from '@/store/reducers/class/createClass.reducer';
 import { Action, Columns, Obj, State } from '@/global/interface';
-import { useDeleteRecordBookTC, useGetLocations, useGetTimeSchedule, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
+import { useDeleteRecordBookTC, useDetailClass, useGetLocations, useGetTimeSchedule, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import SelectCourse from '@/components/SelectCourse';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import Table from '@/components/Table';
@@ -40,6 +40,7 @@ const getLabelTime = (time: Obj) => {
 }
 const CreateClass = (props: Props) => {
     const { query, data } = useQueryBookTeacher('GET');
+    const detailClass = useDetailClass('GET');
     const deleteRCBTC = useDeleteRecordBookTC();
     const router = useRouter();
     const updatedClass = useUpdateClassBasicInfor();
@@ -313,6 +314,9 @@ const CreateClass = (props: Props) => {
     useEffect(() => {
         if (props.data) {
             if (updatedClass.updated.response) {
+                if (updatedClass.updated.success) {
+                    detailClass.query?.(router.query.classId as string);
+                }
                 message.open({
                     content: updatedClass.updated.response?.message as string,
                     type: updatedClass.updated.success ? 'success' : 'error'

@@ -17,6 +17,7 @@ import Dropdown from '@/components/Dropdown';
 import SelectCourse from '@/components/SelectCourse';
 import Loading from '@/components/loading';
 import styles from '@/styles/class/DetailClass.module.scss';
+import Empty from '@/components/Empty';
 
 export interface ItemOverView {
     title: string;
@@ -74,6 +75,7 @@ const OverView = () => {
 
         const locationDt: Obj[] = [];
         const dataDetailClass = detailClass.data.response as Obj;
+        console.log(dataDetailClass);
         const ST = (((bookTeacherRQ.data as Obj)?.response as Obj)?.data as Array<Obj>)?.filter((item) => {
             const getTeacherRegister = item.teacherRegister as Array<Obj>;
             const crrST = getTeacherRegister.find((req) => {
@@ -156,11 +158,11 @@ const OverView = () => {
                 },
                 {
                     title: 'Team phụ trách',
-                    value: ['18+ HCM']
+                    value: []
                 },
                 {
                     title: 'CXO',
-                    value: ['Thanh Bách', 'Châu Pha']
+                    value: [dataDetailClass?.data?.cxo]
                 }
             ],
         };
@@ -318,10 +320,10 @@ const OverView = () => {
                         />
                     ] : [`${dataDetailClass?.data.courseId.courseName}-${dataDetailClass?.data.courseLevelId.levelCode}`]
                 },
-                {
-                    title: 'Địa điểm',
-                    value: ['Hà Nội']
-                },
+                // {
+                //     title: 'Địa điểm',
+                //     value: []
+                // },
                 {
                     title: 'Hình thức học',
                     value: [`${detailClass.data.response?.data.classForm as string}`]
@@ -332,27 +334,27 @@ const OverView = () => {
         const dataOverView = [
             dataPersonnel,
             dataADM,
-            {
-                title: 'Học viên',
-                data: [
-                    {
-                        title: 'Sĩ số ban đầu',
-                        value: ['42']
-                    },
-                    {
-                        title: 'Sĩ số active',
-                        value: ['39']
-                    },
-                    {
-                        title: 'Số học viên hoàn tất',
-                        value: ['39']
-                    },
-                    {
-                        title: 'Số học viên chuyển lớp',
-                        value: ['3']
-                    }
-                ]
-            },
+            // {
+            //     title: 'Học viên',
+            //     data: [
+            //         {
+            //             title: 'Sĩ số ban đầu',
+            //             value: ['42']
+            //         },
+            //         {
+            //             title: 'Sĩ số active',
+            //             value: ['39']
+            //         },
+            //         {
+            //             title: 'Số học viên hoàn tất',
+            //             value: ['39']
+            //         },
+            //         {
+            //             title: 'Số học viên chuyển lớp',
+            //             value: ['3']
+            //         }
+            //     ]
+            // },
             {
                 title: 'Lịch học',
                 data: getDataClassSession.map((item, idx) => {
@@ -425,7 +427,9 @@ const OverView = () => {
                     <span className='display-block'>Thông báo</span>
                     <span className={styles.iconPlus}>{MapIconKey[KEY_ICON.PLB]}</span>
                 </div>
-                <div className={styles.contentNotifi}>
+                <div className={`${styles.contentNotifi} ${styles.empty}`}>
+                    <Empty />
+                    {/* <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
                     <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
                     <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
                     <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
@@ -434,8 +438,7 @@ const OverView = () => {
                     <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
                     <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
                     <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
-                    <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
-                    <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' />
+                    <BlockNotifi className={styles.item} content='Học bài đi anh chị em ơi' dateUpdate='02/12' title='Thuyết trình cuối khoá' /> */}
                 </div>
                 <div className={` ${styles.combineLink}`}>
                     <div className={styles.link}>{MapIconKey[KEY_ICON.FBK]} Nhóm Facebook</div>

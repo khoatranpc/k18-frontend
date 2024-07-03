@@ -52,7 +52,6 @@
             gap: 0.8rem;
 
             .row {
-                flex: 0.25;
                 display: flex;
                 gap: 0.8rem;
                 min-height: 10rem;
@@ -77,7 +76,7 @@
                         grid-template-columns: repeat(4, 1fr);
                         grid-template-rows: repeat(2, 1fr);
                         grid-column-gap: 0px;
-                        grid-row-gap: 1rem;
+                        // grid-row-gap: 1rem;
 
                     }
 
@@ -134,10 +133,15 @@
             }
 
             .contentNotifi {
+                flex: 1;
                 overflow-y: scroll;
                 display: flex;
                 flex-direction: column;
                 max-height: 75%;
+
+                &.empty {
+                    align-items: center;
+                }
             }
 
             .combineLink {
@@ -145,7 +149,6 @@
                 flex-direction: column;
                 justify-content: flex-end;
                 gap: 0.8rem;
-                flex: 1;
                 padding-bottom: 0.8rem;
 
                 .link {
