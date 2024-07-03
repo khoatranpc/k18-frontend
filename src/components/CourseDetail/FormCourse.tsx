@@ -103,7 +103,7 @@ const UpdateCourse = (props: Props) => {
                     {touched.courseDescription && errors.courseDescription && <p className="error">{errors.courseDescription as string}</p>}
                 </Form.Group>
                 <Form.Group className={styles.itemForm}>
-                    <Form.Label>Tên khoá học<span className='error'>*</span>:</Form.Label>
+                    <Form.Label>Mã khoá học<span className='error'>*</span>:</Form.Label>
                     <Input size="small" name="courseName" value={values.courseName} onChange={handleChange} onBlur={handleBlur} />
                     {touched.courseName && errors.courseName && <p className="error">{errors.courseName as string}</p>}
                 </Form.Group>
