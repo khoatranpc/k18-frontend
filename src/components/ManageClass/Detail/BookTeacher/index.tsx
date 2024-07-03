@@ -168,7 +168,7 @@ const BookTeacher = (props: Props) => {
         },
         {
             key: 'ACTION',
-            title: 'Hàng động',
+            title: 'Hành động',
             className: `text-center`,
             render(_: any, record: Obj) {
                 return <div>

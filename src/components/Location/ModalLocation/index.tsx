@@ -89,6 +89,11 @@ const CreateLocation = (props: Props) => {
                     <Input type="text" value={values.locationCode} name="locationCode" placeholder="Mã cơ sở" size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                     {errors.locationCode && touched.locationCode && <p className='error'>{errors.locationCode}</p>}
                 </Form.Group>
+                <Form.Group className={styles.mb_15}>
+                    <Form.Label>Địa chỉ<span className="error">*</span>:</Form.Label>
+                    <Input type="text" value={values.locationDetail} name="locationDetail" placeholder="Địa chỉ cơ sở" size="middle" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                    {errors.locationDetail && touched.locationDetail && <p className='error'>{errors.locationDetail}</p>}
+                </Form.Group>
 
                 <Form.Group className={"w-100"}>
                     <Form.Label>Khu Vực:<span className="error">*</span></Form.Label>
