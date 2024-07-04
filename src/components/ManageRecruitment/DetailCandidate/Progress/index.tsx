@@ -14,8 +14,8 @@ import Clautid from './Clautid';
 import Test from './Test';
 import PopupConfirm from './PopupConfirm';
 import Done from './DoneAndClassify';
-import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 import FillForm from './FillForm';
+import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const getStepByRound: Record<RoundProcess, number> = {
     CV: 0,

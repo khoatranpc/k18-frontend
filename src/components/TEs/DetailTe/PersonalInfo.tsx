@@ -44,7 +44,14 @@ const PersonalInfo = () => {
             delete newValue._id;
             const formData = new FormData();
             for (const key in newValue) {
-                formData.append(key, newValue[key]);
+                if (typeof newValue[key] === 'object') {
+                    if (key === 'courseId') {
+                        const mapCourse = (newValue[key] as Obj[])?.map(item => item._id ?? item) ?? [];
+                        formData.append(key, JSON.stringify(mapCourse));
+                    }
+                } else {
+                    formData.append(key, JSON.stringify(newValue[key]));
+                }
             }
             updateTe.query({
                 body: formData,

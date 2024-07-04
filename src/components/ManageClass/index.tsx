@@ -180,7 +180,6 @@ const ManagerClass = (props: Props) => {
   const listClass = props.listClass;
   const firstQuery = useRef<boolean>(true);
   const nextComponentId = (listClass.response as Obj)?.query?.query?.componentId as string;
-  const getLoading = (!nextComponentId || (nextComponentId && nextComponentId === props.componentId && listClass.isLoading));
   const isQueryClassTeacherPoint = useRef<boolean>(true);
   const mapDataListClass: RowData[] = useMemo(() => {
     if (nextComponentId !== props.componentId) {
@@ -581,7 +580,7 @@ const ManagerClass = (props: Props) => {
             setCodeClass(value);
           }}
         />
-        <MiniDashboard month={conditionFilter.date} />
+        {getCrrUser?.roleAccount !== ROLE.TEACHER && <MiniDashboard month={conditionFilter.date} />}
       </div>
       <Table
         bordered

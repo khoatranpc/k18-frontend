@@ -8,13 +8,18 @@ import { KEY_ICON } from '@/global/enum';
 import Loading from '../loading';
 import Pagination from '../Pagination';
 import styles from '@/styles/Table.module.scss';
-import { compareData } from '@/utils';
 
 interface Props extends TableProps<Obj> {
     width?: number | string;
     height?: number;
     className?: string;
+    /**
+     * @description should use useMemo
+     */
     columns: Columns;
+    /**
+     * @description should use useMemo
+     */
     rowData?: RowData[];
     customizeSelectionsDropDown?: boolean | INTERNAL_SELECTION_ITEM[] | undefined;
     hideSelectAll?: boolean;
@@ -121,7 +126,7 @@ const Table = forwardRef((props: Props, ref) => {
 
 Table.displayName = 'TableCustomize';
 const MemoTable = memo(Table, (prevProps, nextProps) => {
-    if ((nextProps.rowData && !compareData(prevProps.rowData, nextProps.rowData)) || (nextProps.dataSource && !compareData(prevProps.dataSource, nextProps.dataSource)) || nextProps.columns) {
+    if (nextProps.rowData !== prevProps.rowData || prevProps.dataSource !== nextProps.dataSource) {
         return false;
     }
     if (nextProps.loading) return false;

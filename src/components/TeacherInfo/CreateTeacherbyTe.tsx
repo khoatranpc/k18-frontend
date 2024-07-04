@@ -4,10 +4,10 @@ import { Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Obj } from "@/global/interface";
-import styles from "@/styles/teacher/CreateTeacherbyTe.module.scss";
-import SelectCourseMultiple from "../SelectCourse/SelectMultipale";
 import { useCreateTeacher } from "@/utils/hooks";
+import SelectCourseMultiple from "../SelectCourse/SelectMultipale";
 import { toastify } from "@/utils";
+import styles from "@/styles/teacher/CreateTeacherbyTe.module.scss";
 
 const validationSchema = yup.object({
   email: yup

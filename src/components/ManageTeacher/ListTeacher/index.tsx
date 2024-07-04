@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ManagerTeacherContext from "../context";
 import { Badge } from "antd";
 import { Obj } from "@/global/interface";
@@ -15,6 +15,7 @@ import {
 } from "@/utils/hooks";
 import { ComponentPage } from "@/global/enum";
 import CombineRoute from "@/global/route";
+import { getColorTeacherPoint } from "@/global/init";
 import { useHookMessage } from "@/utils/hooks/message";
 import {
   PayloadRoute,
@@ -25,7 +26,6 @@ import Table from "@/components/Table";
 import ToolBar from "@/components/Tabs/ToolBar";
 import { getColums, mapRowData } from "./config";
 import styles from "@/styles/teacher/ManagerTeacher.module.scss";
-import { getColorTeacherPoint } from "@/global/init";
 
 const ListTeacher = () => {
   const { listTeacher, query } = useListTeacher();
@@ -42,16 +42,20 @@ const ListTeacher = () => {
   const dispatch = useDispatch<AppDispatch>();
   const firstMounted = useRef<boolean>(true);
   const firstQuery = useRef(true);
-  const columns = getColums(
-    undefined,
-    getAreas,
-    dataTeacherRegisterCourse.listData.isLoading &&
+  const columns = useMemo(() => {
+    return getColums(
+      undefined,
+      getAreas,
+      dataTeacherRegisterCourse.listData.isLoading &&
       !dataTeacherRegisterCourse.listData.response
-  );
-  const rowData = mapRowData(
-    (listTeacher.response?.data as Obj)?.listTeacher || [],
-    (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []
-  );
+    )
+  }, [area.data.response, dataTeacherRegisterCourse.listData.response]);
+  const rowData = useMemo(() => {
+    return mapRowData(
+      (listTeacher.response?.data as Obj)?.listTeacher || [],
+      (dataTeacherRegisterCourse.listData.response?.data as Array<Obj>) || []
+    )
+  }, [listTeacher.response, dataTeacherRegisterCourse.listData.response]);
   const listFb = useGetListFeedback();
   const tc: Obj = {};
   const listTeacherStatistic = [];
