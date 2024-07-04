@@ -41,13 +41,15 @@ const DashboardClass = (props: Props) => {
                 },
                 {
                     key: 'PER',
-                    title: 'Tỉ lệ SX GV',
+                    title: 'Tỉ lệ',
                     className: 'text-center',
-                    dataIndex: 'ratio',
                     onCell() {
                         return {
                             className: 'bold'
                         }
+                    },
+                    render(_, record: Obj) {
+                        return <div style={{ height: '100%' }}>{record.ttAc}/{record.ttRQ}</div>
                     }
                 }
             ]
@@ -73,7 +75,8 @@ const DashboardClass = (props: Props) => {
         {
             month: props.date ? new Date(props.date).getMonth() + 1 : 'Tất cả',
             totalClass: getListClass?.length ?? 0,
-            ratio: `${(!totalAcceptTc ? 0 : ((Number(totalAcceptTc / totalRequestBT) * 100).toFixed(2)))}%`
+            ttAc: totalAcceptTc,
+            ttRQ: totalRequestBT
         }
     ];
     return (
