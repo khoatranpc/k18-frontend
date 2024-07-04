@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import { Button, Input } from 'antd';
 import JoditEditor, { IJoditEditorProps } from 'jodit-react';
 
@@ -13,7 +13,6 @@ interface Props extends IJoditEditorProps {
     disabledSave?: boolean;
 }
 const TextEditor = (props: Props) => {
-
     const [title, setTitle] = useState(props.title || '');
     const config: typeof props.config = useMemo(() => {
         return {
@@ -55,5 +54,8 @@ const TextEditor = (props: Props) => {
         </div>
     );
 }
-
-export default TextEditor;
+const MemoTextEditor = memo(TextEditor, (prevProps, nextProps) => {
+    if ((prevProps.title !== nextProps.title) || (prevProps.loadingButton !== nextProps.loadingButton)) return false;
+    return true;
+});
+export default MemoTextEditor;
