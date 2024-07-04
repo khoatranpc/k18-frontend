@@ -215,7 +215,7 @@ const BookTeacher = (props: Props) => {
                 className: 'text-center',
                 render(_: any, record: Obj) {
                     return <Button size='small' onClick={() => {
-                        window.open(record.profile || record.CVfile, '_blank');
+                        window.open(record.teacherRegister?.idTeacher?.profile || record.teacherRegister?.idTeacher?.CVfile, '_blank');
                     }}>Profile</Button>
                 }
             }
