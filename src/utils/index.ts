@@ -152,11 +152,12 @@ const createHookQueryReducer = (reducer: keyof RootState, queryThunk: Function, 
     return () => {
         const data = useSelector((state: RootState) => (state[reducer] as State).state);
         const dispatch = useDispatch<AppDispatch>();
-        const query = (query?: Query) => {
+        const query = (query?: Query, componentId?: string) => {
             const payload: Action = {
                 payload: {
                     query
-                }
+                },
+                componentId
             }
             dispatch(queryThunk(payload));
         }
@@ -170,6 +171,7 @@ const createHookQueryReducer = (reducer: keyof RootState, queryThunk: Function, 
         }
     }
 }
+export type HookReducer = ReturnType<ReturnType<typeof createHookQueryReducer>>;
 const shortenName = (fullName: string) => {
     const words = fullName?.split(' ');
     if (words && words.length >= 2) {

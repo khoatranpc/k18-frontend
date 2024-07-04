@@ -94,7 +94,7 @@ const Table = forwardRef((props: Props, ref) => {
                 columns={mapColumns}
                 rowSelection={props.enableRowSelection ? rowSelection : undefined}
                 loading={{
-                    spinning: (!props.rowData || props.loading ? true : false),
+                    spinning: (!(props.dataSource ?? props.rowData) || props.loading ? true : false),
                     indicator: <Loading className={styles.loadingInTable} />
                 }}
                 onRow={(record, index) => {
@@ -105,7 +105,7 @@ const Table = forwardRef((props: Props, ref) => {
                     }
                 }}
                 onChange={props.onChange}
-                pagination={props.disableDefaultPagination ? !props.disableDefaultPagination : {}}
+                pagination={props.pagination ?? (props.disableDefaultPagination ? !props.disableDefaultPagination : {})}
             />
             {props.enablePaginationAjax && props.disableDefaultPagination && <Pagination
                 rowOnPage={props.rowOnPage}

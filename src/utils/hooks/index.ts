@@ -165,7 +165,7 @@ const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
                         query: {
                             params: [params as string],
                             query: {
-                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept', 'salaryPH', 'totalStudents', 'note']
+                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept', 'salaryPH', 'totalStudents', 'note', 'CVfile', 'profile']
                             }
                         }
                     }
@@ -1034,8 +1034,6 @@ const useListCs = createHookQueryReducer('listCs', queryListCs);
 const useUpdateCs = createHookQueryReducer('updateCs', queryUpdateCs, clearUpdateCs);
 const useDeleteRecordBookTC = createHookQueryReducer('deleteRecordBookTeacher', queryDeleteRecordBookTeacher, clearDeleteRecordBookTeacher);
 const useCreateTeacher = createHookQueryReducer('createTeacher', queryCreateTeacher, clearCreateTeacher);
-
-
 
 export {
     useGetListClass,

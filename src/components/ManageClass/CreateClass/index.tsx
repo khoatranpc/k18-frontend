@@ -71,34 +71,34 @@ const CreateClass = (props: Props) => {
   const initValues: Obj =
     props.data && props.isUpdate
       ? {
-          ...props.data,
-          codeClass: props.data.codeClass,
-          courseId: props.data.courseId?._id,
-          courseLevelId: props.data.courseLevelId?._id,
-          dayStart: props.data.dayRange?.start,
-          dayEnd: props.data.dayRange?.end,
-          timeOnce: (props.data.timeSchedule as Obj[])?.[0],
-          timeTwice: (props.data.timeSchedule as Obj[])?.[1],
-          expectedGroup: [],
-          linkZoom: props.data.linkZoom,
-          note: props.data.note ?? "",
-          cxo: props.data.cxo ?? "",
-          bu: props.data.bu ?? "",
-        }
+        ...props.data,
+        codeClass: props.data.codeClass,
+        courseId: props.data.courseId?._id,
+        courseLevelId: props.data.courseLevelId?._id,
+        dayStart: props.data.dayRange?.start,
+        dayEnd: props.data.dayRange?.end,
+        timeOnce: (props.data.timeSchedule as Obj[])?.[0],
+        timeTwice: (props.data.timeSchedule as Obj[])?.[1],
+        expectedGroup: [],
+        linkZoom: props.data.linkZoom,
+        note: props.data.note ?? "",
+        cxo: props.data.cxo ?? "",
+        bu: props.data.bu ?? "",
+      }
       : {
-          codeClass: "",
-          courseId: "",
-          courseLevelId: "",
-          dayStart: "",
-          dayEnd: "",
-          timeOnce: "",
-          timeTwice: "",
-          expectedGroup: [],
-          bu: "",
-          cxo: "",
-          linkZoom: "",
-          note: "",
-        };
+        codeClass: "",
+        courseId: "",
+        courseLevelId: "",
+        dayStart: "",
+        dayEnd: "",
+        timeOnce: "",
+        timeTwice: "",
+        expectedGroup: [],
+        bu: "",
+        cxo: "",
+        linkZoom: "",
+        note: "",
+      };
   const {
     values,
     errors,
@@ -169,10 +169,10 @@ const CreateClass = (props: Props) => {
                     },
                     timeSchedule: [values.timeOnce, values.timeTwice],
                     ...(JSON.stringify(values.expectedGroup) !==
-                    JSON.stringify(initValues.expectedGroup)
+                      JSON.stringify(initValues.expectedGroup)
                       ? {
-                          bookTeacher: values.expectedGroup,
-                        }
+                        bookTeacher: values.expectedGroup,
+                      }
                       : {}),
                   },
                 },
@@ -394,7 +394,9 @@ const CreateClass = (props: Props) => {
     }
   }, [getDataRequestBookTC]);
   useEffect(() => {
-    query!(router.query.classId as string);
+    if (router.query.classId) {
+      query!(router.query.classId as string);
+    }
   }, []);
   useEffect(() => {
     if (props.data) {
@@ -567,8 +569,8 @@ const CreateClass = (props: Props) => {
             </Form.Label>
             {(!(values.timeOnce as unknown as Obj)?._id ||
               !(values.timeTwice as unknown as Obj)?._id) && (
-              <p className="error">Đừng quên chọn lịch học trong tuần nhé!</p>
-            )}
+                <p className="error">Đừng quên chọn lịch học trong tuần nhé!</p>
+              )}
             <div className={styles.day}>
               <div className="day1">
                 <label>

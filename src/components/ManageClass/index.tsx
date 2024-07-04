@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Badge, DatePicker, Popover, TabsProps } from "antd";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -24,6 +24,7 @@ import {
   formatDatetoString,
   generateRowDataForMergeRowSingleField,
   sortByString,
+  uuid,
 } from "@/utils";
 import {
   useComparePositionTE,
@@ -31,6 +32,7 @@ import {
   useGetListClass,
   useGetListFeedback,
   useGetListBookTeacher,
+  useListClass,
 } from "@/utils/hooks";
 import { AppDispatch } from "@/store";
 import {
@@ -50,6 +52,7 @@ import CreateClass from "./CreateClass";
 import { TabDetailClass } from "./Detail";
 import SelectBaseCourse from "../SelectBaseCourse";
 import SelectStatusClass from "./SelectStatusClass";
+import MiniDashboard from "./MiniDashboard";
 import styles from "@/styles/class/Class.module.scss";
 
 enum Tab {
@@ -141,7 +144,12 @@ const CustomizeFilter = (props: PropsFilter) => {
     </div>
   );
 };
-const ManagerClass = () => {
+interface Props {
+  componentId: string;
+  listClass: Action;
+}
+
+const ManagerClass = (props: Props) => {
   const hasRole = useComparePositionTE(
     PositionTe.LEADER,
     PositionTe.QC,
@@ -169,10 +177,15 @@ const ManagerClass = () => {
   const getListFeedback = ((listFeedBack.data.response as Obj)?.data as Obj)
     ?.list as Obj[];
   const router = useRouter();
-  const listClass = useGetListClass();
+  const listClass = props.listClass;
   const firstQuery = useRef<boolean>(true);
+  const nextComponentId = (listClass.response as Obj)?.query?.query?.componentId as string;
+  const getLoading = (!nextComponentId || (nextComponentId && nextComponentId === props.componentId && listClass.isLoading));
   const isQueryClassTeacherPoint = useRef<boolean>(true);
   const mapDataListClass: RowData[] = useMemo(() => {
+    if (nextComponentId !== props.componentId) {
+      return [];
+    }
     const list: Obj[] =
       ((listClass.response?.data as Obj)?.classes as Array<Obj>)?.map(
         (item) => {
@@ -208,7 +221,7 @@ const ManagerClass = () => {
         }
       ) || [];
     return generateRowDataForMergeRowSingleField(list, "bookTeachers");
-  }, [listClass.response?.data as Obj]);
+  }, [listClass.response?.data as Obj, props.componentId, nextComponentId]);
   const dispatch = useDispatch<AppDispatch>();
   const [codeClass, setCodeClass] = useState("");
   const [conditionFilter, setConditionFilter] = useState<Obj>({});
@@ -331,7 +344,7 @@ const ManagerClass = () => {
               }}
             >
               {value.groupNumber
-                ? `Nhóm ${value.groupNumber} - ${value.locationCode}`
+                ? `Nhóm ${value.groupNumber ?? ''} - ${value.locationCode ?? ''}`
                 : "Thiếu"}
               {!tc.length ? (
                 <span style={{ color: "var(--base)", fontWeight: "500" }}>
@@ -443,8 +456,8 @@ const ManagerClass = () => {
           ? `/te/manager/class/detail/${record._id}`
           : "/404"
         : getCrrUser?.roleAccount === ROLE.CS
-        ? `/cs/class/${record._id}`
-        : `/teacher/class/detail/${record._id}`;
+          ? `/cs/class/${record._id}`
+          : `/teacher/class/detail/${record._id}`;
     router.push(route);
   };
   const handleQueryListClass = (
@@ -524,7 +537,7 @@ const ManagerClass = () => {
         setContext: setStoreManagerClass,
       }}
     >
-      <div className={styles.containerClassManger}>
+      <div className={styles.containerTool}>
         <Tabs
           listItemTab={items}
           activeKey={storeManagerClass.crrKeyTab}
@@ -539,8 +552,8 @@ const ManagerClass = () => {
           customizeFilter={
             <CustomizeFilter
               onChange={(filter) => {
-                handleQueryListClass(1, 10, filter);
-                setConditionFilter(filter);
+                handleQueryListClass(1, 10, { ...filter, componentId: props.componentId });
+                setConditionFilter({ ...filter, componentId: props.componentId });
               }}
             />
           }
@@ -557,7 +570,10 @@ const ManagerClass = () => {
             handleQueryListClass(
               (listClass?.response?.data as Obj)?.currentPage as number,
               (listClass?.response?.data as Obj)?.recordOnPage as number,
-              conditionFilter
+              {
+                ...conditionFilter,
+                componentId: props.componentId
+              }
             );
           }}
           placeHolderSearch="Nhập mã lớp"
@@ -565,6 +581,7 @@ const ManagerClass = () => {
             setCodeClass(value);
           }}
         />
+        <MiniDashboard month={conditionFilter.date} />
       </div>
       <Table
         bordered
@@ -581,7 +598,7 @@ const ManagerClass = () => {
           handleQueryListClass(
             dataPagination.currentPage,
             dataPagination.currentTotalRowOnPage,
-            conditionFilter
+            { ...conditionFilter, componentId: props.componentId }
           );
           isQueryClassTeacherPoint.current = true;
         }}
@@ -606,5 +623,17 @@ const ManagerClass = () => {
     </ManagerClassContext.Provider>
   );
 };
+const MemoManageClass = memo(ManagerClass, (prevProps, nextProps) => {
+  const getPrevComponentId = prevProps.componentId;
+  const nextComponentId = (nextProps.listClass.componentId);
+  if ((nextComponentId && getPrevComponentId === nextComponentId)) return false;
+  return true;
+});
 
-export default ManagerClass;
+const BoundaryManageClass = () => {
+  const componentId = useRef(uuid());
+  const listClass = useListClass();
+  return <MemoManageClass componentId={componentId.current} listClass={listClass.data} />
+}
+
+export default BoundaryManageClass;

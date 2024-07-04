@@ -75,7 +75,6 @@ const OverView = () => {
 
         const locationDt: Obj[] = [];
         const dataDetailClass = detailClass.data.response as Obj;
-        console.log(dataDetailClass);
         const ST = (((bookTeacherRQ.data as Obj)?.response as Obj)?.data as Array<Obj>)?.filter((item) => {
             const getTeacherRegister = item.teacherRegister as Array<Obj>;
             const crrST = getTeacherRegister.find((req) => {

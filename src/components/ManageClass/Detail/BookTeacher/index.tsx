@@ -208,7 +208,18 @@ const BookTeacher = (props: Props) => {
                 }
             }
         ] : []),
-
+        ...(currentUser?.roleAccount === ROLE.CS || hasRole) ? [
+            {
+                key: 'ACTION',
+                title: 'Hành động',
+                className: 'text-center',
+                render(_: any, record: Obj) {
+                    return <Button size='small' onClick={() => {
+                        window.open(record.profile || record.CVfile, '_blank');
+                    }}>Profile</Button>
+                }
+            }
+        ] : []
     ]
     const [modalAddTeacher, setModalAddTeacher] = useState<{
         show: boolean;

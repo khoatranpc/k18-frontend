@@ -25,10 +25,11 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
         },
         ...asyncThunk ? {
             extraReducers(builder) {
-                builder.addCase(asyncThunk.pending, (state, _) => {
+                builder.addCase(asyncThunk.pending, (state, action) => {
                     (state as State).state = {
                         ...(state as State).state,
                         isLoading: true,
+                        componentId: action.meta.arg?.componentId ?? action.meta.arg?.payload?.query?.query?.componentId
                     }
                 })
                 builder.addCase(asyncThunk.fulfilled, (state, action) => {
@@ -40,10 +41,11 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
                         success: action.payload.status,
                         payload: {
                             query: action.payload.query
-                        }
+                        },
+                        componentId: action.meta.arg?.componentId ?? action.meta.arg?.payload?.query?.query?.componentId
                     }
                 })
-                builder.addCase(asyncThunk.rejected, (state, _) => {
+                builder.addCase(asyncThunk.rejected, (state, action) => {
                     (state as State).state = {
                         isLoading: false,
                         response: {
@@ -52,6 +54,7 @@ const createSliceReducer = (nameState: string, asyncThunk?: AsyncThunk<any, Acti
                             status: false
                         },
                         success: false,
+                        componentId: action.meta.arg?.componentId ?? action.meta.arg?.payload?.query?.query?.componentId
                     }
                 })
             },
