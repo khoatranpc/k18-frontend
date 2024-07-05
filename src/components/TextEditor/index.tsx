@@ -54,8 +54,5 @@ const TextEditor = (props: Props) => {
         </div>
     );
 }
-const MemoTextEditor = memo(TextEditor, (prevProps, nextProps) => {
-    // if ((prevProps.title !== nextProps.title) || (prevProps.loadingButton !== nextProps.loadingButton) || (prevProps.disabledSave !== nextProps.disabledSave)) return false;
-    return false;
-});
+const MemoTextEditor = memo(TextEditor);
 export default MemoTextEditor;
