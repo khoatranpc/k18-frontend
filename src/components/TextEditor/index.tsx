@@ -55,7 +55,7 @@ const TextEditor = (props: Props) => {
     );
 }
 const MemoTextEditor = memo(TextEditor, (prevProps, nextProps) => {
-    if ((prevProps.title !== nextProps.title) || (prevProps.loadingButton !== nextProps.loadingButton)) return false;
+    if ((prevProps.title !== nextProps.title) || (prevProps.loadingButton !== nextProps.loadingButton) || (prevProps.disabledSave !== nextProps.disabledSave)) return false;
     return true;
 });
 export default MemoTextEditor;
