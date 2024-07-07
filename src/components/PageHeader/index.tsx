@@ -67,12 +67,13 @@ const PageHeader = () => {
             isDisconnect: !!disconnect
         })
     }
-    useEffect(() => {
-        if (currentUser) {
-            queryReceiveConnection(handleReceivedMsg);
-            dispatch(handleEmitSocket(false));
-        }
-    }, [currentUser]);
+    // socket for view user on system
+    // useEffect(() => {
+    //     if (currentUser) {
+    //         queryReceiveConnection(handleReceivedMsg);
+    //         dispatch(handleEmitSocket(false));
+    //     }
+    // }, [currentUser]);
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
             {
