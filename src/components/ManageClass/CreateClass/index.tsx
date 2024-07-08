@@ -313,7 +313,7 @@ const CreateClass = (props: Props) => {
       className: "text-center",
       width: 90,
       render(_, __, index) {
-        const checkExisted = getDataRequestBookTC?.[index];
+        const checkExisted = props.isUpdate ? getDataRequestBookTC?.[index] : null;
         if (!checkExisted) {
           return (
             <Button
