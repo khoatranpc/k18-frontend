@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { ReloadOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import { Columns, Obj } from '@/global/interface';
 import { useHandleDrawer, useListCs } from '@/utils/hooks';
+import { PositionCs } from '@/global/enum';
+import { getLabelPositionCs } from '@/utils';
 import Table from '@/components/Table';
-import { Button } from 'antd';
 import styles from '@/styles/CS.module.scss';
 
 const ListCS = () => {
@@ -24,7 +26,21 @@ const ListCS = () => {
         {
             key: 'NAME',
             title: 'Tên',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            render(value, record) {
+                return <div className={styles.viewCs}>
+                    <img src={record.image as string ?? ''} />
+                    {value}
+                </div>
+            }
+        },
+        {
+            key: 'POSITION',
+            title: 'Vị trí',
+            dataIndex: 'position',
+            render(value) {
+                return getLabelPositionCs[value as PositionCs];
+            }
         },
         {
             key: 'LC',
@@ -38,10 +54,27 @@ const ListCS = () => {
             key: 'STATUS',
             title: 'Trạng thái',
             dataIndex: 'active',
+            className: 'text-center',
             render(value) {
-                return <span>{Boolean(value) ? 'Hoạt động' : 'Ngừng hoạt động'}</span>
+                return <span className={styles.status} style={{ backgroundColor: Boolean(value) ? 'var(--success)' : 'var(--status-process-no-process)', color: 'white' }}>{Boolean(value) ? 'Hoạt động' : 'Ngừng hoạt động'}</span>
             }
         },
+        {
+            key: 'ACTION',
+            title: 'Hành động',
+            className: 'text-center',
+            render(_, record) {
+                return <div className={styles.btnAction}>
+                    <Button icon={<EyeOutlined />} size='small'>Chi tiết</Button>
+                    <Button icon={<EditOutlined />} size='small'
+                        onClick={() => {
+                            handleOpen('Cập nhật tài khoản', { isCreate: false, csId: record._id })
+                        }}
+                    >
+                        Cập nhật</Button>
+                </div>
+            }
+        }
     ];
     const handleOpen = (title: string, props?: Obj) => {
         drawer.open({
@@ -63,15 +96,12 @@ const ListCS = () => {
                 <Button size="small" icon={<ReloadOutlined />} className={styles.reload} onClick={() => {
                     listCs.query();
                 }}></Button>
-                <Button size="small" onClick={() => handleOpen('Tạo tài khoản', { isCreate: true })}>Tạo tài khoản</Button>
+                <Button size="small" onClick={() => handleOpen('Tạo tài khoản', { isCreate: true })}>Tạo</Button>
             </div>
             <Table
                 columns={columns}
                 rowData={getListCs}
                 disableDefaultPagination
-                hanldeClickRow={(record) => {
-                    handleOpen('Cập nhật tài khoản', { isCreate: false, csId: record._id })
-                }}
             />
         </div>
     )

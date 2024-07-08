@@ -58,6 +58,7 @@ const CombineRoute = {
   },
   CS: {
     LIST: '/cs/list',
+    EXECUTIVE: '/cs/executive',
     CLASS: {
       LIST: '/cs/class',
       DETAIL: '/cs/class/[classId]',

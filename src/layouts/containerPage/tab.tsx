@@ -241,7 +241,7 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
       title: 'CS',
       indexroute: 'CS',
       notRouting: true,
-      positionAccept: [PositionTe.LEADER],
+      positionAccept: [PositionTe.LEADER, ROLE.TE],
       keyIcon: 'CS',
       route: 'CS',
       children: [
@@ -249,8 +249,8 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
           title: 'Danh sách CS',
           route: CombineRoute['TE']['CS']['LIST'],
           indexroute: CombineRoute['TE']['CS']['LIST'],
-          positionAccept: [PositionTe.LEADER]
-        }
+          positionAccept: [PositionTe.LEADER, ROLE.TE]
+        },
       ]
     }
   ],
@@ -398,7 +398,7 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
           route: CombineRoute['CS']['LIST'],
           indexroute: CombineRoute['CS']['LIST'],
           positionAccept: [ROLE.CS]
-        }
+        },
       ]
     },
   ]

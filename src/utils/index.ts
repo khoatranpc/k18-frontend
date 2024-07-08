@@ -1,7 +1,7 @@
 import { v4 as uid } from 'uuid';
 import { format } from 'date-fns';
 import { Action, Obj, Query, RowData, State } from '@/global/interface';
-import { StatusProcessing, Weekday } from '@/global/enum';
+import { PositionCs, StatusProcessing, Weekday } from '@/global/enum';
 import { AppDispatch, RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContent, ToastOptions, toast } from 'react-toastify';
@@ -245,6 +245,10 @@ const getClassResponsive = (width: number) => {
 const compareData = (prevData: any, nextData: any) => {
     return JSON.stringify(prevData) === JSON.stringify(nextData);
 }
+const getLabelPositionCs: Record<PositionCs, string> = {
+    EXECUTIVE: 'Executive',
+    LEADER: 'Leader'
+}
 export {
     uuid,
     listMonth,
@@ -263,5 +267,6 @@ export {
     compareRefData,
     toastify,
     getClassResponsive,
-    compareData
+    compareData,
+    getLabelPositionCs
 }

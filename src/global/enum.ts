@@ -198,3 +198,8 @@ export enum Region {
 export enum RoomSocket {
     COMMON = 'COMMON'
 }
+
+export enum PositionCs {
+    LEADER = 'LEADER',
+    EXECUTIVE = 'EXECUTIVE'
+}

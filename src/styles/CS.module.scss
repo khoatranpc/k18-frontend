@@ -18,4 +18,62 @@
             color: var(--base) !important;
         }
     }
+
+    .status {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 0.2rem;
+        border-radius: 0.3rem;
+    }
+
+    .btnAction {
+        display: flex;
+        gap: 1.2rem;
+        justify-content: center;
+
+        button {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.csExc {
+    padding: 1.8rem;
+
+    .btnAction {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+        margin-bottom: 1.8rem;
+
+        .btnPlus {
+            display: flex;
+            text-align: center;
+            align-items: center;
+            color: var(--base);
+            border-color: var(--base);
+        }
+    }
+}
+
+.createCS {
+    .group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+}
+
+.viewCs {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+    }
 }

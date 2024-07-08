@@ -3,8 +3,11 @@ import * as yup from 'yup';
 import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { useFormik } from 'formik';
 import { Obj } from '@/global/interface';
+import { PositionCs } from '@/global/enum';
+import { getLabelPositionCs } from '@/utils';
 import { useCreateCs, useGetArea, useListCs, useUpdateCs } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
+import CropImage from '@/components/CropImage';
 import styles from '@/styles/CS.module.scss';
 
 interface Props {
@@ -23,14 +26,20 @@ const FormCS = (props: Props) => {
     const crrCs = getListCs.find(item => item._id === props.csId) ?? {};
     const updateCs = useUpdateCs();
 
-    const initValues = props.isCreate ? {
+    const initValues: Obj = props.isCreate ? {
         active: true,
         name: '',
         email: '',
         password: '',
         area: '',
-        phoneNumber: ''
-    } : crrCs;
+        phoneNumber: '',
+        image: '',
+        position: PositionCs.EXECUTIVE
+    } : {
+        ...crrCs,
+        image: crrCs.image ?? '',
+        area: crrCs.area?._id
+    };
     const validationSchema = yup.object({
         name: yup.string().required('Chưa nhập tên CS!'),
         email: yup.string().required('Chưa nhập email!'),
@@ -41,18 +50,28 @@ const FormCS = (props: Props) => {
         initialValues: initValues,
         validationSchema,
         onSubmit(values) {
+            const payload: Obj = {
+                ...values
+            }
+            delete payload._id;
+            const data = new FormData();
+            for (const key in payload) {
+                data.append(`${key}`, payload[key]);
+            }
             if (props.isCreate) {
                 createCs.query({
-                    body: values
+                    body: data,
+                    headers: {
+                        "Content-Type": "mutilpart/form-data"
+                    }
                 });
             } else {
-                const payload: Obj = {
-                    ...values
-                }
-                delete payload._id;
                 updateCs.query({
-                    body: payload,
-                    params: [values._id]
+                    body: data,
+                    params: [values._id],
+                    headers: {
+                        "Content-Type": "mutilpart/form-data"
+                    }
                 });
             }
         }
@@ -77,11 +96,22 @@ const FormCS = (props: Props) => {
         <div className={styles.formInfoCS}>
             <Form onFinish={handleSubmit}>
                 <Form.Item>
+                    <label>Ảnh:</label>
+                    <CropImage
+                        src={values.image}
+                        onCropped={(blobFile) => {
+                            setFieldValue("image", blobFile);
+                        }}
+                    />
+                </Form.Item>
+                <Form.Item>
                     <label>Trạng thái:</label>
                     <br />
-                    <Checkbox checked={values.active} onChange={(e) => {
-                        setFieldValue('active', e.target.checked);
-                    }}>
+                    <Checkbox
+                        checked={values.active}
+                        onChange={(e) => {
+                            setFieldValue('active', e.target.checked);
+                        }}>
                         Hoạt động
                     </Checkbox>
                 </Form.Item>
@@ -105,7 +135,7 @@ const FormCS = (props: Props) => {
                     {touched.password && errors.password && <p className='error'>{errors.password as string}</p>}
                 </Form.Item>
                 <Form.Item>
-                    <label>area<sup className='error'>*</sup>:</label>
+                    <label>BU<sup className='error'>*</sup>:</label>
                     <Select
                         size="small"
                         onChange={(value) => {
@@ -124,6 +154,26 @@ const FormCS = (props: Props) => {
                         }}
                     />
                     {touched.area && errors.area && <p className='error'>{errors.area as string}</p>}
+                </Form.Item>
+                <Form.Item>
+                    <label>Vị trí CS <span className='error'>*</span></label>
+                    <Select
+                        defaultValue={values.position}
+                        options={Object.keys(getLabelPositionCs).map((item) => {
+                            return {
+                                value: item,
+                                label: getLabelPositionCs[item as PositionCs]
+                            }
+                        })}
+                        onChange={(value) => {
+                            setFieldValue('position', value)
+                        }}
+                        onBlur={() => {
+                            setFieldTouched('position', true);
+                        }}
+                        size='small'
+                    />
+                    {touched.position && errors.position && <p className='error'>{errors.position as string}</p>}
                 </Form.Item>
                 <div>
                     <Button size="small" htmlType="submit" loading={createCs.data.isLoading || updateCs.data.isLoading}>Lưu</Button>
