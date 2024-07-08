@@ -114,6 +114,7 @@ const EventPopup = (props: Props) => {
                                     <span className={`${styles.icon} ${styles.flexRow}`}>
                                         {/* {MapIconKey[KEY_ICON.LOCATION]} {props.event.resource?.location} */}
                                         {MapIconKey[KEY_ICON.LOCATION]} Cơ sở: <SelectLocation
+                                            isShortName
                                             title={recordData?.classSessionId.locationId.locationCode || ''}
                                             sizeButton='small'
                                             className={styles.pickLocationEvent}

@@ -13,13 +13,14 @@ interface Props {
     selectClassName?: string;
     sizeButton?: 'small' | 'large' | 'middle'
     onSelectLocation?: (locationId: string, text?: string, code?: string) => void;
+    isShortName?: boolean;
 }
 const SelectLocation = (props: Props) => {
     const { locations, queryLocations } = useGetLocations();
     const mapLocation: MenuProps['items'] = (locations?.data as Array<Obj>)?.map((item) => {
         return {
             key: item._id as string,
-            label: item.locationDetail as string,
+            label: props.isShortName ? `${item.locationCode}-${item.locationName}` : item.locationDetail as string,
             onClick() {
                 props.onSelectLocation?.(item._id as string, item.locationDetail as string, item.locationCode as string);
             }
@@ -36,6 +37,7 @@ const SelectLocation = (props: Props) => {
                 menu={{ items: mapLocation }}
                 trigger={['click']}
                 overlayClassName={props.selectClassName}
+                rootClassName={styles.selectLocation}
             >
                 <Button size={props.sizeButton}>{props.title || 'Click'}</Button>
             </Dropdown>

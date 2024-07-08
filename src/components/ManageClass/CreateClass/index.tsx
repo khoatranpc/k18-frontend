@@ -244,6 +244,7 @@ const CreateClass = (props: Props) => {
       render(value, _, index) {
         return (
           <SelectLocation
+            isShortName
             sizeButton="small"
             title={
               ((locations?.data as Array<Obj>)?.find(

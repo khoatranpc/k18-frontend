@@ -65,6 +65,7 @@ const AddRequestGroup = (props: Props) => {
                     <Form.Label>Cơ sở: {values.textLocation}</Form.Label>
                     {errors.locationId && touched.locationId && <p className='error'>{errors.locationId}</p>}
                     <SelectLocation
+                        isShortName
                         title='Chọn'
                         onSelectLocation={(id, text) => {
                             setFieldValue('locationId', id);

@@ -19,3 +19,10 @@
     color: var(--success);
     font-weight: bold;
 }
+
+.selectLocation {
+    ul {
+        max-height: 20rem;
+        overflow-y: scroll;
+    }
+}
