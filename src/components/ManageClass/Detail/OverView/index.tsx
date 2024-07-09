@@ -376,6 +376,9 @@ const OverView = () => {
             detailClass.query!(crrClassId);
             bookTeacherRQ.query!(router.query.classId as string);
         }
+        if (!listCs.data.response) {
+            listCs.query();
+        }
     }, []);
 
     useEffect(() => {
