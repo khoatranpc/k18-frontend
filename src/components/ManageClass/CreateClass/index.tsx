@@ -22,6 +22,7 @@ import {
   useDetailClass,
   useGetLocations,
   useGetTimeSchedule,
+  useListCs,
   useQueryBookTeacher,
   useUpdateClassBasicInfor,
 } from "@/utils/hooks";
@@ -54,6 +55,8 @@ const CreateClass = (props: Props) => {
   const { query, data } = useQueryBookTeacher("GET");
   const detailClass = useDetailClass("GET");
   const deleteRCBTC = useDeleteRecordBookTC();
+  const listCs = useListCs();
+  const getListCs = (listCs.data.response?.data as Obj[] ?? [])
   const router = useRouter();
   const updatedClass = useUpdateClassBasicInfor();
   const getDataRequestBookTC = useMemo(() => {
@@ -447,7 +450,7 @@ const CreateClass = (props: Props) => {
           dayEnd: dayjs(values.dayEnd).format("DD/MM/YYYY"),
           timeOnce: getLabelTime(values.timeOnce),
           timeTwice: getLabelTime(values.timeTwice),
-          cxo: values.cxo,
+          cxo: getListCs.find(item => item._id === values.cxoId)?.name,
           classGroupCount: values.expectedGroup.length | 0,
           classGroup: values.expectedGroup.map((group: any) => {
             return {
@@ -482,7 +485,7 @@ const CreateClass = (props: Props) => {
         message.close();
       }, 2000);
     }
-  }, [createClass, dispatch, values]);
+  }, [createClass, dispatch, values, listCs.data.response]);
   useEffect(() => {
     if (!props.isUpdate) {
       handleReset({});
