@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import { EyeOutlined, FlagOutlined } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
 import { RoundProcess } from '@/global/enum';
 import { getLabelRoundProcess } from '@/global/init';
@@ -35,7 +36,7 @@ const listRound = [{
     title: 'Phỏng vấn'
 }, {
     round: RoundProcess.FILLFOWM,
-    title: 'Form thông tin'
+    title: 'Đăng ký TT'
 }, {
     round: RoundProcess.CLAUTID,
     title: 'Dự thính'
@@ -84,7 +85,7 @@ const Progress = () => {
         FILLFOWM: <FillForm />,
         CLAUTID: <Clautid />,
         CLASSIFY: <>Phân loại</>,
-        INTERVIEW: <Interview roundId={getDataRound?._id as string} round={step}/>,
+        INTERVIEW: <Interview roundId={getDataRound?._id as string} round={step} />,
         TEST: <Test roundId={getDataRound?._id as string} />,
         DONE: <Done />
     };
@@ -165,7 +166,9 @@ const Progress = () => {
                                     className={`${styles.round} ${step === item.round ? styles.active : ''}`}
                                     onClick={() => {
                                         handleClickStep(item.round);
-                                    }}>{item.title}</p>
+                                    }}>
+                                    {item.title} {step === item.round ? <FlagOutlined /> : <EyeOutlined />}
+                                </p>
                             }
                         })
                     }

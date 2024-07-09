@@ -33,7 +33,7 @@ const VisualStep = () => {
                 labelPlacement="vertical"
                 items={[
                     {
-                        title: 'Form thông tin',
+                        title: 'Đăng ký TT',
                     },
                     {
                         title: 'Dự thính',

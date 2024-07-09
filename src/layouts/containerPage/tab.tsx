@@ -31,7 +31,8 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
           indexroute: CombineRoute["TE"]["RECRUITMENT_DETAIL_CANDIDATE"],
           hasBackPage: true,
           hide: true,
-          positionAccept: Object.values(PositionTe)
+          positionAccept: Object.values(PositionTe),
+          component: ComponentPage.RECRUITMENT_DETAIL_CANDIDATE
         },
         {
           title: "Lịch phỏng vấn",

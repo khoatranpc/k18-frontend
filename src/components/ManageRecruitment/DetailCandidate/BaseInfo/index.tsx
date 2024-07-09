@@ -103,6 +103,11 @@ const BaseInfo = () => {
                     <Button loading={predictCandidate.data.isLoading} onClick={handlePredictCandidate}>Đánh giá</Button>
                 </div>
             </div>
+            <div>
+                <h2>Hành động</h2>
+                <Button size="small" style={{ marginRight: '1.2rem' }}>Không liên hệ được</Button>
+                <Button size="small">Ngưng tuyển</Button>
+            </div>
         </div>
     )
 }

@@ -373,6 +373,13 @@
                 flex-direction: column;
                 gap: 4rem;
 
+                .round {
+                    display: flex;
+                    gap: 0.4rem;
+                    align-items: center;
+                    justify-content: center;
+                }
+
                 .content {
                     position: relative;
                     flex: 1;
