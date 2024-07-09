@@ -33,6 +33,7 @@ import {
   useGetListFeedback,
   useGetListBookTeacher,
   useListClass,
+  useListCs,
 } from "@/utils/hooks";
 import { AppDispatch } from "@/store";
 import {
@@ -181,6 +182,8 @@ const ManagerClass = (props: Props) => {
   const firstQuery = useRef<boolean>(true);
   const nextComponentId = (listClass.response as Obj)?.query?.query?.componentId as string;
   const isQueryClassTeacherPoint = useRef<boolean>(true);
+  const listCs = useListCs();
+  const getListCs = (listCs.data.response?.data as Obj[] ?? []);
   const mapDataListClass: RowData[] = useMemo(() => {
     if (nextComponentId !== props.componentId) {
       return [];
@@ -216,6 +219,7 @@ const ManagerClass = (props: Props) => {
             classForm: getClassForm[item.classForm as ClassForm],
             color: item.courseId?.color,
             bookTeachers: listBook,
+            cxoId: item.cxoId
           };
         }
       ) || [];
@@ -298,6 +302,23 @@ const ManagerClass = (props: Props) => {
         };
       },
       width: 170,
+    },
+    {
+      key: 'CS',
+      title: 'Quản lý lớp',
+      dataIndex: 'cxoId',
+      render(value) {
+        const crrCs = getListCs.find(item => item._id === value);
+        return crrCs ? <p style={{ lineHeight: '100%', margin: '0' }}>
+          <img style={{ width: '2rem', height: '2rem', borderRadius: '50%' }} src={crrCs.image} /> CS {crrCs.area.code} | {crrCs.name}
+        </p> : 'Chưa có thông tin';
+      },
+      width: 170,
+      onCell(data) {
+        return {
+          rowSpan: (data.rowSpan as number) ?? 1,
+        };
+      },
     },
     {
       key: "teacher",
@@ -490,6 +511,7 @@ const ManagerClass = (props: Props) => {
               "groupNumber",
               "locationCode",
               "locationDetail",
+              'cxoId'
             ],
             codeClass: codeClassDebounce,
             ...conditionFilter,
@@ -507,6 +529,11 @@ const ManagerClass = (props: Props) => {
     }
     firstQuery.current = false;
   }, [codeClassDebounce]);
+  useEffect(() => {
+    if (!listCs.data.response) {
+      listCs.query();
+    }
+  }, []);
   useEffect(() => {
     if (
       listClass.success &&

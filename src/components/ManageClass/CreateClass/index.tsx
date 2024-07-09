@@ -56,7 +56,7 @@ const CreateClass = (props: Props) => {
   const detailClass = useDetailClass("GET");
   const deleteRCBTC = useDeleteRecordBookTC();
   const listCs = useListCs();
-  const getListCs = (listCs.data.response?.data as Obj[] ?? [])
+  const getListCs = (listCs.data.response?.data as Obj[] ?? []);
   const router = useRouter();
   const updatedClass = useUpdateClassBasicInfor();
   const getDataRequestBookTC = useMemo(() => {
