@@ -9,7 +9,7 @@ import { MapIconKey } from '@/global/icon';
 import { getColorFromStatusClass, mapStatusToString } from '@/global/init';
 import { formatDatetoString, getWeekday, uuid } from '@/utils';
 import useGetCrrUser from '@/utils/hooks/getUser';
-import { useClassSession, useComparePositionTE, useDetailClass, useFindGetAllTe, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
+import { useClassSession, useComparePositionTE, useDetailClass, useFindGetAllTe, useListCs, useQueryBookTeacher, useUpdateClassBasicInfor } from '@/utils/hooks';
 import BlockNotifi from './BlockNotifi';
 import PickTimeSchedule from '@/components/PickTimeSchedule';
 import { configDataClassSession } from './dataConfig';
@@ -33,6 +33,8 @@ const OverView = () => {
     const bookTeacherRQ = useQueryBookTeacher('GET');
     const detailClass = useDetailClass('GET');
     const listTe = useFindGetAllTe();
+    const listCs = useListCs();
+    const getListCs = useMemo(() => (listCs.data.response?.data as Obj[] ?? []), [listCs.data.response]);
     const hasRole = useComparePositionTE(PositionTe.LEADER, PositionTe.QC, PositionTe.ASSISTANT);
     const crrUser = useGetCrrUser();
     const crrRoleUser = (crrUser?.data as Obj)?.roleAccount;
@@ -161,7 +163,7 @@ const OverView = () => {
                 },
                 {
                     title: 'CXO',
-                    value: [dataDetailClass?.data?.cxo]
+                    value: [getListCs.find(item => item._id === dataDetailClass?.data?.cxoId)?.name]
                 }
             ],
         };
@@ -365,7 +367,7 @@ const OverView = () => {
             }
         ];
         return dataOverView;
-    }, [bookTeacherRQ, detailClass, getDataClassSession]);
+    }, [bookTeacherRQ, detailClass, getDataClassSession, getListCs]);
     // logic call api not equal current data in reducer with router
     useLayoutEffect(() => {
         const crrStoreDetailClass = detailClass.data.response?.data._id as string;
