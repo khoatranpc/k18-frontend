@@ -251,6 +251,13 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
           indexroute: CombineRoute['TE']['CS']['LIST'],
           positionAccept: [PositionTe.LEADER, ROLE.TE]
         },
+        {
+          title: 'Chi tiết CS',
+          route: CombineRoute['TE']['CS']['DETAIL'],
+          indexroute: CombineRoute['TE']['CS']['DETAIL'],
+          positionAccept: [PositionTe.LEADER, ROLE.TE],
+          hide: true
+        },
       ]
     }
   ],
@@ -398,6 +405,13 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
           route: CombineRoute['CS']['LIST'],
           indexroute: CombineRoute['CS']['LIST'],
           positionAccept: [ROLE.CS]
+        },
+        {
+          title: 'Chi tiết CS',
+          route: CombineRoute['TE']['CS']['DETAIL'],
+          indexroute: CombineRoute['TE']['CS']['DETAIL'],
+          positionAccept: [ROLE.CS],
+          hide: true
         },
       ]
     },

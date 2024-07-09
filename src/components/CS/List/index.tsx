@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { EditOutlined, EyeOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 import { Button } from 'antd';
 import { Columns, Obj } from '@/global/interface';
 import { useHandleDrawer, useListCs } from '@/utils/hooks';
@@ -11,6 +12,7 @@ import styles from '@/styles/CS.module.scss';
 const ListCS = () => {
     const drawer = useHandleDrawer();
     const listCs = useListCs();
+    const router = useRouter();
     const getListCs = (listCs.data.response?.data as Obj[] ?? []).map(item => {
         return {
             ...item,
@@ -65,7 +67,9 @@ const ListCS = () => {
             className: 'text-center',
             render(_, record) {
                 return <div className={styles.btnAction}>
-                    <Button icon={<EyeOutlined />} size='small'>Chi tiết</Button>
+                    <Button icon={<EyeOutlined />} size='small' onClick={() => {
+                        router.push(`/cs/${record._id}`);
+                    }}>Chi tiết</Button>
                     <Button icon={<EditOutlined />} size='small'
                         onClick={() => {
                             handleOpen('Cập nhật tài khoản', { isCreate: false, csId: record._id })

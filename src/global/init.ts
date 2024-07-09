@@ -116,6 +116,7 @@ const getLabelMailTemplate: Record<TemplateMail, string> = {
     FAILINTERVIEW: ' Fail PV',
     PASSINTERVIEW: 'Pass PV',
     NOCONNECT: 'Không liên hệ được',
+    PENDING: 'Tạm ngừng tuyển'
 }
 const getLabelRegion: Record<Region, string> = {
     MB: 'Miền Bắc',
