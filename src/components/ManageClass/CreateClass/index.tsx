@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { Button, Input, InputNumber, Popconfirm } from "antd";
+import { Button, Input, InputNumber, Popconfirm, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
@@ -31,6 +31,7 @@ import Table from "@/components/Table";
 import SelectLocation from "@/components/SelectLocation";
 import styles from "@/styles/class/CreateClass.module.scss";
 import teleBot from "@/utils/teleAlert";
+import SelectCs from "@/components/CS/SelectCs";
 
 interface Props {
   onReceive?: (status: boolean) => void;
@@ -110,6 +111,7 @@ const CreateClass = (props: Props) => {
     setTouched,
     setErrors,
     handleReset,
+    setFieldTouched,
   } = useFormik({
     initialValues: initValues,
     validationSchema,
@@ -118,8 +120,8 @@ const CreateClass = (props: Props) => {
         payload: {
           query: {
             body: {
-              cxo: values.cxo,
-              bu: values.bu,
+              cxoId: values.cxoId,
+              buId: values.buId,
               courseId: values.courseId,
               courseLevelId: values.courseLevelId,
               codeClass: values.codeClass,
@@ -208,143 +210,132 @@ const CreateClass = (props: Props) => {
     values.expectedGroup[index][field] = value;
     setFieldValue("expectedGroup", [...values.expectedGroup]);
   };
-  const columns: Columns = [
-    {
-      key: "STT",
-      title: "STT",
-      dataIndex: "groupNumber",
-      render(value, __, index) {
-        return (
-          <div>
-            Nhóm{" "}
-            <InputNumber<number>
-              size="small"
-              value={value}
-              onChange={(value) => {
+  const columns: Columns = useMemo(() => {
+    return [
+      {
+        key: "STT",
+        title: "STT",
+        dataIndex: "groupNumber",
+        render(value, __, index) {
+          return (
+            <div>
+              Nhóm{" "}
+              <InputNumber<number>
+                size="small"
+                value={value}
+                onChange={(value) => {
+                  handleChangeDataBookTeacher(
+                    "groupNumber",
+                    (value as number) ?? 0,
+                    index
+                  );
+                }}
+              />
+            </div>
+          );
+        },
+      },
+      {
+        key: "LOCATION",
+        title: (
+          <span>
+            Cơ sở <span style={{ color: "var(--base)" }}>*</span>
+          </span>
+        ),
+        dataIndex: "locationId",
+        width: 70,
+        render(value, _, index) {
+          return (
+            <SelectLocation
+              isShortName
+              sizeButton="small"
+              title={
+                ((locations?.data as Array<Obj>)?.find(
+                  (item) => item._id === value
+                )?.locationCode as string) ?? "Chọn"
+              }
+              onSelectLocation={(locationId) => {
                 handleChangeDataBookTeacher(
-                  "groupNumber",
-                  (value as number) ?? 0,
+                  "locationId",
+                  locationId ?? "",
                   index
                 );
               }}
             />
-          </div>
-        );
-      },
-    },
-    {
-      key: "LOCATION",
-      title: (
-        <span>
-          Cơ sở <span style={{ color: "var(--base)" }}>*</span>
-        </span>
-      ),
-      dataIndex: "locationId",
-      width: 70,
-      render(value, _, index) {
-        return (
-          <SelectLocation
-            isShortName
-            sizeButton="small"
-            title={
-              ((locations?.data as Array<Obj>)?.find(
-                (item) => item._id === value
-              )?.locationCode as string) ?? "Chọn"
-            }
-            onSelectLocation={(locationId) => {
-              handleChangeDataBookTeacher(
-                "locationId",
-                locationId ?? "",
-                index
-              );
-            }}
-          />
-        );
-      },
-    },
-    {
-      key: "HVDK",
-      title: (
-        <span>
-          Số HV (dự kiến) <span style={{ color: "var(--base)" }}>*</span>
-        </span>
-      ),
-      width: 150,
-      dataIndex: "totalStudents",
-      className: "text-center",
-      render(value, _, index) {
-        return (
-          <InputNumber<number>
-            style={{ margin: "auto" }}
-            size="small"
-            value={value}
-            min={0}
-            onChange={(data) => {
-              handleChangeDataBookTeacher(
-                "totalStudents",
-                data as number,
-                index
-              );
-            }}
-          />
-        );
-      },
-    },
-    {
-      key: "NOTE",
-      title: "Lưu ý",
-      dataIndex: "note",
-      render(value, _, index) {
-        return (
-          <Input.TextArea
-            size="small"
-            style={{ resize: "none" }}
-            value={value}
-            onChange={(e) => {
-              handleChangeDataBookTeacher("note", e.target.value ?? "", index);
-            }}
-          />
-        );
-      },
-    },
-    {
-      key: "ACTION",
-      title: "Hành động",
-      className: "text-center",
-      width: 90,
-      render(_, __, index) {
-        const checkExisted = props.isUpdate ? getDataRequestBookTC?.[index] : null;
-        if (!checkExisted) {
-          return (
-            <Button
-              loading={deleteRCBTC.data.isLoading}
-              size="small"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                margin: "auto",
-                borderColor: "var(--base)",
-              }}
-              onClick={() => {
-                handleDeleteGroup(index);
-              }}
-            >
-              <DeleteFilled style={{ color: "var(--base)" }} />
-            </Button>
           );
-        } else {
+        },
+      },
+      {
+        key: "HVDK",
+        title: (
+          <span>
+            Số HV (dự kiến) <span style={{ color: "var(--base)" }}>*</span>
+          </span>
+        ),
+        width: 150,
+        dataIndex: "totalStudents",
+        className: "text-center",
+        render(value, _, index) {
           return (
-            <Popconfirm
-              title="Thông báo"
-              description="Xác nhận xoá nhóm!"
-              okText="Xác nhận"
-              cancelText="Huỷ"
-              onConfirm={() => {
-                deleteRCBTC.query({
-                  params: [checkExisted._id],
-                });
+            <InputNumber<number>
+              style={{ margin: "auto" }}
+              size="small"
+              value={value}
+              min={0}
+              onChange={(data) => {
+                handleChangeDataBookTeacher(
+                  "totalStudents",
+                  data as number,
+                  index
+                );
               }}
-            >
+            />
+          );
+        },
+      },
+      {
+        key: "ZALO",
+        title: "Zalo",
+        dataIndex: "zalo",
+        render(value, _, index) {
+          return (
+            <Input
+              size="small"
+              style={{ resize: "none" }}
+              defaultValue={value}
+              onChange={(e) => {
+                handleChangeDataBookTeacher("zalo", e.target.value ?? "", index);
+              }}
+            />
+          );
+        },
+      },
+      {
+        key: "NOTE",
+        title: "Lưu ý",
+        dataIndex: "note",
+        render(value, _, index) {
+          return (
+            <Input.TextArea
+              size="small"
+              style={{ resize: "none" }}
+              value={value}
+              onChange={(e) => {
+                handleChangeDataBookTeacher("note", e.target.value ?? "", index);
+              }}
+            />
+          );
+        },
+      },
+      {
+        key: "ACTION",
+        title: "Hành động",
+        className: "text-center",
+        width: 90,
+        render(_, __, index) {
+          const checkExisted = props.isUpdate ? getDataRequestBookTC?.[index] : null;
+          if (!checkExisted) {
+            return (
               <Button
                 loading={deleteRCBTC.data.isLoading}
                 size="small"
@@ -354,15 +345,45 @@ const CreateClass = (props: Props) => {
                   margin: "auto",
                   borderColor: "var(--base)",
                 }}
+                onClick={() => {
+                  handleDeleteGroup(index);
+                }}
               >
                 <DeleteFilled style={{ color: "var(--base)" }} />
               </Button>
-            </Popconfirm>
-          );
-        }
+            );
+          } else {
+            return (
+              <Popconfirm
+                title="Thông báo"
+                description="Xác nhận xoá nhóm!"
+                okText="Xác nhận"
+                cancelText="Huỷ"
+                onConfirm={() => {
+                  deleteRCBTC.query({
+                    params: [checkExisted._id],
+                  });
+                }}
+              >
+                <Button
+                  loading={deleteRCBTC.data.isLoading}
+                  size="small"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    margin: "auto",
+                    borderColor: "var(--base)",
+                  }}
+                >
+                  <DeleteFilled style={{ color: "var(--base)" }} />
+                </Button>
+              </Popconfirm>
+            );
+          }
+        },
       },
-    },
-  ];
+    ]
+  }, [values.expectedGroup]);
   useEffect(() => {
     if (deleteRCBTC.data.response) {
       if (deleteRCBTC.data.success) {
@@ -625,23 +646,47 @@ const CreateClass = (props: Props) => {
         <div className={styles.partSideRight}>
           <Form.Group className={styles.mb_24}>
             <Form.Label>CXO:</Form.Label>
-            <Input
-              type="text"
+            <SelectCs
+              style={{ width: '100%' }}
               size="small"
-              defaultValue={values.cxo}
-              onChange={handleChange}
-              name="cxo"
+              onBlur={() => {
+                setFieldTouched('cxoId', true);
+              }}
+              onChange={(value) => {
+                setFieldValue('cxoId', value);
+              }}
+              defaultValue={values.cxoId}
+              showSearch
+              filterOption={(input, option: any) => {
+                return String(option.email).toLowerCase().includes(input.toLowerCase()) || String(option.name).toLowerCase().includes(input.toLowerCase())
+              }}
             />
           </Form.Group>
           <Form.Group className={styles.mb_24}>
             <Form.Label>Cơ sở BU:</Form.Label>
-            <Input
-              type="text"
-              size="small"
-              defaultValue={values.bu}
-              onChange={handleChange}
-              name="bu"
-            />
+            <div>
+              <Select
+                showSearch
+                placeholder="Gõ tên hoặc mã cơ sở để tìm kiếm"
+                style={{ width: '100%' }}
+                size="small"
+                defaultValue={values.buId}
+                options={(locations?.data as Obj[])?.map(item => {
+                  return {
+                    ...item,
+                    value: item._id,
+                    label: `${item.locationCode} - ${item.locationName}`
+                  }
+                })}
+                filterOption={(input, option: any) => {
+                  return String(option.locationCode).toLowerCase().includes(input.toLowerCase()) || String(option.locationName).toLowerCase().includes(input.toLowerCase())
+                }}
+                onChange={(value) => {
+                  setFieldValue('buId', value);
+                }}
+                loading={locations?.loading}
+              />
+            </div>
           </Form.Group>
           <Form.Group className={styles.mb_24}>
             <Form.Label>Link online:</Form.Label>

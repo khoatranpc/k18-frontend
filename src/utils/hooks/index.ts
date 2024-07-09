@@ -165,7 +165,7 @@ const useQueryBookTeacher = (action: 'GET' | 'ADD'): {
                         query: {
                             params: [params as string],
                             query: {
-                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept', 'salaryPH', 'totalStudents', 'note', 'CVfile', 'profile']
+                                fields: fields || ['_id', 'classId', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'fullName', 'roleRegister', 'accept', 'salaryPH', 'totalStudents', 'note', 'CVfile', 'profile', 'zalo']
                             }
                         }
                     }
