@@ -117,7 +117,6 @@ const ListClassRunning = () => {
     const dispatch = useDispatch();
 
     const [filterCousre, setFilterCourse] = useState<string>('');
-
     const getRowData: RowData[] = useMemo(() => {
         return ((listClass.response?.data as Obj)?.classes as Array<Obj>)?.map((item) => {
             return {
@@ -126,15 +125,13 @@ const ListClassRunning = () => {
             };
         })
     }, [listClass.response]);
-
-    useEffect(() => {
-        //pending logic pagination
+    const handleQuery = (currentPage?: number, recordOnPage?: number) => {
         dispatch(queryGetListClass({
             payload: {
                 query: {
                     query: {
-                        currentPage: 1,
-                        recordOnPage: 10,
+                        currentPage: currentPage ?? 1,
+                        recordOnPage: recordOnPage ?? 10,
                         status: STATUS_CLASS.RUNNING,
                         forRecruitment: true,
                         course: filterCousre,
@@ -143,6 +140,10 @@ const ListClassRunning = () => {
                 }
             }
         }));
+    }
+    useEffect(() => {
+        //pending logic pagination
+        handleQuery();
     }, [filterCousre]);
     return (
         <div className={styles.classRunningPage}>
@@ -165,6 +166,13 @@ const ListClassRunning = () => {
                 loading={listClass.isLoading}
                 columns={columns}
                 rowData={getRowData}
+                onChangeDataPagination={(data) => {
+                    handleQuery(data.currentPage, data.currentTotalRowOnPage);
+                }}
+                maxPage={listClass.response?.data?.totalPage ?? 1}
+                rowOnPage={listClass.response?.data?.recordOnPage ?? 10}
+                crrPage={listClass.response?.data?.currentPage ?? 1}
+                showSizePage
             />
             {showModal && <ModalRegisterClass
                 class={classRegister}
