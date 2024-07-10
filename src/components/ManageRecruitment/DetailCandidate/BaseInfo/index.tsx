@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
+import { CloseCircleFilled } from '@ant-design/icons';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
-import { KEY_ICON, StatusProcessing } from '@/global/enum';
-import { formatDatetoString } from '@/utils';
-import { useGetDetailCandidate, usePredictCandidate } from '@/utils/hooks';
-import IconArrowView from '@/icons/IconArrowView';
+import { KEY_ICON, StatusProcessing, TemplateMail } from '@/global/enum';
+import { formatDatetoString, toastify } from '@/utils';
+import { useGetDetailCandidate, usePredictCandidate, useSendmailCandidate } from '@/utils/hooks';
 import { getStatusProcess } from '../../Table';
+import IconArrowView from '@/icons/IconArrowView';
+import TickDone from '@/icons/TickDone';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
+    const sendMailCandidate = useSendmailCandidate();
     const router = useRouter();
     const predictCandidate = usePredictCandidate();
     const getPredict = predictCandidate.data.response?.data as Obj;
@@ -21,16 +24,35 @@ const BaseInfo = () => {
             params: [detailCandidate?._id as string || router.query.candidateId as string]
         });
     }
+    const handleSendmail = (template: TemplateMail) => {
+        const payload = {
+            templateMail: template,
+            courseName: detailCandidate.courseApply.courseName,
+            candidateName: detailCandidate.fullName,
+            candidateEmail: detailCandidate.email,
+        }
+        sendMailCandidate.query({
+            body: payload
+        });
+    }
     useEffect(() => {
         if (detailCandidate) {
             predictCandidate.query({
                 params: [detailCandidate?._id as string || router.query.candidateId as string]
             });
             return () => {
-                predictCandidate.clear?.()
+                predictCandidate.clear?.();
             }
         }
     }, [detailCandidate]);
+    useEffect(() => {
+        if (sendMailCandidate.data.response) {
+            toastify(sendMailCandidate.data.response?.message as string, {
+                type: sendMailCandidate.data.success ? 'success' : 'error'
+            });
+            sendMailCandidate.clear?.();
+        }
+    }, [sendMailCandidate.data.response]);
     return (
         <div className={styles.containerBaseInfo}>
             <div className={styles.candidate}>
@@ -105,8 +127,26 @@ const BaseInfo = () => {
             </div>
             <div>
                 <h2>Hành động</h2>
-                <Button size="small" style={{ marginRight: '1.2rem' }}>Không liên hệ được</Button>
-                <Button size="small">Ngưng tuyển</Button>
+                <Popconfirm
+                    title="Gửi email thông báo?"
+                    okText="Gửi"
+                    cancelText="Huỷ"
+                    onConfirm={() => {
+                        handleSendmail(TemplateMail.NOCONNECT);
+                    }}
+                >
+                    <Button loading={sendMailCandidate.data.isLoading} size="small" style={{ marginRight: '1.2rem', marginBottom: '1.2rem' }}>Không liên hệ được <sup>{detailCandidate?.sendMailNoConnect ? <TickDone /> : <CloseCircleFilled style={{ color: 'var(--light-red)' }} />}</sup></Button>
+                </Popconfirm>
+                {/* <Popconfirm
+                    title="Gửi email thông báo?"
+                    okText="Gửi"
+                    cancelText="Huỷ"
+                    onConfirm={() => {
+                        handleSendmail(TemplateMail.PENDING);
+                    }}
+                >
+                    <Button loading={sendMailCandidate.data.isLoading} size="small">Ngưng tuyển <sup>{detailCandidate?.sendMailPending ? <TickDone /> : <CloseCircleFilled style={{ color: 'var(--light-red)' }} />}</sup></Button>
+                </Popconfirm> */}
             </div>
         </div>
     )
