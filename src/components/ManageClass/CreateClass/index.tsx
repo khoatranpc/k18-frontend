@@ -64,7 +64,7 @@ const CreateClass = (props: Props) => {
   }, [data?.response?.data]);
   const listTimeSchedule = useGetTimeSchedule();
   const dispatch = useDispatch<AppDispatch>();
-  const { locations } = useGetLocations();
+  const { locations, queryLocations } = useGetLocations();
   const message = useHookMessage();
   const createClass = useSelector(
     (state: RootState) => (state.createClass as State).state
@@ -421,6 +421,9 @@ const CreateClass = (props: Props) => {
   useEffect(() => {
     if (router.query.classId) {
       query!(router.query.classId as string);
+    }
+    if (!locations) {
+      queryLocations();
     }
   }, []);
   useEffect(() => {
