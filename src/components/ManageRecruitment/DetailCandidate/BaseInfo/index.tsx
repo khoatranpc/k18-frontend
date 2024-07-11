@@ -137,7 +137,7 @@ const BaseInfo = () => {
                 >
                     <Button loading={sendMailCandidate.data.isLoading} size="small" style={{ marginRight: '1.2rem', marginBottom: '1.2rem' }}>Không liên hệ được <sup>{detailCandidate?.sendMailNoConnect ? <TickDone /> : <CloseCircleFilled style={{ color: 'var(--light-red)' }} />}</sup></Button>
                 </Popconfirm>
-                {/* <Popconfirm
+                <Popconfirm
                     title="Gửi email thông báo?"
                     okText="Gửi"
                     cancelText="Huỷ"
@@ -146,7 +146,7 @@ const BaseInfo = () => {
                     }}
                 >
                     <Button loading={sendMailCandidate.data.isLoading} size="small">Ngưng tuyển <sup>{detailCandidate?.sendMailPending ? <TickDone /> : <CloseCircleFilled style={{ color: 'var(--light-red)' }} />}</sup></Button>
-                </Popconfirm> */}
+                </Popconfirm>
             </div>
         </div>
     )
