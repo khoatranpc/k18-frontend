@@ -342,15 +342,15 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
       component: ComponentPage.MANAGER_FEEDBACK,
       positionAccept: [ROLE.TEACHER]
     },
-    {
-      title: "Tài liệu chung",
-      route: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
-      keyIcon: KEY_ICON.IF,
-      showIcon: true,
-      indexroute: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
-      component: ComponentPage.DOCUMENT,
-      positionAccept: [ROLE.TEACHER]
-    },
+    // {
+    //   title: "Tài liệu chung",
+    //   route: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
+    //   keyIcon: KEY_ICON.IF,
+    //   showIcon: true,
+    //   indexroute: CombineRoute["TEACHER"]["GENERAL_DOCUMENT"],
+    //   component: ComponentPage.DOCUMENT,
+    //   positionAccept: [ROLE.TEACHER]
+    // },
   ],
   COMMON: [],
   CXO: [],
