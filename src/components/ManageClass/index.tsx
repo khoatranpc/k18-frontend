@@ -350,12 +350,12 @@ const ManagerClass = (props: Props) => {
       dataIndex: "bookTeachers",
       render(value: Obj) {
         const tc =
-          (value.teacherRegister as Obj[])?.filter(
-            (item: Obj) => item.accept
+          (value?.teacherRegister as Obj[])?.filter(
+            (item: Obj) => item?.accept
           ) ?? [];
         return (
           <Popover
-            content={<p>{value.locationDetail ?? "Chưa có thông tin "}</p>}
+            content={<p>{value?.locationDetail ?? "Chưa có thông tin "}</p>}
           >
             <span
               style={{
@@ -363,8 +363,8 @@ const ManagerClass = (props: Props) => {
                 fontWeight: !value.groupNumber ? "500" : "unset",
               }}
             >
-              {value.groupNumber
-                ? `Nhóm ${value.groupNumber ?? ''} - ${value.locationCode ?? ''}`
+              {value?.groupNumber
+                ? `Nhóm ${value?.groupNumber ?? ''} - ${value?.locationCode ?? ''}`
                 : "Thiếu"}
               {!tc.length ? (
                 <span style={{ color: "var(--base)", fontWeight: "500" }}>
