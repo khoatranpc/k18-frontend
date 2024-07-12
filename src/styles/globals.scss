@@ -600,6 +600,11 @@ a {
             width: 9.7rem;
             text-align: center;
         }
+
+        .center {
+            justify-content: center;
+            align-items: center;
+        }
     }
 
     :where(.css-dev-only-do-not-override-zjzpde).ant-checkbox-indeterminate .ant-checkbox-inner:after {

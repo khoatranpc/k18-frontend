@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import { Badge, DatePicker, Popover, TabsProps } from "antd";
+import { Badge, Button, DatePicker, Popconfirm, Popover, TabsProps } from "antd";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { DeleteOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Action, Columns, Obj, RowData } from "@/global/interface";
 import {
@@ -24,6 +25,7 @@ import {
   formatDatetoString,
   generateRowDataForMergeRowSingleField,
   sortByString,
+  toastify,
   uuid,
 } from "@/utils";
 import {
@@ -34,6 +36,7 @@ import {
   useGetListBookTeacher,
   useListClass,
   useListCs,
+  useUpdateClassBasicInfor,
 } from "@/utils/hooks";
 import { AppDispatch } from "@/store";
 import {
@@ -178,7 +181,13 @@ const ManagerClass = (props: Props) => {
   const getListFeedback = ((listFeedBack.data.response as Obj)?.data as Obj)
     ?.list as Obj[];
   const router = useRouter();
+  const updatedClass = useUpdateClassBasicInfor();
+  const [indexUpdate, setIndexUpdate] = useState(-1);
   const listClass = props.listClass;
+  const getQueryListClass = useMemo(() => {
+    return listClass.payload?.query?.query as Obj
+  }, [props.listClass.response]);
+
   const firstQuery = useRef<boolean>(true);
   const nextComponentId = (listClass.response as Obj)?.query?.query?.componentId as string;
   const isQueryClassTeacherPoint = useRef<boolean>(true);
@@ -426,7 +435,7 @@ const ManagerClass = (props: Props) => {
       render(value) {
         return (
           <div
-            className={`${value} stt`}
+            className={`${value} stt ${styles.status}`}
             style={{
               backgroundColor: getColorFromStatusClass[value as STATUS_CLASS],
             }}
@@ -443,6 +452,47 @@ const ManagerClass = (props: Props) => {
       width: 100,
       fixed: "right",
     },
+    {
+      key: 'ACTION',
+      title: 'Hành động',
+      className: 'text"-center',
+      render(_, record: Obj, index: number) {
+        return <div style={{ margin: 'auto', width: 'fit-content' }}>
+          <Popconfirm
+            title="Xoá lớp?"
+            okText="Đồng ý"
+            cancelText="Huỷ"
+            onConfirm={() => {
+              setIndexUpdate(index);
+              updatedClass.handleUpdate({
+                payload: {
+                  query: {
+                    body: {
+                      isDelete: true
+                    },
+                    params: [record._id]
+                  }
+                }
+              });
+            }}
+          >
+            <Button style={{ color: 'var(--base)', borderColor: 'var(--base)' }} loading={updatedClass.updated.isLoading && indexUpdate === index} icon={<DeleteOutlined />} className="flex center" onClick={(e) => {
+              e.stopPropagation();
+            }} />
+          </Popconfirm>
+        </div>
+      },
+      width: 100,
+      fixed: "right",
+      onCell(data) {
+        return {
+          rowSpan: (data.rowSpan as number) ?? 1,
+          onClick(e) {
+            e.stopPropagation();
+          }
+        };
+      },
+    }
   ];
   const handleClickRow = (record: Obj) => {
     const routePayload: PayloadRoute = {
@@ -516,6 +566,7 @@ const ManagerClass = (props: Props) => {
             codeClass: codeClassDebounce,
             ...conditionFilter,
             ...filter,
+            isDelete: false
           },
         },
       },
@@ -529,6 +580,21 @@ const ManagerClass = (props: Props) => {
     }
     firstQuery.current = false;
   }, [codeClassDebounce]);
+  useEffect(() => {
+    if (updatedClass.updated.response) {
+      const getMessage = updatedClass.updated.success ? 'Xoá lớp thành công!' : `Xoá lớp thất bại! ${updatedClass.updated.response?.message as string ?? ''}`
+      toastify(getMessage, {
+        type: updatedClass.updated.success ? 'success' : 'error'
+      });
+      if (updatedClass.updated.success) {
+        if (getQueryListClass) {
+          handleQueryListClass(getQueryListClass?.currentPage as number ?? 1, getQueryListClass?.recordOnPage as number ?? 10);
+        }
+      }
+      setIndexUpdate(-1);
+      updatedClass.clear();
+    }
+  }, [updatedClass.updated.response, conditionFilter, getQueryListClass]);
   useEffect(() => {
     if (!listCs.data.response) {
       listCs.query();
@@ -612,6 +678,7 @@ const ManagerClass = (props: Props) => {
       <Table
         bordered
         className={styles.tableMangerClass}
+        detectRerender={updatedClass.updated.isLoading}
         columns={columns}
         rowData={mapDataListClass}
         loading={listClass.isLoading}

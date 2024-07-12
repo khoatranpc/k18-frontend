@@ -45,6 +45,7 @@ interface Props extends TableProps<Obj> {
      */
     onChange?: TableProps<Obj>['onChange'];
     ref?: RefObject<Obj | any>;
+    detectRerender?: boolean;
 }
 
 const Table = forwardRef((props: Props, ref) => {
@@ -129,7 +130,7 @@ const MemoTable = memo(Table, (prevProps, nextProps) => {
     if (nextProps.rowData !== prevProps.rowData || prevProps.dataSource !== nextProps.dataSource) {
         return false;
     }
-    if (nextProps.loading) return false;
+    if (nextProps.loading || nextProps.detectRerender !== prevProps.detectRerender) return false;
     if ((nextProps.rowOnPage && nextProps.rowOnPage !== prevProps.rowOnPage) || (nextProps.crrPage && nextProps.crrPage !== prevProps.crrPage) || (nextProps.maxPage && nextProps.maxPage !== prevProps.maxPage)) {
         return false;
     }
