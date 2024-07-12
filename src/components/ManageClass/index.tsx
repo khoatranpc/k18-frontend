@@ -432,6 +432,7 @@ const ManagerClass = (props: Props) => {
       key: "status",
       dataIndex: "status",
       title: "Trạng thái",
+      className: 'text-center',
       render(value) {
         return (
           <div
@@ -449,7 +450,7 @@ const ManagerClass = (props: Props) => {
           rowSpan: (data.rowSpan as number) ?? 1,
         };
       },
-      width: 100,
+      width: 150,
       fixed: "right",
     },
     ...getCrrUser?.roleAccount === ROLE.TE || getCrrUser?.roleAccount === ROLE.CS ? [

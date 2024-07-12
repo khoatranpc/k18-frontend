@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
+import { EyeFilled } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { Badge } from 'antd';
 import { Columns, Obj, RowData } from '@/global/interface';
-import { getColorFromStatusClass, getColorTeacherPoint, mapRoleToString, mapStatusToString } from '@/global/init';
+import { getColorFromStatusClass, getColorTeacherPoint, mapStatusToString } from '@/global/init';
 import { ComponentPage, KEY_ICON, ROLE_TEACHER, STATUS_CLASS } from '@/global/enum';
 import CombineRoute from '@/global/route';
 import { MapIconKey } from '@/global/icon';
@@ -13,7 +14,6 @@ import { getMatchingTimeSchedule } from './config';
 import TitleHeader from '@/components/ManageClass/TitleHeader';
 import { TabDetailClass } from '@/components/ManageClass/Detail';
 import styles from '@/styles/teacher/DetailTeacher.module.scss';
-import { EyeFilled } from '@ant-design/icons';
 
 const Class = () => {
     const listClass = useClassTeacherRegister();
@@ -125,13 +125,13 @@ const Class = () => {
         }
     })
     useEffect(() => {
-        listClass.query(router.query.teacherId as string, ['_id', 'classId', 'dayRange', 'start', 'end', 'codeClass', 'timeSchedule', 'status', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'roleRegister', 'idTeacher', 'enroll']);
+        listClass.query(router.query.teacherId as string, ['_id', 'classId', 'dayRange', 'start', 'end', 'codeClass', 'timeSchedule', 'status', 'locationId', 'locationCode', 'locationDetail', 'groupNumber', 'teacherRegister', 'roleRegister', 'idTeacher', 'enroll', 'isDelete']);
         if (!listTimeSchedule.data.response) {
             listTimeSchedule.query();
         }
     }, []);
     useEffect(() => {
-        if (getListClass.length) {
+        if (getListClass.length && !listFeedback.data.isLoading) {
             const getListClassId = getListClass.map((item: Obj) => {
                 return item.classId?._id
             });
