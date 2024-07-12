@@ -188,7 +188,8 @@ const IndexOverViewBlock = (props: Props) => {
         if (props.type === TypeOverView.CLASS) {
             listClass.query({
                 query: {
-                    fields: ['_id', 'courseId', 'courseName', 'status', 'classForm', 'dayRange']
+                    fields: ['_id', 'courseId', 'courseName', 'status', 'classForm', 'dayRange'],
+                    isDelete: false
                 }
             });
         }
