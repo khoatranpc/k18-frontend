@@ -452,47 +452,49 @@ const ManagerClass = (props: Props) => {
       width: 100,
       fixed: "right",
     },
-    {
-      key: 'ACTION',
-      title: 'Hành động',
-      className: 'text"-center',
-      render(_, record: Obj, index: number) {
-        return <div style={{ margin: 'auto', width: 'fit-content' }}>
-          <Popconfirm
-            title="Xoá lớp?"
-            okText="Đồng ý"
-            cancelText="Huỷ"
-            onConfirm={() => {
-              setIndexUpdate(index);
-              updatedClass.handleUpdate({
-                payload: {
-                  query: {
-                    body: {
-                      isDelete: true
-                    },
-                    params: [record._id]
+    ...getCrrUser?.roleAccount === ROLE.TE || getCrrUser?.roleAccount === ROLE.CS ? [
+      {
+        key: 'ACTION',
+        title: 'Hành động',
+        className: 'text"-center',
+        render(_, record: Obj, index: number) {
+          return <div style={{ margin: 'auto', width: 'fit-content' }}>
+            <Popconfirm
+              title="Xoá lớp?"
+              okText="Đồng ý"
+              cancelText="Huỷ"
+              onConfirm={() => {
+                setIndexUpdate(index);
+                updatedClass.handleUpdate({
+                  payload: {
+                    query: {
+                      body: {
+                        isDelete: true
+                      },
+                      params: [record._id]
+                    }
                   }
-                }
-              });
-            }}
-          >
-            <Button style={{ color: 'var(--base)', borderColor: 'var(--base)' }} loading={updatedClass.updated.isLoading && indexUpdate === index} icon={<DeleteOutlined />} className="flex center" onClick={(e) => {
+                });
+              }}
+            >
+              <Button style={{ color: 'var(--base)', borderColor: 'var(--base)' }} loading={updatedClass.updated.isLoading && indexUpdate === index} icon={<DeleteOutlined />} className="flex center" onClick={(e) => {
+                e.stopPropagation();
+              }} />
+            </Popconfirm>
+          </div>
+        },
+        width: 100,
+        fixed: "right",
+        onCell(data) {
+          return {
+            rowSpan: (data.rowSpan as number) ?? 1,
+            onClick(e) {
               e.stopPropagation();
-            }} />
-          </Popconfirm>
-        </div>
-      },
-      width: 100,
-      fixed: "right",
-      onCell(data) {
-        return {
-          rowSpan: (data.rowSpan as number) ?? 1,
-          onClick(e) {
-            e.stopPropagation();
-          }
-        };
-      },
-    }
+            }
+          };
+        },
+      }
+    ] as Columns : [],
   ];
   const handleClickRow = (record: Obj) => {
     const routePayload: PayloadRoute = {
