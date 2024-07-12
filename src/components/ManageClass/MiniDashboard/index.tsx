@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { Columns, Obj } from '@/global/interface';
-import { useListClass } from '@/utils/hooks';
+import { useListClass, useUpdateClassBasicInfor } from '@/utils/hooks';
 import { HookReducer, uuid } from '@/utils';
 import Table from '@/components/Table';
 import styles from "@/styles/class/Class.module.scss";
@@ -104,14 +104,17 @@ interface PropsDashboard {
 const BoundaryMiniDashBoard = (props: PropsDashboard) => {
     const listClass = useListClass();
     const componentId = useRef(uuid());
+    const updatedClass = useUpdateClassBasicInfor();
     useEffect(() => {
-        listClass.query({
-            query: {
-                ...props.month ? { date: props.month } : {},
-                isDelete: false
-            },
-        }, componentId.current);
-    }, [props.month]);
+        if (!listClass.data.isLoading) {
+            listClass.query({
+                query: {
+                    ...props.month ? { date: props.month } : {},
+                    isDelete: false
+                },
+            }, componentId.current);
+        }
+    }, [props.month, updatedClass.updated.response]);
     return <MiniDashboard componentId={componentId.current} listClass={listClass} date={props.month} />
 }
 

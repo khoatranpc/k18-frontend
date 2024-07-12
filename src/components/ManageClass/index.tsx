@@ -2,7 +2,7 @@ import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Badge, Button, DatePicker, Popconfirm, Popover, TabsProps } from "antd";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, ReloadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Action, Columns, Obj, RowData } from "@/global/interface";
 import {
@@ -63,6 +63,7 @@ enum Tab {
   ALL_CLASS = "ALL_CLASS",
   MY_CLASS = "MY_CLASS",
   REGISTER_CLASS = "REGISTER_CLASS",
+  DELETE = "DELETE"
 }
 
 interface PropsFilter {
@@ -166,6 +167,12 @@ const ManagerClass = (props: Props) => {
       key: Tab["ALL_CLASS"],
       label: "Tất cả lớp",
     },
+    ...getCrrUser?.roleAccount === ROLE.TE || getCrrUser?.roleAccount === ROLE.CS ? [
+      {
+        key: Tab.DELETE,
+        label: 'Đã xoá'
+      }
+    ] : []
   ];
   const [storeManagerClass, setStoreManagerClass] = useState<{
     crrKeyTab: string;
@@ -461,7 +468,7 @@ const ManagerClass = (props: Props) => {
         render(_, record: Obj, index: number) {
           return <div style={{ margin: 'auto', width: 'fit-content' }}>
             <Popconfirm
-              title="Xoá lớp?"
+              title={storeManagerClass.crrKeyTab === Tab.ALL_CLASS ? 'Xoá lớp?' : 'Khôi phục?'}
               okText="Đồng ý"
               cancelText="Huỷ"
               onConfirm={() => {
@@ -470,7 +477,7 @@ const ManagerClass = (props: Props) => {
                   payload: {
                     query: {
                       body: {
-                        isDelete: true
+                        isDelete: (storeManagerClass.crrKeyTab === Tab.ALL_CLASS)
                       },
                       params: [record._id]
                     }
@@ -478,7 +485,10 @@ const ManagerClass = (props: Props) => {
                 });
               }}
             >
-              <Button style={{ color: 'var(--base)', borderColor: 'var(--base)' }} loading={updatedClass.updated.isLoading && indexUpdate === index} icon={<DeleteOutlined />} className="flex center" onClick={(e) => {
+              <Button style={{
+                ...storeManagerClass.crrKeyTab === Tab.ALL_CLASS ? { color: 'var(--base)', borderColor: 'var(--base)' } : {}
+              }
+              } loading={updatedClass.updated.isLoading && indexUpdate === index} icon={storeManagerClass.crrKeyTab === Tab.ALL_CLASS ? <DeleteOutlined /> : <ReloadOutlined />} className="flex center" onClick={(e) => {
                 e.stopPropagation();
               }} />
             </Popconfirm>
@@ -569,7 +579,7 @@ const ManagerClass = (props: Props) => {
             codeClass: codeClassDebounce,
             ...conditionFilter,
             ...filter,
-            isDelete: false
+            isDelete: !(storeManagerClass.crrKeyTab === Tab.ALL_CLASS)
           },
         },
       },
@@ -582,10 +592,10 @@ const ManagerClass = (props: Props) => {
       handleQueryListClass(1, 10);
     }
     firstQuery.current = false;
-  }, [codeClassDebounce]);
+  }, [codeClassDebounce, storeManagerClass.crrKeyTab]);
   useEffect(() => {
     if (updatedClass.updated.response) {
-      const getMessage = updatedClass.updated.success ? 'Xoá lớp thành công!' : `Xoá lớp thất bại! ${updatedClass.updated.response?.message as string ?? ''}`
+      const getMessage = updatedClass.updated.success ? (storeManagerClass.crrKeyTab === Tab.ALL_CLASS ? 'Xoá lớp thành công!' : 'Khôi phục thành công!') : `Thất bại! ${updatedClass.updated.response?.message as string ?? ''}`
       toastify(getMessage, {
         type: updatedClass.updated.success ? 'success' : 'error'
       });
@@ -597,7 +607,7 @@ const ManagerClass = (props: Props) => {
       setIndexUpdate(-1);
       updatedClass.clear();
     }
-  }, [updatedClass.updated.response, conditionFilter, getQueryListClass]);
+  }, [updatedClass.updated.response, conditionFilter, getQueryListClass, storeManagerClass.crrKeyTab]);
   useEffect(() => {
     if (!listCs.data.response) {
       listCs.query();
@@ -676,7 +686,7 @@ const ManagerClass = (props: Props) => {
             setCodeClass(value);
           }}
         />
-        {getCrrUser?.roleAccount !== ROLE.TEACHER && <MiniDashboard month={conditionFilter.date} />}
+        {getCrrUser?.roleAccount !== ROLE.TEACHER && storeManagerClass.crrKeyTab === Tab.ALL_CLASS && < MiniDashboard month={conditionFilter.date} />}
       </div>
       <Table
         bordered
