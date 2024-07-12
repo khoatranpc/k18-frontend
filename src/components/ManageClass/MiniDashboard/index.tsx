@@ -108,6 +108,7 @@ const BoundaryMiniDashBoard = (props: PropsDashboard) => {
         listClass.query({
             query: {
                 ...props.month ? { date: props.month } : {},
+                isDelete: false
             },
         }, componentId.current);
     }, [props.month]);
