@@ -17,8 +17,6 @@ import AddTeacher from './AddTeacher';
 import AddRequestGroup from './AddRequestGroup';
 import TeacherRegister from './TeacherRegister';
 import styles from '@/styles/class/BookTeacher.module.scss';
-import { title } from 'process';
-import { render } from 'react-dom';
 
 interface Props {
     classId: string;
@@ -137,55 +135,74 @@ const BookTeacher = (props: Props) => {
                 </div>
             },
         },
-        ...hasRole ? [{
-            key: 'SALARY',
-            title: 'Lương/h',
-            dataIndex: 'teacherRegister',
-            render(value?: Obj) {
-                const getListSalary = value?.idTeacher?.salaryPH as Obj[] || [];
-                const getSalary = Number(getListSalary[getListSalary.length - 1]?.rank || 0);
-                return Boolean(getSalary) ? getSalary.toLocaleString() : 'Chưa có mức lương'
+        ...hasRole ? [
+            {
+                key: 'SALARY',
+                title: 'Lương/h',
+                dataIndex: 'teacherRegister',
+                render(value?: Obj) {
+                    const getListSalary = value?.idTeacher?.salaryPH as Obj[] || [];
+                    const getSalary = Number(getListSalary[getListSalary.length - 1]?.rank || 0);
+                    return Boolean(getSalary) ? getSalary.toLocaleString() : 'Chưa có mức lương'
+                },
             },
-        },
-        {
-            key: 'STATUS',
-            dataIndex: 'teacherRegister',
-            title: 'Trạng thái duyệt',
-            className: `text-center ${styles.tdSwitch}`,
-            render(value: Obj, record: Obj) {
-                return <div>
-                    <Switch
-                        onChange={() => {
-                            handleToggleAcceptStatus(record, record);
-                        }}
-                        className={styles.switch}
-                        checkedChildren={<CheckOutlined />}
-                        unCheckedChildren={<CloseOutlined />}
-                        checked={value.accept as boolean}
-                    />
-                </div>
+        ] : [],
+        ...(hasRole || currentUser?.roleAccount === ROLE.CS) ? [
+            {
+                key: 'STATUS',
+                dataIndex: 'teacherRegister',
+                title: 'Trạng thái duyệt',
+                className: `text-center ${styles.tdSwitch}`,
+                render(value: Obj, record: Obj) {
+                    return <div>
+                        <Switch
+                            onChange={() => {
+                                handleToggleAcceptStatus(record, record);
+                            }}
+                            className={styles.switch}
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            checked={value.accept as boolean}
+                        />
+                    </div>
+                },
             },
-        },
-        {
-            key: 'ACTION',
-            title: 'Hành động',
-            className: `text-center`,
-            render(_: any, record: Obj) {
-                return <div>
-                    <Button size='small' onClick={() => {
-                        setModalAddTeacher({
-                            requestId: record._id,
-                            show: true
-                        });
-                    }}>Thêm GV</Button>
-                </div>
-            },
-            onCell(data: Obj) {
-                return {
-                    rowSpan: data.rowSpan as number,
+            {
+                key: 'ACTION',
+                title: 'Hành động',
+                className: 'text-center',
+                render(_: any, record: Obj) {
+                    return <div className='flex center gap'>
+                        <Button size='small' onClick={() => {
+                            window.open(record.teacherRegister?.idTeacher?.profileLink || record.teacherRegister?.idTeacher?.CVfile, '_blank');
+                        }}>Profile</Button>
+                        {hasRole && <Button className='flex center' icon={<EyeOutlined />} size='small' onClick={() => {
+                            const getTeacherId = record?.teacherRegister?.idTeacher?._id;
+                            router.push(`/te/manager/teacher/detail/${getTeacherId}`);
+                        }} />}
+                    </div>
                 }
-            }
-        }
+            },
+            ...hasRole ? [{
+                key: 'MANAGE',
+                title: 'Quản lý',
+                className: `text-center`,
+                render(_: any, record: Obj) {
+                    return <div>
+                        <Button size='small' onClick={() => {
+                            setModalAddTeacher({
+                                requestId: record._id,
+                                show: true
+                            });
+                        }}>Thêm GV</Button>
+                    </div>
+                },
+                onCell(data: Obj) {
+                    return {
+                        rowSpan: data.rowSpan as number,
+                    }
+                }
+            }] : []
         ] : (detailClass?.status === STATUS_CLASS.PREOPEN && !(currentUser?.roleAccount === ROLE.CS) ? [
             {
                 key: 'REGISTER',
@@ -208,18 +225,6 @@ const BookTeacher = (props: Props) => {
                 }
             }
         ] : []),
-        ...(currentUser?.roleAccount === ROLE.CS || hasRole) ? [
-            {
-                key: 'ACTION',
-                title: 'Hành động',
-                className: 'text-center',
-                render(_: any, record: Obj) {
-                    return <Button size='small' onClick={() => {
-                        window.open(record.teacherRegister?.idTeacher?.profile || record.teacherRegister?.idTeacher?.CVfile, '_blank');
-                    }}>Profile</Button>
-                }
-            }
-        ] : []
     ]
     const [modalAddTeacher, setModalAddTeacher] = useState<{
         show: boolean;

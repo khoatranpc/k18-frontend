@@ -9,11 +9,11 @@ import { Button, Checkbox, DatePicker, Input, MenuProps, Radio } from 'antd';
 import { Gender, ROLE_TEACHER } from '@/global/enum';
 import { Obj } from '@/global/interface';
 import { useGetArea, useGetTeacherDetail, useUpdateDetailTeacher } from '@/utils/hooks';
+import SelectArea from '@/components/SelectArea';
 import { useHookMessage } from '@/utils/hooks/message';
-import Dropdown from '@/components/Dropdown';
 import CropImage from '@/components/CropImage';
-import styles from '@/styles/teacher/DetailTeacher.module.scss';
 import Loading from '@/components/loading';
+import styles from '@/styles/teacher/DetailTeacher.module.scss';
 
 interface Props {
     countRole: number;
@@ -23,7 +23,6 @@ const validationSchema = yup.object({
     gender: yup.string().required('Bạn cần chọn giới tính!'),
     area: yup.string().required('Bạn cần chọn khu vực!'),
     email: yup.string().required('Bạn cần điền email giáo viên!'),
-    dob: yup.string().required('Bạn cần chọn ngày sinh của giáo viên!'),
     phoneNumber: yup.string().required('Bạn cần điền SĐT của giáo viên!'),
     facebookLink: yup.string().required('Bạn cần điền link facebook của giáo viên!'),
     CVfile: yup.string().required('Bạn cần điền link CV của giáo viên!'),
@@ -107,7 +106,7 @@ const TeacherInfo = (props: Props) => {
                         <Input value={values?.fullName} name="fullName" placeholder="Họ tên" size="small" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors?.fullName && touched?.fullName && <p className="error">{errors.fullName as string}</p>}
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className={styles.mb_24}>
                         <Form.Label className={styles.fs_12}>
                             <span>Giới tính<span className="error">*</span>:</span>
                         </Form.Label>
@@ -121,14 +120,15 @@ const TeacherInfo = (props: Props) => {
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
                         <Form.Label>Khu vực<span className="error">*</span>:</Form.Label>
-                        <Dropdown
-                            sizeButton="small"
-                            onClickItem={(e) => {
-                                setFieldValue('area', e.key);
+                        <SelectArea
+                            size="small"
+                            onChange={(value) => {
+                                setFieldValue('area', value);
                             }}
-                            trigger="click"
-                            listSelect={mapListArea}
-                            title={getTitleArea()}
+                            defaultValue={values?.area}
+                            style={{
+                                width: '100%'
+                            }}
                         />
                         {errors?.area && touched?.area && <p className="error">{errors.area as string}</p>}
                     </Form.Group>
@@ -138,7 +138,7 @@ const TeacherInfo = (props: Props) => {
                         {errors?.email && touched?.email && <p className="error">{errors.email as string}</p>}
                     </Form.Group>
                     <Form.Group className={styles.mb_24}>
-                        <Form.Label>Ngày sinh<span className="error">*</span>:</Form.Label>
+                        <Form.Label>Ngày sinh:</Form.Label>
                         <br />
                         <DatePicker size="small" name="dob" value={dayjs(values?.dob as Date || new Date())} format={'DD/MM/YYYY'} onChange={(value) => {
                             if (value) {
@@ -162,7 +162,11 @@ const TeacherInfo = (props: Props) => {
                         <Input value={values?.CVfile} type="text" name="CVfile" size="small" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
                         {errors?.CVfile && touched?.CVfile && <p className="error">{errors.CVfile as string}</p>}
                     </Form.Group>
-                    <br />
+                    <Form.Group className={styles.mb_24}>
+                        <Form.Label>Profile:</Form.Label>
+                        <Input value={values?.profileLink} type="text" name="profileLink" size="small" className={styles.input} onChange={handleChange} onBlur={handleBlur} />
+                        {errors?.profileLink && touched?.profileLink && <p className="error">{errors.profileLink as string}</p>}
+                    </Form.Group>
                 </div>
                 <div className={styles.right}>
                     <Form.Group className={styles.mb_24}>

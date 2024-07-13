@@ -127,9 +127,11 @@ const ListTeacher = () => {
     if (!area.data.success) {
       area.query();
     }
+  }, []);
+  useEffect(() => {
     if (
-      !getDataFb ||
-      (getDataFb && (listFb.data.response?.data as Obj)?.recordOnPage)
+      (!getDataFb ||
+        (getDataFb && (listFb.data.response?.data as Obj)?.recordOnPage)) && !listFb.data.isLoading
     ) {
       listFb.query(undefined, undefined, undefined, [
         "_id",
@@ -140,7 +142,7 @@ const ListTeacher = () => {
         "color",
       ]);
     }
-  }, []);
+  }, [listFb.data.response])
   useEffect(() => {
     if (listTeacher.payload?.query?.query?.currentPage) {
       if (listTeacher.success && !email) {

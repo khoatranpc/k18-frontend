@@ -99,10 +99,6 @@
         display: flex;
         gap: 0.8rem;
 
-        .input {
-            margin-bottom: 1.2rem;
-        }
-
         .left,
         .right {
             flex: 1;
@@ -201,14 +197,14 @@
     }
 }
 
+.mb_24 {
+    margin-bottom: 1.2rem;
+    flex: 1;
+}
+
 .groupImageIdentify {
     display: flex;
     gap: 1.2rem;
-
-    .mb_24 {
-        padding-top: 1.2rem;
-        flex: 1;
-    }
 }
 
 .waitingAccept {
