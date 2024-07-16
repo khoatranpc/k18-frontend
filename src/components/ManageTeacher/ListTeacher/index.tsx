@@ -129,10 +129,7 @@ const ListTeacher = () => {
     }
   }, []);
   useEffect(() => {
-    if (
-      (!getDataFb ||
-        (getDataFb && (listFb.data.response?.data as Obj)?.recordOnPage)) && !listFb.data.isLoading
-    ) {
+    if (!listFb.data.isLoading && (!listFb.data.response || (listFb.data.response?.data as Obj)?.recordOnPage)) {
       listFb.query(undefined, undefined, undefined, [
         "_id",
         "course",
@@ -187,6 +184,7 @@ const ListTeacher = () => {
     <div className={styles.listTeacher}>
       <div className={styles.teacherPoint}>
         {listTeacherStatistic.map((item, idx) => {
+          console.log(item);
           return (
             <Badge
               key={idx}
@@ -197,7 +195,7 @@ const ListTeacher = () => {
                 className={styles.course}
                 style={{ backgroundColor: item.color }}
               >
-                UIUX
+                {item.name}
               </span>
             </Badge>
           );
