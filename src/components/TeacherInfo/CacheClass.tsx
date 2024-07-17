@@ -80,19 +80,14 @@ const CacheClass = () => {
       undefined,
       undefined,
       {
-        "listClass[]": listClassId,
+        listClass: listClassId,
       },
       undefined
     );
   }, []);
 
-  const dataResource = mapFeedbackData(
+  const dataResource: any = mapFeedbackData(
     classListOfTeacher,
-    feedbackListOfTeacher
-  );
-  console.log("🚀 ~ CacheClass ~ classListOfTeacher:", classListOfTeacher);
-  console.log(
-    "🚀 ~ CacheClass ~ feedbackListOfTeacher:",
     feedbackListOfTeacher
   );
 
@@ -114,7 +109,7 @@ const CacheClass = () => {
           },
         }}
         disableDefaultPagination
-        rowData={dataResource}
+        rowData={dataResource || []}
       />
     </div>
   );
