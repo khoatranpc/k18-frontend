@@ -190,7 +190,7 @@ const ContainerPage = (props: Props) => {
                 }} />
                 <Dropdown menu={{ items: badgeMoreAction }} trigger={["click"]} placement="bottom">
                     <div className={styles.badge}>
-                        <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string} />
+                        <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string ?? (crrUser.response as Obj)?.data?.image as string ?? '/static/logo.png'} />
                         {!collapsed && <div className={styles.user}>
                             <p>{(crrUser.response as Obj)?.data?.teName as string ?? (crrUser.response as Obj)?.data?.fullName as string?? (crrUser.response as Obj)?.data?.name as string  }</p>
                             <span className={styles.role}>
