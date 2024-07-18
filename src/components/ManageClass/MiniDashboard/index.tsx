@@ -105,8 +105,12 @@ const BoundaryMiniDashBoard = (props: PropsDashboard) => {
     const listClass = useListClass();
     const componentId = useRef(uuid());
     const updatedClass = useUpdateClassBasicInfor();
+    const firstRender = useRef(true);
     useEffect(() => {
-        if (!listClass.data.isLoading) {
+        if (firstRender.current) {
+            firstRender.current = false;
+        }
+        else {
             listClass.query({
                 query: {
                     ...props.month ? { date: props.month } : {},
