@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Dropdown as DropdownComponent, MenuProps } from 'antd';
+import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { Obj } from '@/global/interface';
 import { MapIconKey } from '@/global/icon';
 import { KEY_ICON } from '@/global/enum';
@@ -24,7 +25,7 @@ interface Props {
     sizeButton?: 'small' | 'large' | 'middle';
     icon?: boolean;
     onOpenChange?: (open: boolean) => void;
-    onClickItem?: (e: ClickItem, keyIndex?: string) => void;
+    onClickItem?: (e: ClickItem, keyIndex?: string, item?: ItemType) => void;
     loading?: boolean;
 }
 const Dropdown = (props: Props) => {
@@ -33,7 +34,7 @@ const Dropdown = (props: Props) => {
             ...item,
             className: props.activeKey === item!.key ? props.activeClass : '',
             onClick(e: ClickItem) {
-                props.onClickItem?.(e, props.keyIndex);
+                props.onClickItem?.(e, props.keyIndex, item);
             }
         }
     });

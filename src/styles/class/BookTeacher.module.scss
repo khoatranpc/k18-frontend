@@ -94,3 +94,13 @@
         display: block;
     }
 }
+
+.selectTeacher {
+    max-height: 30vh;
+    overflow-y: scroll;
+    border-top: 0;
+    z-index: 1155 !important;
+}
+.select{
+    width: 100%;
+}
