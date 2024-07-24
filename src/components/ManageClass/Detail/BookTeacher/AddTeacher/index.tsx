@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from 'react';
 import { querySearchTeacherByEmail } from '@/store/reducers/searchTeacher.reducer';
-import { Button, Input, MenuProps, Popconfirm } from 'antd';
+import { Button, Input, MenuProps, Popconfirm, Select } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Obj, State } from '@/global/interface';
 import { mapRoleToString } from '@/global/init';
@@ -11,6 +11,7 @@ import { useHookMessage } from '@/utils/hooks/message';
 import { AppDispatch, RootState } from '@/store';
 import Dropdown from '@/components/Dropdown';
 import styles from '@/styles/class/BookTeacher.module.scss';
+import { LoadingOutlined } from '@ant-design/icons';
 
 interface Props {
     requestId: string;
@@ -25,15 +26,17 @@ interface Props {
 const AddTeacher = (props: Props) => {
     const dispatch = useDispatch<AppDispatch>();
     const listTeacher = useSelector((state: RootState) => (state.searchTeacher as State).state);
-    const mapListSelect: MenuProps['items'] = (listTeacher.response?.data as Array<Obj>)?.map((item) => {
+    const mapListSelect = (listTeacher.response?.data as Array<Obj>)?.map((item) => {
         return {
             key: item._id as string,
-            label: `${item.fullName as string} - ${item.email as string}`
+            label: `${item.fullName as string} - ${item.email as string}`,
+            email: item.email as string
         }
     }) || [];
     const [teacher, setTeacher] = useState<{
         id: string;
-        label: string
+        label: string;
+        email?: string;
     }>({
         id: props.teacherId || '',
         label: props.nameTeacher || ''
@@ -55,7 +58,8 @@ const AddTeacher = (props: Props) => {
     }
     const [updateTeacher, setUpdateTeacher] = useState<{
         id: string;
-        label: string
+        label: string;
+        email?: string;
     }>({
         id: props.teacherId || '',
         label: props.nameTeacher || ''
@@ -90,7 +94,7 @@ const AddTeacher = (props: Props) => {
                 handleSearchTeacher(emailTeacherDebounce);
             }
         }
-    }, [emailTeacherDebounce]);
+    }, [emailTeacherDebounce, updateTeacher, teacher]);
     useEffect(() => {
         if (dataHandle.response) {
             if (dataHandle.success) {
@@ -110,27 +114,33 @@ const AddTeacher = (props: Props) => {
                 <label>Giáo viên: {!props.isUpdate ? teacher.label : updateTeacher.label}</label>
                 <Dropdown
                     title={<Input
-                        placeholder="Nhập email giáo viên"
+                        prefix={listTeacher.isLoading ? <LoadingOutlined /> : null}
+                        placeholder={'Nhập email giáo viên'}
                         onChange={(e) => {
                             firstRender.current = false;
                             setEmailSearch(e.target.value);
                         }}
+                        size='small'
+                        value={emailSearch}
                     />}
-                    onClickItem={(e) => {
+                    onClickItem={(e, _, item) => {
                         if (!props.isUpdate) {
                             setTeacher({
                                 id: e.key,
-                                label: (listTeacher.response?.data as Array<Obj>)?.find((item) => item._id === e.key)?.fullName as string
+                                label: (item as Obj)?.label,
                             });
                         } else {
                             setUpdateTeacher({
                                 id: e.key,
-                                label: (listTeacher.response?.data as Array<Obj>)?.find((item) => item._id === e.key)?.fullName as string
+                                label: (item as Obj)?.label,
                             });
                         }
+                        firstRender.current = true;
+                        setEmailSearch((item as Obj)?.email);
                     }}
                     trigger={'click'}
                     listSelect={mapListSelect}
+                    overlayClassName={styles.selectTeacher}
                 />
                 {((!props.isUpdate && !teacher.id) || (props.isUpdate && !updateTeacher.id)) && <p className="error">Đừng quên chọn GV nhé!</p>}
                 <label>Vị trí: {mapRoleToString[crrRole as ROLE_TEACHER]}</label>

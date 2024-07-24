@@ -12,7 +12,7 @@ const FillForm = () => {
                 <div style={{ fontSize: '2.2rem' }}>
                     <p>Thực hiện điền form thông tin tại</p>
                     <div className={styles.linkWrapper}>
-                        <a href={"https://docs.google.com/forms/d/e/1FAIpQLSfLulutQMadFzKp9N1CYDywPeg48OO-fhE8KzWR6ZBe5CPkow/viewform"}>
+                        <a href={"https://docs.google.com/forms/d/e/1FAIpQLSe-Ad6CpCq5I-o3qRTzmGnslAhk_IcvaX1rlNTo2uI8LDJ7nQ/viewform"}>
                             <button className={styles.button64} ><span>LINK</span></button>
                         </a>
 

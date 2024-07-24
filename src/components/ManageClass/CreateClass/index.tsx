@@ -161,6 +161,7 @@ const CreateClass = (props: Props) => {
               ...values,
             };
             delete tmpValues._id;
+            delete tmpValues.isDelete;
             updatedClass.handleUpdate({
               payload: {
                 query: {
