@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import Imagee from "next/image";
 import { Form } from "react-bootstrap";
-import { Button, Input } from "antd";
+import { Button, Input, Image } from "antd";
 import { Obj } from "@/global/interface";
 import { useGetCandidateOnboard } from "@/utils/hooks";
 import { useHookMessage } from "@/utils/hooks/message";
@@ -41,7 +41,7 @@ const Candidate = () => {
   }, []);
   return (
     <div className={styles.candidatePage}>
-      <Image src={logo} alt="" />
+      <Imagee src={logo} alt="" />
       <h1>Chào mừng ứng viên đến với quy trình onboard</h1>
       <h2>Vui lòng nhập email để kiểm tra</h2>
       <div className={styles.checkCandidate}>
@@ -67,6 +67,10 @@ const Candidate = () => {
       </div>
 
       {getCandidateInfo && <VisualStep />}
+      <div className={styles.onboard_step}>
+        <Image width={800} src="./onboard_step.png" />
+        <h3>Các bước onboard</h3>
+      </div>
     </div>
   );
 };
