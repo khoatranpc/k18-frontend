@@ -373,6 +373,8 @@ a {
         }
     }
 
+
+
     div.ant-tabs-tab-btn {
         padding: 0 0.8rem;
     }
@@ -389,6 +391,11 @@ a {
     .ant-tabs-tab-btn:focus:not(:focus-visible) {
         color: var(--color-red) !important;
     }
+}
+
+.pt-0 .ant-tabs-tab {
+    padding: 0rem 0.8rem !important;
+
 }
 
 .toolbar-customize {
@@ -1198,4 +1205,8 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
 
 .gap {
     gap: 1.2rem;
+}
+
+.pt-0 .ant-tabs-nav-wrap {
+    padding-top: 0 !important;
 }

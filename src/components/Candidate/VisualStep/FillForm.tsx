@@ -2,9 +2,13 @@ import React from "react";
 import { Obj } from "@/global/interface";
 import { useGetCandidateOnboard } from "@/utils/hooks";
 import styles from "@/styles/Recruitment/Candidate.module.scss";
+import { Button, Tag } from "antd";
+import { CheckCircleOutlined, HomeOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
 
 const FillForm = () => {
   const candidateInfo = useGetCandidateOnboard();
+  const router = useRouter();
   const getCandidateInfo = candidateInfo.data.response?.data as Obj;
   return (
     <div className={styles.FillForm}>
@@ -27,7 +31,26 @@ const FillForm = () => {
           </small>
         </div>
       ) : (
-        <h1>Bạn đã hoàn thành</h1>
+        <div className={styles.successAlert}>
+          <Tag
+            className={styles.tag}
+            icon={<CheckCircleOutlined />}
+            color="success"
+          >
+            Bạn đã hoàn thành onboard
+          </Tag>
+
+          <Button
+            className={styles.btn_grad}
+            size="large"
+            icon={<HomeOutlined />}
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            Đi Đến Trang Chủ
+          </Button>
+        </div>
       )}
     </div>
   );

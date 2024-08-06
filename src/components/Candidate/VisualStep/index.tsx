@@ -27,22 +27,28 @@ const VisualStep = () => {
   };
   return (
     <div className={styles.visualizeStep}>
-      <Step
-        className={styles.step}
-        currentStep={getStep()}
-        labelPlacement="vertical"
-        items={[
-          {
-            title: "Đăng ký TT",
-          },
-          {
-            title: "Dự thính",
-          },
-          {
-            title: "Dạy thử",
-          },
-        ]}
-      />
+      {getCandidateInfo?.statusProcess !== "DONE" && (
+        <Step
+          className={styles.step}
+          currentStep={getStep()}
+          labelPlacement="vertical"
+          items={[
+            {
+              title: "Đăng ký TT",
+            },
+            {
+              title: "Dự thính",
+            },
+            {
+              title: "Dạy thử",
+            },
+            {
+              title: "Hoàn Thành",
+            },
+          ]}
+        />
+      )}
+
       <div className={styles.content}>
         {getStepComponent[getStep().toString()]}
       </div>

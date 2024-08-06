@@ -49,7 +49,7 @@ const ContextRecruitment = createContext<{
     pagination: {
         data: {
             currentPage: 1,
-            currentTotalRowOnPage: 10
+            currentTotalRowOnPage: Number(localStorage.getItem('currentTotalRowOnPage')) || 10,
         },
         setDataPagination(data) {
 
@@ -67,6 +67,7 @@ const ContextRecruitment = createContext<{
     },
     tableComponentId: ''
 });
+
 export {
     ContextRecruitment
 }
