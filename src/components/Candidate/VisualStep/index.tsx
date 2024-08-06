@@ -37,9 +37,6 @@ const VisualStep = () => {
               title: "Đăng ký TT",
             },
             {
-              title: "Đào tạo",
-            },
-            {
               title: "Dự thính",
             },
             {

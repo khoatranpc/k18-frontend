@@ -208,6 +208,7 @@ const TableRecruitment = (props: Props) => {
     router.push(`/te/manager/recruitment/${candidateId}`);
     dispatch(initDataRoute(routerPayload));
   };
+
   return (
     <div className={styles.tableView}>
       <Table
@@ -252,6 +253,7 @@ const MemoTableRecruitment = memo(TableRecruitment, (prevProps, nextProps) => {
 
 const BoundaryTable = (props: HigherTable) => {
   const listDataRecruitment = useGetListDataRecruitment();
+  const isFirstRender = useRef(true);
   const { pagination, conditionFilter, tableComponentId } =
     useContext(ContextRecruitment);
   const getDataPagination = pagination.data;
@@ -303,6 +305,16 @@ const BoundaryTable = (props: HigherTable) => {
       }
     }
   }, [pagination.data, listDataRecruitment.data.payload, props.isSearching]);
+  useEffect(() => {
+    if (!isFirstRender.current) {
+      queryListData(
+        getDataPagination.currentTotalRowOnPage,
+        getDataPagination.currentPage
+      );
+    } else {
+      isFirstRender.current = !isFirstRender.current;
+    }
+  }, [conditionFilter.condition]);
   return (
     <MemoTableRecruitment
       isSearching={props.isSearching}

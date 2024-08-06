@@ -53,13 +53,23 @@ export const mapRecruitmentStatus = (record: Obj) => {
                     if (record?.processInterview?.result) {
                         updateMsg("Đạt PV", "green");
                     } else {
-                        updateMsg("Không Đạt PV", "red");
+                        updateMsg("Trượt PV", "red");
                     }
                     if (record?.processInterview?.mailResultSent) {
                         updateEmailStatus("Đã gửi kết quả", "green");
                     } else {
                         updateEmailStatus("Chưa gửi kết quả", "red");
                     }
+                } else {
+                    if (!record?.processInterview?.result) {
+                        updateMsg("Trượt PV", "red");
+                    }
+                    if (record?.processInterview?.mailResultSent) {
+                        updateEmailStatus("Đã gửi kết quả", "green");
+                    } else {
+                        updateEmailStatus("Chưa gửi kết quả", "red");
+                    }
+
                 }
             } else {
                 if (record?.processInterview?.eventCalendarId) {
@@ -71,7 +81,13 @@ export const mapRecruitmentStatus = (record: Obj) => {
             break;
         case RoundProcess.TEST:
             updateMsg("Đang kiểm tra", "geekblue");
-            updateEmailStatus("Loading", "blue");
+            updateEmailStatus("Đã gửi kết quả", "green");
+
+            break;
+        case RoundProcess.CLAUTID:
+            updateMsg("Đang dự thính", "geekblue");
+            updateEmailStatus("Đã gửi kết quả", "green");
+
             break;
         default:
             updateMsg("Chưa xử lý", "gold");

@@ -14,8 +14,6 @@ const ManagerRecruitment = () => {
   const [isSearching, setIsSearching] = useState(false);
 
   const { conditionFilter } = useContext(ContextRecruitment);
-  console.log("🚀 ~ ManagerRecruitment ~ conditionFilter:", conditionFilter);
-
   const handleChangeConditionFilter = (
     field: keyof typeof conditionFilter.condition,
     value: any

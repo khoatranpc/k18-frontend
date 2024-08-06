@@ -96,12 +96,12 @@ const getStringByLevelTechnique: Record<LevelTechnique, string> = {
 }
 const getLabelRoundProcess: Record<RoundProcess, string> = {
     CV: 'CV',
-    CLASSIFY: 'Đánh giá',
-    CLAUTID: 'Dự thính',
-    DONE: 'Xong',
     INTERVIEW: 'Phỏng vấn',
+    FILLFOWM: "Điền thông tin",
+    CLAUTID: 'Dự thính',
     TEST: 'Dạy thử',
-    FILLFOWM: "Điền thông tin"
+    CLASSIFY: 'Đánh giá',
+    DONE: 'Xong',
 }
 const getColorByRoundProcess: Record<RoundProcess, string> = {
     CV: 'purple',
