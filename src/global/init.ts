@@ -103,6 +103,24 @@ const getLabelRoundProcess: Record<RoundProcess, string> = {
     TEST: 'Dạy thử',
     FILLFOWM: "Điền thông tin"
 }
+const getColorByRoundProcess: Record<RoundProcess, string> = {
+    CV: 'purple',
+    CLASSIFY: 'warning',
+    CLAUTID: 'gold',
+    DONE: 'success',
+    INTERVIEW: 'blue',
+    TEST: 'lime',
+    FILLFOWM: "cyan"
+}
+const getColorCodeByRoundProcess: Record<RoundProcess, string> = {
+    CV: '#722ed1', // purple
+    CLASSIFY: '#faad14', // warning
+    CLAUTID: '#faad14', // gold
+    DONE: '#52c41a', // success
+    INTERVIEW: '#1890ff', // blue
+    TEST: '#a0d911', // lime
+    FILLFOWM: '#13c2c2' // cyan
+};
 const getLabelPositionTe: Record<PositionTe, string> = {
     ASSISTANT: 'Trợ lý',
     HR: 'HR',
@@ -165,5 +183,8 @@ export {
     getLabelRegion,
     mapLevelToLabel,
     mapLevelToColor,
-    mapLevelToColor2
+    mapLevelToColor2,
+    getColorByRoundProcess,
+    getColorCodeByRoundProcess
+
 }

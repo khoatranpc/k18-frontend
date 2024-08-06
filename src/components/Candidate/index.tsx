@@ -67,10 +67,12 @@ const Candidate = () => {
       </div>
 
       {getCandidateInfo && <VisualStep />}
-      <div className={styles.onboard_step}>
-        <Image width={800} src="./onboard_step.png" />
-        <h3>Các bước onboard</h3>
-      </div>
+      {!getCandidateInfo?.fillForm && (
+        <div className={styles.onboard_step}>
+          <Image width={800} src="./onboard_step.png" />
+          <h3>Các bước onboard</h3>
+        </div>
+      )}
     </div>
   );
 };
