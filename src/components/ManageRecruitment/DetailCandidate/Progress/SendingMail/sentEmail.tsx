@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ import TextEditor from "@/components/TextEditor";
 import Send from "@/icons/Send";
 import ModalCustomize from "@/components/ModalCustomize";
 import styles from "@/styles/Recruitment/ManagerRecruitment.module.scss";
+import { HookReducer, uuid } from "@/utils";
 
 interface Props {
   round?: TemplateMail;
@@ -26,12 +27,16 @@ interface Props {
   disabled?: boolean;
   roundId?: string;
   text?: string;
+  componentId?: string;
+}
+interface SendingMailV2 extends Props {
+  mailTemplate: HookReducer;
 }
 
-const SendingMailV2 = (props: Props) => {
+const SendingMailV2 = (props: SendingMailV2) => {
   const crrUser = useGetCrrUser()?.data as Obj;
   const getTemplate = props.round || TemplateMail.NOCONNECT;
-  const mailTemplate = useGetMailTemplate();
+  const mailTemplate = props.mailTemplate;
   const dataMailtemplate = mailTemplate.data.response?.data as Obj;
   const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
   const [teProcess, setTeProcess] = useState<Obj | null>(null);
@@ -65,15 +70,6 @@ const SendingMailV2 = (props: Props) => {
       },
     });
   };
-  useEffect(() => {
-    mailTemplate.query({
-      query: {
-        template: getTemplate,
-      },
-    });
-  }, [getTemplate]);
-
-  console.log("🚀 ~ SendingMailV2 ~ mailTemplate:", mailTemplate);
 
   useEffect(() => {
     if (dataMailtemplate && getDataCandidate) {
@@ -170,4 +166,39 @@ const SendingMailV2 = (props: Props) => {
   );
 };
 
-export default SendingMailV2;
+const MemoSendingMailV2 = memo(SendingMailV2, (prevProps, nextProps) => {
+  if (nextProps.mailTemplate.data.componentId !== prevProps.componentId) {
+    return true;
+  }
+  return false;
+});
+
+const BoundarySendingV2 = (props: Props) => {
+  const componentId = useRef(uuid());
+  const mailTemplate = useGetMailTemplate();
+  const getTemplate = props.round || TemplateMail.NOCONNECT;
+  useEffect(() => {
+    if (
+      !mailTemplate.data.componentId ||
+      mailTemplate.data.componentId !== componentId.current
+    ) {
+      mailTemplate.query(
+        {
+          query: {
+            template: getTemplate,
+          },
+        },
+        componentId.current
+      );
+    }
+  }, [getTemplate]);
+
+  return (
+    <MemoSendingMailV2
+      {...props}
+      componentId={componentId.current}
+      mailTemplate={mailTemplate}
+    />
+  );
+};
+export default BoundarySendingV2;
