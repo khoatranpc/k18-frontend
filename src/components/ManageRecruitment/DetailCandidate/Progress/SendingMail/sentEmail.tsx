@@ -1,17 +1,9 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
-import { useRouter } from "next/router";
 import { Obj } from "@/global/interface";
-import { RoundProcess, TemplateMail } from "@/global/enum";
-import useGetCrrUser from "@/utils/hooks/getUser";
-import {
-  useGetDetailCandidate,
-  useGetMailTemplate,
-  useMailer,
-  useUpdateDataProcessRoundCandidate,
-} from "@/utils/hooks";
-import { useHookMessage } from "@/utils/hooks/message";
+import { TemplateMail } from "@/global/enum";
+import { useGetDetailCandidate, useGetMailTemplate } from "@/utils/hooks";
 import SelectTe from "@/components/SelectTe";
 import TextEditor from "@/components/TextEditor";
 import Send from "@/icons/Send";
@@ -21,24 +13,23 @@ import { HookReducer, uuid } from "@/utils";
 
 interface Props {
   round?: TemplateMail;
-
-  handleSend?: (subject: string, html: string) => void;
+  handleSend: (template: TemplateMail, payload: Obj) => void;
   statusSendMail?: boolean;
   disabled?: boolean;
   roundId?: string;
   text?: string;
   componentId?: string;
+  isLoading?: boolean;
 }
 interface SendingMailV2 extends Props {
   mailTemplate: HookReducer;
 }
 
 const SendingMailV2 = (props: SendingMailV2) => {
-  const crrUser = useGetCrrUser()?.data as Obj;
+  const handleSend = props.handleSend;
   const getTemplate = props.round || TemplateMail.NOCONNECT;
   const mailTemplate = props.mailTemplate;
   const dataMailtemplate = mailTemplate.data.response?.data as Obj;
-  const updateDataRoundProcessCandidate = useUpdateDataProcessRoundCandidate();
   const [teProcess, setTeProcess] = useState<Obj | null>(null);
 
   const [title, setTitle] = useState("");
@@ -49,26 +40,8 @@ const SendingMailV2 = (props: SendingMailV2) => {
 
   const [modal, setModal] = useState(false);
 
-  const mailer = useMailer();
-  const message = useHookMessage();
-
   const handleBlur = (newValue: string) => {
     setValue(newValue);
-  };
-  const handleSubmit = () => {
-    mailer.query({
-      body: {
-        from: "K18",
-        toMail: getDataCandidate?.email as string,
-        subject: title,
-        html: value.replace(
-          "{{FACEBOOK}}",
-          `<a href="${teProcess!.facebook}" style="color:#1155cc;">FACEBOOK</a>`
-        ),
-        round: props.round,
-        candidateId: getDataCandidate._id as string,
-      },
-    });
   };
 
   useEffect(() => {
@@ -76,32 +49,20 @@ const SendingMailV2 = (props: SendingMailV2) => {
       setTitle(dataMailtemplate.title);
       const example = dataMailtemplate.html
         ? String(dataMailtemplate.html)
-            .replace("NAME", getDataCandidate?.fullName as string)
+            .replace("{{NAME}}", getDataCandidate?.fullName as string)
             .replace(
-              "POSITION",
-              `Giáo viên/Trợ giảng ${
-                getDataCandidate?.courseApply.courseName as string
-              }`
+              "{{COURSE}}",
+              `${getDataCandidate?.courseApply.courseName as string}`
             )
-            .replace("{{TE}}", `${crrUser?.teName} - ${crrUser?.phoneNumber}`)
+            .replace(
+              "{{TE}}",
+              `<a href="${teProcess?.facebook}" style="color:#1155cc;">${teProcess?.teName}</a>   - ${teProcess?.phoneNumber}`
+            )
         : "";
       setValue(example);
     }
-  }, [dataMailtemplate, getDataCandidate]);
+  }, [dataMailtemplate, getDataCandidate, teProcess]);
 
-  useEffect(() => {
-    if (mailer.data.response) {
-      message.open({
-        type: mailer.data.success ? "success" : "error",
-        content: mailer.data.success
-          ? "Gửi thành công"
-          : ((mailer.data.response.data as Obj)?.message as string),
-      });
-
-      mailer.clear?.();
-      message.close();
-    }
-  }, [mailer, props.roundId]);
   return (
     <div className={styles.sendingMailV2}>
       <Button
@@ -135,17 +96,41 @@ const SendingMailV2 = (props: SendingMailV2) => {
             setTeProcess(null);
           }}
           modalHeader={
-            <div>
-              Gửi mail tới: {getDataCandidate?.email as string}, TE Xử lý:{" "}
-              <SelectTe
-                status={!teProcess ? "error" : ""}
-                size="small"
-                onChange={(__, _, data) => {
-                  if (data) {
-                    setTeProcess(data);
-                  }
-                }}
-              />
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <div>
+                <span>
+                  Gửi mail tới:<b>{getDataCandidate?.email as string}</b>{" "}
+                </span>
+                <div>
+                  TE Xử lý:{" "}
+                  <SelectTe
+                    status={!teProcess ? "error" : ""}
+                    size="small"
+                    onChange={(__, _, data) => {
+                      if (data) {
+                        setTeProcess(data);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              <div style={{ marginLeft: "1rem" }}>
+                {props.statusSendMail ? (
+                  <CheckCircleFilled
+                    style={{ color: "var(--success)" }}
+                    className={styles.statusSentMail}
+                  />
+                ) : (
+                  <CloseCircleFilled
+                    style={{ color: "var(--light-red)" }}
+                    className={styles.statusSentMail}
+                  />
+                )}
+              </div>
             </div>
           }
         >
@@ -155,10 +140,22 @@ const SendingMailV2 = (props: SendingMailV2) => {
             hasTitle
             value={value}
             onBlur={handleBlur}
-            loadingButton={mailer.data.isLoading}
+            loadingButton={props.isLoading}
             textButton="Gửi"
-            handleSubmit={handleSubmit}
-            disabledSave={!teProcess}
+            handleSubmit={() =>
+              handleSend(getTemplate, {
+                courseName: getDataCandidate.courseApply.courseName,
+                candidateName: getDataCandidate.fullName,
+                candidateEmail: getDataCandidate.email,
+                teInfo: {
+                  teName: teProcess?.teName || "Dương Văn Mẩn",
+                  facebook:
+                    teProcess?.facebook || "https://www.facebook.com/mvann02",
+                  phoneNumber: teProcess?.phoneNumber || "0707918019",
+                },
+              })
+            }
+            disabledSave={!teProcess || props.isLoading}
           />
         </ModalCustomize>
       )}

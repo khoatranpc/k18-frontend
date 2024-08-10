@@ -128,7 +128,7 @@
     .tabList {
       width: 100%;
 
-      & > div {
+      &>div {
         &:first-child {
           div {
             padding-top: 0;
@@ -828,6 +828,11 @@
 .sendingMailV2 {
   margin-bottom: 1rem;
 
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .btnSentMailV2 {
     padding: 1rem;
     display: flex;
@@ -838,5 +843,7 @@
       width: 2rem;
       height: 2rem;
     }
+
   }
+
 }
