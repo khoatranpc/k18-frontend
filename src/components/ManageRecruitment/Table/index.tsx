@@ -92,15 +92,10 @@ const TableRecruitment = (props: Props) => {
       key: "COURSE_REGISTER",
       title: "Bộ môn",
       dataIndex: "courseApply",
-      className: "text-center",
+
       render(value) {
         return value ? (
-          <div
-            className={styles.subject}
-            style={{ backgroundColor: value.color, width: "100%" }}
-          >
-            {value.courseName}
-          </div>
+          <Tag style={{ padding: '0.5rem 2rem' }} color={value.color}>{value.courseName}</Tag>
         ) : (
           ""
         );
@@ -144,7 +139,7 @@ const TableRecruitment = (props: Props) => {
           key: "RSIT",
           title: "Thông tin",
 
-          width: 100,
+          width: 150,
           render(value, record) {
             const roundStatus = mapRecruitmentStatus(record);
             return <Tag color={roundStatus.msgColor}>{roundStatus.msg}</Tag>;
@@ -154,7 +149,7 @@ const TableRecruitment = (props: Props) => {
           key: "RSM",
           title: "TT Mail",
 
-          width: 100,
+          width: 150,
           render(value, record) {
             const roundStatus = mapRecruitmentStatus(record);
             return (
@@ -240,11 +235,11 @@ const TableRecruitment = (props: Props) => {
 const MemoTableRecruitment = memo(TableRecruitment, (prevProps, nextProps) => {
   if (
     nextProps.listDataRecruitment.data.payload?.query?.query?.componentId ===
-      nextProps.componentId ||
+    nextProps.componentId ||
     (prevProps.listDataRecruitment.data.payload?.query?.query?.componentId &&
       nextProps.listDataRecruitment.data.payload?.query?.query?.componentId &&
       prevProps.listDataRecruitment.data.payload?.query?.query?.componentId ===
-        nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)
+      nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)
   ) {
     return false;
   }
@@ -296,7 +291,7 @@ const BoundaryTable = (props: HigherTable) => {
         (Number(getPayloadQuery?.query?.query?.recordOnPage) !==
           getDataPagination.currentTotalRowOnPage ||
           Number(getPayloadQuery?.query?.query?.currentPage) !==
-            getDataPagination.currentPage)
+          getDataPagination.currentPage)
       ) {
         queryListData(
           getDataPagination.currentTotalRowOnPage,

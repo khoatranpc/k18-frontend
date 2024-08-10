@@ -11,6 +11,7 @@ import { getStatusProcess } from '../../Table';
 import IconArrowView from '@/icons/IconArrowView';
 import TickDone from '@/icons/TickDone';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import SendingMailV2 from '../Progress/SendingMail/sentEmail';
 
 const BaseInfo = () => {
     const detailCandidate = (useGetDetailCandidate()).data.response?.data as Obj;
@@ -127,7 +128,7 @@ const BaseInfo = () => {
             </div>
             <div>
                 <h2>Hành động</h2>
-                <Popconfirm
+                {/* <Popconfirm
                     title="Gửi email thông báo?"
                     okText="Gửi"
                     cancelText="Huỷ"
@@ -136,7 +137,8 @@ const BaseInfo = () => {
                     }}
                 >
                     <Button loading={sendMailCandidate.data.isLoading} size="small" style={{ marginRight: '1.2rem', marginBottom: '1.2rem' }}>Không liên hệ được <sup>{detailCandidate?.sendMailNoConnect ? <TickDone /> : <CloseCircleFilled style={{ color: 'var(--light-red)' }} />}</sup></Button>
-                </Popconfirm>
+                </Popconfirm> */}
+                <SendingMailV2 round={TemplateMail.NOCONNECT} text={"Liên hệ nhiều lần"} />
                 <Popconfirm
                     title="Gửi email thông báo?"
                     okText="Gửi"
