@@ -28,16 +28,16 @@ const CreateCalendar = (props: Props) => {
   const validationSchema = yup.object({
     ...(!props.disabledLinkMeet
       ? {
-          linkMeet: yup.string().required("Chưa có thông tin link meet!"),
-        }
+        linkMeet: yup.string().required("Chưa có thông tin link meet!"),
+      }
       : {}),
     te: yup.string().required("Chưa có thông tin TE phỏng vấn!"),
     teA: yup.string().required("Chưa có thông tin TE phụ trách"),
     time: yup.string().required("Chưa có thông tin thời gian!"),
     ...(props.hasDoc
       ? {
-          doc: yup.string().required("Chưa có tài liệu cung cấp!"),
-        }
+        doc: yup.string().required("Chưa có tài liệu cung cấp!"),
+      }
       : {}),
   });
   const dataRoundProcess = useGetDataRoundProcess();
@@ -65,14 +65,11 @@ const CreateCalendar = (props: Props) => {
     },
     validationSchema,
     onSubmit(values) {
-      console.log("🚀 ~ onSubmit ~ values:", values);
-
       //   props.handleSubmit?.(values);
     },
   });
 
-  console.log("errors.te", errors.te);
-
+  console.log(values);
   return (
     <Form onSubmit={handleSubmit}>
       {!props.disabledLinkMeet && (
@@ -162,12 +159,10 @@ const CreateCalendar = (props: Props) => {
           {" "}
           <SelectTe
             size="small"
-            onChange={(__, _, data) => {
-              if (data) {
-                setTeInfo(data);
-                setFieldValue("te", teInfo.id);
-              }
-            }}
+            onChange={(value) => {
+              setFieldValue("te", value);
+            }
+            }
             value={teInfo.id}
           />
         </div>
@@ -183,11 +178,8 @@ const CreateCalendar = (props: Props) => {
             {" "}
             <SelectTe
               size="small"
-              onChange={(__, _, data) => {
-                if (data) {
-                  setTeAInfo(data);
-                  setFieldValue("teA", teAInfo.id);
-                }
+              onChange={(value) => {
+                setFieldValue("teA", value);
               }}
             />
           </div>

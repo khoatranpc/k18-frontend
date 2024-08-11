@@ -49,20 +49,20 @@ const SendingMailV2 = (props: SendingMailV2) => {
       setTitle(dataMailtemplate.title);
       const example = dataMailtemplate.html
         ? String(dataMailtemplate.html)
-            .replace("{{NAME}}", getDataCandidate?.fullName as string)
-            .replace(
-              "{{COURSE}}",
-              `${getDataCandidate?.courseApply.courseName as string}`
-            )
-            .replace(
-              "{{TE}}",
-              `<a href="${teProcess?.facebook}" style="color:#1155cc;">${teProcess?.teName}</a>   - ${teProcess?.phoneNumber}`
-            )
+          .replace("{{NAME}}", getDataCandidate?.fullName as string)
+          .replace(
+            "{{COURSE}}",
+            `${getDataCandidate?.courseApply.courseName as string}`
+          )
+          .replace(
+            "{{TE}}",
+            `<a href="${teProcess?.facebook}" style="color:#1155cc;">${teProcess?.teName}</a>   - ${teProcess?.phoneNumber}`
+          )
         : "";
       setValue(example);
     }
   }, [dataMailtemplate, getDataCandidate, teProcess]);
-
+  console.log(props.isLoading);
   return (
     <div className={styles.sendingMailV2}>
       <Button
@@ -164,6 +164,9 @@ const SendingMailV2 = (props: SendingMailV2) => {
 };
 
 const MemoSendingMailV2 = memo(SendingMailV2, (prevProps, nextProps) => {
+  if (prevProps.isLoading !== nextProps.isLoading) {
+    return false;
+  }
   if (nextProps.mailTemplate.data.componentId !== prevProps.componentId) {
     return true;
   }
