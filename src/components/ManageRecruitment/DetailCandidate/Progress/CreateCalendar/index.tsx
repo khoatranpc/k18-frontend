@@ -14,6 +14,7 @@ import Dropdown from "@/components/Dropdown";
 import Loading from "@/components/loading";
 import styles from "@/styles/Recruitment/ManagerRecruitment.module.scss";
 import SelectTe from "@/components/SelectTe";
+import { error } from "console";
 
 interface Props {
   handleSubmit?: (values: Obj) => void;
@@ -22,8 +23,6 @@ interface Props {
   disabledLinkMeet?: boolean;
 }
 const CreateCalendar = (props: Props) => {
-  const [teInfo, setTeInfo] = useState<Obj>({});
-  const [teAInfo, setTeAInfo] = useState<Obj>({});
 
   const validationSchema = yup.object({
     ...(!props.disabledLinkMeet
@@ -53,23 +52,21 @@ const CreateCalendar = (props: Props) => {
     handleChange,
     handleBlur,
     handleSubmit,
-    setValues,
     handleReset,
+    isValid
   } = useFormik({
     initialValues: {
       linkMeet: (getDataRoundProcess?.linkMeet as string) || "",
       time: (getDataRoundProcess?.time as string) || "",
-      te: getDataRoundProcess?.te?._id || "",
-      teA: getDataRoundProcess?.teA?._id || "",
+      te: getDataRoundProcess?.te?._id || undefined,
+      teA: getDataRoundProcess?.teA?._id || undefined,
       doc: (getDataRoundProcess?.doc as string) || "",
     },
     validationSchema,
     onSubmit(values) {
-      //   props.handleSubmit?.(values);
+      props.handleSubmit?.(values);
     },
   });
-
-  console.log(values);
   return (
     <Form onSubmit={handleSubmit}>
       {!props.disabledLinkMeet && (
@@ -150,8 +147,7 @@ const CreateCalendar = (props: Props) => {
       <Form.Group>
         <Form.Label>
           TE phỏng vấn <span className="error">*</span>:{" "}
-          {teInfo?.teName as String} - {teInfo.positionTe as String}
-          {errors.te && touched.te && !values.te && (
+          {errors.te && (
             <p className="error">{errors.te as String}</p>
           )}
         </Form.Label>
@@ -163,14 +159,13 @@ const CreateCalendar = (props: Props) => {
               setFieldValue("te", value);
             }
             }
-            value={teInfo.id}
+            value={values.te}
           />
         </div>
         <div>
           <Form.Label>
             TE phụ trách <span className="error">*</span>:{" "}
-            {teAInfo?.teName as String} - {teAInfo.positionTe as String}
-            {errors.teA && touched.teA && !values.teA && (
+            {errors.teA && (
               <p className="error">{errors.teA as String}</p>
             )}
           </Form.Label>
@@ -181,6 +176,7 @@ const CreateCalendar = (props: Props) => {
               onChange={(value) => {
                 setFieldValue("teA", value);
               }}
+              value={values.teA}
             />
           </div>
         </div>
@@ -220,9 +216,6 @@ const CreateCalendar = (props: Props) => {
           onClick={(e) => {
             if (getDataRoundProcess && getDataRoundProcess.time) {
               handleReset(e);
-              setTeInfo({
-                id: null,
-              });
             } else {
               props.handleModal?.();
             }
@@ -231,6 +224,7 @@ const CreateCalendar = (props: Props) => {
           {getDataRoundProcess && getDataRoundProcess.time ? "Đặt lại" : "Huỷ"}
         </Button>
         <Button
+          disabled={!isValid || dataRoundProcess.data.isLoading}
           size="small"
           htmlType="submit"
           loading={dataRoundProcess.data.isLoading}

@@ -13,6 +13,7 @@ interface Props extends SelectProps {
     data?: Obj
   ) => void;
   value?: string;
+  onBlur?: () => void;
 }
 const SelectTe = (props: Props) => {
   const listTe = useFindGetAllTe();
@@ -55,6 +56,7 @@ const SelectTe = (props: Props) => {
         options={options ?? []}
         value={props.value}
         allowClear
+        onBlur={() => props.onBlur?.()}
       />
     </div>
   );
