@@ -695,7 +695,8 @@ const useGetListDataRecruitment = () => {
                     query: {
                         recordOnPage,
                         currentPage,
-                        fields: fields ?? ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail', 'color'],
+                        fields: fields ?? ['_id', 'fullName', 'courseName', 'createdAt', 'updatedAt', 'email', 'phoneNumber', 'linkFacebook', 'linkCv', 'result', 'statusProcess', 'timeApply', 'roundProcess', 'sendMail', 'color', "note", "sendMailPending",
+                            "sendMailNoConnect",],
                         ...condition,
                     },
                 },

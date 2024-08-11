@@ -1,16 +1,17 @@
 import React from 'react';
-import ThreeDotCircle from '@/icons/ThreeDotCircle';
 import styles from '@/styles/NoProcess.module.scss';
+import { Tag } from 'antd';
+import { MinusCircleOutlined } from '@ant-design/icons';
 
 interface Props {
     className?: string;
 }
 const NoProcess = (props: Props) => {
     return (
-        <div className={`${styles.noProcess} ${props.className}`}>
-            <ThreeDotCircle className={`${props.className}`} />
-            <label>Chưa xử lý</label>
-        </div>
+        <Tag className={`${styles.noProcess} ${props.className}`} icon={<MinusCircleOutlined />} color="#b2bec3">
+            Chưa xử lý
+        </Tag>
+
     )
 }
 

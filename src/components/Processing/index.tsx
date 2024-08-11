@@ -1,16 +1,17 @@
 import React from 'react';
-import Progressing from '@/icons/Progressing';
 import styles from '@/styles/Progressing.module.scss';
+import { Tag } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 
 interface Props {
     className?: string;
 }
 const Processing = (props: Props) => {
     return (
-        <div className={styles.inProgress}>
-            <Progressing className={`${styles.progressing} ${props.className}`} />
-            <label>Đang xử lý</label>
-        </div>
+        <Tag className={`${styles.inProgress} ${props.className}`} icon={<SyncOutlined spin />} color="#2db7f5">
+            Đang xử lý
+        </Tag>
+
     )
 }
 
