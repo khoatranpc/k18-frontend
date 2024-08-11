@@ -43,7 +43,7 @@ const Login = () => {
     useEffect(() => {
         if (!crrToken.isLoading) {
             if (crrToken.response) {
-                if (crrToken.response.status) {
+                if (crrToken.response.status && (crrToken.response as Obj)!.data.token as string) {
                     localStorage.setItem('access_token', (`Bearer ${(crrToken.response as Obj)!.data.token as string} `));
                     router.push('/');
                 } else {
