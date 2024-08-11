@@ -70,7 +70,7 @@ export const mapRecruitmentStatus = (record: Obj) => {
         }
       } else {
         if (record?.processInterview?.eventCalendarId) {
-          updateMsg("Đã hẹn PV", "cyan");
+          updateMsg("Đã hẹn PV", "lime");
         } else {
           updateMsg("Chờ PV", "cyan");
         }

@@ -23,20 +23,19 @@ interface Props {
   disabledLinkMeet?: boolean;
 }
 const CreateCalendar = (props: Props) => {
-
   const validationSchema = yup.object({
     ...(!props.disabledLinkMeet
       ? {
-        linkMeet: yup.string().required("Chưa có thông tin link meet!"),
-      }
+          linkMeet: yup.string().required("Chưa có thông tin link meet!"),
+        }
       : {}),
     te: yup.string().required("Chưa có thông tin TE phỏng vấn!"),
     teA: yup.string().required("Chưa có thông tin TE phụ trách"),
     time: yup.string().required("Chưa có thông tin thời gian!"),
     ...(props.hasDoc
       ? {
-        doc: yup.string().required("Chưa có tài liệu cung cấp!"),
-      }
+          doc: yup.string().required("Chưa có tài liệu cung cấp!"),
+        }
       : {}),
   });
   const dataRoundProcess = useGetDataRoundProcess();
@@ -53,7 +52,7 @@ const CreateCalendar = (props: Props) => {
     handleBlur,
     handleSubmit,
     handleReset,
-    isValid
+    isValid,
   } = useFormik({
     initialValues: {
       linkMeet: (getDataRoundProcess?.linkMeet as string) || "",
@@ -147,9 +146,7 @@ const CreateCalendar = (props: Props) => {
       <Form.Group>
         <Form.Label>
           TE phỏng vấn <span className="error">*</span>:{" "}
-          {errors.te && (
-            <p className="error">{errors.te as String}</p>
-          )}
+          {errors.te && <p className="error">{errors.te as String}</p>}
         </Form.Label>
         <div>
           {" "}
@@ -157,17 +154,14 @@ const CreateCalendar = (props: Props) => {
             size="small"
             onChange={(value) => {
               setFieldValue("te", value);
-            }
-            }
+            }}
             value={values.te}
           />
         </div>
         <div>
           <Form.Label>
             TE phụ trách <span className="error">*</span>:{" "}
-            {errors.teA && (
-              <p className="error">{errors.teA as String}</p>
-            )}
+            {errors.teA && <p className="error">{errors.teA as String}</p>}
           </Form.Label>
           <div>
             {" "}
