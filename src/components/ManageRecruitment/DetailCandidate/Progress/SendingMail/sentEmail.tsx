@@ -62,7 +62,6 @@ const SendingMailV2 = (props: SendingMailV2) => {
       setValue(example);
     }
   }, [dataMailtemplate, getDataCandidate, teProcess]);
-
   return (
     <div className={styles.sendingMailV2}>
       <Button
@@ -164,6 +163,9 @@ const SendingMailV2 = (props: SendingMailV2) => {
 };
 
 const MemoSendingMailV2 = memo(SendingMailV2, (prevProps, nextProps) => {
+  if (prevProps.isLoading !== nextProps.isLoading) {
+    return false;
+  }
   if (nextProps.mailTemplate.data.componentId !== prevProps.componentId) {
     return true;
   }

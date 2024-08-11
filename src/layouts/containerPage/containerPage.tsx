@@ -153,6 +153,10 @@ const ContainerPage = (props: Props) => {
         }
     }, [course.listCourse]);
     useEffect(() => {
+        if ((crrUser.response?.data as Obj) && Object.keys(crrUser.response?.data as Obj).length === 0) {
+            localStorage.removeItem('access_token');
+            router.push('/auth/login');
+        }
         if (crrRole) {
             if (!getRolePage.includes(ROLE_USER.COMMON) && (!getRolePage.includes(crrRole) || (crrRole === ROLE_USER.TE && !getRolePage.includes(getPosition) && !getRolePage.includes(ROLE_USER.COMMON)))) {
                 router.push('/404');
@@ -192,7 +196,7 @@ const ContainerPage = (props: Props) => {
                     <div className={styles.badge}>
                         <Avatar size='large' src={(crrUser.response as Obj)?.data?.img as string ?? (crrUser.response as Obj)?.data?.image as string ?? '/static/logo.png'} />
                         {!collapsed && <div className={styles.user}>
-                            <p>{(crrUser.response as Obj)?.data?.teName as string ?? (crrUser.response as Obj)?.data?.fullName as string?? (crrUser.response as Obj)?.data?.name as string  }</p>
+                            <p>{(crrUser.response as Obj)?.data?.teName as string ?? (crrUser.response as Obj)?.data?.fullName as string ?? (crrUser.response as Obj)?.data?.name as string}</p>
                             <span className={styles.role}>
                                 {
                                     ((crrUser.response as Obj)?.data?.roleAccount as ROLE_USER === ROLE_USER.TE) ? `${getLabelPositionTe[(crrUser.response as Obj)?.data?.positionTe as PositionTe]}${getCourseTe?.courseName ? ` ${getCourseTe?.courseName}` : ''}`

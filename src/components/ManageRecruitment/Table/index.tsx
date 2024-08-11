@@ -3,11 +3,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { Columns, Obj, RowData } from "@/global/interface";
 import { ComponentPage, RoundProcess, StatusProcessing } from "@/global/enum";
-import {
-  getColorByResultInterview,
-  getColorByRoundProcess,
-  getLabelRoundProcess,
-} from "@/global/init";
+import { getColorByRoundProcess, getLabelRoundProcess } from "@/global/init";
 import { formatDatetoString } from "@/utils";
 import { useGetListDataRecruitment } from "@/utils/hooks";
 import {
@@ -95,7 +91,9 @@ const TableRecruitment = (props: Props) => {
 
       render(value) {
         return value ? (
-          <Tag style={{ padding: '0.5rem 2rem' }} color={value.color}>{value.courseName}</Tag>
+          <Tag style={{ padding: "0.5rem 2rem" }} color={value.color}>
+            {value.courseName}
+          </Tag>
         ) : (
           ""
         );
@@ -129,43 +127,36 @@ const TableRecruitment = (props: Props) => {
       },
       width: 90,
     },
-
     {
-      key: "STATUS",
-      title: "Trạng Thái",
-      className: "text-center",
-      children: [
-        {
-          key: "RSIT",
-          title: "Thông tin",
+      key: "RSIT",
+      title: "Trạng thái",
 
-          width: 150,
-          render(value, record) {
-            const roundStatus = mapRecruitmentStatus(record);
-            return <Tag color={roundStatus.msgColor}>{roundStatus.msg}</Tag>;
-          },
-        },
-        {
-          key: "RSM",
-          title: "TT Mail",
+      width: 150,
+      render(value, record) {
+        const roundStatus = mapRecruitmentStatus(record);
+        return <Tag color={roundStatus.msgColor}>{roundStatus.msg}</Tag>;
+      },
+    },
+    {
+      key: "RSM",
+      title: "TT Mail",
 
-          width: 150,
-          render(value, record) {
-            const roundStatus = mapRecruitmentStatus(record);
-            return (
-              <Tag color={roundStatus.emailStatusColor}>
-                {roundStatus.emailStatus}
-              </Tag>
-            );
-          },
-        },
-      ],
+      width: 150,
+      render(value, record) {
+        const roundStatus = mapRecruitmentStatus(record);
+        return (
+          <Tag color={roundStatus.emailStatusColor}>
+            {roundStatus.emailStatus}
+          </Tag>
+        );
+      },
     },
 
     {
       key: "PROGRESS",
       title: "Trạng thái xử lý",
       dataIndex: "statusProcess",
+      align: "center",
       render(value) {
         return (
           <div className={styles.statusProcess}>
@@ -179,6 +170,8 @@ const TableRecruitment = (props: Props) => {
       key: "CV",
       title: "CV",
       dataIndex: "linkCv",
+      align: "center",
+
       render(value) {
         return (
           <a target="_blank" style={{ color: "blue" }} href={value}>
@@ -235,11 +228,11 @@ const TableRecruitment = (props: Props) => {
 const MemoTableRecruitment = memo(TableRecruitment, (prevProps, nextProps) => {
   if (
     nextProps.listDataRecruitment.data.payload?.query?.query?.componentId ===
-    nextProps.componentId ||
+      nextProps.componentId ||
     (prevProps.listDataRecruitment.data.payload?.query?.query?.componentId &&
       nextProps.listDataRecruitment.data.payload?.query?.query?.componentId &&
       prevProps.listDataRecruitment.data.payload?.query?.query?.componentId ===
-      nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)
+        nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)
   ) {
     return false;
   }
@@ -291,7 +284,7 @@ const BoundaryTable = (props: HigherTable) => {
         (Number(getPayloadQuery?.query?.query?.recordOnPage) !==
           getDataPagination.currentTotalRowOnPage ||
           Number(getPayloadQuery?.query?.query?.currentPage) !==
-          getDataPagination.currentPage)
+            getDataPagination.currentPage)
       ) {
         queryListData(
           getDataPagination.currentTotalRowOnPage,
