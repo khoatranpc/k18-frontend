@@ -2,7 +2,7 @@ import React from 'react';
 
 const FormTeacherOff = () => {
     return (
-        <div className="formTeacherOff max-w-[50vw]">
+        <div className="formTeacherOff w-[50vw] bg-[red]">
             FormTeacherOff
         </div>
     )
