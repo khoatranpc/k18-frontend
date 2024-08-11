@@ -1,8 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const FormTeacherOff = () => {
     return (
-        <div>FormTeacherOff</div>
+        <div className="formTeacherOff w-[50vw] bg-[red]">
+            FormTeacherOff
+        </div>
     )
 }
 
