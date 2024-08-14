@@ -85,15 +85,15 @@ const Interview = (props: Props) => {
                 <div className={styles.function}>
                     <div className={styles.actions}>
                         <span className={styles.handleSchedule} onClick={() => {
-                            // if (!localStorage.getItem('authGoogle')) {
-                            //     googleAuth.query({
-                            //         query: {
-                            //             callBackUrl: router.asPath
-                            //         }
-                            //     });
-                            // } else {
-                            setModal(true);
-                            // }
+                            if (!localStorage.getItem('authGoogle')) {
+                                googleAuth.query({
+                                    query: {
+                                        callBackUrl: router.asPath
+                                    }
+                                });
+                            } else {
+                                setModal(true);
+                            }
                         }}>
                             <CalendarAdd /> {getDataRoundProcess?.time ? ('Cập nhật') : ('Tạo lịch')}
                         </span>
