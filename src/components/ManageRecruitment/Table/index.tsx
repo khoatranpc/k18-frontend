@@ -202,6 +202,7 @@ const TableRecruitment = (props: Props) => {
       <Table
         heightToScroll={1000}
         hasFixedColumn
+        className='[&_.ant-table-cell-row-hover]:!bg-gray-200'
         disableDefaultPagination
         columns={columns}
         rowData={rowData}
@@ -228,11 +229,11 @@ const TableRecruitment = (props: Props) => {
 const MemoTableRecruitment = memo(TableRecruitment, (prevProps, nextProps) => {
   if (
     nextProps.listDataRecruitment.data.payload?.query?.query?.componentId ===
-      nextProps.componentId ||
+    nextProps.componentId ||
     (prevProps.listDataRecruitment.data.payload?.query?.query?.componentId &&
       nextProps.listDataRecruitment.data.payload?.query?.query?.componentId &&
       prevProps.listDataRecruitment.data.payload?.query?.query?.componentId ===
-        nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)
+      nextProps.listDataRecruitment.data.payload?.query?.query?.componentId)
   ) {
     return false;
   }
@@ -284,7 +285,7 @@ const BoundaryTable = (props: HigherTable) => {
         (Number(getPayloadQuery?.query?.query?.recordOnPage) !==
           getDataPagination.currentTotalRowOnPage ||
           Number(getPayloadQuery?.query?.query?.currentPage) !==
-            getDataPagination.currentPage)
+          getDataPagination.currentPage)
       ) {
         queryListData(
           getDataPagination.currentTotalRowOnPage,
