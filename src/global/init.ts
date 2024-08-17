@@ -46,6 +46,11 @@ const mapRoleToString: Record<ROLE_TEACHER, string> = {
     SP: 'Supporter',
     ST: 'Super Teacher'
 }
+const mapRoleToColor: Record<ROLE_TEACHER, string> = {
+    MT: 'processing',
+    SP: 'lime',
+    ST: 'magenta'
+}
 const getStringGender: Record<Gender, string> = {
     MALE: 'Nam',
     FEMALE: 'Nữ',
@@ -185,6 +190,7 @@ export {
     mapLevelToColor,
     mapLevelToColor2,
     getColorByRoundProcess,
-    getColorCodeByRoundProcess
+    getColorCodeByRoundProcess,
+    mapRoleToColor
 
 }
