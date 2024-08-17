@@ -1212,3 +1212,8 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
 .pt-0 .ant-tabs-nav-wrap {
     padding-top: 0 !important;
 }
+
+img {
+    display: inline-block;
+    /* Ghi đè thuộc tính display */
+}
