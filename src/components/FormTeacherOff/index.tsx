@@ -1,29 +1,51 @@
 import React, { useEffect } from 'react';
-import { Button, DatePicker, Form, Input, Radio } from 'antd';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
+import { DefaultOptionType } from 'antd/es/select';
 import { useFormik } from 'formik';
-import { useGetLocations } from '@/utils/hooks';
+import * as yup from 'yup';
 import { Obj } from '@/global/interface';
-import Loading from '../loading';
-import { ROLE_TEACHER } from '@/global/enum';
+import { useQueryBookTeacher } from '@/utils/hooks';
+import SelectClass from './SelectClass';
 
+const validationSchema = yup.object({
+    email: yup.string().email('Email chưa đúng định dạng!').required('Bạn cần cung cấp email!'),
+    name: yup.string().required('Bạn cần cung cấp tên!'),
+    codeClass: yup.string().required('Bạn cần cung cấp mã lớp!'),
+    group: yup.string().required('Bạn cần cung cấp thông tin nhóm dạy!'),
+    date: yup.string().required('Bạn cần chọn ngày nghỉ!'),
+    lessonNote: yup.string().required('Bạn cần cung cấp thông tin bài dạy!'),
+});
 const FormTeacherOff = () => {
-    const location = useGetLocations();
-    const getLocation = (location.locations?.data as Obj[])?.filter(item => item.active) ?? [];
-
-    const { } = useFormik({
-        initialValues: {},
+    const groupClass = useQueryBookTeacher('GET');
+    const getGroupClass: DefaultOptionType[] = (groupClass.data?.response?.data as Obj[])?.map((item) => {
+        return {
+            value: item._id,
+            label: `Nhóm: ${item.groupNumber} - ${item.locationId?.locationCode}`
+        }
+    }) ?? []
+    const { values, errors, touched, setFieldValue, handleBlur, handleChange, handleSubmit } = useFormik({
+        initialValues: {
+            email: '',
+            codeClass: '',
+            group: '',
+            date: '',
+            lessonNote: '',
+            name: '',
+        },
+        validationSchema,
         onSubmit(values) {
+        console.log("🚀 ~ onSubmit ~ values:", values)
 
         }
     });
     useEffect(() => {
-        if (!location.locations) {
-            location.queryLocations();
+        if (values.codeClass) {
+            groupClass.query?.(values.codeClass as string);
         }
-    }, []);
+    }, [values.codeClass]);
     return (
         <div className="formTeacherOff min-h-[100vh] bg-[#ffe6e6]">
-            <div className="content bg-[#ffffff] rounded-[3.8rem] w-[35vw] m-auto p-[2.4rem]">
+            <div className="content bg-[#ffffff] rounded-[3.8rem] w-[40vw] m-auto p-[2.4rem]">
                 <div className="title mb-[1.2rem]">
                     <h1 className="text-center text-[3.6rem] font-bold mb-[1.2rem]">Mindx School - Yêu cầu nghỉ phép</h1>
                     <p className='text-center text-[1.8rem]'>Form thông tin dành cho giáo viên tại MindX</p>
@@ -48,88 +70,74 @@ const FormTeacherOff = () => {
                 <div className="collectInf mt-[1.2rem]">
                     <h2 className='text-[1.8rem] text-center font-bold mb-[1.2rem]'>Đăng ký thông tin</h2>
                     <Form
+                        onFinish={handleSubmit}
                         layout='vertical'
                     >
                         <Form.Item
                             label={"Email:"}
                             required
-                            rules={[{ required: true, message: 'Vui lòng nhập email hợp lệ!', type: 'email' }]}
                             name="email"
                         >
-                            <Input placeholder='Email của bạn' name='email' />
+                            <Input placeholder='Email của bạn' name='email' onChange={handleChange} />
+                            {errors.email && touched.email && <p className='text-[red]'>{errors.email}</p>}
                         </Form.Item>
                         <Form.Item
                             label={"Họ tên:"}
                             required
-                            rules={[{ required: true, message: 'Vui lòng nhập họ tên của bạn!', type: 'string' }]}
                             name="name"
                         >
-                            <Input placeholder='Họ tên' name='name' />
+                            <Input placeholder='Họ tên' name='name' onChange={handleChange} />
+                            {errors.name && touched.name && <p className='text-[red]'>{errors.name}</p>}
                         </Form.Item>
                         <hr className='my-[2.4rem]' />
                         <h2 className='text-[1.8rem] text-center font-bold mb-[1.2rem]'>Thông tin lớp xin nghỉ</h2>
                         <Form.Item
                             label={"Mã lớp:"}
                             required
-                            rules={[{ required: true, message: 'Vui lòng nhập mã lớp!', type: 'string' }]}
                             name="codeClass"
+                            initialValue={values.codeClass}
                         >
-                            <Input placeholder='VD: TC-DA45' name='codeClass' />
+                            <SelectClass
+                                onSelect={(value) => {
+                                    setFieldValue('codeClass', value);
+                                }}
+                            />
+                            {errors.codeClass && touched.name && <p className='text-[red]'>{errors.codeClass}</p>}
                         </Form.Item>
                         <Form.Item
-                            label={"Vị trí:"}
+                            label={<p> Nhóm: <br /><small>Hãy chọn lớp để hiển thị nhóm</small></p>}
                             required
-                            rules={[{ required: true, message: 'Vui lòng chọn vị trí giảng dạy!', type: 'string' }]}
-                            name="position"
+                            name="group"
                         >
-                            <Radio.Group className='flex justify-around'>
-                                <Radio value={`${ROLE_TEACHER.ST}`}>Giảng viên</Radio>
-                                <Radio value={`${ROLE_TEACHER.MT}`}>Mentor</Radio>
-                                <Radio value={`ST, MT`}>Giảng viên + Mentor</Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item
-                            label={"Nhóm:"}
-                            required
-                            rules={[{ required: true, message: 'Vui lòng cung cấp nhóm dạy!', type: 'string' }]}
-                            name="groupNumber"
-                        >
-                            <Input placeholder='VD: Nhóm 1' name='groupNumber' />
-                        </Form.Item>
-                        <Form.Item
-                            label={"Cơ sở:"}
-                            required
-                            rules={[{ required: true, message: 'Vui lòng chọn cơ sở của nhóm', type: 'string' }]}
-                            name="location"
-                        >
-
-                            {
-                                ((!getLocation.length && !location.state.isLoading) || location.state.isLoading) ? <Loading /> : (
-                                    <Radio.Group className='flex flex-col gap-[1.2rem] pl-[1.2rem]'>
-                                        {
-                                            getLocation.map(item => {
-                                                return <Radio key={item._id as string} value={item._id}>{item.locationDetail}</Radio>
-                                            })
-                                        }
-                                    </Radio.Group>
-                                )
-                            }
+                            <Select
+                                value={ values.group}
+                                options={getGroupClass}
+                                onChange={(value) => {
+                                    setFieldValue('group', value);
+                                }}
+                            />
+                            {errors.group && errors.group && <p className='text-[red]'>{errors.group}</p>}
                         </Form.Item>
                         <Form.Item
                             label={"Ngày"}
                             required
-                            rules={[{ required: true, message: 'Vui lòng cung cấp ngày xin nghỉ!', type: 'string' }]}
                             name="date"
                         >
-                            <DatePicker size='small' placeholder='D/M/Y' format={'DD/MM/YYYY'} />
+                            <DatePicker
+                                size='small'
+                                placeholder='Ngày/Tháng/Năm'
+                                format={'DD/MM/YYYY'} onChange={(value) => {
+                                    setFieldValue('date', value?.toString() && new Date(value?.toString()));
+                                }} />
+                            {errors.date && touched.date && <p className='text-[red]'>{errors.date}</p>}
                         </Form.Item>
                         <Form.Item
                             label={"Buổi số, kiến thức:"}
                             required
-                            rules={[{ required: true, message: 'Vui lòng cung cấp thông tin buổi nghỉ!', type: 'string' }]}
                             name="lessonNote"
                         >
-                            <Input.TextArea style={{ resize: 'none' }} placeholder='VD: Buổi 2, Python' name='lessonNote' />
+                            <Input.TextArea style={{ resize: 'none' }} placeholder='VD: Buổi 2, Python' name='lessonNote' onChange={handleChange} />
+                            {errors.lessonNote && touched.lessonNote && <p className='text-[red]'>{errors.lessonNote}</p>}
                         </Form.Item>
                         <Form.Item
                             label={"Tài liệu đính kèm (nếu có):"}
