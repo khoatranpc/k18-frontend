@@ -18,5 +18,5 @@ jobs:
         AZURE_DEVOPS_USERNAME: ${{ secrets.AZURE_DEVOPS_USERNAME }}
         AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
       run: |
-        git remote add azure https://${AZURE_DEVOPS_USERNAME}:${AZURE_DEVOPS_TOKEN}@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
+        git remote add azure https://${{ secrets.AZURE_DEVOPS_USERNAME }}:${{ secrets.AZURE_DEVOPS_TOKEN }}@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
         git push azure master
