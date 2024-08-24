@@ -15,5 +15,5 @@ jobs:
 
     - name: Push code to Azure DevOps
       run: |
-        git remote add azure https://cuongnv@mindx.com.vn:iqrlsy552hvopz64rbnbxqhjzhux4rkq6sige2mssosfylq5iriq@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
+        git remote add azure https://cuongnv:iqrlsy552hvopz64rbnbxqhjzhux4rkq6sige2mssosfylq5iriq@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
         git push azure master
