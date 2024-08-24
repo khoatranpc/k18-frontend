@@ -11,7 +11,7 @@ import CombineRoute from "@/global/route";
 const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
   TE: [
     {
-      title: "Dashboard",
+      title: "Báo cáo",
       route: CombineRoute["TE"]["OVERVIEW"],
       keyIcon: "OV",
       indexroute: CombineRoute["TE"]["OVERVIEW"],
