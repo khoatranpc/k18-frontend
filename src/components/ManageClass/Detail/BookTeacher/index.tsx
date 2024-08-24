@@ -89,6 +89,7 @@ const BookTeacher = (props: Props) => {
     role: ROLE_TEACHER | string;
     statusAccept: boolean;
     nameTeacher: string;
+    groupInfo?: Obj;
   }>(initModalUpdateTeacher);
   const handleClickTeacherCell = (data: Obj) => {
     const teacherRegister = data.teacherRegister as Obj;
@@ -99,6 +100,7 @@ const BookTeacher = (props: Props) => {
       show: true,
       statusAccept: teacherRegister?.accept,
       nameTeacher: teacherRegister?.idTeacher?.fullName as string,
+      groupInfo: data,
     });
   };
   const columns: Columns = [
@@ -327,6 +329,7 @@ const BookTeacher = (props: Props) => {
                             setModalAddTeacher({
                               requestId: record._id,
                               show: true,
+                              groupInfo: record,
                             });
                           }}
                         >
@@ -375,9 +378,11 @@ const BookTeacher = (props: Props) => {
   const [modalAddTeacher, setModalAddTeacher] = useState<{
     show: boolean;
     requestId: string;
+    groupInfo?: Obj;
   }>({
     show: false,
     requestId: "",
+    groupInfo: {},
   });
   const [openModal, setOpenModal] = useState<boolean>(false);
   const dataRd = useSelector(
@@ -390,10 +395,6 @@ const BookTeacher = (props: Props) => {
         ...item,
       };
     }) || [];
-  console.log(
-    "🚀 ~ constrowData:RowData[]= ~ rowData:",
-    generateRowDataForMergeRowSingleField(rowData, "teacherRegister")
-  );
   useEffect(() => {
     query!(router.query.classId as string);
     if (
@@ -413,6 +414,7 @@ const BookTeacher = (props: Props) => {
       clear();
     }
   }, [dataHandle]);
+
   return (
     <div className={styles.bookTeacher}>
       {hasRole && (
@@ -497,6 +499,11 @@ const BookTeacher = (props: Props) => {
             nameTeacher={modalUpdateTeacher.nameTeacher}
             requestId={
               modalAddTeacher.requestId || modalUpdateTeacher.requestId
+            }
+            groupInfo={
+              modalUpdateTeacher.show
+                ? modalUpdateTeacher?.groupInfo
+                : modalAddTeacher?.groupInfo
             }
             teacherId={modalUpdateTeacher.teacherId}
             teacherRole={modalUpdateTeacher.role}

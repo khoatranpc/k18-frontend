@@ -13,6 +13,13 @@ interface ClassAlertData {
         note: string;
     }[];
 }
+interface ClassTeacherData {
+    className: string;
+    groupName: string;
+    teacherName?: string;
+    teacherRole?: string;
+
+}
 
 const createMessageCreateClass = (data: ClassAlertData): string => {
     const {
@@ -48,11 +55,33 @@ Kiểm tra tại: https://client.tms-k18.id.vn/
     return text;
 };
 
+const createMessageModifineTeacher = (data: ClassTeacherData): string => {
+    const {
+        className,
+        groupName,
+        teacherName,
+        teacherRole
+    } = data;
+
+    const text = `<b>Update thông tin lớp</b>
+
+- <b>Mã lớp</b>: ${className}
+- <b>Nhóm</b>: ${groupName}
+- <b>Thông tin</b>: <i>${teacherName}</i> đã được thêm vào nhóm <i>${groupName}</i> với vai trò <i>${teacherRole}</i>
+
+Kiểm tra tại: https://client.tms-k18.id.vn/
+  `;
+
+    return text;
+};
+
 
 
 const sendToTeleBot = async (text: string) => {
     const bot_token = process.env.BOT_TELE_TOKEN || "7133414549:AAECmqI7NlH7vp71-m8lkoUbRJRFmKuEUOo";
     const chat_id = process.env.CHAT_ID || "-4183397624";
+    // const bot_token = process.env.BOT_TELE_TOKEN || "7435116463:AAHGHOA6ocFz6m7xtMe2z3B6jLRcPfEVqJ4";
+    // const chat_id = process.env.CHAT_ID || "-4231914297";
     const url = `https://api.telegram.org/bot${bot_token}/sendMessage`;
 
     try {
@@ -76,6 +105,7 @@ const sendToTeleBot = async (text: string) => {
 const teleBot = {
     sendToTeleBot,
     createMessageCreateClass,
+    createMessageModifineTeacher
 };
 
 export default teleBot;
