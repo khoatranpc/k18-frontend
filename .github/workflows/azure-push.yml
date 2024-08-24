@@ -14,6 +14,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Push code to Azure DevOps
+      env:
+        AZURE_DEVOPS_USERNAME: ${{ secrets.AZURE_DEVOPS_USERNAME }}
+        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
       run: |
-        git remote add azure https://cuongnv:iqrlsy552hvopz64rbnbxqhjzhux4rkq6sige2mssosfylq5iriq@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
+        git remote add azure https://${{ secrets.AZURE_DEVOPS_USERNAME }}:${{ secrets.AZURE_DEVOPS_TOKEN }}@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
         git push azure master
