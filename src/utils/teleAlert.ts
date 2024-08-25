@@ -78,10 +78,10 @@ Kiểm tra tại: https://client.tms-k18.id.vn/
 
 
 const sendToTeleBot = async (text: string) => {
-    const bot_token = process.env.BOT_TELE_TOKEN || "7133414549:AAECmqI7NlH7vp71-m8lkoUbRJRFmKuEUOo";
-    const chat_id = process.env.CHAT_ID || "-4183397624";
-    // const bot_token = process.env.BOT_TELE_TOKEN || "7435116463:AAHGHOA6ocFz6m7xtMe2z3B6jLRcPfEVqJ4";
-    // const chat_id = process.env.CHAT_ID || "-4231914297";
+    // const bot_token = process.env.BOT_TELE_TOKEN || "7133414549:AAECmqI7NlH7vp71-m8lkoUbRJRFmKuEUOo";
+    // const chat_id = process.env.CHAT_ID || "-4183397624";
+    const bot_token = process.env.BOT_TELE_TOKEN || "7435116463:AAHGHOA6ocFz6m7xtMe2z3B6jLRcPfEVqJ4";
+    const chat_id = process.env.CHAT_ID || "-4545043285";
     const url = `https://api.telegram.org/bot${bot_token}/sendMessage`;
 
     try {
