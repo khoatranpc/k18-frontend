@@ -61,7 +61,7 @@ const PageHeader = () => {
         return queryEmitSocket({
             role: crrRole,
             userName: currentUser?.fullName ?? currentUser?.teName ?? 'Anonymous',
-            img: currentUser?.img,
+            img: currentUser?.img ?? currentUser?.image,
             id: currentUser?._id,
             ...currentUser?.positionTe ? {
                 position:
