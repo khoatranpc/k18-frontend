@@ -57,10 +57,11 @@ const PageHeader = () => {
     const handleReceivedMsg = (data: UserOnline) => {
         dispatch(onReceivedData(data));
     }
+    console.log(currentUser);
     const handleEmitSocket = (disconnect?: boolean) => {
         return queryEmitSocket({
             role: crrRole,
-            userName: currentUser?.fullName ?? currentUser?.teName ?? 'Anonymous',
+            userName: currentUser?.fullName ?? currentUser?.teName ?? currentUser?.name ?? 'Anonymous',
             img: currentUser?.img ?? currentUser?.image,
             id: currentUser?._id,
             ...currentUser?.positionTe ? {
