@@ -57,7 +57,6 @@ const PageHeader = () => {
     const handleReceivedMsg = (data: UserOnline) => {
         dispatch(onReceivedData(data));
     }
-    console.log(currentUser);
     const handleEmitSocket = (disconnect?: boolean) => {
         return queryEmitSocket({
             role: crrRole,
