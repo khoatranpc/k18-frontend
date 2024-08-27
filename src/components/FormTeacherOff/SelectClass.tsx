@@ -48,7 +48,7 @@ const SelectClass = (props: Props) => {
             onChange={(value) => {
                 props.onSelect?.(value);
             }}
-            placeholder="Search class"
+            placeholder="Type to search"
             showSearch
             filterOption={false}
             onSearch={(value) => {
