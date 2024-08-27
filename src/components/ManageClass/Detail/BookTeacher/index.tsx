@@ -288,7 +288,7 @@ const BookTeacher = (props: Props) => {
                     size="small"
                     onClick={() => {
                       window.open(
-                        record.teacherRegister?.idTeacher?.profileLink ||
+                        record.teacherRegister?.idTeacher?.profileLink ??
                           record.teacherRegister?.idTeacher?.CVfile,
                         "_blank"
                       );
