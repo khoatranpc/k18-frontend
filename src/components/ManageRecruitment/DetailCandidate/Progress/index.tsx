@@ -255,7 +255,7 @@ const Progress = () => {
           )}
         </div>
       </div>
-      <PopupConfirm show={confirmModal.show} title={confirmModal.title}>
+      <PopupConfirm step={step} show={confirmModal.show} title={confirmModal.title}>
         <div>
           <p>
             Xác nhận ứng viên <b>{getDataCandidate.fullName as string}</b>{" "}
