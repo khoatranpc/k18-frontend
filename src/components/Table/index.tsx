@@ -105,6 +105,7 @@ const Table = forwardRef((props: Props, ref) => {
       }`}
     >
       <TableComponent
+        // rowKey={(record) => record.key}
         {...props}
         ref={ref as any}
         style={{

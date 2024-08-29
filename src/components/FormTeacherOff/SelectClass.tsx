@@ -11,12 +11,12 @@ interface Props {
 }
 const SelectClass = (props: Props) => {
     const listClass = useListClass();
-
     const [search, setSearch] = useState('');
     const firstRender = useRef(true);
     const searchClass = useDebounce(search);
     const [options, setOptions] = useState<DefaultOptionType[]>([]);
     const getListClass = listClass.data.response as Obj;
+    
     const getOptions: Array<DefaultOptionType> = (getListClass?.data?.classes as Obj[])?.map((item) => {
         return {
             label: item.codeClass,
