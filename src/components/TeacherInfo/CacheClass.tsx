@@ -74,6 +74,110 @@ const CacheClass = () => {
     },
   ];
 
+  const columnsDetail: Columns = [
+    {
+      key: "TIME",
+      title: "Thời gian",
+      dataIndex: "createdAt",
+    },
+    {
+      key: "CONTENT",
+      title: "Nội dung",
+      dataIndex: "docDetail",
+      className: "text-center",
+    },
+    {
+      key: "POINTCXO",
+      title: "POINTCXO",
+      dataIndex: "pointCxo",
+      className: "text-center",
+      render(value, record, index) {
+        return (
+          <span
+            style={{ color: getColorTeacherPoint(value), fontWeight: "bold" }}
+          >
+            {value}
+          </span>
+        );
+      },
+    },
+    {
+      key: "POINTMT",
+      title: "POINTMT",
+      dataIndex: "pointMT",
+      className: "text-center",
+      render(value, record, index) {
+        return (
+          <span
+            style={{ color: getColorTeacherPoint(value), fontWeight: "bold" }}
+          >
+            {value}
+          </span>
+        );
+      },
+    },
+    {
+      key: "POINTOB",
+      title: "POINTOB",
+      dataIndex: "pointOb",
+      className: "text-center",
+      render(value, record, index) {
+        return (
+          <span
+            style={{ color: getColorTeacherPoint(value), fontWeight: "bold" }}
+          >
+            {value}
+          </span>
+        );
+      },
+    },
+    {
+      key: "POINTST",
+      title: "POINTST",
+      dataIndex: "pointST",
+      className: "text-center",
+      render(value, record, index) {
+        return (
+          <span
+            style={{ color: getColorTeacherPoint(value), fontWeight: "bold" }}
+          >
+            {value}
+          </span>
+        );
+      },
+    },
+    {
+      key: "POINTSYL",
+      title: "POINTSYL",
+      dataIndex: "pointSyl",
+      className: "text-center",
+      render(value, record, index) {
+        return (
+          <span
+            style={{ color: getColorTeacherPoint(value), fontWeight: "bold" }}
+          >
+            {value}
+          </span>
+        );
+      },
+    },
+    {
+      key: "TIMECOLLECT",
+      title: "TIMECOLLECT",
+      dataIndex: "timeCollect",
+      className: "text-center",
+      render(value, record, index) {
+        return (
+          <span
+            style={{ color: getColorTeacherPoint(value), fontWeight: "bold" }}
+          >
+            {value}
+          </span>
+        );
+      },
+    },
+  ];
+
   useEffect(() => {
     getTeacherInfo.query(teacherId);
     getFeedbackList.query(
@@ -97,15 +201,15 @@ const CacheClass = () => {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => {
-            return (record.listFb as Obj[])?.map((item, idx) => {
-              return (
-                <p key={idx + uuid()}>
-                  {" "}
-                  <b>Thời gian:</b> {item.createdAt} - <b>Nội dung:</b>{" "}
-                  {item.docDetail}
-                </p>
-              );
-            });
+            console.log("record", record);
+
+            return (
+              <Table
+                columns={columnsDetail}
+                rowData={record.listFb || []}
+                disableDefaultPagination
+              />
+            );
           },
         }}
         disableDefaultPagination
