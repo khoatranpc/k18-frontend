@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Form, Select } from "antd";
-import { FormikHandlers, FormikTouched, FormikErrors } from "formik";
+import React from "react";
+import { Select, Form } from "antd";
+import { FormikErrors, FormikTouched } from "formik";
 
 interface CustomInputWithOptionsProps {
   name: string;
   label: string;
   placeholder: string;
   value: string;
-  onChange: FormikHandlers["handleChange"];
-  onBlur: FormikHandlers["handleBlur"];
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur: React.FocusEventHandler<HTMLSelectElement>;
   errors: FormikErrors<any>;
   touched: FormikTouched<any>;
   setFieldValue: (field: string, value: any) => void;
@@ -20,53 +20,46 @@ const CustomInputWithOptions: React.FC<CustomInputWithOptionsProps> = ({
   label,
   placeholder,
   value,
-  onChange,
   onBlur,
   errors,
   touched,
   setFieldValue,
   reasons = [],
 }) => {
-  const [showOptions, setShowOptions] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (value === "Có") {
-      setShowOptions(true);
-    } else {
-      setShowOptions(false);
-      setFieldValue(`${name}Option`, "NO");
+  const handleSelectChange = (option: string) => {
+    setFieldValue(name, option);
+    if (option === "no") {
+      setFieldValue(`${name}Option`, "");
     }
-  }, [value, setFieldValue, name]);
-
-  const handleChange = (value: string) => {
-    setFieldValue(name, value);
   };
 
-  const handleOptionChange = (option: string) => {
-    setFieldValue(`${name}Option`, option);
+  const handleReasonChange = (reason: string) => {
+    setFieldValue(`${name}Option`, reason);
   };
 
   return (
     <Form.Item
       label={label}
-      name={name}
-      required
-      validateStatus={errors[name] && touched[name] ? "error" : undefined}
+      validateStatus={touched[name] && errors[name] ? "error" : ""}
     >
       <Select
         placeholder={placeholder}
-        onChange={handleChange}
-        onBlur={onBlur}
         value={value}
+        onChange={handleSelectChange}
+        onBlur={onBlur}
       >
-        <Select.Option value="Có">YES</Select.Option>
-        <Select.Option value="Không">NO</Select.Option>
+        <Select.Option value="yes">Có</Select.Option>
+        <Select.Option value="no">Không</Select.Option>
       </Select>
-      {showOptions && (
+
+      {errors[name] && touched[name] && (
+        <p className="text-[red]">{String(errors[name])}</p>
+      )}
+      {value === "yes" && reasons.length > 0 && (
         <Select
           placeholder="Chọn lý do"
           style={{ marginTop: "10px" }}
-          onChange={handleOptionChange}
+          onChange={handleReasonChange}
         >
           {reasons.map((reason, index) => (
             <Select.Option key={index} value={reason}>
