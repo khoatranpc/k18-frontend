@@ -4,8 +4,7 @@ import * as Yup from "yup";
 import { Button, DatePicker, Form, Input, InputNumber } from "antd";
 import SelectClass from "../FormTeacherOff/SelectClass";
 import CustomInputWithOptions from "../CustomInput";
-import "quill/dist/quill.snow.css";
-import Quill from "quill";
+import ReactQuill from "react-quill";
 
 interface FormValues {
   name: string;
@@ -16,7 +15,7 @@ interface FormValues {
   checkIn: string;
   score: number;
   skill: string;
-  teachingSkill: number;
+  pointSkill: number;
   feedback: string;
 }
 
@@ -29,7 +28,7 @@ const initValues: FormValues = {
   checkIn: "",
   score: 0,
   skill: "",
-  teachingSkill: 0,
+  pointSkill: 0,
   feedback: "",
 };
 
@@ -43,7 +42,7 @@ const validationSchema = Yup.object({
     .min(1, "Điểm không thể nhỏ hơn 1")
     .max(10, "Điểm không thể lớn hơn 10"),
   skill: Yup.string().required("Bạn cần đánh giá kết quả lớp!"),
-  teachingSkill: Yup.number()
+  pointSkill: Yup.number()
     .required("Bạn cần tự đánh giá kỹ năng giảng dạy!")
     .min(1, "Điểm không thể nhỏ hơn 1")
     .max(10, "Điểm không thể lớn hơn 10"),
@@ -51,8 +50,6 @@ const validationSchema = Yup.object({
 });
 
 const FormCreateEvaluate: React.FC = () => {
-  const quillRef = useRef<Quill | null>(null);
-
   const {
     values,
     errors,
@@ -70,27 +67,9 @@ const FormCreateEvaluate: React.FC = () => {
   });
 
   useEffect(() => {
-    if (!quillRef.current) {
-      const quill = new Quill("#feedback-editor", {
-        theme: "snow",
-      });
-
-      quillRef.current = quill;
-
-      quill.root.innerHTML = values.feedback || "";
-      quill.on("text-change", () => {
-        setFieldValue("feedback", quill.root.innerHTML);
-      });
-    } else {
-      quillRef.current.root.innerHTML = values.feedback || "";
-    }
-
-    return () => {
-      if (quillRef.current) {
-        quillRef.current.off("text-change");
-      }
-    };
+    setFieldValue("feedback", values.feedback || "");
   }, [values.feedback, setFieldValue]);
+
   return (
     <div className="mx-auto">
       <Form onFinish={handleSubmit} layout="vertical" className="p-6">
@@ -215,20 +194,20 @@ const FormCreateEvaluate: React.FC = () => {
 
         <Form.Item
           label={"Tự đánh giá kỹ năng giảng dạy của bạn trong khoá này?"}
-          name="teachingSkill"
+          name="pointSkill"
           required
         >
           <InputNumber
             placeholder="Điểm"
-            name="teachingSkill"
+            name="pointSkill"
             min={1}
             max={10}
-            value={values.teachingSkill}
-            onChange={(value) => setFieldValue("teachingSkill", value)}
+            value={values.pointSkill}
+            onChange={(value) => setFieldValue("pointSkill", value)}
             onBlur={handleBlur}
           />
-          {errors.teachingSkill && touched.teachingSkill && (
-            <p className="text-[red]">{errors.teachingSkill}</p>
+          {errors.pointSkill && touched.pointSkill && (
+            <p className="text-[red]">{errors.pointSkill}</p>
           )}
         </Form.Item>
 
@@ -237,16 +216,20 @@ const FormCreateEvaluate: React.FC = () => {
           name="feedback"
           required
         >
-          <div id="feedback-editor" style={{ height: "200px" }}></div>
+          <ReactQuill
+            value={values.feedback}
+            onChange={(content) => setFieldValue("feedback", content)}
+            placeholder="Đánh giá/ feedback về khoá học..."
+            style={{ height: "200px" }}
+          />
           {errors.feedback && touched.feedback && (
-            <p className="text-[red]">{errors.feedback}</p>
+            <p className="text-[red] mt-20">{errors.feedback}</p>
           )}
         </Form.Item>
-
         <Button
           htmlType="submit"
           type="primary"
-          className="py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="py-2 mt-10 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
         >
           Xác nhận
         </Button>
