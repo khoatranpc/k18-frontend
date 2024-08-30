@@ -1,9 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { Button } from 'antd';
-import { RoundProcess } from '@/global/enum';
+import { Obj } from '@/global/interface';
+import { RoundProcess, TemplateMail } from '@/global/enum';
 import ModalCustomize from '@/components/ModalCustomize';
 import ConfirmContext from '../context';
+import MemoTextEditor from '@/components/TextEditor';
+import { useGetDetailCandidate, useGetMailTemplate } from '@/utils/hooks';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
+import SelectTe from '@/components/SelectTe';
 
 interface Props {
     header?: React.ReactElement | string;
@@ -15,7 +19,19 @@ interface Props {
 
 const PopupConfirm = (props: Props) => {
     const confirmModal = useContext(ConfirmContext);
-    console.log(props.step);
+    const templatePassCV = useGetMailTemplate();
+    const [labelTe, setLabelTe] = useState('');
+    const crrCandidate = useGetDetailCandidate();
+    console.log(crrCandidate.data.response?.data);
+    useLayoutEffect(() => {
+        if (props.step === RoundProcess.CV) {
+            templatePassCV.query({
+                query: {
+                    template: TemplateMail.PASSCV
+                }
+            });
+        }
+    }, []);
     return (
         <ModalCustomize
             dialogClassName={styles.modalConfirm}
@@ -25,30 +41,41 @@ const PopupConfirm = (props: Props) => {
             }}
             show={props.show}
             centered
-            modalFooter={<div className={styles.handleConfirm}>
-                <Button
-                    size="small"
-                    onClick={() => {
-                        confirmModal.onConfirm?.(confirmModal.round, false);
+            modalFooter={<div className="flex flex-col gap-[1.2rem] items-end">
+                <SelectTe
+                    size='small'
+                    className='w-full'
+                    placeholder="TE Xử lý (Sẽ được đính kèm thông tin email!)"
+                    onChange={(_, __, data) => {
+                        const contactTe = data ? `${data.teName} - ${data.phoneNumber}` : '';
+                        setLabelTe(contactTe);
                     }}
-                >
-                    Huỷ
-                </Button>
-                <Button size="small"
-                    onClick={() => {
-                        confirmModal.onConfirm?.(confirmModal.round, true);
-                    }}
-                >
-                    Đồng ý
-                </Button>
-                {props.step && props.step === RoundProcess.CV && <Button size="small"
-                    onClick={() => {
-                        confirmModal.onConfirm?.(confirmModal.round, true);
-                    }}
-                >
-                    Đồng ý và Gửi mail
-                </Button>
-                }
+                />
+                <div className={styles.handleConfirm}>
+                    <Button
+                        size="small"
+                        onClick={() => {
+                            confirmModal.onConfirm?.(confirmModal.round, false);
+                        }}
+                    >
+                        Huỷ
+                    </Button>
+                    <Button size="small"
+                        onClick={() => {
+                            confirmModal.onConfirm?.(confirmModal.round, true);
+                        }}
+                    >
+                        Đồng ý
+                    </Button>
+                    {props.step && props.step === RoundProcess.CV && <Button size="small"
+                        onClick={() => {
+                            confirmModal.onConfirm?.(confirmModal.round, true, TemplateMail.PASSCV);
+                        }}
+                    >
+                        Đồng ý và Gửi mail
+                    </Button>
+                    }
+                </div>
             </div>}
         >
             <div>
