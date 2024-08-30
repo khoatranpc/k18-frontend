@@ -1,7 +1,7 @@
 import React from "react";
 import FormCreateEvaluate from "./FormCreateEvaluate";
-import TimelineEvaluate from "../TimelineEvaluate";
 import styles from "@/styles/teacher/TeacherInfo.module.scss";
+import TimelineEvaluate from "../TimelineEvaluate";
 
 const TeacherEvaluate = () => {
   return (

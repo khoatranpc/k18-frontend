@@ -88,7 +88,7 @@ const CacheClass = () => {
     },
     {
       key: "POINTCXO",
-      title: "Điểm CXO",
+      title: "POINTCXO",
       dataIndex: "pointCxo",
       className: "text-center",
       render(value, record, index) {
@@ -103,7 +103,7 @@ const CacheClass = () => {
     },
     {
       key: "POINTMT",
-      title: "Điểm MT",
+      title: "POINTMT",
       dataIndex: "pointMT",
       className: "text-center",
       render(value, record, index) {
@@ -118,7 +118,7 @@ const CacheClass = () => {
     },
     {
       key: "POINTOB",
-      title: "Điểm OB",
+      title: "POINTOB",
       dataIndex: "pointOb",
       className: "text-center",
       render(value, record, index) {
@@ -133,7 +133,7 @@ const CacheClass = () => {
     },
     {
       key: "POINTST",
-      title: "Điểm ST",
+      title: "POINTST",
       dataIndex: "pointST",
       className: "text-center",
       render(value, record, index) {
@@ -148,7 +148,7 @@ const CacheClass = () => {
     },
     {
       key: "POINTSYL",
-      title: "Điểm SYL",
+      title: "POINTSYL",
       dataIndex: "pointSyl",
       className: "text-center",
       render(value, record, index) {
@@ -163,7 +163,7 @@ const CacheClass = () => {
     },
     {
       key: "TIMECOLLECT",
-      title: "Thời gian thu thập",
+      title: "TIMECOLLECT",
       dataIndex: "timeCollect",
       className: "text-center",
       render(value, record, index) {
@@ -202,6 +202,7 @@ const CacheClass = () => {
         expandable={{
           expandedRowRender: (record) => {
             console.log("record", record);
+
             return (
               <Table
                 columns={columnsDetail}
