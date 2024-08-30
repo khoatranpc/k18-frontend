@@ -73,7 +73,6 @@ const FormCreateEvaluate: React.FC = () => {
     if (!quillRef.current) {
       const quill = new Quill("#feedback-editor", {
         theme: "snow",
-    
       });
 
       quillRef.current = quill;

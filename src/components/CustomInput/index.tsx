@@ -30,9 +30,11 @@ const CustomInputWithOptions: React.FC<CustomInputWithOptionsProps> = ({
   const [showOptions, setShowOptions] = useState<boolean>(false);
 
   useEffect(() => {
-    setShowOptions(value === "Có");
-    if (value === "Không") {
-      setFieldValue(`${name}Option`, undefined);
+    if (value === "Có") {
+      setShowOptions(true);
+    } else {
+      setShowOptions(false);
+      setFieldValue(`${name}Option`, "NO");
     }
   }, [value, setFieldValue, name]);
 
@@ -57,8 +59,8 @@ const CustomInputWithOptions: React.FC<CustomInputWithOptionsProps> = ({
         onBlur={onBlur}
         value={value}
       >
-        <Select.Option value="Có">Có</Select.Option>
-        <Select.Option value="Không">Không</Select.Option>
+        <Select.Option value="Có">YES</Select.Option>
+        <Select.Option value="Không">NO</Select.Option>
       </Select>
       {showOptions && (
         <Select
