@@ -26,16 +26,14 @@ const SelectTe = (props: Props) => {
   });
 
   useEffect(() => {
-    if (!getListTe) {
-      listTe.query({
-        query: {
-          getAll: true,
-          condition: {
-            activate: true,
-          },
+    listTe.query({
+      query: {
+        getAll: true,
+        condition: {
+          activate: true,
         },
-      });
-    }
+      },
+    });
   }, []);
 
   return (
@@ -50,7 +48,7 @@ const SelectTe = (props: Props) => {
           props.onChange?.(value, option, crrTe);
         }}
         showSearch
-        placeholder="Chọn TE tiếp nhận"
+        placeholder={props.placeholder ?? "Chọn TE tiếp nhận"}
         optionFilterProp="label"
         loading={listTe.data.isLoading}
         options={options ?? []}
