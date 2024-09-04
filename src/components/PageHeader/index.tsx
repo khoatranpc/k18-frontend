@@ -60,8 +60,8 @@ const PageHeader = () => {
     const handleEmitSocket = (disconnect?: boolean) => {
         return queryEmitSocket({
             role: crrRole,
-            userName: currentUser?.fullName ?? currentUser?.teName ?? 'Anonymous',
-            img: currentUser?.img,
+            userName: currentUser?.fullName ?? currentUser?.teName ?? currentUser?.name ?? 'Anonymous',
+            img: currentUser?.img ?? currentUser?.image,
             id: currentUser?._id,
             ...currentUser?.positionTe ? {
                 position:
@@ -71,12 +71,12 @@ const PageHeader = () => {
         })
     }
     // socket for view user on system
-    // useEffect(() => {
-    //     if (currentUser) {
-    //         queryReceiveConnection(handleReceivedMsg);
-    //         dispatch(handleEmitSocket(false));
-    //     }
-    // }, [currentUser]);
+    useEffect(() => {
+        if (currentUser) {
+            queryReceiveConnection(handleReceivedMsg);
+            dispatch(handleEmitSocket(false));
+        }
+    }, [currentUser]);
     return (
         <div className={`${styles.pageHeader} ${styles.bgWhite} pageHeader`}>
             {
