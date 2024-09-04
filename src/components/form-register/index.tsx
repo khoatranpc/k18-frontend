@@ -6,7 +6,7 @@ import Link from "next/link";
 import * as yup from "yup";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { CheckboxOptionType, CheckboxValueType } from "antd/es/checkbox/Group";
+import { CheckboxOptionType } from "antd/es/checkbox/Group";
 import { Input, DatePicker, Radio, Button, Checkbox, MenuProps } from "antd";
 import { Obj, State } from "@/global/interface";
 import { Gender, ROLE_TEACHER } from "@/global/enum";
@@ -27,18 +27,18 @@ import CropImage from "../CropImage";
 
 const crrCourseRegister: {
     idCourse: string;
-    levelHandle: CheckboxValueType[];
+    levelHandle: string[];
 }[] = [];
 
-let crrRoleRegister: CheckboxValueType[] = [];
+let crrRoleRegister: string[] = [];
 const onChange = (
-    checkedValues: CheckboxValueType[],
+    checkedValues: string[],
     idCourse: string,
     handleFieldValue: (
         fieldName: string,
         value: {
             idCourse: string;
-            levelHandle: CheckboxValueType[];
+            levelHandle: string[];
         }[]
     ) => void
 ) => {
@@ -60,8 +60,8 @@ const onChange = (
     handleFieldValue("coursesRegister", crrCourseRegister);
 };
 const handleRegisterRole = (
-    checkedValues: CheckboxValueType[],
-    handleFieldValue: (fieldName: string, value: CheckboxValueType[]) => void
+    checkedValues: string[],
+    handleFieldValue: (fieldName: string, value: string[]) => void
 ) => {
     crrRoleRegister = checkedValues;
     handleFieldValue("role", crrRoleRegister);
@@ -780,7 +780,7 @@ const FormRegister = () => {
                                         { label: "Supporter", value: ROLE_TEACHER.SP },
                                     ]}
                                     onChange={(e) => {
-                                        handleRegisterRole(e, setFieldValue);
+                                        handleRegisterRole(e as string[], setFieldValue);
                                     }}
                                     defaultValue={values.role || []}
                                 />
@@ -814,7 +814,7 @@ const FormRegister = () => {
                                                             ?.levelHandle as Array<string>) || []
                                                     }
                                                     onChange={(e) => {
-                                                        onChange(e, item._id as string, setFieldValue);
+                                                        onChange(e as string[], item._id as string, setFieldValue);
                                                     }}
                                                 />
                                             </Form.Group>

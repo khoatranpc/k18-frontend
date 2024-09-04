@@ -278,6 +278,13 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
       positionAccept: Object.values(PositionTe),
     },
     {
+      title: 'QC - Kiểm soát chất lượng',
+      keyIcon: 'TC',
+      indexroute: CombineRoute['TE']['QC'],
+      route: CombineRoute['TE']['QC'],
+      positionAccept: Object.values(PositionTe),
+    },
+    {
       title: "Thông tin cá nhân",
       keyIcon: "IF",
       route: CombineRoute["TE"]["MY_INFO"],
@@ -386,6 +393,15 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
       indexroute: CombineRoute["TE"]["MANAGER"]["FEEDBACK"],
       hide: true,
       component: ComponentPage.MANAGER_FEEDBACK,
+      positionAccept: [ROLE.TEACHER],
+    },
+    {
+      title: "Nghỉ phép",
+      route: CombineRoute["TEACHER"]["ON_LEAVE"],
+      keyIcon: KEY_ICON.CL,
+      showIcon: true,
+      indexroute: CombineRoute["TEACHER"]["ON_LEAVE"],
+      component: ComponentPage.CALENDAR,
       positionAccept: [ROLE.TEACHER],
     },
     // {

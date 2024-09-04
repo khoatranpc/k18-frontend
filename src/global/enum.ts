@@ -182,12 +182,13 @@ export enum PositionTe {
 }
 export enum TemplateMail {
     FAILCV = 'FAILCV',
+    PASSCV = 'PASSCV',
+    NOTI_RECEIVED_CV = 'NOTI_RECEIVED_CV',
     FAILINTERVIEW = 'FAILINTERVIEW',
     PASSINTERVIEW = 'PASSINTERVIEW',
     NOCONNECT = 'NOCONNECT',
     INVITE_INTERVIEW = 'INVITEINTERVIEW',
-    NOTI_RECEIVED_CV = 'NOTI_RECEIVED_CV',
-    PENDING = 'PENDING'
+    PENDING = 'PENDING',
 }
 export enum Region {
     MB = 'MB',
