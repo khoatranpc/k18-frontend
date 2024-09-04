@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { Button } from 'antd';
-import ConfirmContext from '../context';
+import { RoundProcess } from '@/global/enum';
 import ModalCustomize from '@/components/ModalCustomize';
+import ConfirmContext from '../context';
 import styles from '@/styles/Recruitment/ManagerRecruitment.module.scss';
 
 interface Props {
@@ -9,10 +10,12 @@ interface Props {
     show?: boolean;
     title?: React.ReactElement | string;
     children?: React.ReactElement | string;
+    step?: RoundProcess;
 }
 
 const PopupConfirm = (props: Props) => {
     const confirmModal = useContext(ConfirmContext);
+    console.log(props.step);
     return (
         <ModalCustomize
             dialogClassName={styles.modalConfirm}
@@ -38,6 +41,14 @@ const PopupConfirm = (props: Props) => {
                 >
                     Đồng ý
                 </Button>
+                {props.step && props.step === RoundProcess.CV && <Button size="small"
+                    onClick={() => {
+                        confirmModal.onConfirm?.(confirmModal.round, true);
+                    }}
+                >
+                    Đồng ý và Gửi mail
+                </Button>
+                }
             </div>}
         >
             <div>
