@@ -1,22 +1,29 @@
-name: Deploy to Azure DevOps
+# name: Deploy to Azure DevOps
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
 
-    - name: Push code to Azure DevOps
-      run: |
-        git remote add azure https://$(AZURE_DEVOPS_USERNAME):$(AZURE_DEVOPS_TOKEN)@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
-        git push azure main
-      env:
-        AZURE_DEVOPS_USERNAME: ${{ secrets.AZURE_DEVOPS_USERNAME }}
-        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+#     - name: Pull latest code from Azure DevOps
+#       env:
+#         AZURE_DEVOPS_USERNAME: ${{ secrets.AZURE_DEVOPS_USERNAME }}
+#         AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+#       run: |
+#         git remote add azure https://${{ secrets.AZURE_DEVOPS_USERNAME }}:${{ secrets.AZURE_DEVOPS_TOKEN }}@techkids.visualstudio.com/mindx-tms/_git/mindx-tms-web-app
+#         git pull --no-rebase azure master
+
+#     - name: Push code to Azure DevOps
+#       env:
+#         AZURE_DEVOPS_USERNAME: ${{ secrets.AZURE_DEVOPS_USERNAME }}
+#         AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+#       run: |
+#         git push azure master

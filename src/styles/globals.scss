@@ -1201,6 +1201,26 @@ span.jodit-toolbar-button_about.jodit-ui-group__about {
 }
 
 img {
-  display: inline-block;
-  /* Ghi đè thuộc tính display */
+    display: inline-block;
+    /* Ghi đè thuộc tính display */
+}
+
+.formTeacherOff {
+    &.middle {
+        .content {
+            width: 70vw;
+        }
+    }
+
+    &.small {
+        .content {
+            width: 98vw;
+        }
+    }
+}
+
+html {
+    &:has(.formTeacherOff.small) {
+        font-size: 8px;
+    }
 }

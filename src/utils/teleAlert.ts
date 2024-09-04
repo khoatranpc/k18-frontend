@@ -1,4 +1,3 @@
-
 interface ClassAlertData {
     className: string;
     dayStart: string;
@@ -18,7 +17,6 @@ interface ClassTeacherData {
     groupName: string;
     teacherName?: string;
     teacherRole?: string;
-
 }
 
 const createMessageCreateClass = (data: ClassAlertData): string => {
@@ -36,9 +34,10 @@ const createMessageCreateClass = (data: ClassAlertData): string => {
     const classGroupsText = classGroup
         .map(
             (group, index) =>
-                `    ${index + 1} ${group.location}: ${group.totalStudents} HS - note: ${group.note}`
+                `    ${index + 1} ${group.location}: ${group.totalStudents
+                } HS - note: ${group.note}`
         )
-        .join('\n');
+        .join("\n");
 
     const text = `<b>Đã có lớp mới được tạo</b>
 
@@ -49,19 +48,14 @@ const createMessageCreateClass = (data: ClassAlertData): string => {
 ${classGroupsText}
 - <b>CS phụ trách</b>: ${cxo}
 
-Kiểm tra tại: https://client.tms-k18.id.vn/
+Kiểm tra tại: https://teacher.mindx.edu.vn
   `;
 
     return text;
 };
 
 const createMessageModifineTeacher = (data: ClassTeacherData): string => {
-    const {
-        className,
-        groupName,
-        teacherName,
-        teacherRole
-    } = data;
+    const { className, groupName, teacherName, teacherRole } = data;
 
     const text = `<b>Update thông tin lớp</b>
 
@@ -69,19 +63,17 @@ const createMessageModifineTeacher = (data: ClassTeacherData): string => {
 - <b>Nhóm</b>: ${groupName}
 - <b>Thông tin</b>: <i>${teacherName}</i> đã được thêm vào nhóm <i>${groupName}</i> với vai trò <i>${teacherRole}</i>
 
-Kiểm tra tại: https://client.tms-k18.id.vn/
+Kiểm tra tại: https://teacher.mindx.edu.vn
   `;
 
     return text;
 };
 
-
-
 const sendToTeleBot = async (text: string) => {
-    const bot_token = process.env.BOT_TELE_TOKEN || "7133414549:AAECmqI7NlH7vp71-m8lkoUbRJRFmKuEUOo";
-    const chat_id = process.env.CHAT_ID || "-4183397624";
-    // const bot_token = process.env.BOT_TELE_TOKEN || "7435116463:AAHGHOA6ocFz6m7xtMe2z3B6jLRcPfEVqJ4";
-    // const chat_id = process.env.CHAT_ID || "-4231914297";
+    // const bot_token = process.env.BOT_TELE_TOKEN || "7133414549:AAECmqI7NlH7vp71-m8lkoUbRJRFmKuEUOo";
+    // const chat_id = process.env.CHAT_ID || "-4183397624";
+    const bot_token = process.env.BOT_TELE_TOKEN || "7435116463:AAHGHOA6ocFz6m7xtMe2z3B6jLRcPfEVqJ4";
+    const chat_id = process.env.CHAT_ID || "-4545043285";
     const url = `https://api.telegram.org/bot${bot_token}/sendMessage`;
 
     try {
@@ -105,7 +97,7 @@ const sendToTeleBot = async (text: string) => {
 const teleBot = {
     sendToTeleBot,
     createMessageCreateClass,
-    createMessageModifineTeacher
+    createMessageModifineTeacher,
 };
 
 export default teleBot;

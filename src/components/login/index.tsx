@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -13,7 +14,6 @@ import { clearToken, queryToken } from '@/store/reducers/auth-get-token.reducer'
 import iconUserPrefix from '@/assets/svgs/icon-user-prefix.svg';
 import iconPasswordPrefix from '@/assets/svgs/icon-password-prefix.svg';
 import styles from '@/styles/auth/Login.module.scss';
-import Image from 'next/image';
 
 const validationSchema = yup.object({
     email: yup.string().email('Sai định dạng email!').required('Bạn chưa nhập email!'),
@@ -77,6 +77,7 @@ const Login = () => {
                         className={styles.btn_login}
                         htmlType="submit"
                         loading={crrToken.isLoading}
+                        disabled={crrToken.isLoading}
                     >
                         Đăng nhập
                     </Button>

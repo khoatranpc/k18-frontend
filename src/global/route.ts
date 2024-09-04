@@ -34,6 +34,7 @@ const CombineRoute = {
     LOCATION: "/te/location",
     AREA: "/te/area",
     TIMESCHEDULE: "/te/timeschedule",
+    QC: '/te/qc',
     CS: {
       LIST: '/cs/list',
       DETAIL: '/cs/[csId]'
@@ -55,7 +56,8 @@ const CombineRoute = {
     LOCATION: "/teacher/location",
     TIMESCHEDULE: "/te/timeschedule",
     GENERAL_DOCUMENT: '/teacher/general-document',
-    TEACHER_EVALUATE: '/teacher/evaluate'
+    TEACHER_EVALUATE: '/teacher/evaluate',
+    ON_LEAVE: '/teacher/on-leave'
   },
   CS: {
     LIST: '/cs/list',
