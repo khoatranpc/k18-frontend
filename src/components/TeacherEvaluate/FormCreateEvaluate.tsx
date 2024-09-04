@@ -99,6 +99,7 @@ const FormCreateEvaluate: React.FC = () => {
           required
         >
           <SelectClass
+            isDefaultGetAll
             onSelect={(value) => {
               setFieldValue("codeClass", value);
             }}
