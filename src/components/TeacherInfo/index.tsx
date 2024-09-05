@@ -9,6 +9,7 @@ import About from "./About";
 import Account from "./Account";
 import Salary from "./Salary";
 import CacheClass from "./CacheClass";
+import Evaluate from "./Evaluate";
 import Edit from "@/icons/Edit";
 import styles from '@/styles/teacher/TeacherInfo.module.scss';
 
@@ -16,7 +17,8 @@ export enum Tab {
   ABOUT = 'ABOUT',
   ACCOUNT = 'ACCOUNT',
   SALARY = 'SALARY',
-  CACHECLASS = 'CACHECLASS'
+  CACHECLASS = 'CACHECLASS',
+  EVALUATE = 'EVALUATE'
 }
 const TeacherInfo = () => {
   const currentUser = useGetCrrUser()?.data as Obj;
@@ -40,7 +42,8 @@ const TeacherInfo = () => {
     }} />,
     ACCOUNT: <Account />,
     SALARY: <Salary />,
-    CACHECLASS: <CacheClass />
+    CACHECLASS: <CacheClass />,
+    EVALUATE: <Evaluate />
   }
   const listTab: TabsProps['items'] = [
     {
@@ -59,6 +62,10 @@ const TeacherInfo = () => {
       key: Tab.CACHECLASS,
       label: 'Lớp dạy',
     },
+    {
+      key: Tab.EVALUATE,
+      label: 'Đánh giá'
+    }
   ]
   useEffect(() => {
     dataTeacherRegisterCourse.query([]);

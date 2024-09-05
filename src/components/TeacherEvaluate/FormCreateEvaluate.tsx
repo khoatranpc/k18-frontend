@@ -5,12 +5,13 @@ import { Button, DatePicker, Form, Input, InputNumber } from "antd";
 import SelectClass from "../FormTeacherOff/SelectClass";
 import CustomInputWithOptions from "../CustomInput";
 import ReactQuill from "react-quill";
+import useGetCrrUser from "@/utils/hooks/getUser";
+import { Obj } from "@/global/interface";
 
 interface FormValues {
   name: string;
   codeClass: string;
   date: string;
-  numberOfStudent: number;
   absent: string;
   checkIn: string;
   score: number;
@@ -19,18 +20,6 @@ interface FormValues {
   feedback: string;
 }
 
-const initValues: FormValues = {
-  name: "Pham Ngoc Cuong",
-  codeClass: "",
-  date: "",
-  numberOfStudent: 50,
-  absent: "",
-  checkIn: "",
-  score: 0,
-  skill: "",
-  pointSkill: 0,
-  feedback: "",
-};
 
 const validationSchema = Yup.object({
   codeClass: Yup.string().required("Bạn cần chọn mã lớp!"),
@@ -50,6 +39,8 @@ const validationSchema = Yup.object({
 });
 
 const FormCreateEvaluate: React.FC = () => {
+  const currentUser = useGetCrrUser()?.data as Obj;
+
   const {
     values,
     errors,
@@ -59,7 +50,17 @@ const FormCreateEvaluate: React.FC = () => {
     handleChange,
     handleSubmit,
   } = useFormik<FormValues>({
-    initialValues: initValues,
+    initialValues: {
+      name: currentUser.fullName,
+      codeClass: "",
+      date: "",
+      absent: "",
+      checkIn: "",
+      score: 0,
+      skill: "",
+      pointSkill: 0,
+      feedback: "",
+    },
     validationSchema,
     onSubmit: (values) => {
       console.log("🚀 ~ onSubmit ~ values:", values);
@@ -75,15 +76,9 @@ const FormCreateEvaluate: React.FC = () => {
       <Form onFinish={handleSubmit} layout="vertical" className="p-6">
         <Form.Item
           label={"Họ và tên:"}
-          name="name"
-          initialValue={values.name}
-          required
         >
           <Input
-            placeholder="Họ và tên"
             name="name"
-            onChange={handleChange}
-            onBlur={handleBlur}
             value={values.name}
             disabled
           />
