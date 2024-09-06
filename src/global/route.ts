@@ -15,6 +15,7 @@ const CombineRoute = {
       TEACHER: "/te/manager/teacher",
       DETAILTEACHER: "/te/manager/teacher/detail/[teacherId]",
       REQUEST_ONLEAVE: "/te/manager/teacher/request-on-leave",
+      EVALUATE: "/te/manager/teacher/evaluate",
       TEMPLATE_MAIL: "/te/manager/template-mail",
       STAFF: '/te/manager/staff',
       STAFF_INFO: '/te/manager/staff/[teId]',
