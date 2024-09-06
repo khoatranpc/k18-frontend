@@ -97,6 +97,16 @@ const siderByRole: Record<ROLE_USER | ROLE, Array<SiderRoute>> = {
             PositionTe.QC,
           ],
         },
+        {
+          route: CombineRoute["TE"]["MANAGER"]["EVALUATE"],
+          indexroute: CombineRoute["TE"]["MANAGER"]["EVALUATE"],
+          title: "Đánh giá",
+          positionAccept: [
+            PositionTe.LEADER,
+            PositionTe.ASSISTANT,
+            PositionTe.QC,
+          ],
+        },
       ],
     },
     {
