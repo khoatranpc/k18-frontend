@@ -42,11 +42,6 @@ const EvaluateHistory: React.FC = () => {
           <List.Item>
             <Card
               title={`${evaluation.codeClass} - ${evaluation.date}`}
-              extra={
-                <Button icon={<EyeOutlined />} type="link">
-                  Xem chi tiết
-                </Button>
-              }
             >
               <div className="flex flex-col gap-2">
                 <div>
@@ -58,7 +53,7 @@ const EvaluateHistory: React.FC = () => {
                 <Divider />
                 <p className="text-gray-700">
                   {evaluation.feedback.length > 60
-                    ? `${evaluation.feedback.substring(0, 60)}...`
+                    ? `${evaluation.feedback.substring(0, 60)}`
                     : evaluation.feedback}
                 </p>
               </div>

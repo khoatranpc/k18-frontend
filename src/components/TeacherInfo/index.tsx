@@ -9,7 +9,7 @@ import About from "./About";
 import Account from "./Account";
 import Salary from "./Salary";
 import CacheClass from "./CacheClass";
-import Evaluate from "./Evaluate";
+import Evaluation from "./Evaluation";
 import Edit from "@/icons/Edit";
 import styles from '@/styles/teacher/TeacherInfo.module.scss';
 
@@ -18,7 +18,7 @@ export enum Tab {
   ACCOUNT = 'ACCOUNT',
   SALARY = 'SALARY',
   CACHECLASS = 'CACHECLASS',
-  EVALUATE = 'EVALUATE'
+  EVALUATION = 'EVALUATION'
 }
 const TeacherInfo = () => {
   const currentUser = useGetCrrUser()?.data as Obj;
@@ -43,7 +43,7 @@ const TeacherInfo = () => {
     ACCOUNT: <Account />,
     SALARY: <Salary />,
     CACHECLASS: <CacheClass />,
-    EVALUATE: <Evaluate />
+    EVALUATION: <Evaluation />
   }
   const listTab: TabsProps['items'] = [
     {
@@ -63,7 +63,7 @@ const TeacherInfo = () => {
       label: 'Lớp dạy',
     },
     {
-      key: Tab.EVALUATE,
+      key: Tab.EVALUATION,
       label: 'Đánh giá'
     }
   ]

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Columns, Obj } from "@/global/interface";
-import Table from "../Table";
-import EvaluateHistory from "./EvaluateHistory";
-import styles from "@/styles/teacher/TeacherInfo.module.scss";
+import { getColorTeacherPoint } from "@/global/init";
 import { useClassTeacherRegister, useGetListFeedback } from "@/utils/hooks";
 import useGetCrrUser from "@/utils/hooks/getUser";
 import mapFeedbackData from "@/utils/helper/mapFeedbackData";
-import { getColorTeacherPoint } from "@/global/init";
+import Table from "../Table";
+import EvaluateHistory from "./EvaluateHistory";
+import styles from "@/styles/teacher/TeacherInfo.module.scss";
 
-const Evaluate = () => {
+const Evaluation = () => {
   const getTeacherInfo = useClassTeacherRegister();
   const getFeedbackList = useGetListFeedback();
   const teacher = useGetCrrUser()?.data as Obj;
@@ -54,8 +54,8 @@ const Evaluate = () => {
             {value}
           </span>
         );
-      }
-    }
+      },
+    },
   ];
 
   useEffect(() => {
@@ -91,4 +91,4 @@ const Evaluate = () => {
   );
 };
 
-export default Evaluate;
+export default Evaluation;
