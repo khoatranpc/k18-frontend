@@ -109,13 +109,13 @@ const CollectionAnswer = () => {
                 }}>
                     {(listCourse.listCourse?.data as Array<Obj>)?.map((item) => {
                         return <Checkbox key={item._id} value={item._id as string}>
-                            {item.courseName as string}
+                            {item?.courseName as string}
                         </Checkbox>
                     }) || <span>Ôi chưa có gì để chọn hết!</span>}
                 </Checkbox.Group>
             },
             render(value) {
-                return value.courseName
+                return value?.courseName
             }
         },
         {
@@ -132,7 +132,7 @@ const CollectionAnswer = () => {
             },
             filterIcon: <SearchOutlined />,
             render(value) {
-                return value.codeClass
+                return value?.codeClass
             }
         },
         {
@@ -142,7 +142,7 @@ const CollectionAnswer = () => {
             title: 'Nhóm',
             width: 90,
             render(value) {
-                return value.groupNumber;
+                return value?.groupNumber;
             },
         },
         {
@@ -167,7 +167,7 @@ const CollectionAnswer = () => {
                 </Checkbox.Group>
             },
             render(value) {
-                return value.time === 1 ? 'Buổi 4' : 'Buổi 9'
+                return value?.time === 1 ? 'Buổi 4' : 'Buổi 9'
             }
         },
         {
@@ -177,7 +177,7 @@ const CollectionAnswer = () => {
             className: `text-center hasSort ${styles.flexReverse}`,
             width: 70,
             sorter: (a, b) => {
-                return Number(a.pointCxo) - Number(b.pointCxo);
+                return Number(a.pointCxo) - Number(b.pointCxo) ?? 0;
             },
             onCell(data: Obj) {
                 return {
@@ -195,7 +195,7 @@ const CollectionAnswer = () => {
             className: `text-center hasSort ${styles.flexReverse}`,
             width: 120,
             sorter: (a, b) => {
-                return Number(a.pointST) - Number(b.pointST);
+                return Number(a.pointST) - Number(b.pointST) ?? 0;
             },
             onCell(data: Obj) {
                 return {
@@ -213,12 +213,12 @@ const CollectionAnswer = () => {
             className: `text-center hasSort ${styles.flexReverse}`,
             width: 90,
             sorter: (a, b) => {
-                return Number(a.pointMT) - Number(b.pointMT);
+                return Number(a.pointMT) - Number(b.pointMT) ?? 0;
             },
             onCell(data: Obj) {
                 return {
                     style: {
-                        color: getColorTeacherPoint(data.pointMT),
+                        color: getColorTeacherPoint(data.pointMT ?? 0),
                         fontWeight: 'bold'
                     }
                 }
@@ -231,7 +231,7 @@ const CollectionAnswer = () => {
             title: 'CSVC',
             width: 90,
             sorter: (a, b) => {
-                return Number(a.pointOb) - Number(b.pointOb);
+                return Number(a.pointOb) - Number(b.pointOb) ?? 0;
             },
             onCell(data: Obj) {
                 return {
@@ -249,7 +249,7 @@ const CollectionAnswer = () => {
             className: `text-center hasSort ${styles.flexReverse}`,
             width: 90,
             sorter: (a, b) => {
-                return Number(a.pointSyl) - Number(b.pointSyl);
+                return Number(a.pointSyl) - Number(b.pointSyl) ?? 0;
             },
             onCell(data: Obj) {
                 return {
