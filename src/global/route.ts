@@ -15,6 +15,7 @@ const CombineRoute = {
       TEACHER: "/te/manager/teacher",
       DETAILTEACHER: "/te/manager/teacher/detail/[teacherId]",
       REQUEST_ONLEAVE: "/te/manager/teacher/request-on-leave",
+      EVALUATE: "/te/manager/teacher/evaluate",
       TEMPLATE_MAIL: "/te/manager/template-mail",
       STAFF: '/te/manager/staff',
       STAFF_INFO: '/te/manager/staff/[teId]',
@@ -34,6 +35,7 @@ const CombineRoute = {
     LOCATION: "/te/location",
     AREA: "/te/area",
     TIMESCHEDULE: "/te/timeschedule",
+    QC: '/te/qc',
     CS: {
       LIST: '/cs/list',
       DETAIL: '/cs/[csId]'
@@ -55,7 +57,8 @@ const CombineRoute = {
     LOCATION: "/teacher/location",
     TIMESCHEDULE: "/te/timeschedule",
     GENERAL_DOCUMENT: '/teacher/general-document',
-    TEACHER_EVALUATE: '/teacher/evaluate'
+    TEACHER_EVALUATE: '/teacher/evaluate',
+    ON_LEAVE: '/teacher/on-leave'
   },
   CS: {
     LIST: '/cs/list',

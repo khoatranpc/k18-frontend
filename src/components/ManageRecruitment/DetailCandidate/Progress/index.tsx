@@ -133,8 +133,8 @@ const Progress = () => {
         round,
         ...(getCandidateId.candidateId
           ? {
-              candidateId: getCandidateId.candidateId,
-            }
+            candidateId: getCandidateId.candidateId,
+          }
           : {}),
       },
     });
@@ -197,17 +197,18 @@ const Progress = () => {
     <ConfirmContext.Provider
       value={{
         ...confirmModal,
-        onConfirm(round, confirm) {
+        onConfirm(round, confirm, mailTemplate) {
           setConfirmModal({
             ...confirmModal,
             show: false,
           });
           if (confirm) {
-            queryHandleDataStep(
-              round,
-              getDataRound?._id as string,
-              confirmModal.type === "PASS" ? true : false
-            );
+            console.log(mailTemplate);
+            // queryHandleDataStep(
+            //   round,
+            //   getDataRound?._id as string,
+            //   confirmModal.type === "PASS" ? true : false
+            // );
           }
         },
         handleModal,
@@ -218,11 +219,11 @@ const Progress = () => {
         <Step
           currentStep={
             getRoundProcess === RoundProcess.CLAUTID &&
-            !getDataCandidate.fillForm
+              !getDataCandidate.fillForm
               ? getStepByRound[RoundProcess.FILLFOWM]
               : getStepByRound[
-                  getDataCandidate?.roundProcess as RoundProcess
-                ] || 0
+              getDataCandidate?.roundProcess as RoundProcess
+              ] || 0
           }
           labelPlacement="vertical"
           items={listRound.map((item, index) => {
@@ -230,9 +231,8 @@ const Progress = () => {
               description: (
                 <p
                   key={index}
-                  className={`${styles.round} ${
-                    step === item.round ? styles.active : ""
-                  }`}
+                  className={`${styles.round} ${step === item.round ? styles.active : ""
+                    }`}
                   onClick={() => {
                     handleClickStep(item.round);
                   }}

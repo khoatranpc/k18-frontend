@@ -1,10 +1,11 @@
 import React, { createContext } from "react";
-import { RoundProcess } from "@/global/enum";
+import { RoundProcess, TemplateMail } from "@/global/enum";
+import { Obj } from "@/global/interface";
 
 const ConfirmContext = createContext<{
     show?: boolean,
     round: RoundProcess,
-    onConfirm: (round: RoundProcess, confirm: boolean) => void;
+    onConfirm: (round: RoundProcess, confirm: boolean, mailTemplate?: TemplateMail, payload?: Obj) => void;
     title?: React.ReactElement | string;
     handleModal?: (show?: boolean, title?: React.ReactElement | string, type?: 'PASS' | 'FAIL') => void;
     type?: 'PASS' | 'FAIL'

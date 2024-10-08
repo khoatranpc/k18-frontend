@@ -7,16 +7,17 @@ import Loading from '../loading';
 
 interface Props {
     onSelect?: (value: string) => void;
-    name?: string
+    name?: string;
+    isDefaultGetAll?: boolean;
 }
 const SelectClass = (props: Props) => {
     const listClass = useListClass();
-
     const [search, setSearch] = useState('');
     const firstRender = useRef(true);
     const searchClass = useDebounce(search);
     const [options, setOptions] = useState<DefaultOptionType[]>([]);
     const getListClass = listClass.data.response as Obj;
+
     const getOptions: Array<DefaultOptionType> = (getListClass?.data?.classes as Obj[])?.map((item) => {
         return {
             label: item.codeClass,
@@ -24,19 +25,20 @@ const SelectClass = (props: Props) => {
         }
     });
     useEffect(() => {
-        if (!firstRender.current) {
-            if (searchClass) {
+        if (!firstRender.current || props.isDefaultGetAll) {
+            if (searchClass || props.isDefaultGetAll) {
                 listClass.query({
                     query: {
                         codeClass: searchClass,
-                        fields: ['codeClass']
+                        fields: ['codeClass'],
+                        isDelete: false
                     }
                 })
             }
         } else {
             firstRender.current = false;
         }
-    }, [searchClass]);
+    }, [searchClass, props.isDefaultGetAll]);
     useEffect(() => {
         if ((getListClass?.data?.classes as Obj[])) {
             setOptions(getOptions);
