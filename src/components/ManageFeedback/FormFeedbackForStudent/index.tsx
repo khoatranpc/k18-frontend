@@ -162,6 +162,7 @@ const FormFeedbackForStudent = () => {
         label: React.ReactNode;
         value: number | string;
         isPoint: boolean;
+        moreEvaluate?: React.ReactNode
     }[] = [
             {
                 label: <span>Bạn đánh giá khả năng hỗ trợ và chăm sóc của <b>Quản lí lớp</b> tại MindX như thế nào?
@@ -169,7 +170,20 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointCxo',
                 value: values.pointCxo,
-                isPoint: true
+                isPoint: true,
+                moreEvaluate: <div className='mt-[1.2rem]'>
+                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Quản lí lớp</b>?</p>
+                    <div className="text-gray-700">
+                        <p className="mb-2 italic"><span className="italic">Gợi ý:</span></p>
+                        <ul className="list-none list-inside italic">
+                            <li className='italic'>- Thời gian thông báo các thông tin quan trọng (lịch khai giảng, lịch nghỉ, học bù, demo, ...)</li>
+                            <li className='italic'>- Thời gian, cách thức hỗ trợ, giải đáp thắc mắc cho học viên (về các vấn đề bảo lưu, chuyển khóa chuyển lớp, xếp lịch demo,...)</li>
+                            <li className='italic'>- Thời gian xử lý/ upload các video recording</li>
+                            <li className='italic'>- Thời gian gửi phần thưởng/quà tặng demo</li>
+                        </ul>
+                    </div>
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                </div>
             },
             {
                 label: <span>Bạn đánh giá <b>Cơ sở vật chất</b> tại MindX như thế nào?
@@ -177,7 +191,21 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointOb',
                 value: values.pointOb,
-                isPoint: true
+                isPoint: true,
+                moreEvaluate: <div className='mt-[1.2rem]'>
+                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Cơ sở vật chất</b>?</p>
+                    <div className="text-gray-700">
+                        <p className="mb-2"><span className="italic">Gợi ý:</span></p>
+                        <ul className="list-inside list-none">
+                            <li className='italic'>- Chất lượng phòng học (không gian, cách âm, mùi phòng, ...)</li>
+                            <li className='italic'>- Thiết bị trong phòng (tivi, điều hòa, bàn ghế, ổ điện, bảng, bút lông)</li>
+                            <li className='italic'>- Tiện ích chung (thang máy, bảo vệ, gửi xe, ...)</li>
+                            <li className='italic'>- Wifi tại cơ sở</li>
+                            <li className='italic'>- Vệ sinh tại cơ sở</li>
+                        </ul>
+                    </div>
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                </div>
             },
             {
                 label: <span>Bạn đánh giá <b>Giảng viên</b> tại MindX như thế nào?
@@ -185,7 +213,23 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointST',
                 value: values.pointST,
-                isPoint: true
+                isPoint: true,
+                moreEvaluate: <div className='mt-[1.2rem]'>
+                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Giảng viên</b>?</p>
+                    <div className="text-gray-700">
+                        <p className="mb-2 italic"><span className="italic">Gợi ý:</span></p>
+                        <ul className="list-none list-inside italic">
+                            <li className='italic'>- Thời gian học</li>
+                            <li className='italic'>- Phần chuẩn bị bài của Giáo viên</li>
+                            <li className='italic'>- Khả năng giảng dạy</li>
+                            <li className='italic'>- Tốc độ giảng bài và giọng nói của Giáo viên</li>
+                            <li className='italic'>- Mức độ tương tác của Giáo viên</li>
+                            <li className='italic'>- Mức độ hỗ trợ của Giáo viên khi học viên có thắc mắc</li>
+                        </ul>
+                    </div>
+
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                </div>
             },
             {
                 label: <span>Bạn đánh giá <b>Mentor (Trợ giảng)</b> tại MindX như thế nào?
@@ -193,7 +237,21 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointMT',
                 value: values.pointMT,
-                isPoint: true
+                isPoint: true,
+                moreEvaluate: <div className='mt-[1.2rem]'>
+                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Mentor (Trợ giảng)</b>?</p>
+                    <div className="text-gray-700">
+                        <p className="mb-2 italic"><span className="italic">Gợi ý:</span></p>
+                        <ul className="list-none list-inside italic">
+                            <li className='italic'>- Khả năng hướng dẫn thực hành của mentor (hướng dẫn đúng, đủ, phù hợp với trình độ và nhu cầu của học viên, ...)</li>
+                            <li className='italic'>- Thái độ hướng dẫn, giải đáp thắc mắc của mentor về phần chuyên môn</li>
+                            <li className='italic'>- Thời gian giải đáp thắc mắc của mentor</li>
+                            <li className='italic'>- hời gian upload video thực hành của mentor</li>
+                        </ul>
+                    </div>
+
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                </div>
             },
             {
                 label: <span>Bạn đánh giá <b>Chương trình đào tạo</b> tại MindX như thế nào?
@@ -201,7 +259,21 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointSyl',
                 value: values.pointSyl,
-                isPoint: true
+                isPoint: true,
+                moreEvaluate: <div className='mt-[1.2rem]'>
+                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Chương trình đào tạo</b>?</p>
+                    <div className="text-gray-700">
+                        <p className="mb-2 italic"><span className="">Gợi ý:</span></p>
+                        <ul className="list-none list-inside italic">
+                            <li className='italic'>- Tài liệu học tập (giáo trình, slide, bài tập)</li>
+                            <li className='italic'>- Nội dung giảng dạy trong các buổi học</li>
+                            <li className='italic'>- Hình thức/ kết quả demo cuối khóa</li>
+                            <li className='italic'>- Lý do khác (điền rõ)</li>
+                        </ul>
+                    </div>
+
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                </div>
             },
             {
                 label: <>
@@ -404,14 +476,17 @@ const FormFeedbackForStudent = () => {
                                                             {item.label}
                                                         </Form.Label>
                                                         {item.isPoint ?
-                                                            <Point
-                                                                value={item.value}
-                                                                onChange={(value) => {
-                                                                    setFieldValue(item.name, value);
-                                                                }}
-                                                            />
+                                                            <>
+                                                                <Point
+                                                                    value={item.value}
+                                                                    onChange={(value) => {
+                                                                        setFieldValue(item.name, value);
+                                                                    }}
+                                                                />
+                                                                {item.moreEvaluate}
+                                                            </>
                                                             :
-                                                            <Input.TextArea autoSize placeholder="Câu trả lời của bạn" size="middle" className={styles.input} value={item.value} name={item.name} onChange={handleChange} onBlur={handleBlur} />
+                                                            <Input.TextArea style={{ resize: 'none' }} placeholder="Câu trả lời của bạn" size="middle" value={item.value} name={item.name} onChange={handleChange} onBlur={handleBlur} />
                                                         }
                                                         {errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && touched[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && <p className="error">{errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail']}</p>}
                                                     </Form.Group>
