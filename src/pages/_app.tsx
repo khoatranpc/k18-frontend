@@ -1,6 +1,7 @@
 import React from "react";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
+import { ConfigProvider } from 'antd';
 import { ToastContainer } from "react-toastify";
 import { Obj } from "@/global/interface";
 import Auth from "@/utils/hocs";
@@ -24,28 +25,37 @@ export default function App({ Component, pageProps }: AppProps) {
   const Public = (Component as Obj)?.isPublic;
   return (
     <Provider store={store}>
+
       {/* <div className={styles.theme}> */}
-      <Message />
-      <DrawerComponent />
-      <ToastContainer />
-      <DefaultLayout>
-        {Public ? (
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        ) : !Layout.isAuth ? (
-          <Auth>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#bb0409'
+          }
+        }}
+      >
+        <Message />
+        <DrawerComponent />
+        <ToastContainer />
+        <DefaultLayout>
+          {Public ? (
             <Layout>
               <Component {...pageProps} />
             </Layout>
-          </Auth>
-        ) : (
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        )}
-      </DefaultLayout>
-      {/* </div> */}
+          ) : !Layout.isAuth ? (
+            <Auth>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </Auth>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </DefaultLayout>
+        {/* </div> */}
+      </ConfigProvider>
     </Provider>
   );
 }

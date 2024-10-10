@@ -144,3 +144,5 @@ export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
 export const CREATE_CS = 'CREATE_CS';
 export const LIST_CS = 'LIST_CS';
 export const UPDATE_CS = 'UPDATE_CS';
+
+export const LIST_SUBJECT = 'LIST_SUBJECT';

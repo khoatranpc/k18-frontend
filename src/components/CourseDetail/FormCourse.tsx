@@ -7,6 +7,7 @@ import { Obj } from '@/global/interface';
 import { useCreateCourse, useUpdateCourse } from '@/utils/hooks';
 import { useHookMessage } from '@/utils/hooks/message';
 import CropImage from '../CropImage';
+import SelectSubjectCourse from '../SelectSubjectCourse';
 import styles from '@/styles/course/ManagerCourse.module.scss';
 
 const validationSchema = yup.object({
@@ -44,8 +45,8 @@ const UpdateCourse = (props: Props) => {
             } else {
                 createCourse.query({
                     body: formData,
-                    headers:{
-                        "Content-Type":"mutilpart/form-data"
+                    headers: {
+                        "Content-Type": "mutilpart/form-data"
                     }
                 });
             }
@@ -91,6 +92,15 @@ const UpdateCourse = (props: Props) => {
                     }}>
                         <Checkbox style={{ marginLeft: '0.4rem' }} value={'ACTIVE'}>Active</Checkbox>
                     </Checkbox.Group>
+                </Form.Group>
+                <Form.Group>
+                    <SelectSubjectCourse
+                        className='min-w-[7.6rem]'
+                        value={values.subject ?? null}
+                        onChange={(value) => {
+                            setFieldValue('subject', value);
+                        }}
+                    />
                 </Form.Group>
                 <Form.Group className={styles.itemForm}>
                     <Form.Label>Tiêu đề khoá học<span className='error'>*</span> (Tối đa 100 ký tự):</Form.Label>

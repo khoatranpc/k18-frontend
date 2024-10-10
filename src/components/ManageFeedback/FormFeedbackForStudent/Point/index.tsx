@@ -30,16 +30,16 @@ const value = [
 ]
 const Point = (props: Props) => {
     return (
-        <div className={styles.point}>
-            <span>Rất không hài lòng</span>
-            <Radio.Group className={styles.parentPoint} value={props.value} onChange={(e) => {
+        <div className={`${styles.point} flex items-center gap-[1.2rem]`}>
+            <span className="font-semibold">Rất không hài lòng</span>
+            <Radio.Group optionType='button' className={styles.parentPoint} value={props.value} onChange={(e) => {
                 props.onChange?.(e.target.value as string);
             }}>
                 {value.map((item, idx) => {
-                    return <Radio className={styles.itemPoint} key={idx} value={item.value}>{item.label}</Radio>
+                    return <Radio className={`w-full block `} key={idx} value={item.value}><p className="text-center">{item.label}</p></Radio>
                 })}
             </Radio.Group>
-            <span>Rất hài lòng</span>
+            <span className="font-semibold">Rất hài lòng</span>
         </div>
     )
 }

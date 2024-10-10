@@ -45,10 +45,15 @@ const FormFeedbackForStudent = () => {
             feedbackId: '',
 
             pointCxo: '',
+            noteCxo: '',
             pointST: '',
+            noteST: '',
             pointMT: '',
+            noteMT: '',
             pointOb: '',
+            noteOb: '',
             pointSyl: '',
+            noteSyl: '',
             docDetail: '',
 
             teacherId: '',
@@ -111,9 +116,10 @@ const FormFeedbackForStudent = () => {
     };
     const listClass: MenuProps['items'] = (listClassInForm.data.response?.data as Array<Obj>)?.map((item) => {
         return {
-            key: item.codeClass._id,
-            label: item.codeClass.codeClass,
-            timecollect: item.time
+            key: item._id,
+            label: `${item.codeClass.codeClass}`,
+            timecollect: item.time,
+            classId: item.codeClass._id
         }
     }) || [];
     const listGroup: MenuProps['items'] = (listGroupClass.data.response?.data as Array<Obj>)?.map((item) => {
@@ -162,7 +168,8 @@ const FormFeedbackForStudent = () => {
         label: React.ReactNode;
         value: number | string;
         isPoint: boolean;
-        moreEvaluate?: React.ReactNode
+        moreEvaluate?: React.ReactNode;
+        noteName: string;
     }[] = [
             {
                 label: <span>Bạn đánh giá khả năng hỗ trợ và chăm sóc của <b>Quản lí lớp</b> tại MindX như thế nào?
@@ -170,6 +177,7 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointCxo',
                 value: values.pointCxo,
+                noteName: 'noteCxo',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
                     <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Quản lí lớp</b>?</p>
@@ -182,7 +190,7 @@ const FormFeedbackForStudent = () => {
                             <li className='italic'>- Thời gian gửi phần thưởng/quà tặng demo</li>
                         </ul>
                     </div>
-                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteCxo'} defaultValue={values.noteCxo} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
@@ -191,6 +199,7 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointOb',
                 value: values.pointOb,
+                noteName: 'noteOb',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
                     <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Cơ sở vật chất</b>?</p>
@@ -204,7 +213,7 @@ const FormFeedbackForStudent = () => {
                             <li className='italic'>- Vệ sinh tại cơ sở</li>
                         </ul>
                     </div>
-                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteOb'} defaultValue={values.noteOb} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
@@ -213,6 +222,7 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointST',
                 value: values.pointST,
+                noteName: 'noteST',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
                     <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Giảng viên</b>?</p>
@@ -228,7 +238,7 @@ const FormFeedbackForStudent = () => {
                         </ul>
                     </div>
 
-                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteST'} defaultValue={values.noteST} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
@@ -238,6 +248,7 @@ const FormFeedbackForStudent = () => {
                 name: 'pointMT',
                 value: values.pointMT,
                 isPoint: true,
+                noteName: 'noteMT',
                 moreEvaluate: <div className='mt-[1.2rem]'>
                     <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Mentor (Trợ giảng)</b>?</p>
                     <div className="text-gray-700">
@@ -250,7 +261,7 @@ const FormFeedbackForStudent = () => {
                         </ul>
                     </div>
 
-                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteMT'} defaultValue={values.noteMT} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
@@ -259,6 +270,7 @@ const FormFeedbackForStudent = () => {
                 </span>,
                 name: 'pointSyl',
                 value: values.pointSyl,
+                noteName: 'noteSyl',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
                     <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Chương trình đào tạo</b>?</p>
@@ -272,7 +284,7 @@ const FormFeedbackForStudent = () => {
                         </ul>
                     </div>
 
-                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' />
+                    <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteSyl'} defaultValue={values.noteSyl} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
@@ -297,7 +309,8 @@ const FormFeedbackForStudent = () => {
                 </>,
                 name: 'docDetail',
                 value: values.docDetail,
-                isPoint: false
+                isPoint: false,
+                noteName: 'noteDocDetail'
             },
         ];
     return (
@@ -355,12 +368,14 @@ const FormFeedbackForStudent = () => {
                                                     (
                                                         (getListCoures)?.length > 0 ?
                                                             (
-                                                                <Radio.Group className={styles.listRadio} value={values.course || getListCoures[0]._id as string} onChange={(e) => {
-                                                                    setFieldValue('course', e.target.value);
-                                                                    const findIdCourse = getListCoures.find((item) => item._id === e.target.value);
-                                                                    listClassInForm.query(findIdCourse?.courseName);
-                                                                    setFieldValue('codeClass', '');
-                                                                }}>
+                                                                <Radio.Group
+                                                                    optionType='button'
+                                                                    className={styles.listRadio} value={values.course || getListCoures[0]._id as string} onChange={(e) => {
+                                                                        setFieldValue('course', e.target.value);
+                                                                        const findIdCourse = getListCoures.find((item) => item._id === e.target.value);
+                                                                        listClassInForm.query(findIdCourse?.courseName);
+                                                                        setFieldValue('codeClass', '');
+                                                                    }}>
                                                                     {
                                                                         getListCoures?.map((item) => {
                                                                             return <Radio
@@ -387,17 +402,16 @@ const FormFeedbackForStudent = () => {
                                             <Dropdown
                                                 className={`${styles.dropdownSelect}`}
                                                 listSelect={listClass}
-                                                onClickItem={(e) => {
-                                                    setFieldValue('codeClass', e.key);
-                                                    listGroupClass.query(e.key as string);
-                                                    const getIdFeedback = (listClassInForm.data.response?.data as Array<Obj>)?.find((item) => {
-                                                        return item.codeClass._id === e.key
-                                                    });
-                                                    setFieldValue('feedbackId', getIdFeedback!._id as string);
-                                                    setFieldValue('timeCollect', (e.item as Obj)?.props.timecollect);
+                                                onClickItem={(e, _, item: any) => {
+                                                    setFieldValue('codeClass', item.classId);
+                                                    listGroupClass.query(item.classId as string);
+                                                    setFieldValue('feedbackId', item.classId as string);
+                                                    setFieldValue('timeCollect', item.timecollect);
                                                 }}
                                                 trigger='click'
-                                                title={values.codeClass ? (((listClass.find((item) => (item?.key === values.codeClass)) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}
+                                                title={values.codeClass ? ((((listClass.find((item: any) => {
+                                                    return (item?.classId === values.codeClass) as unknown as Obj;
+                                                })) as Obj)?.label as string) || 'Chọn mã lớp') : 'Chọn mã lớp'}
                                                 icon
                                                 onOpenChange={(open) => {
                                                     handleErrors(open, 'codeClass');
@@ -420,13 +434,14 @@ const FormFeedbackForStudent = () => {
                                                     setFieldValue('groupNumber', e.key);
                                                 }}
                                                 trigger='click'
-                                                title={values.groupNumber ? (values.groupNumber ? (((listGroup.find(item => values.groupNumber === item?.key)) as Obj)).label as string : 'Chọn nhóm') : 'Chọn nhóm'}
+                                                title={values.groupNumber ? (values.groupNumber ? (((listGroup.find(item => values.groupNumber === item?.key)) as Obj))?.label as string : 'Chọn nhóm') : 'Chọn nhóm'}
                                                 icon
                                                 onOpenChange={(open) => {
                                                     handleErrors(open, 'groupNumber');
                                                 }}
                                             />
                                             {errors.groupNumber && touched.groupNumber && <p className="error">{errors.groupNumber}</p>}
+                                            <small><i>Hãy chọn mã lớp theo học để lựa chọn nhóm học tập</i></small>
                                         </Form.Group>
                                         <div className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
                                             <b>
