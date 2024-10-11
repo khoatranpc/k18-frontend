@@ -22,7 +22,6 @@ const PopupConfirm = (props: Props) => {
     const templatePassCV = useGetMailTemplate();
     const [labelTe, setLabelTe] = useState('');
     const crrCandidate = useGetDetailCandidate();
-    console.log(crrCandidate.data.response?.data);
     useLayoutEffect(() => {
         if (props.step === RoundProcess.CV) {
             templatePassCV.query({
@@ -42,7 +41,7 @@ const PopupConfirm = (props: Props) => {
             show={props.show}
             centered
             modalFooter={<div className="flex flex-col gap-[1.2rem] items-end">
-                <SelectTe
+                {/* <SelectTe
                     size='small'
                     className='w-full'
                     placeholder="TE Xử lý (Sẽ được đính kèm thông tin email!)"
@@ -50,7 +49,7 @@ const PopupConfirm = (props: Props) => {
                         const contactTe = data ? `${data.teName} - ${data.phoneNumber}` : '';
                         setLabelTe(contactTe);
                     }}
-                />
+                /> */}
                 <div className={styles.handleConfirm}>
                     <Button
                         size="small"

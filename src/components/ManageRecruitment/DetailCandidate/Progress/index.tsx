@@ -203,12 +203,12 @@ const Progress = () => {
             show: false,
           });
           if (confirm) {
-            console.log(mailTemplate);
-            // queryHandleDataStep(
-            //   round,
-            //   getDataRound?._id as string,
-            //   confirmModal.type === "PASS" ? true : false
-            // );
+            // console.log(mailTemplate);
+            queryHandleDataStep(
+              round,
+              getDataRound?._id as string,
+              confirmModal.type === "PASS" ? true : false
+            );
           }
         },
         handleModal,
