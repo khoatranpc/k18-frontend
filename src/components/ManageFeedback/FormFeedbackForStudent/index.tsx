@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, MenuProps, Radio } from 'antd';
+import { Button, Collapse, Input, MenuProps, Radio } from 'antd';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { Form } from 'react-bootstrap';
@@ -15,7 +15,9 @@ import Dropdown from '@/components/Dropdown';
 import Point from './Point';
 import logo from '@/assets/imgs/mindx.png';
 import styles from '@/styles/feedback/Feedback.module.scss';
+import Face5Levels from '@/components/Face5Levels';
 
+const { Panel } = Collapse;
 const validationSchema = yup.object({
     codeClass: yup.string().required('Bạn cần chọn mã lớp!'),
     studentName: yup.string().required('Bạn chưa nhập tên!'),
@@ -172,29 +174,32 @@ const FormFeedbackForStudent = () => {
         noteName: string;
     }[] = [
             {
-                label: <span>Bạn đánh giá khả năng hỗ trợ và chăm sóc của <b>Quản lí lớp</b> tại MindX như thế nào?
+                label: <span className='text-[1.6rem]'>Bạn đánh giá khả năng hỗ trợ và chăm sóc của <b className='text-[1.8rem]'>Quản lí lớp</b> tại MindX như thế nào?
                     <span className="field_required">*</span>
                 </span>,
                 name: 'pointCxo',
                 value: values.pointCxo,
                 noteName: 'noteCxo',
                 isPoint: true,
-                moreEvaluate: <div className='mt-[1.2rem]'>
-                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Quản lí lớp</b>?</p>
-                    <div className="text-gray-700">
-                        <p className="mb-2 italic"><span className="italic">Gợi ý:</span></p>
-                        <ul className="list-none list-inside italic">
-                            <li className='italic'>- Thời gian thông báo các thông tin quan trọng (lịch khai giảng, lịch nghỉ, học bù, demo, ...)</li>
-                            <li className='italic'>- Thời gian, cách thức hỗ trợ, giải đáp thắc mắc cho học viên (về các vấn đề bảo lưu, chuyển khóa chuyển lớp, xếp lịch demo,...)</li>
-                            <li className='italic'>- Thời gian xử lý/ upload các video recording</li>
-                            <li className='italic'>- Thời gian gửi phần thưởng/quà tặng demo</li>
-                        </ul>
-                    </div>
+                moreEvaluate: <div className='mt-[1.2rem] text-[0.8rem]'>
+                    <Collapse size='small'>
+                        <Panel key={"1"} header={<p className=''>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Quản lí lớp</b>?(Không yêu cầu)</p>}>
+                            <div className="text-gray-700">
+                                <p className="mb-2 italic"><span className="italic text-[1.2rem]">Gợi ý:</span></p>
+                                <ul className="list-none list-inside italic">
+                                    <li className='italic text-[1.2rem]'>- Thời gian thông báo các thông tin quan trọng (lịch khai giảng, lịch nghỉ, học bù, demo, ...)</li>
+                                    <li className='italic text-[1.2rem]'>- Thời gian, cách thức hỗ trợ, giải đáp thắc mắc cho học viên (về các vấn đề bảo lưu, chuyển khóa chuyển lớp, xếp lịch demo,...)</li>
+                                    <li className='italic text-[1.2rem]'>- Thời gian xử lý/ upload các video recording</li>
+                                    <li className='italic text-[1.2rem]'>- Thời gian gửi phần thưởng/quà tặng demo</li>
+                                </ul>
+                            </div>
+                        </Panel>
+                    </Collapse>
                     <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteCxo'} defaultValue={values.noteCxo} onChange={handleChange} onBlur={handleBlur} />
-                </div>
+                </div >
             },
             {
-                label: <span>Bạn đánh giá <b>Cơ sở vật chất</b> tại MindX như thế nào?
+                label: <span className='text-[1.6rem]'>Bạn đánh giá <b className='text-[1.8rem]'>Cơ sở vật chất</b> tại MindX như thế nào?
                     <span className="field_required">*</span>
                 </span>,
                 name: 'pointOb',
@@ -202,22 +207,25 @@ const FormFeedbackForStudent = () => {
                 noteName: 'noteOb',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
-                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Cơ sở vật chất</b>?</p>
-                    <div className="text-gray-700">
-                        <p className="mb-2"><span className="italic">Gợi ý:</span></p>
-                        <ul className="list-inside list-none">
-                            <li className='italic'>- Chất lượng phòng học (không gian, cách âm, mùi phòng, ...)</li>
-                            <li className='italic'>- Thiết bị trong phòng (tivi, điều hòa, bàn ghế, ổ điện, bảng, bút lông)</li>
-                            <li className='italic'>- Tiện ích chung (thang máy, bảo vệ, gửi xe, ...)</li>
-                            <li className='italic'>- Wifi tại cơ sở</li>
-                            <li className='italic'>- Vệ sinh tại cơ sở</li>
-                        </ul>
-                    </div>
+                    <Collapse size='small'>
+                        <Panel key={"1"} header={<p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Cơ sở vật chất</b>?(Không bắt buộc)</p>}>
+                            <div className="text-gray-700">
+                                <p className="mb-2"><span className="italic text-[1.2rem]">Gợi ý:</span></p>
+                                <ul className="list-inside list-none text-[1.2rem]">
+                                    <li className='italic text-[1.2rem]'>- Chất lượng phòng học (không gian, cách âm, mùi phòng, ...)</li>
+                                    <li className='italic text-[1.2rem]'>- Thiết bị trong phòng (tivi, điều hòa, bàn ghế, ổ điện, bảng, bút lông)</li>
+                                    <li className='italic text-[1.2rem]'>- Tiện ích chung (thang máy, bảo vệ, gửi xe, ...)</li>
+                                    <li className='italic text-[1.2rem]'>- Wifi tại cơ sở</li>
+                                    <li className='italic text-[1.2rem]'>- Vệ sinh tại cơ sở</li>
+                                </ul>
+                            </div>
+                        </Panel>
+                    </Collapse>
                     <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteOb'} defaultValue={values.noteOb} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
-                label: <span>Bạn đánh giá <b>Giảng viên</b> tại MindX như thế nào?
+                label: <span className='text-[1.6rem]'>Bạn đánh giá <b className='text-[1.8rem]'>Giảng viên</b> tại MindX như thế nào?
                     <span className="field_required">*</span>
                 </span>,
                 name: 'pointST',
@@ -225,24 +233,26 @@ const FormFeedbackForStudent = () => {
                 noteName: 'noteST',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
-                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Giảng viên</b>?</p>
-                    <div className="text-gray-700">
-                        <p className="mb-2 italic"><span className="italic">Gợi ý:</span></p>
-                        <ul className="list-none list-inside italic">
-                            <li className='italic'>- Thời gian học</li>
-                            <li className='italic'>- Phần chuẩn bị bài của Giáo viên</li>
-                            <li className='italic'>- Khả năng giảng dạy</li>
-                            <li className='italic'>- Tốc độ giảng bài và giọng nói của Giáo viên</li>
-                            <li className='italic'>- Mức độ tương tác của Giáo viên</li>
-                            <li className='italic'>- Mức độ hỗ trợ của Giáo viên khi học viên có thắc mắc</li>
-                        </ul>
-                    </div>
-
+                    <Collapse size='small'>
+                        <Panel key={"1"} header={<p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Giảng viên</b>?(Không bắt buộc)</p>}>
+                            <div className="text-gray-700">
+                                <p className="mb-2 italic"><span className="italic text-[1.2rem]">Gợi ý:</span></p>
+                                <ul className="list-none list-inside italic">
+                                    <li className='italic text-[1.2rem]'>- Thời gian học</li>
+                                    <li className='italic text-[1.2rem]'>- Phần chuẩn bị bài của Giáo viên</li>
+                                    <li className='italic text-[1.2rem]'>- Khả năng giảng dạy</li>
+                                    <li className='italic text-[1.2rem]'>- Tốc độ giảng bài và giọng nói của Giáo viên</li>
+                                    <li className='italic text-[1.2rem]'>- Mức độ tương tác của Giáo viên</li>
+                                    <li className='italic text-[1.2rem]'>- Mức độ hỗ trợ của Giáo viên khi học viên có thắc mắc</li>
+                                </ul>
+                            </div>
+                        </Panel>
+                    </Collapse>
                     <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteST'} defaultValue={values.noteST} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
-                label: <span>Bạn đánh giá <b>Mentor (Trợ giảng)</b> tại MindX như thế nào?
+                label: <span className='text-[1.6rem]'>Bạn đánh giá <b className='text-[1.8rem]'>Mentor (Trợ giảng)</b> tại MindX như thế nào?
                     <span className="field_required">*</span>
                 </span>,
                 name: 'pointMT',
@@ -250,22 +260,24 @@ const FormFeedbackForStudent = () => {
                 isPoint: true,
                 noteName: 'noteMT',
                 moreEvaluate: <div className='mt-[1.2rem]'>
-                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Mentor (Trợ giảng)</b>?</p>
-                    <div className="text-gray-700">
-                        <p className="mb-2 italic"><span className="italic">Gợi ý:</span></p>
-                        <ul className="list-none list-inside italic">
-                            <li className='italic'>- Khả năng hướng dẫn thực hành của mentor (hướng dẫn đúng, đủ, phù hợp với trình độ và nhu cầu của học viên, ...)</li>
-                            <li className='italic'>- Thái độ hướng dẫn, giải đáp thắc mắc của mentor về phần chuyên môn</li>
-                            <li className='italic'>- Thời gian giải đáp thắc mắc của mentor</li>
-                            <li className='italic'>- hời gian upload video thực hành của mentor</li>
-                        </ul>
-                    </div>
-
+                    <Collapse size='small'>
+                        <Panel key={"1"} header={<p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Mentor (Trợ giảng)</b>?(Không bắt buộc)</p>}>
+                            <div className="text-gray-700">
+                                <p className="mb-2 italic"><span className="italic text-[1.2rem]">Gợi ý:</span></p>
+                                <ul className="list-none list-inside italic">
+                                    <li className='italic text-[1.2rem]'>- Khả năng hướng dẫn thực hành của mentor (hướng dẫn đúng, đủ, phù hợp với trình độ và nhu cầu của học viên, ...)</li>
+                                    <li className='italic text-[1.2rem]'>- Thái độ hướng dẫn, giải đáp thắc mắc của mentor về phần chuyên môn</li>
+                                    <li className='italic text-[1.2rem]'>- Thời gian giải đáp thắc mắc của mentor</li>
+                                    <li className='italic text-[1.2rem]'>- hời gian upload video thực hành của mentor</li>
+                                </ul>
+                            </div>
+                        </Panel>
+                    </Collapse>
                     <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteMT'} defaultValue={values.noteMT} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
-                label: <span>Bạn đánh giá <b>Chương trình đào tạo</b> tại MindX như thế nào?
+                label: <span className='text-[1.6rem]'>Bạn đánh giá <b className='text-[1.8rem]'>Chương trình đào tạo</b> tại MindX như thế nào?
                     <span className="field_required">*</span>
                 </span>,
                 name: 'pointSyl',
@@ -273,39 +285,25 @@ const FormFeedbackForStudent = () => {
                 noteName: 'noteSyl',
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem]'>
-                    <p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Chương trình đào tạo</b>?</p>
-                    <div className="text-gray-700">
-                        <p className="mb-2 italic"><span className="">Gợi ý:</span></p>
-                        <ul className="list-none list-inside italic">
-                            <li className='italic'>- Tài liệu học tập (giáo trình, slide, bài tập)</li>
-                            <li className='italic'>- Nội dung giảng dạy trong các buổi học</li>
-                            <li className='italic'>- Hình thức/ kết quả demo cuối khóa</li>
-                            <li className='italic'>- Lý do khác (điền rõ)</li>
-                        </ul>
-                    </div>
-
+                    <Collapse size='small'>
+                        <Panel key={"1"} header={<p>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Chương trình đào tạo</b>? (Không bắt buộc)</p>}>
+                            <div className="text-gray-700">
+                                <p className="mb-2 italic"><span className="text-[1.2rem]">Gợi ý:</span></p>
+                                <ul className="list-none list-inside italic">
+                                    <li className='italic text-[1.2rem]'>- Tài liệu học tập (giáo trình, slide, bài tập)</li>
+                                    <li className='italic text-[1.2rem]'>- Nội dung giảng dạy trong các buổi học</li>
+                                    <li className='italic text-[1.2rem]'>- Hình thức/ kết quả demo cuối khóa</li>
+                                    <li className='italic text-[1.2rem]'>- Lý do khác (điền rõ)</li>
+                                </ul>
+                            </div>
+                        </Panel>
+                    </Collapse>
                     <Input.TextArea style={{ resize: 'none' }} className='mt-[1.2rem]' name={'noteSyl'} defaultValue={values.noteSyl} onChange={handleChange} onBlur={handleBlur} />
                 </div>
             },
             {
                 label: <>
-                    <span>Vui lòng chia sẻ thêm với MindX đánh giá cụ thể của bạn:
-                        <span className="field_required">*</span>
-                    </span>
-                    <br />
-                    <small>
-                        <b>
-                            <i>
-                                Gợi ý:
-                                <ul>
-                                    <li>Chất lượng giảng dạy của Giảng viên, Mentor</li>
-                                    <li>Khả năng tương tác, hỗ trợ của Giảng viên, Mentor</li>
-                                    <li>Chất lượng giáo trình, các điểm cần cải thiện</li>
-                                    <li>Các trang, thiết bị tại cơ sở</li>
-                                </ul>
-                            </i>
-                        </b>
-                    </small>
+                    <span>Vui lòng chia sẻ thêm với MindX đánh giá cụ thể của bạn (Không bắt buộc):</span>
                 </>,
                 name: 'docDetail',
                 value: values.docDetail,
@@ -452,7 +450,7 @@ const FormFeedbackForStudent = () => {
                                                 </i>
                                             </b>
                                         </div>
-                                        <div>
+                                        <div className='flex justify-end'>
                                             <Button onClick={() => {
                                                 getTouched(step);
                                             }}
@@ -460,7 +458,6 @@ const FormFeedbackForStudent = () => {
                                             >
                                                 Tiếp tục
                                             </Button>
-                                            <Button onClick={handleReset} className={styles.reset}>Xoá hết câu trả lời</Button>
                                         </div>
                                     </>)
                                     :
@@ -487,42 +484,37 @@ const FormFeedbackForStudent = () => {
                                             {
                                                 listPoint.map((item: any, idx) => {
                                                     return <Form.Group key={idx} className={`${styles.mb_24} ${styles.group} ${styles.fieldInput} pd-2 radius border`}>
-                                                        <Form.Label>
-                                                            {item.label}
-                                                        </Form.Label>
-                                                        {item.isPoint ?
-                                                            <>
+                                                        <div className='p-[1.2rem] rounded-md'>
+                                                            <Form.Label>
+                                                                {item.label}
+                                                            </Form.Label>
+                                                            {item.isPoint &&
                                                                 <Point
                                                                     value={item.value}
                                                                     onChange={(value) => {
                                                                         setFieldValue(item.name, value);
                                                                     }}
                                                                 />
-                                                                {item.moreEvaluate}
-                                                            </>
-                                                            :
-                                                            <Input.TextArea style={{ resize: 'none' }} placeholder="Câu trả lời của bạn" size="middle" value={item.value} name={item.name} onChange={handleChange} onBlur={handleBlur} />
-                                                        }
+                                                            }
+                                                        </div>
+                                                        {item.moreEvaluate}
+                                                        {!item.isPoint && <Input.TextArea style={{ resize: 'none' }} placeholder="Câu trả lời của bạn" size="middle" value={item.value} name={item.name} onChange={handleChange} onBlur={handleBlur} />}
                                                         {errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && touched[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail'] && <p className="error">{errors[item.name as 'pointCxo' | 'pointST' | 'pointMT' | 'pointSyl' | 'docDetail']}</p>}
                                                     </Form.Group>
                                                 })
                                             }
-                                            <div>
+                                            <div className='flex justify-end gap-[1.2rem]'>
                                                 <Button onClick={() => {
                                                     setStep(1);
                                                 }}>Quay trở lại</Button>
                                                 <Button
-                                                    disabled={!values.pointCxo || !values.pointMT || !values.pointOb || !values.pointST || !values.pointSyl || !values.docDetail}
+                                                    disabled={!values.pointCxo || !values.pointMT || !values.pointOb || !values.pointST || !values.pointSyl}
                                                     htmlType="submit"
                                                     loading={responseFeedback.data.isLoading}
                                                     className={styles.submit}
                                                 >
                                                     Gửi
                                                 </Button>
-                                                <Button onClick={(e) => {
-                                                    handleReset(e);
-                                                    setStep(1);
-                                                }} className={styles.reset}>Xoá hết câu trả lời</Button>
                                             </div>
                                         </>
                                     )
