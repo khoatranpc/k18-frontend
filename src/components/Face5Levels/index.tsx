@@ -6,7 +6,7 @@ import { FaRegFaceKissWinkHeart } from "react-icons/fa6";
 import { FaRegFaceKissBeam } from "react-icons/fa6";
 import { FaRegFaceGrinStars } from "react-icons/fa6";
 
-type Level = 1 | 2 | 3 | 4 | 5;
+export type Level = 1 | 2 | 3 | 4 | 5;
 
 interface Props {
     level?: Level;
@@ -14,10 +14,10 @@ interface Props {
 
 const getFace: Record<Level, React.ReactNode> = {
     [1]: <FaRegFaceFrown className='text-[3.2rem]' />,
-    [2]: <FaRegFaceFrownOpen />,
-    [3]: <FaRegFaceGrimace />,
-    [4]: <FaRegFaceKissBeam />,
-    [5]: <FaRegFaceKissWinkHeart />
+    [2]: <FaRegFaceFrownOpen className='text-[3.2rem]' />,
+    [3]: <FaRegFaceGrimace className='text-[3.2rem]' />,
+    [4]: <FaRegFaceKissBeam className='text-[3.2rem]' />,
+    [5]: <FaRegFaceKissWinkHeart className='text-[3.2rem]' />
 };
 
 const Face5Levels = (props: Props) => {

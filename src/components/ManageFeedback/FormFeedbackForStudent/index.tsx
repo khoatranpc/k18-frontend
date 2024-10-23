@@ -16,7 +16,9 @@ import Point from './Point';
 import logo from '@/assets/imgs/mindx.png';
 import point from '@/assets/imgs/point.png';
 import styles from '@/styles/feedback/Feedback.module.scss';
-import Face5Levels from '@/components/Face5Levels';
+import { FaRegFaceDizzy } from "react-icons/fa6";
+import { FaRegFaceFrownOpen } from "react-icons/fa6";
+import Face5Levels, { Level } from '@/components/Face5Levels';
 
 const { Panel } = Collapse;
 const validationSchema = yup.object({
@@ -474,9 +476,7 @@ const FormFeedbackForStudent = () => {
                                                         Nội dung khảo sát bao gồm các câu hỏi về <b>chất lượng dịch vụ, đội ngũ giảng dạy, chương trình đào tạo</b> để MindX tiếp tục cải thiện. Hãy đánh dấu <b>mức độ hoàn thành</b> vào ô tương ứng theo <b> &quot;Biểu điểm thang 5&quot;</b> như sau:
                                                     </p>
                                                     <div className='flex justify-between items-center'>
-                                                        <span className='font-bold'>Rất không hài lòng</span>
-                                                        <Image className='w-[70%] m-auto' src={point} alt='Biểu điểm thang 5' />
-                                                        <span className='font-bold'>Rất hài lòng</span>
+                                                        <video className='h-[15rem] m-auto' src="/static/1023.mp4" autoPlay loop ></video>
                                                     </div>
                                                 </div>
                                             </div>
