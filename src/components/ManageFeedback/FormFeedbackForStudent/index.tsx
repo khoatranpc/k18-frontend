@@ -14,6 +14,7 @@ import Loading from '@/components/loading';
 import Dropdown from '@/components/Dropdown';
 import Point from './Point';
 import logo from '@/assets/imgs/mindx.png';
+import point from '@/assets/imgs/point.png';
 import styles from '@/styles/feedback/Feedback.module.scss';
 import Face5Levels from '@/components/Face5Levels';
 
@@ -183,7 +184,7 @@ const FormFeedbackForStudent = () => {
                 isPoint: true,
                 moreEvaluate: <div className='mt-[1.2rem] text-[0.8rem]'>
                     <Collapse size='small'>
-                        <Panel key={"1"} header={<p className=''>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Quản lí lớp</b>?(Không yêu cầu)</p>}>
+                        <Panel key={"1"} header={<p className=''>Vui lòng chia sẻ cụ thể vấn đề bạn không hài lòng về <b>Quản lí lớp</b>?(Không bắt buộc)</p>}>
                             <div className="text-gray-700">
                                 <p className="mb-2 italic"><span className="italic text-[1.2rem]">Gợi ý:</span></p>
                                 <ul className="list-none list-inside italic">
@@ -472,13 +473,11 @@ const FormFeedbackForStudent = () => {
                                                     <p>
                                                         Nội dung khảo sát bao gồm các câu hỏi về <b>chất lượng dịch vụ, đội ngũ giảng dạy, chương trình đào tạo</b> để MindX tiếp tục cải thiện. Hãy đánh dấu <b>mức độ hoàn thành</b> vào ô tương ứng theo <b> &quot;Biểu điểm thang 5&quot;</b> như sau:
                                                     </p>
-                                                    <ol>
-                                                        <b className={styles.point}><li> Rất không hài lòng</li></b>
-                                                        <b className={styles.point}><li> không hài lòng</li></b>
-                                                        <b className={styles.point}><li> Bình thường</li></b>
-                                                        <b className={styles.point}><li> Hài lòng</li></b>
-                                                        <b className={styles.point}><li> Rất hài lòng</li></b>
-                                                    </ol>
+                                                    <div className='flex justify-between items-center'>
+                                                        <span className='font-bold'>Rất không hài lòng</span>
+                                                        <Image className='w-[70%] m-auto' src={point} alt='Biểu điểm thang 5' />
+                                                        <span className='font-bold'>Rất hài lòng</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             {
