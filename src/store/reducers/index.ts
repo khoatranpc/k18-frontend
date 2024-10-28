@@ -112,6 +112,7 @@ import deleteRecordBookTeacher from './class/deleteRecordBookTeacher.reducer';
 import createTeacher from './teacher/createTeacher.reducer';
 import sendMailCandidate from './recruitment/sendMailCandidate.reducer';
 import listSubject from './subjectCourse/listSubject.reducer';
+import sendLark from './lark/sendLark.reducer';
 
 const rootReducer = {
     test: test,
@@ -227,6 +228,7 @@ const rootReducer = {
     deleteRecordBookTeacher,
     createTeacher,
     sendMailCandidate,
-    listSubject: listSubject.reducer
+    listSubject: listSubject.reducer,
+    sendLark
 };
 export default rootReducer;

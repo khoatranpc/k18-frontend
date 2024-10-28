@@ -24,6 +24,7 @@ import {
   useGetTimeSchedule,
   useListCs,
   useQueryBookTeacher,
+  useSendLark,
   useUpdateClassBasicInfor,
 } from "@/utils/hooks";
 import SelectCourse from "@/components/SelectCourse";
@@ -55,6 +56,7 @@ const CreateClass = (props: Props) => {
   const { query, data } = useQueryBookTeacher("GET");
   const detailClass = useDetailClass("GET");
   const deleteRCBTC = useDeleteRecordBookTC();
+  const sendLark = useSendLark();
   const listCs = useListCs();
   const getListCs = (listCs.data.response?.data as Obj[] ?? []);
   const router = useRouter();
@@ -466,8 +468,12 @@ const CreateClass = (props: Props) => {
             };
           }),
         };
-
+        sendLark.query({
+          body: classAlertData
+        });
         sendToTeleBot(createMessageCreateClass(classAlertData));
+
+
         message.open(
           {
             content: "Tạo lớp thành công!",
